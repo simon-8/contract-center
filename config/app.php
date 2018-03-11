@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'PRC',
 
     /*
     |--------------------------------------------------------------------------
@@ -177,6 +177,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // phpstorm tips
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        // 数据迁移
+        Orangehill\Iseed\IseedServiceProvider::class,
     ],
 
     /*
