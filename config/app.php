@@ -176,6 +176,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // 模型服务观察者
+        App\Providers\ModelObserverProvider::class,
 
         // phpstorm tips
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,

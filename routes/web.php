@@ -17,15 +17,18 @@ Route::get('/', function () {
 
 Route::prefix('admin')->group(function() {
     Route::namespace('Admin')->group(function() {
+        // 首页
         Route::get('/', 'IndexController@getMain')->name('admin.main');
         Route::get('index', 'IndexController@getIndex')->name('admin.index');
 
+        // 用户
         Route::prefix('user')->group(function() {
             Route::get('/', 'UserController@getIndex')->name('admin.user.index');
             Route::get('/create', 'UserController@getCreate')->name('admin.user.create');
             Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
         });
 
+        // 菜单
         Route::prefix('menu')->group(function() {
             Route::get('/', 'MenuController@getIndex')->name('admin.menu.index');
             Route::post('/create', 'MenuController@postCreate')->name('admin.menu.create');

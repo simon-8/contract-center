@@ -50,9 +50,6 @@ class MenuRepository
      */
     public function create($data)
     {
-        if ($data['pid']) {
-            $this->model->where('id', $data['pid'])->increment('items' , 1);
-        }
         return $this->model->create($data);
     }
 
@@ -63,12 +60,8 @@ class MenuRepository
      */
     public function update($data)
     {
-        $menu = $this->model->find($data['id']);
-        if ($data['pid'] != $menu->pid) {
-            $this->model->where('id', $menu->pid)->decrement('items' , 1);
-            $this->model->where('id', $data['pid'])->increment('items' , 1);
-        }
-        return $menu->update($data);
+        //$menu = $this->model->find($data['id']);
+        return $this->model->update($data);
     }
 
     /**
@@ -82,9 +75,6 @@ class MenuRepository
         $child = $this->model->where('pid', $menu->id)->get()->toArray();
         if (count($child)) {
             return false;
-        }
-        if ($menu->pid) {
-            $this->model->where('id', $menu->pid)->decrement('items' , 1);
         }
         return $this->model->destroy($id);
     }
