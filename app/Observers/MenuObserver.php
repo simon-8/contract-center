@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: *
+ * Note: Menu模型观察者
  * User: Liu
  * Date: 2018/3/12
  * Time: 22:53
@@ -13,25 +13,17 @@ class MenuObserver
     /**
      * 增加计数
      * @param Menu $menu
-     * @return bool
      */
     public function created(Menu $menu)
     {
         if ($menu['pid']) {
             $menu->where('id', $menu['pid'])->increment('items' , 1);
         }
-        return true;
     }
-
-    //public function updating(Menu $menu)
-    //{
-    //
-    //}
 
     /**
      * 更新计数
      * @param Menu $menu
-     * @return bool
      */
     public function updated(Menu $menu)
     {
@@ -39,19 +31,16 @@ class MenuObserver
             $menu->where('id', $menu->getOriginal('pid'))->decrement('items' , 1);
             $menu->where('id', $menu['pid'])->increment('items' , 1);
         }
-        return true;
     }
 
     /**
      * 清除计数
      * @param Menu $menu
-     * @return bool
      */
     public function deleted(Menu $menu)
     {
         if ($menu['pid']) {
             $menu->where('id', $menu['pid'])->decrement('items' , 1);
         }
-        return true;
     }
 }

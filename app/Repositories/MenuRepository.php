@@ -60,8 +60,8 @@ class MenuRepository
      */
     public function update($data)
     {
-        //$menu = $this->model->find($data['id']);
-        return $this->model->update($data);
+        $menu = $this->model->find($data['id']);
+        return $menu->update($data);
     }
 
     /**
