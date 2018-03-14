@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: 广告位
+ * Note: 广告
  * User: Liu
  * Date: 2018/3/12
  * Time: 21:56
@@ -10,18 +10,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ad extends Model
 {
-    /**
-     * 该模型是否被自动维护时间戳
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+    public $table = 'ad';
 
     protected $fillable = [
         'id',
-        'name',
-        'width',
-        'height',
-        'status'
+        'pid',
+        'thumb',
+        'url',
+        'title',
+        'content',
+        'listorder'
     ];
+
+    /**
+     * 广告对应广告位
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function AdPlace()
+    {
+        return $this->belongsTo('App\Models\AdPlace', 'pid', 'id');
+    }
 }

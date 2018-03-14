@@ -24,10 +24,8 @@
 <body class="gray-bg">
 <div class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-sm-12 animated fadeInRight">
-            @include('admin.public.message')
-            @yield('content')
-        </div>
+        @include('admin.public.message')
+        @yield('content')
     </div>
 </div>
 
@@ -37,6 +35,20 @@
 <script src="{{ skin_path() }}js/plugins/layer/layer.min.js"></script>
 <script src="{{ skin_path() }}js/content.min.js?v=1.0.0"></script>
 <script>
+    function preview(src,w,h,t){
+        var t = t ? t : '图片预览';
+        if( src ){
+            var w = w+0;
+            var h = h+42;
+            layer.open({
+                area:[w+'px',h+'px'],
+                type:1,
+                title:t,
+                shadeClose:true,
+                content:"<img src='"+src+"'/>"
+            });
+        }
+    }
 
     $('.i-checks').iCheck({
         checkboxClass: 'icheckbox_square-green',

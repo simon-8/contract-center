@@ -81,7 +81,7 @@ class MenusTableSeeder extends Seeder
                 'route' => 'index',
                 'ico' => 'fa fa-cog',
                 'listorder' => 0,
-                'items' => 0,
+                'items' => 1,
             ),
             6 => 
             array (
@@ -103,6 +103,17 @@ class MenusTableSeeder extends Seeder
                 'route' => 'index',
                 'ico' => 'fa fa-desktop',
                 'listorder' => 98,
+                'items' => 0,
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'pid' => 6,
+                'name' => '广告位管理',
+                'prefix' => 'admin.ad',
+                'route' => 'index',
+                'ico' => '',
+                'listorder' => 0,
                 'items' => 0,
             ),
         ));

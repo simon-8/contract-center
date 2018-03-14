@@ -41,6 +41,8 @@ Route::prefix('admin')->group(function() {
             Route::post('/create', 'AdController@postCreate')->name('admin.ad.create');
             Route::post('/update', 'AdController@postUpdate')->name('admin.ad.update');
             Route::get('/delete', 'AdController@getDelete')->name('admin.ad.delete');
+
+            Route::get('/items/{pid}', 'AdController@getItems')->where('pid','\d+')->name('admin.ad.items');
         });
         Route::any('ajax' , 'AjaxController@getIndex')->name('admin.ajax.index');
     });

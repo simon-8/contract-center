@@ -22,9 +22,9 @@ function loading(close)
     Boolean(close) ? $('#loadding_box').fadeOut(800) : $('#loadding_box').fadeIn(800);
 }
 
-layer.config({
-    extend: ["extend/layer.ext.js", "skin/moon/style.css"], skin: "layer-ext-moon"
-})
+//layer.config({
+//    extend: ["extend/layer.ext.js", "skin/moon/style.css"], skin: "layer-ext-moon"
+//})
 $(document).ready(function () {
     function e() {
         var e = $("body > #wrapper").height() - 61;

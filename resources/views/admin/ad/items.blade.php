@@ -4,30 +4,39 @@
 
     <div class="ibox">
         <div class="ibox-title">
-            <h5>广告位管理</h5>
+            <h5>广告管理 (当前广告位: {{ $adPlace['name'] }})</h5>
         </div>
         <div class="ibox-content">
             <table class="table table-bordered table-hover bg-white text-center">
                 <tr>
                     <th width="50">编号</th>
-                    <th width="150">名称</th>
-                    <th width="100">宽度</th>
-                    <th width="100">高度</th>
-                    <th width="80">状态</th>
+                    <th width="150">所属广告位</th>
+                    <th width="150">标题</th>
+                    <th width="100">简介</th>
+                    <th width="100">图片</th>
+                    <th width="80">链接</th>
                     <th width="180">操作</th>
                 </tr>
-                @if(isset($lists) && count($lists) > 0)
-                    @foreach($lists as $v)
+                @if(isset($adPlace['ad']) && count($adPlace['ad']) > 0)
+                    @foreach($adPlace['ad'] as $v)
                         <tr>
                             <td>{{ $v['id'] }}</td>
-                            <td>{{ $v['name'] }}</td>
-                            <td>{{ $v['width'] }}</td>
-                            <td>{{ $v['height'] }}</td>
-                            <td>{{ $v['status'] ? '正常' : '关闭' }}</td>
+                            <td>{{ $adPlace['name'] }}</td>
+                            <td>{{ $v['title'] }}</td>
+                            <td>{{ $v['content'] }}</td>
                             <td>
-                                <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加广告</button>
-                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }})">编辑</button>
-                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
+                                <a href="javascript:;" data-url="{{ $v['thumb'] }}" class="btn btn-warning btn-sm imgview">预览</a>
+                            </td>
+                            <td>
+                                @empty($v['url'])
+                                    无
+                                @else
+                                    <a href="{{ $v['url'] }}" target="_blank" class="btn btn-warning btn-sm">预览</a>
+                                @endempty
+                            </td>
+                            <td>
+                                <a href="" class="btn btn-info btn-sm">编辑</a>
+                                <a href="" class="btn btn-danger btn-sm">删除</a>
                             </td>
                         </tr>
                     @endforeach
@@ -39,7 +48,7 @@
                     </tr>
                 @endif
             </table>
-            <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加菜单</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告</button>
         </div>
     </div>
 
@@ -76,11 +85,22 @@
             //json = JSON.parse(json);
             //$(createModal).find('select[name=pid]').val(json.id);
             //$(createModal).find('input[name=prefix]').val(json.prefix);
-            //$(createModal).modal('show');
-            location.href = '{{ route('admin.ad.index') }}/items/' + id;
+            $(createModal).modal('show');
+{{--            location.href = '{{ route('admin.ad.index') }}/items/' + id;--}}
         }
     </script>
-
+    <script>
+        $(function(){
+            $('.imgview').click(function(){
+                var src = $(this).attr('data-url');
+                if( src ){
+                    var w = {{ $adPlace['width'] }}+0;
+                    var h = {{ $adPlace['height'] }}+42;
+                    preview(src, w, h, "{{ $adPlace['name'] }}");
+                }
+            });
+        })
+    </script>
     {{--delete--}}
     @include('admin.modal.delete' , ['formurl' => route('admin.ad.delete')])
 

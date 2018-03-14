@@ -1,5 +1,6 @@
 @extends('layout.admin')
 @section('content')
+<div class="col-sm-12 animated fadeInRight">
     <table class="table table-bordered table-hover bg-white text-center">
         <tr>
             <td width="50">排序</td>
@@ -243,4 +244,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection('content')

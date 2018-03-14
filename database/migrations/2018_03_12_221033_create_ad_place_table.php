@@ -15,13 +15,10 @@ class CreateAdPlaceTable extends Migration
     {
         Schema::create('ad_place', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pid')->comment('所属广告位ID')->default(0);
-            $table->string('thumb')->comment('图片')->default('');
-            $table->string('url')->comment('外链地址')->default('');
-            $table->string('title')->comment('图片名称')->default('');
-            $table->string('content')->comment('文字介绍')->default('');
-            $table->unsignedInteger('listorder')->comment('排序')->default(0);
-            $table->timestamps();
+            $table->string('name')->comment('广告位名称')->default('');
+            $table->unsignedSmallInteger('width')->comment('广告位宽度')->default(0);
+            $table->unsignedSmallInteger('height')->comment('广告位高度')->default(0);
+            $table->unsignedTinyInteger('status')->comment('广告位状态')->default(0);
         });
     }
 
