@@ -12,7 +12,10 @@ class AdController extends Controller
 {
     public function getIndex()
     {
-
+        $data = [
+            'lists' => []
+        ];
+        return admin_view('ad.index', $data);
     }
 
     public function getCreate()

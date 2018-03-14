@@ -18,8 +18,8 @@ Route::get('/', function () {
 Route::prefix('admin')->group(function() {
     Route::namespace('Admin')->group(function() {
         // 首页
-        Route::get('/', 'IndexController@getMain')->name('admin.main');
-        Route::get('index', 'IndexController@getIndex')->name('admin.index');
+        Route::get('/', 'IndexController@getMain')->name('admin.index.main');
+        Route::get('index', 'IndexController@getIndex')->name('admin.index.index');
 
         // 用户
         Route::prefix('user')->group(function() {
@@ -36,5 +36,12 @@ Route::prefix('admin')->group(function() {
             Route::get('/delete', 'MenuController@getDelete')->name('admin.menu.delete');
         });
 
+        Route::prefix('ad')->group(function() {
+            Route::get('/', 'AdController@getIndex')->name('admin.ad.index');
+            Route::post('/create', 'AdController@postCreate')->name('admin.ad.create');
+            Route::post('/update', 'AdController@postUpdate')->name('admin.ad.update');
+            Route::get('/delete', 'AdController@getDelete')->name('admin.ad.delete');
+        });
+        Route::any('ajax' , 'AjaxController@getIndex')->name('admin.ajax.index');
     });
 });

@@ -5,20 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <title>管理后台</title>
-
     <meta name="keywords" content="">
     <meta name="description" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!--[if lt IE 8]>
     <meta http-equiv="refresh" content="0;ie.html"/>
     <![endif]-->
+    <title>管理后台</title>
 
     <link rel="shortcut icon" href="favicon.ico">
     <link href="{{ skin_path() }}css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
     <link href="{{ skin_path() }}css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="{{ skin_path() }}css/animate.min.css" rel="stylesheet">
     <link href="{{ skin_path() }}css/style.min.css?v=4.0.0" rel="stylesheet">
+    <script src="{{ skin_path() }}js/jquery.min.js?v=2.1.4"></script>
+    <script>
+        var AJPath = '{{ route('admin.ajax.index') }}';
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -45,7 +54,7 @@
             <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="{{ route('admin.index') }}">首页</a>
+                    <a href="javascript:;" class="active J_menuTab" data-id="{{ route('admin.index.index') }}">首页</a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRefresh" title="刷新当前页面"><i class="fa fa-refresh"></i></button>
@@ -65,13 +74,13 @@
             <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{ route('admin.index') }}"
-                    frameborder="0" data-id="{{ route('admin.index') }}" seamless></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{ route('admin.index.index') }}"
+                    frameborder="0" data-id="{{ route('admin.index.index') }}" seamless></iframe>
         </div>
         <div class="footer">
             <div class="pull-right">
                 &copy; {{ date('Y') - 1 }}-{{ date('Y') + 1 }}
-                <a href="{{ route('admin.index') }}" target="_blank">zihan's blog</a>
+                <a href="{{ route('admin.index.index') }}" target="_blank">zihan's blog</a>
             </div>
         </div>
     </div>
@@ -84,12 +93,11 @@
     <!--mini聊天窗口结束-->
 </div>
 
-<script src="{{ skin_path() }}js/jquery.min.js?v=2.1.4"></script>
 <script src="{{ skin_path() }}js/bootstrap.min.js?v=3.3.5"></script>
 <script src="{{ skin_path() }}js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="{{ skin_path() }}js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="{{ skin_path() }}js/plugins/layer/layer.min.js"></script>
-<script src="{{ skin_path() }}js/hplus.min.js?v=4.0.0"></script>
+<script src="{{ skin_path() }}js/manage.js?v=4.0.0"></script>
 <script type="text/javascript" src="{{ skin_path() }}js/contabs.min.js"></script>
 <script src="{{ skin_path() }}js/plugins/pace/pace.min.js"></script>
 </body>
