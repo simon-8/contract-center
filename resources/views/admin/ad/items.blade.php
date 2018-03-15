@@ -94,8 +94,8 @@
             $('.imgview').click(function(){
                 var src = $(this).attr('data-url');
                 if( src ){
-                    var w = {{ $adPlace['width'] }}+0;
-                    var h = {{ $adPlace['height'] }}+42;
+                    var w = {{ $adPlace['width'] }};
+                    var h = {{ $adPlace['height'] }};
                     preview(src, w, h, "{{ $adPlace['name'] }}");
                 }
             });
