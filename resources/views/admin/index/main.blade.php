@@ -75,6 +75,19 @@
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{ route('admin.index.index') }}"
                     frameborder="0" data-id="{{ route('admin.index.index') }}" seamless></iframe>
+            <div id="loadding_box">
+                <div id="loadding_animate" class="sk-spinner sk-spinner-cube-grid">
+                    <div class="sk-cube"></div>
+                    <div class="sk-cube"></div>
+                    <div class="sk-cube"></div>
+                    <div class="sk-cube"></div>
+                    <div class="sk-cube"></div>
+                    <div class="sk-cube"></div>
+                    <div class="sk-cube"></div>
+                    <div class="sk-cube"></div>
+                    <div class="sk-cube"></div>
+                </div>
+            </div>
         </div>
         <div class="footer">
             <div class="pull-right">

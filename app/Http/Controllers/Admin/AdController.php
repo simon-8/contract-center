@@ -9,6 +9,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Repositories\AdRepository;
+use App\Http\Requests\AdStore;
+use App\Http\Requests\AdPlaceStore;
 
 class AdController extends Controller
 {
@@ -29,11 +31,12 @@ class AdController extends Controller
 
     /**
      * 添加广告位
+     * @param AdPlaceStore $adPlaceStore
      * @param \Request $request
      * @param AdRepository $adRepository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postCreate(\Request $request, AdRepository $adRepository)
+    public function postCreate(AdPlaceStore $adPlaceStore, \Request $request, AdRepository $adRepository)
     {
         $data = $request::all();
         if ($adRepository->create($data)) {
@@ -45,11 +48,12 @@ class AdController extends Controller
 
     /**
      * 更新广告位
+     * @param AdPlaceStore $adPlaceStore
      * @param \Request $request
      * @param AdRepository $adRepository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postUpdate(\Request $request, AdRepository $adRepository)
+    public function postUpdate(AdPlaceStore $adPlaceStore, \Request $request, AdRepository $adRepository)
     {
         $data = $request::all();
         if ($adRepository->update($data)) {
@@ -92,11 +96,12 @@ class AdController extends Controller
 
     /**
      * 新增
+     * @param AdStore $adStore
      * @param \Request $request
      * @param AdRepository $adRepository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function itemCreate(\Request $request, AdRepository $adRepository)
+    public function itemCreate(AdStore $adStore, \Request $request, AdRepository $adRepository)
     {
         $data = $request::all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
@@ -109,11 +114,12 @@ class AdController extends Controller
 
     /**
      * 更新
+     * @param AdStore $adStore
      * @param \Request $request
      * @param AdRepository $adRepository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function itemUpdate(\Request $request, AdRepository $adRepository)
+    public function itemUpdate(AdStore $adStore, \Request $request, AdRepository $adRepository)
     {
         $data = $request::all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);

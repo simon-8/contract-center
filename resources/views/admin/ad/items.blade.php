@@ -73,7 +73,7 @@
             $.each(json , function(k , v){
                 if (k === 'thumb') {
                     $(updateModal).find('[name=' + k + ']').val(v);
-                    $(updateModal).find('#pthumb').iCheck('check');
+                    $(updateModal).find('#pthumb').attr('src', v);
                 } else {
                     $(updateModal).find('[name=' + k + ']').val(v);
                 }
@@ -87,7 +87,6 @@
             //$(createModal).find('select[name=pid]').val(json.id);
             //$(createModal).find('input[name=prefix]').val(json.prefix);
             $(createModal).modal('show');
-{{--            location.href = '{{ route('admin.ad.index') }}/items/' + id;--}}
         }
     </script>
     <script>
@@ -135,9 +134,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">图片</label>
                             <div class="col-sm-10">
-                                <img src="{{ old('thumb') }}" id="pthumb" width="250" height="{{ calcHeight($adPlace['width'], 250, $adPlace['height']) }}">
-                                <input type="hidden" id="thumb" name="thumb" value="{{ old('thumb') }}">
-                                <button class="btn btn-sm" type="button" onclick="Sthumb('thumb', {{ $adPlace['width'] }}, {{ $adPlace['height'] }});" style="margin-top: 10px;">上传</button>
+                                <img src="{{ old('thumb') }}" id="pthumb1" class="bg-warning" style="width: 250px; height: {{ calcHeight($adPlace['width'], 250, $adPlace['height']) }}px;">
+                                <input type="hidden" id="thumb1" name="thumb" value="{{ old('thumb') }}">
+                                <button class="btn btn-lg" type="button" onclick="Sthumb('thumb1', {{ $adPlace['width'] }}, {{ $adPlace['height'] }});" style="height: {{ calcHeight($adPlace['width'], 250, $adPlace['height']) }}px">上传</button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -195,9 +194,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">图片</label>
                             <div class="col-sm-10">
-                                <img src="" id="pthumb" width="250">
+                                <img src="" id="pthumb" class="bg-warning" style="width: 250px; height: {{ calcHeight($adPlace['width'], 250, $adPlace['height']) }}px;">
                                 <input type="hidden" id="thumb" name="thumb" value="">
-                                <button class="btn btn-sm" type="button" onclick="Sthumb('thumb', {{ $adPlace['width'] }}, {{ $adPlace['height'] }});" style="margin-top: 10px;">上传</button>
+                                <button class="btn btn-sm" type="button" onclick="Sthumb('thumb', {{ $adPlace['width'] }}, {{ $adPlace['height'] }});" style="height: {{ calcHeight($adPlace['width'], 250, $adPlace['height']) }}px">上传</button>
                             </div>
                         </div>
                         <div class="form-group">

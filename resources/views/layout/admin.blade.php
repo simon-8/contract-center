@@ -34,6 +34,19 @@
         @include('admin.public.message')
         @yield('content')
     </div>
+    <div id="loadding_box">
+        <div id="loadding_animate" class="sk-spinner sk-spinner-cube-grid">
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+        </div>
+    </div>
 </div>
 
 <!-- 自定义js -->
@@ -74,14 +87,25 @@
             });
         }
     }
-    $('.i-checks').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green'
-    });
 
-    //模态框中的表单提交时开始loading动画
-    $('.modal form [type=submit]').click(function(){
-        loading();
+    /*
+    * 加载层
+    * */
+    function loading(close) {
+        Boolean(close) ? $('#loadding_box').fadeOut(800) : $('#loadding_box').fadeIn(800);
+    }
+
+    $(function() {
+        //loading(true);
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+
+        //模态框中的表单提交时开始loading动画
+        $('.modal form [type=submit]').click(function(){
+            loading();
+        });
     });
 </script>
 
