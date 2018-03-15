@@ -62,3 +62,50 @@ function routeNoCatch($route = '')
         return '';
     }
 }
+
+/**
+ * 返回等比例缩放后的高度
+ * @param $width
+ * @param $newWidth
+ * @param $height
+ * @return float|int
+ */
+function calcHeight($width, $newWidth, $height)
+{
+    $scale = $newWidth/$width;
+    return $height * $scale;
+}
+
+/**
+ * 上传base64编码的缩略图
+ * @param $thumb
+ * @return string
+ */
+function upload_base64_thumb($thumb)
+{
+    if (strpos($thumb, 'data:image') === false) return $thumb;
+
+    $filepath = public_path() . '/uploads/thumbs/' . date('Ym') . '/';//缩略图按月划分
+    $filename = time() . rand(100, 999);
+    $fileext = str_replace('data:image/', '', strstr($thumb, ';', true));
+    in_array($fileext, ['jpg', 'png', 'gif', 'bmp']) or $fileext = 'jpg';//jpeg->jpg
+    $filename .= '.' . $fileext;
+
+    if (!\File::isDirectory($filepath)) {
+        \File::makeDirectory($filepath, 0777, true);
+    }
+    if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $thumb, $result)) {
+        \File::put($filepath . $filename, base64_decode(str_replace($result[1], '', $thumb)));
+        $thumb = \File::exists($filepath . $filename) ? $filepath . $filename : '';
+        $thumb = str_replace(public_path(), '', $thumb);//path => ''
+    } else {
+        $thumb = '';
+    }
+
+    return $thumb;
+}
+
+function imgurl($url)
+{
+    return config('app.url') . $url;
+}

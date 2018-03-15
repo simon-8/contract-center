@@ -176,9 +176,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        // 模型服务观察者
+        // 模型服务
         App\Providers\ModelObserverProvider::class,
-
+        // 模板服务
+        //App\Providers\BladeServiceProvider::class,
         // phpstorm tips
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         // 数据迁移

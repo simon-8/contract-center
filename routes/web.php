@@ -36,13 +36,18 @@ Route::prefix('admin')->group(function() {
             Route::get('/delete', 'MenuController@getDelete')->name('admin.menu.delete');
         });
 
+        // ad place
         Route::prefix('ad')->group(function() {
             Route::get('/', 'AdController@getIndex')->name('admin.ad.index');
             Route::post('/create', 'AdController@postCreate')->name('admin.ad.create');
             Route::post('/update', 'AdController@postUpdate')->name('admin.ad.update');
             Route::get('/delete', 'AdController@getDelete')->name('admin.ad.delete');
 
-            Route::get('/items/{pid}', 'AdController@getItems')->where('pid','\d+')->name('admin.ad.items');
+            // ad
+            Route::get('/items/{pid}', 'AdController@itemIndex')->name('admin.ad.item.index')->where('pid','\d+');
+            Route::post('/item/create', 'AdController@itemCreate')->name('admin.ad.item.create');
+            Route::post('/item/update', 'AdController@itemUpdate')->name('admin.ad.item.update');
+            Route::delete('/item/delete', 'AdController@itemDelete')->name('admin.ad.item.delete');
         });
         Route::any('ajax' , 'AjaxController@getIndex')->name('admin.ajax.index');
     });

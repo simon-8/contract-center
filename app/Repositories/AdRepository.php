@@ -11,11 +11,13 @@ use App\Models\AdPlace;
 
 class AdRepository
 {
-    protected $model;
+    protected $adModel;
+    protected $placeModel;
 
     public function __construct()
     {
-        $this->model = new AdPlace();
+        $this->adModel = new Ad();
+        $this->placeModel = new AdPlace();
     }
 
     /**
@@ -24,12 +26,12 @@ class AdRepository
      */
     public function lists()
     {
-        return $this->model->get();
+        return $this->placeModel->get();
     }
 
     public function find($id)
     {
-        return $this->model->find($id);
+        return $this->placeModel->find($id);
     }
 
     /**
@@ -39,7 +41,7 @@ class AdRepository
      */
     public function create($data)
     {
-        return $this->model->create($data);
+        return $this->placeModel->create($data);
     }
 
     /**
@@ -49,7 +51,7 @@ class AdRepository
      */
     public function update($data)
     {
-        $adPlace = $this->model->find($data['id']);
+        $adPlace = $this->placeModel->find($data['id']);
         return $adPlace->update($data);
     }
 
@@ -60,12 +62,53 @@ class AdRepository
      */
     public function delete($id)
     {
-        $adPlace = $this->model->find($id);
+        $adPlace = $this->placeModel->find($id);
         \Log::debug($adPlace->ad);
         $child = $adPlace->ad;
         if (count($child)) {
             return false;
         }
-        return $this->model->destroy($id);
+        return $this->placeModel->destroy($id);
+    }
+
+    /**
+     * 查询
+     * @param $id
+     * @return mixed
+     */
+    public function itemFind($id)
+    {
+        return $this->adModel->find($id);
+    }
+
+    /**
+     * 新增
+     * @param $data
+     * @return mixed
+     */
+    public function itemCreate($data)
+    {
+        return $this->adModel->create($data);
+    }
+
+    /**
+     * 更新
+     * @param $data
+     * @return mixed
+     */
+    public function itemUpdate($data)
+    {
+        $item = $this->adModel->find($data['id']);
+        return $item->update($data);
+    }
+
+    /**
+     * 删除
+     * @param $id
+     * @return int
+     */
+    public function itemDelete($id)
+    {
+        return $this->adModel->destroy($id);
     }
 }

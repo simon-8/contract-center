@@ -39,7 +39,7 @@
                     </tr>
                 @endif
             </table>
-            <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加菜单</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告位</button>
         </div>
     </div>
 

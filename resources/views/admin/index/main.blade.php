@@ -7,7 +7,6 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!--[if lt IE 8]>
     <meta http-equiv="refresh" content="0;ie.html"/>

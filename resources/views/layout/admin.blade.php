@@ -4,11 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-
-    <title>H+ 后台主题UI框架 - 首页示例二</title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
-
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ skin_path() }}css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
     <link href="{{ skin_path() }}css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
 
@@ -19,6 +18,14 @@
     <!-- 全局js -->
     <script src="{{ skin_path() }}js/jquery.min.js?v=2.1.4"></script>
     <script src="{{ skin_path() }}js/bootstrap.min.js?v=3.4.0"></script>
+    <script>
+        var AJPath = '{{ route('admin.ajax.index') }}';
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 </head>
 
 <body class="gray-bg">
@@ -29,30 +36,47 @@
     </div>
 </div>
 
-
 <!-- 自定义js -->
 <script src="{{ skin_path() }}js/plugins/iCheck/icheck.min.js"></script>
 <script src="{{ skin_path() }}js/plugins/layer/layer.min.js"></script>
 <script src="{{ skin_path() }}js/content.min.js?v=1.0.0"></script>
 <script>
-    function preview(src,w,h,t){
-        var t = t ? t : '图片预览';
-        if( src ){
-            var w = w+0;
-            var h = h+42;
+
+    function thumbCallback(url,i){
+        $('#'+i).val(url);
+        try{
+            $('#p'+i).attr('src',url);
+        }catch(e){}
+    }
+
+    function Sthumb(i, w, h) {
+        $.post(AJPath, {ac: 'thumb', i: i, w: w, h: h, c: 'thumbCallback'}, function (data) {
             layer.open({
-                area:[w+'px',h+'px'],
-                type:1,
-                title:t,
-                shadeClose:true,
-                content:"<img src='"+src+"'/>"
+                area: '800px',
+                title: '上传图片',
+                type: 1,
+                content: data
+            })
+        });
+    }
+
+    function preview(src, w, h, t) {
+        t = t ? t : '图片预览';
+        if (src) {
+            w = w + 0;
+            h = h + 42;
+            layer.open({
+                area: [w + 'px', h + 'px'],
+                type: 1,
+                title: t,
+                shadeClose: true,
+                content: "<img src='" + src + "'/>"
             });
         }
     }
-
     $('.i-checks').iCheck({
         checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
+        radioClass: 'iradio_square-green'
     });
 
     //模态框中的表单提交时开始loading动画
