@@ -103,7 +103,7 @@
         });
 
         //模态框中的表单提交时开始loading动画
-        $('.modal form [type=submit]').click(function(){
+        $('.modal form [type=submit], #sform [type=submit]').click(function(){
             loading();
         });
     });

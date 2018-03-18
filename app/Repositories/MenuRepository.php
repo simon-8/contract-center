@@ -2,7 +2,7 @@
 /**
  * Note: 后台管理菜单
  * User: Liu
- * Date: 2018/3/11
+ * Date: 2018/3/18
  * Time: 19:00
  */
 namespace App\Repositories;
@@ -77,5 +77,14 @@ class MenuRepository
             return false;
         }
         return $this->model->destroy($id);
+    }
+
+    /**
+     * 获取顶级菜单
+     * @return \Illuminate\Support\Collection
+     */
+    public function getTopMenus()
+    {
+        return $this->model->where('pid', 0)->get();
     }
 }

@@ -180,7 +180,7 @@ return [
         App\Providers\ModelObserverProvider::class,
         // 模板服务
         //App\Providers\BladeServiceProvider::class,
-        // phpstorm tips
+        // phpstorm 提示
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         // 数据迁移
         Orangehill\Iseed\IseedServiceProvider::class,
