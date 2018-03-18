@@ -116,6 +116,28 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
+            9 => 
+            array (
+                'id' => 10,
+                'pid' => 0,
+                'name' => '活动管理',
+                'prefix' => 'admin.activity',
+                'route' => 'index',
+                'ico' => 'fa fa-gamepad',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            10 => 
+            array (
+                'id' => 11,
+                'pid' => 0,
+                'name' => '奖品管理',
+                'prefix' => 'admin.gift',
+                'route' => 'index',
+                'ico' => 'fa fa-gift',
+                'listorder' => 0,
+                'items' => 0,
+            ),
         ));
         
         

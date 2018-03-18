@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdTableSeeder::class);
         $this->call(AdPlaceTableSeeder::class);
         $this->call(ManagerTableSeeder::class);
+        $this->call(ActivityTableSeeder::class);
     }
 }

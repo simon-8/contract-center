@@ -69,10 +69,19 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::get('/optimize', 'DatabaseController@getOptimize')->name('admin.database.optimize');
     });
 
+    // activity
     Route::prefix('activity')->group(function() {
         Route::get('/', 'ActivityController@getIndex')->name('admin.activity.index');
         Route::match(['get', 'post'],'/create', 'ActivityController@doCreate')->name('admin.activity.create');
         Route::match(['get', 'post'],'/update', 'ActivityController@doUpdate')->name('admin.activity.update');
         Route::get('/delete', 'ActivityController@getDelete')->name('admin.activity.delete');
+    });
+
+    // gift
+    Route::prefix('gift')->group(function() {
+        Route::get('/', 'GiftController@getIndex')->name('admin.gift.index');
+        Route::match(['get', 'post'],'/create', 'GiftController@doCreate')->name('admin.gift.create');
+        Route::match(['get', 'post'],'/update', 'GiftController@doUpdate')->name('admin.gift.update');
+        Route::get('/delete', 'GiftController@getDelete')->name('admin.gift.delete');
     });
 });
