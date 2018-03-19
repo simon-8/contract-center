@@ -11,6 +11,7 @@ class Gift extends Model
         'name',
         'introduce',
         'thumb',
+        'level',
         'amount',
         'sales',
         'status'

@@ -8,6 +8,7 @@
             <td>奖品</td>
             <td>简介</td>
             <td>图片</td>
+            <td>等级</td>
             <td width="80">库存</td>
             <td>已抽中</td>
             <td>状态</td>
@@ -23,6 +24,7 @@
                     <td>{{ $v->name }}</td>
                     <td>{{ $v->introduce ? $v->introduce : '无' }}</td>
                     <td><a class="fa fa-file-image-o" onclick="preview('{!! imgurl($v->thumb) !!}', 150, 150)" title="点击查看缩略图"></a></td>
+                    <td>{{ $v->level }}</td>
                     <td>{{ $v->amount }}</td>
                     <td>{{ $v->sales }}</td>
                     <td>{{ $v->status ? '正常' : '关闭' }}</td>
@@ -36,7 +38,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="10">
+                <td colspan="11">
                     暂无数据
                 </td>
             </tr>

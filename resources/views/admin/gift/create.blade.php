@@ -43,6 +43,20 @@
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">等级</label>
+                    <div class="col-sm-10">
+                        <label>
+                            <select name="level" id="" class="form-control">
+                                @for($i = 10; $i > 0; $i --)
+                                <option value="{{ $i }}">等级{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </label>
+                        <span class="help-block m-b-none"></span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label">库存</label>
                     <div class="col-sm-10">
                         <label>
@@ -115,8 +129,16 @@
         $('[name=status][value={{ $status }}]').attr('checked', true);
         @endif
 
+        @if((isset($level) && $level))
+        $('[name=level][value={{ $level }}]').attr('selected', true);
+        @endif
+
         @if(old('status'))
         $('[name=status][value={{ $status }}]').attr('checked', true);
+        @endif
+
+        @if(old('level'))
+        $('[name=level][value={{ $level }}]').attr('selected', true);
         @endif
     });
 </script>

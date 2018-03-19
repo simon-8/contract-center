@@ -25,14 +25,14 @@
             </li>
             @foreach ($menus as $menu)
             <li>
-                <a class="J_menuItem" href="{{ $menu['url'] }}">
+                <a class="J_menuItem" href="{{ empty($menu['child']) ? $menu['url'] : '' }}">
                     <i class="{{ $menu['ico'] }}"></i>
                     <span class="nav-label">{{ $menu['name'] }}</span>
-                    @if (isset($menu['child']) && count($menu['child']))
+                    @if (!empty($menu['child']))
                     <span class="fa arrow"></span>
                     @endif
                 </a>
-                @if (isset($menu['child']) && count($menu['child']))
+                @if (!empty($menu['child']))
                 <ul class="nav nav-second-level">
                     @foreach ($menu['child'] as $cmenu)
                     <li>

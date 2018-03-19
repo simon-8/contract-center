@@ -84,4 +84,12 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::match(['get', 'post'],'/update', 'GiftController@doUpdate')->name('admin.gift.update');
         Route::get('/delete', 'GiftController@getDelete')->name('admin.gift.delete');
     });
+
+    // setting
+    Route::prefix('setting')->group(function() {
+        Route::get('/', 'SettingController@getIndex')->name('admin.setting.index');
+        Route::post('/create', 'SettingController@postCreate')->name('admin.setting.create');
+        Route::post('/update', 'SettingController@postUpdate')->name('admin.setting.update');
+        Route::get('/delete', 'SettingController@getDelete')->name('admin.setting.delete');
+    });
 });

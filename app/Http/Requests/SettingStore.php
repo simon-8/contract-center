@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GiftStore extends FormRequest
+class SettingStore extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -41,13 +41,9 @@ class GiftStore extends FormRequest
     protected static function createRules()
     {
         return [
+            'item' => 'required',
             'name' => 'required',
-            'introduce' => 'nullable',
-            'thumb' => 'required',
-            'level' => 'required',
-            'amount' => 'min:1',
-            'sales' => 'nullable',
-            'status' => 'required',
+            'value' => 'required',
         ];
     }
 
@@ -59,13 +55,9 @@ class GiftStore extends FormRequest
     protected static function updateRules($id)
     {
         return [
+            'item' => 'required',
             'name' => 'required',
-            'introduce' => 'nullable',
-            'thumb' => 'required',
-            'level' => 'required',
-            'amount' => 'min:1',
-            'sales' => 'nullable',
-            'status' => 'required',
+            'value' => 'required',
         ];
     }
 

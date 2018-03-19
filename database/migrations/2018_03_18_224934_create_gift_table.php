@@ -19,6 +19,7 @@ class CreateGiftTable extends Migration
             $table->string('name')->comment('奖品名称')->default('');
             $table->string('introduce')->comment('奖品简介')->default('');
             $table->string('thumb')->comment('缩略图')->default('');
+            $table->unsignedTinyInteger('level')->comment('奖品等级')->default(0);
             $table->unsignedInteger('amount')->comment('库存')->default(0);
             $table->unsignedInteger('sales')->comment('已兑换次数')->default(0);
             $table->unsignedTinyInteger('status')->comment('奖品状态')->default(0);
