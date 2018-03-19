@@ -64,7 +64,7 @@ class MenusTableSeeder extends Seeder
             4 => 
             array (
                 'id' => 5,
-                'pid' => 0,
+                'pid' => 6,
                 'name' => '数据管理',
                 'prefix' => 'admin.database',
                 'route' => 'index',
@@ -81,7 +81,7 @@ class MenusTableSeeder extends Seeder
                 'route' => 'index',
                 'ico' => 'fa fa-cog',
                 'listorder' => 0,
-                'items' => 1,
+                'items' => 3,
             ),
             6 => 
             array (
@@ -135,6 +135,28 @@ class MenusTableSeeder extends Seeder
                 'prefix' => 'admin.gift',
                 'route' => 'index',
                 'ico' => 'fa fa-gift',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            11 => 
+            array (
+                'id' => 12,
+                'pid' => 6,
+                'name' => '基本设置',
+                'prefix' => 'admin.setting',
+                'route' => 'index',
+                'ico' => '',
+                'listorder' => 2,
+                'items' => 0,
+            ),
+            12 => 
+            array (
+                'id' => 13,
+                'pid' => 0,
+                'name' => '用户管理',
+                'prefix' => 'admin.user',
+                'route' => 'index',
+                'ico' => 'fa fa-user',
                 'listorder' => 0,
                 'items' => 0,
             ),

@@ -92,4 +92,10 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::post('/update', 'SettingController@postUpdate')->name('admin.setting.update');
         Route::get('/delete', 'SettingController@getDelete')->name('admin.setting.delete');
     });
+
+    // user
+    Route::prefix('user')->group(function() {
+        Route::get('/', 'UserController@getIndex')->name('admin.user.index');
+        Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
+    });
 });
