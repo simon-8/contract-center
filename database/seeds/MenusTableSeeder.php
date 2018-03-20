@@ -25,7 +25,7 @@ class MenusTableSeeder extends Seeder
                 'prefix' => 'admin.menu',
                 'route' => 'index',
                 'ico' => 'fa fa-list',
-                'listorder' => 0,
+                'listorder' => 97,
                 'items' => 0,
             ),
             1 => 
@@ -36,32 +36,10 @@ class MenusTableSeeder extends Seeder
                 'prefix' => 'admin.manager',
                 'route' => 'index',
                 'ico' => 'fa fa-users',
-                'listorder' => 0,
+                'listorder' => 96,
                 'items' => 0,
             ),
             2 => 
-            array (
-                'id' => 3,
-                'pid' => 0,
-                'name' => '文章管理',
-                'prefix' => 'admin.article',
-                'route' => 'index',
-                'ico' => 'fa fa-book',
-                'listorder' => 0,
-                'items' => 0,
-            ),
-            3 => 
-            array (
-                'id' => 4,
-                'pid' => 0,
-                'name' => '微信管理',
-                'prefix' => 'admin.wechat',
-                'route' => 'index',
-                'ico' => 'fa fa-wechat',
-                'listorder' => 0,
-                'items' => 0,
-            ),
-            4 => 
             array (
                 'id' => 5,
                 'pid' => 6,
@@ -72,7 +50,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            5 => 
+            3 => 
             array (
                 'id' => 6,
                 'pid' => 0,
@@ -83,7 +61,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 3,
             ),
-            6 => 
+            4 => 
             array (
                 'id' => 7,
                 'pid' => 0,
@@ -94,7 +72,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 99,
                 'items' => 0,
             ),
-            7 => 
+            5 => 
             array (
                 'id' => 8,
                 'pid' => 0,
@@ -105,7 +83,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 98,
                 'items' => 0,
             ),
-            8 => 
+            6 => 
             array (
                 'id' => 9,
                 'pid' => 6,
@@ -116,7 +94,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            9 => 
+            7 => 
             array (
                 'id' => 10,
                 'pid' => 0,
@@ -124,10 +102,10 @@ class MenusTableSeeder extends Seeder
                 'prefix' => 'admin.activity',
                 'route' => 'index',
                 'ico' => 'fa fa-gamepad',
-                'listorder' => 0,
+                'listorder' => 95,
                 'items' => 0,
             ),
-            10 => 
+            8 => 
             array (
                 'id' => 11,
                 'pid' => 0,
@@ -135,10 +113,10 @@ class MenusTableSeeder extends Seeder
                 'prefix' => 'admin.gift',
                 'route' => 'index',
                 'ico' => 'fa fa-gift',
-                'listorder' => 0,
+                'listorder' => 94,
                 'items' => 0,
             ),
-            11 => 
+            9 => 
             array (
                 'id' => 12,
                 'pid' => 6,
@@ -146,10 +124,10 @@ class MenusTableSeeder extends Seeder
                 'prefix' => 'admin.setting',
                 'route' => 'index',
                 'ico' => '',
-                'listorder' => 2,
+                'listorder' => 99,
                 'items' => 0,
             ),
-            12 => 
+            10 => 
             array (
                 'id' => 13,
                 'pid' => 0,
@@ -157,7 +135,7 @@ class MenusTableSeeder extends Seeder
                 'prefix' => 'admin.user',
                 'route' => 'index',
                 'ico' => 'fa fa-user',
-                'listorder' => 0,
+                'listorder' => 93,
                 'items' => 0,
             ),
         ));

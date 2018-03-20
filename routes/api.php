@@ -13,6 +13,27 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::prefix('/')->namespace('Api')->group(function() {
+
+    Route::get('/', 'IndexController@getIndex');
+
+    Route::prefix('/activity')->group(function() {
+        Route::get('/', 'ActivityController@getIndex');
+        Route::get('/{id}', 'ActivityController@getOne')->where('id','\d+');
+    });
+
+    Route::prefix('/gift')->group(function() {
+        Route::get('/', 'GiftController@getIndex');
+        Route::get('/{id}', 'GiftController@getOne')->where('id','\d+');
+    });
+
+    Route::prefix('/user')->group(function() {
+        //Route::get('/', 'UserController@getOne');
+        Route::post('/lottery/{aid?}', 'UserController@postCreate')->where('aid','\d+');
+        Route::get('/lottery_history/{openid?}', 'UserController@getLotteryHistory');
+    });
 });

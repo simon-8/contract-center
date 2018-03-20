@@ -12,6 +12,7 @@ class UserRepository
 {
     protected $model;
     protected static $pageSize = 15;
+
     public function __construct()
     {
         $this->model = new User();
@@ -19,10 +20,10 @@ class UserRepository
 
     /**
      * 列表
-     * @param $keyword
+     * @param null $keyword
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function lists($keyword)
+    public function lists($keyword = null)
     {
         if ($keyword) {
             $field = is_numeric($keyword) ? 'mobile' : 'truename';
@@ -49,6 +50,16 @@ class UserRepository
     public function findByUsername($username)
     {
         return $this->model->where('username' , $username)->first();
+    }
+
+    /**
+     * 根据openid查找用户
+     * @param $openid
+     * @return \Illuminate\Database\Eloquent\Model|null|object|static
+     */
+    public function findByOpenID($openid)
+    {
+        return $this->model->where('openid' , $openid)->first();
     }
 
     /**

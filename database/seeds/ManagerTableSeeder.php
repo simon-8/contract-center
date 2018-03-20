@@ -32,6 +32,21 @@ class ManagerTableSeeder extends Seeder
                 'created_at' => '2018-03-18 14:17:46',
                 'updated_at' => '2018-03-18 14:17:46',
             ),
+            1 => 
+            array (
+                'id' => 2,
+                'username' => 'simon',
+                'password' => '$2y$10$8ADWbhGmWoNTbPgnFztbaO3U9ApugP1eZ5coe9Ku01526LXM0fg5i',
+                'truename' => 'Simon',
+                'email' => 'liu@simon8.com',
+                'is_admin' => 0,
+                'role' => '1,2,6,7,8,10,11,13',
+                'lastip' => '',
+                'lasttime' => '2018-03-20 12:40:49',
+                'remember_token' => NULL,
+                'created_at' => '2018-03-20 20:40:49',
+                'updated_at' => '2018-03-20 20:40:49',
+            ),
         ));
         
         

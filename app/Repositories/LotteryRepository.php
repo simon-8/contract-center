@@ -1,20 +1,15 @@
 <?php
-/**
- * Note: 奖品管理
- * User: Liu
- * Date: 2018/3/18
- * Time: 19:00
- */
 namespace App\Repositories;
-use App\Models\Gift;
+use App\Models\Lottery;
 
-class GiftRepository
+class LotteryRepository
 {
     protected $model;
     protected static $pageSize = 15;
+
     public function __construct()
     {
-        $this->model = new Gift();
+        $this->model = new Lottery();
     }
 
     /**
@@ -34,16 +29,6 @@ class GiftRepository
     public function find($id)
     {
         return $this->model->find($id);
-    }
-
-    /**
-     * 根据username查找用户
-     * @param $username
-     * @return mixed
-     */
-    public function findByUsername($username)
-    {
-        return $this->model->where('username' , $username)->first();
     }
 
     /**
