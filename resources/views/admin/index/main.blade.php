@@ -46,7 +46,7 @@
                     {{--</div>--}}
                     {{--</form>--}}
                 </div>
-                @include('admin.public.mail_box')
+                {{--@include('admin.public.mail_box')--}}
             </nav>
         </div>
         <div class="row content-tabs">
@@ -98,10 +98,10 @@
     </div>
     <!--右侧部分结束-->
     <!--右侧边栏开始-->
-    @include('admin.public.right_side')
+    {{--@include('admin.public.right_side')--}}
     <!--右侧边栏结束-->
     <!--mini聊天窗口开始-->
-    @include('admin.public.mini_chat')
+    {{--@include('admin.public.mini_chat')--}}
     <!--mini聊天窗口结束-->
 </div>
 
