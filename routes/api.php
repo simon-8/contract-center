@@ -19,21 +19,25 @@ use Illuminate\Http\Request;
 
 Route::prefix('/')->namespace('Api')->group(function() {
 
-    Route::get('/', 'IndexController@getIndex');
+    Route::get('/{aid}', 'IndexController@getIndex')->where('aid','\d+');
 
     Route::prefix('/activity')->group(function() {
         Route::get('/', 'ActivityController@getIndex');
-        Route::get('/{id}', 'ActivityController@getOne')->where('id','\d+');
+        //Route::get('/{id}', 'ActivityController@getOne')->where('id','\d+');
     });
 
-    Route::prefix('/gift')->group(function() {
-        Route::get('/', 'GiftController@getIndex');
-        Route::get('/{id}', 'GiftController@getOne')->where('id','\d+');
-    });
+    //Route::prefix('/gift')->group(function() {
+    //    Route::get('/', 'GiftController@getIndex');
+    //});
 
     Route::prefix('/user')->group(function() {
         //Route::get('/', 'UserController@getOne');
-        Route::post('/lottery/{aid?}', 'UserController@postCreate')->where('aid','\d+');
-        Route::get('/lottery_history/{openid?}', 'UserController@getLotteryHistory');
+        Route::post('/checkin/{aid}', 'UserController@postCheckIn')->where('aid','\d+');
+        Route::get('/lottery/{aid}/{openid?}', 'UserController@getLotteryHistory');
     });
+
+});
+
+Route::prefix('/weapp')->namespace('Wechat')->group(function() {
+    Route::get('/user', 'MiniProgramController@getUser');
 });

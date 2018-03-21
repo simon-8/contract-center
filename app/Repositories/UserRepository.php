@@ -83,6 +83,17 @@ class UserRepository
     }
 
     /**
+     * @param $data
+     * @return mixed
+     */
+    public function updateOrCreate($data)
+    {
+        return $this->model->updateOrCreate([
+            'openid' => $data['openid']
+        ], $data);
+    }
+
+    /**
      * 更新
      * @param $data
      * @return bool

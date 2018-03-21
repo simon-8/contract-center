@@ -12,12 +12,17 @@ use App\Repositories\GiftRepository;
 class GiftController extends ApiController
 {
     /**
+     * @param \Request $request
      * @param GiftRepository $repository
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Http\Response
      */
-    public function getIndex(GiftRepository $repository)
+    public function getIndex(\Request $request, GiftRepository $repository)
     {
-        return $repository->lists();
+        if (!$request::has('aid')) {
+            return self::error('参数缺失');
+        }
+        $aid = $request::input('aid');
+        return $repository->lists($aid);
     }
 
     /**

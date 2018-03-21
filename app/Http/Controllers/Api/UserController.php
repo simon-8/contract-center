@@ -35,23 +35,29 @@ class UserController extends ApiController
     }
 
     /**
-     * 获奖历史
      * @param UserRepository $userRepository
      * @param User $userModel
+     * @param $aid
      * @param null $openid
-     * @return array|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection|null|object|static|static[]
+     * @return array|\Illuminate\Database\Eloquent\Model|null|object|static
      */
-    public function getLotteryHistory(UserRepository $userRepository, User $userModel, $openid = null)
+    public function getLotteryHistory(UserRepository $userRepository, User $userModel, $aid, $openid = null)
     {
         if (!empty($openid)) {
             $user = $userRepository->findByOpenID($openid);
             if (empty($user)) {
                 return [];
             }
-            $user->load('lottery');
+            $user->load([
+                'lottery' => function($query) {
+                    $query->where('aid', 1);
+                }
+            ]);
             return $user;
         }
-        $user = $userModel::has('lottery')->get();
+        $user = $userModel::whereHas('lottery', function($query) use ($aid) {
+            $query->where('aid', $aid);
+        })->get();
         if (empty($user)) {
             return [];
         }
@@ -66,7 +72,7 @@ class UserController extends ApiController
      * @param null $aid
      * @return \Illuminate\Http\Response
      */
-    public function postCreate(\Request $request, UserRepository $userRepository, ActivityRepository $activityRepository, $aid = null)
+    public function postCheckIn(\Request $request, UserRepository $userRepository, ActivityRepository $activityRepository, $aid = null)
     {
         $activity = $activityRepository->find($aid);
         if (empty($activity) || $activity->status != 1) {
@@ -81,8 +87,8 @@ class UserController extends ApiController
         if ($validator->fails()) {
             return self::error($validator->messages()->first());
         }
-        if ($userRepository->create($data)) {
-            return self::success('操作成功');
+        if ($userRepository->updateOrCreate($data)) {
+            return self::response('操作成功');
         } else {
             return self::error();
         }

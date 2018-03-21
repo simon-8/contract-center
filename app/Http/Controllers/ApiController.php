@@ -25,15 +25,14 @@ class ApiController extends Controller
     }
 
     /**
-     * 成功
-     * @param string $message
+     * @param $data
      * @param int $code
      * @return \Illuminate\Http\Response
      */
-    public static function success($message = "操作成功", $code = 200)
+    public static function response($data, $code = 0)
     {
         return \Response::make([
-            'message'     => $message,
+            'message' => $data,
             'code' => $code,
         ], 200);
     }
