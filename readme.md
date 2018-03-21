@@ -16,13 +16,17 @@
 
     php artisan key:generate
 
+> 修改.env配置文件
+
+    修改配置文件中数据库等配置
+    
 > 还原数据库备份 , 生成菜单 , 默认管理员等数据
     
     php artisan migrate --seed
     
 > 后台地址
   
-    http://你配置的域名/pc
+    http://你配置的域名/admin
     账号: admin
     密码: 123456
     
