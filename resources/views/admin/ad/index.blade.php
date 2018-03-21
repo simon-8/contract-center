@@ -1,7 +1,6 @@
 @extends('layout.admin')
 @section('content')
-<div class="col-sm-6 animated fadeInRight">
-
+<div class="col-sm-8 animated fadeInRight">
     <div class="ibox">
         <div class="ibox-title">
             <h5>广告位管理</h5>
@@ -9,6 +8,8 @@
         <div class="ibox-content">
             <table class="table table-bordered table-hover bg-white text-center">
                 <tr>
+                    <th width="150">所属活动</th>
+                    <th width="80">活动ID</th>
                     <th width="50">编号</th>
                     <th width="150">名称</th>
                     <th width="100">宽度</th>
@@ -19,6 +20,8 @@
                 @if(isset($lists) && count($lists) > 0)
                     @foreach($lists as $v)
                         <tr>
+                            <td>{{ $v->Activity()->first()->name }}</td>
+                            <td>{{ $v['aid'] }}</td>
                             <td>{{ $v['id'] }}</td>
                             <td>{{ $v['name'] }}</td>
                             <td>{{ $v['width'] }}</td>
@@ -27,19 +30,20 @@
                             <td>
                                 <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加广告</button>
                                 <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }})">编辑</button>
-                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
+                                {{--<button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>--}}
                             </td>
                         </tr>
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="6">
+                        <td colspan="8">
                             未找到数据
                         </td>
                     </tr>
                 @endif
             </table>
-            <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告位</button>
+            {{--<button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告位</button>--}}
+            <a class="btn btn-success" href="{{ route('admin.activity.index') }}">返回活动列表</a>
         </div>
     </div>
 
@@ -147,6 +151,7 @@
                 <form action="{{ route('admin.ad.update') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <input type="hidden" name="id" value="">
+                    <input type="hidden" name="aid" value="">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title">编辑广告位</h4>

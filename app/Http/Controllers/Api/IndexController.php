@@ -25,12 +25,10 @@ class IndexController extends ApiController
     public function getIndex(AdRepository $adRepository, ActivityRepository $activityRepository, GiftRepository $giftRepository, $aid)
     {
         // todo 获取banner 指定活动信息 奖品列表
-
-        $ad = $adRepository->find(1)->ad()->orderByDesc('listorder')->get();
-
         $activity = $activityRepository->find($aid);
-
-        $gift = $giftRepository->lists(6);
+        $ad = $activity->AdPlace()->first()->ad;
+        $gift = $activity->Gift;
+        unset($activity->Gift);
 
         return [
             'banner' => $ad,

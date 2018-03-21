@@ -10,7 +10,9 @@ use App\Http\Controllers\ApiController;
 
 use App\Repositories\UserRepository;
 use App\Repositories\ActivityRepository;
+
 use App\Models\User;
+use App\Models\LotteryApply;
 use App\Http\Requests\UserStore;
 
 class UserController extends ApiController
@@ -87,10 +89,22 @@ class UserController extends ApiController
         if ($validator->fails()) {
             return self::error($validator->messages()->first());
         }
-        if ($userRepository->updateOrCreate($data)) {
+        $user = $userRepository->updateOrCreate($data);
+        if (!$user) {
+            return self::error();
+        }
+
+        $lotteryApply = LotteryApply::firstOrCreate([
+            'aid' => $aid,
+            'userid' => $user->id
+        ],[
+            'truename' => $user->truename,
+            'mobile'   => $user->mobile
+        ]);
+        if ($lotteryApply->id) {
             return self::response('操作成功');
         } else {
-            return self::error();
+            return self::error('操作失败');
         }
     }
 }

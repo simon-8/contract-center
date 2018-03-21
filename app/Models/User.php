@@ -26,4 +26,9 @@ class User extends Model
     {
         return $this->hasMany('App\Models\Lottery', 'userid', 'id');
     }
+
+    public function LotteryApply()
+    {
+        return $this->hasMany('App\Models\LotteryApply', 'userid', 'id');
+    }
 }

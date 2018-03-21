@@ -92,7 +92,7 @@
         <div class="footer">
             <div class="pull-right">
                 &copy; {{ date('Y') - 1 }}-{{ date('Y') + 1 }}
-                <a href="{{ route('admin.index.index') }}" target="_blank">zihan's blog</a>
+                <a>manager</a>
             </div>
         </div>
     </div>

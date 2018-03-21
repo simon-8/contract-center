@@ -62,12 +62,12 @@ class AdRepository
      */
     public function delete($id)
     {
-        $adPlace = $this->placeModel->find($id);
-        \Log::debug($adPlace->ad);
-        $child = $adPlace->ad;
-        if (count($child)) {
-            return false;
-        }
+        //$adPlace = $this->placeModel->find($id);
+        //\Log::debug($adPlace->ad);
+        //$child = $adPlace->ad;
+        //if (count($child)) {
+        //    return false;
+        //}
         return $this->placeModel->destroy($id);
     }
 

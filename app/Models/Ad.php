@@ -30,4 +30,9 @@ class Ad extends Model
     {
         return $this->belongsTo('App\Models\AdPlace', 'pid', 'id');
     }
+
+    public function getThumbAttribute($value)
+    {
+        return imgurl($value);
+    }
 }

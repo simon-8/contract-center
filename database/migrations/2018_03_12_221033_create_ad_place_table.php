@@ -15,6 +15,7 @@ class CreateAdPlaceTable extends Migration
     {
         Schema::create('ad_place', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('aid')->comment('活动ID')->default(0);
             $table->string('name')->comment('广告位名称')->default('');
             $table->unsignedSmallInteger('width')->comment('广告位宽度')->default(0);
             $table->unsignedSmallInteger('height')->comment('广告位高度')->default(0);

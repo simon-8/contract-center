@@ -6,6 +6,9 @@
 
     <form method="post" class="form-horizontal" action="{{ isset($id) ? route('admin.gift.update') : route('admin.gift.create') }}" id="sform">
         {!! csrf_field() !!}
+        @if(!empty($aid))
+            <input type="hidden" name="aid" value="{{ $aid }}">
+        @endif
         <div class="col-sm-12 col-md-6">
             <div class="ibox-title">
                 @if(isset($id))
@@ -130,7 +133,7 @@
         @endif
 
         @if((isset($level) && $level))
-        $('[name=level][value={{ $level }}]').attr('selected', true);
+        $('[name=level]').val({{ $level }});
         @endif
 
         @if(old('status'))
@@ -138,7 +141,7 @@
         @endif
 
         @if(old('level'))
-        $('[name=level][value={{ $level }}]').attr('selected', true);
+        $('[name=level]').val({{ old('level') }});
         @endif
     });
 </script>

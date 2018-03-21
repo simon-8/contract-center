@@ -17,23 +17,18 @@ class Gift extends Model
         'status'
     ];
 
-    //public function getStartTimeAttribute($value)
-    //{
-    //    return date('Y-m-d H:i:s', $value);
-    //}
-    //
-    //public function setStartTimeAttribute($value)
-    //{
-    //    $this->attributes['start_time'] = strtotime($value);
-    //}
-    //
-    //public function getEndTimeAttribute($value)
-    //{
-    //    return date('Y-m-d H:i:s', $value);
-    //}
-    //
-    //public function setEndTimeAttribute($value)
-    //{
-    //    $this->attributes['end_time'] = strtotime($value);
-    //}
+    public function getThumbAttribute($value)
+    {
+        return imgurl($value);
+    }
+
+    public function Activity()
+    {
+        return $this->belongsTo('App\Models\Activity', 'aid', 'id');
+    }
+
+    public function Lottery()
+    {
+        return $this->hasOne('App\Models\Lottery', 'gid', 'id');
+    }
 }

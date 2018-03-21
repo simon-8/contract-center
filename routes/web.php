@@ -99,3 +99,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
     });
 });
+
+Route::get('/activity/{aid}', 'Home\ActivityController@getActivity')->name('home.activity.show');
+//Route::view('/activity/{aid}', 'home.activity.lottery', ['id', decrypt(\Request::input('aid'))]);

@@ -18,10 +18,12 @@ class GiftController extends Controller
      * @param GiftRepository $repository
      * @return mixed
      */
-    public function getIndex(GiftRepository $repository)
+    public function getIndex(\Request $request, GiftRepository $repository)
     {
-        $lists = $repository->lists();
+        $aid = $request::input('aid', 0);
+        $lists = $repository->lists($aid);
         $data = [
+            'aid' => $aid,
             'lists' => $lists,
         ];
         return admin_view('gift.index' , $data);
@@ -36,7 +38,10 @@ class GiftController extends Controller
     public function doCreate(\Request $request, GiftRepository $repository)
     {
         if ($request::isMethod('get')) {
-            return admin_view('gift.create');
+            $aid = $request::input('aid', 0);
+            return admin_view('gift.create', [
+                'aid' => $aid
+            ]);
         }
         $data = $request::all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);

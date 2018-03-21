@@ -2,24 +2,21 @@
 /**
  * Note: *
  * User: Liu
- * Date: 2018/3/20
- * Time: 23:09
+ * Date: 2018/3/22
+ * Time: 03:09
  */
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class Lottery extends Model
+class LotteryApply extends Model
 {
-    public $table = 'lottery';
+    public $table = 'lottery_apply';
 
     protected $fillable = [
-        'apply_id',
         'aid',
-        'gid',
-        'gname',
+        'userid',
         'truename',
         'mobile',
-        'admin_userid'
     ];
 
     /**
@@ -40,13 +37,8 @@ class Lottery extends Model
         return $this->belongsTo('App\Models\Activity', 'aid', 'id');
     }
 
-    public function Apply()
+    public function Lottery()
     {
-        return $this->belongsTo('App\Models\LotteryApply', 'apply_id', 'id');
-    }
-
-    public function Gift()
-    {
-        return $this->belongsTo('App\Models\Gift', 'gid', 'id');
+        return $this->hasOne('App\Models\Lottery', 'apply_id', 'id');
     }
 }

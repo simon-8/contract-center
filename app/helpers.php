@@ -43,6 +43,7 @@ function skin_path($module = 'admin')
             $path = '/manage/';
             break;
         default:
+            $path = '/';
             break;
     }
     return $path;

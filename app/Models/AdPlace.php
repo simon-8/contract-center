@@ -12,6 +12,11 @@ class AdPlace extends Model
 {
     public $table = 'ad_place';
 
+    // 默认宽度
+    public static $defaultWidth = 640;
+    // 默认高度
+    public static $defaultHeight = 350;
+
     /**
      * 该模型是否被自动维护时间戳
      *
@@ -21,6 +26,7 @@ class AdPlace extends Model
 
     protected $fillable = [
         'id',
+        'aid',
         'name',
         'width',
         'height',
@@ -34,5 +40,14 @@ class AdPlace extends Model
     public function ad()
     {
         return $this->hasMany('App\Models\Ad', 'pid', 'id');
+    }
+
+    /**
+     * 广告位对应的活动
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function Activity()
+    {
+        return $this->belongsTo('App\Models\Activity', 'aid', 'id');
     }
 }
