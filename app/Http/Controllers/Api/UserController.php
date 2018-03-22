@@ -51,8 +51,8 @@ class UserController extends ApiController
                 return [];
             }
             $user->load([
-                'lottery' => function($query) {
-                    $query->where('aid', 1);
+                'lottery' => function($query) use ($aid) {
+                    $query->where('aid', $aid);
                 }
             ]);
             return $user;
