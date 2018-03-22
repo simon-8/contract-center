@@ -21,7 +21,7 @@ class ApiController extends Controller
         return \Response::make([
             'message'     => $message,
             'code' => $code,
-        ], 422);
+        ], 200);
     }
 
     /**
