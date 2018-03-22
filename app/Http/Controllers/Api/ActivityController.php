@@ -61,4 +61,18 @@ class ActivityController extends ApiController
         }
         return $lotterys;
     }
+
+    /**
+     * 获取当前参与人数
+     * @param ActivityRepository $repository
+     * @param $aid
+     * @return mixed
+     */
+    public function getActor(ActivityRepository $repository, $aid)
+    {
+        $activity = \Cache::remember('activity', 1, function() use ($repository, $aid) {
+            return $repository->find($aid);
+        });
+        return $activity->actor;
+    }
 }

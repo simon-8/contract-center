@@ -53,7 +53,9 @@
                     </tr>
                 @endif
             </table>
+            @if (!empty($aid))
             <a href="{{ route('admin.gift.create', ['aid' => $aid]) }}" class="btn btn-info">添加奖品</a>
+            @endif
             <a class="btn btn-success" href="{{ route('admin.activity.index') }}">返回活动列表</a>
             <div class="text-center">
                 @if(count($lists))

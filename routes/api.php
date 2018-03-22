@@ -24,6 +24,7 @@ Route::prefix('/')->namespace('Api')->group(function() {
     Route::prefix('/activity')->group(function() {
         Route::get('/', 'ActivityController@getIndex');
         Route::post('/dolottery', 'ActivityController@postLottery');
+        Route::get('/{aid}/actor', 'ActivityController@getActor');
         //Route::get('/{id}', 'ActivityController@getOne')->where('id','\d+');
     });
 
