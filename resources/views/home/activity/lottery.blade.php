@@ -168,6 +168,12 @@
                 };
                 //var loading = layer.load();
                 this.$http.post(this.getAPI('doLottery'), data).then(function(result) {
+                    if (result.code) {
+                        layer.alert(result.message, function(e) {
+                            layer.close(e);
+                        });
+                        return false;
+                    }
                     var data = result.data,
                         names = '',
                         gname = ''; // array
