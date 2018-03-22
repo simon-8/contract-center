@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 
+use App\Models\Lottery;
 use App\Repositories\UserRepository;
 use App\Repositories\ActivityRepository;
 
@@ -55,16 +56,9 @@ class UserController extends ApiController
                     $query->where('aid', $aid);
                 }
             ]);
-            return $user;
+            return $user->lottery;
         }
-        $user = $userModel::whereHas('lottery', function($query) use ($aid) {
-            $query->where('aid', $aid);
-        })->get();
-        if (empty($user)) {
-            return [];
-        }
-        $user->load('lottery');
-        return $user;
+        return Lottery::where('aid', $aid)->get();
     }
 
     /**

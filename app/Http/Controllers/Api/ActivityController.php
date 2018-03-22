@@ -47,6 +47,7 @@ class ActivityController extends ApiController
         foreach ($lotteryApply as $apply) {
             $lottery = Lottery::create([
                 'apply_id' => $apply->id,
+                'userid' => $apply->userid,
                 'aid' => $apply->aid,
                 'gid' => $data['giftID'],
                 'truename' => $apply->truename,
