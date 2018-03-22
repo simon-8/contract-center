@@ -41,7 +41,7 @@ class UserStore extends FormRequest
     protected static function createRules()
     {
         return [
-            'openid' => 'required',
+            //'openid' => 'required',
             'truename' => 'required',
             'mobile' => 'required',
             'nickname' => 'nullable',
@@ -63,7 +63,7 @@ class UserStore extends FormRequest
     protected static function updateRules($id)
     {
         return [
-            'openid' => 'required',
+            //'openid' => 'required',
             'truename' => 'required',
             'mobile' => 'required',
             'nickname' => 'nullable',

@@ -34,6 +34,12 @@ class ActivityController extends ApiController
         return $repository->find($id);
     }
 
+    /**
+     * PC端抽奖
+     * @param \Request $request
+     * @param ActivityRepository $repository
+     * @return array|\Illuminate\Http\Response
+     */
     public function postLottery(\Request $request, ActivityRepository $repository)
     {
         $data = $request::all();
@@ -41,7 +47,11 @@ class ActivityController extends ApiController
         $activity = $repository->find($data['aid']);
         $lotteryApply = $activity->LotteryApply()->doesntHave('Lottery')->get();
         if ($data['giftNumber'] > $lotteryApply->count()) {
-            return self::error('抽奖人数大于当前参与人数');
+            if ($lotteryApply->count()) {
+                return self::error('剩余获奖名额不足! 仅剩'. $lotteryApply->count() . '人未获奖');
+            } else {
+                return self::error('所有参与人员都已获奖, 无法继续抽奖!');
+            }
         }
         $lotteryApply = $lotteryApply->random($data['giftNumber'])->all();
         foreach ($lotteryApply as $apply) {

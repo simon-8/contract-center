@@ -75,6 +75,7 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::match(['get', 'post'],'/create', 'ActivityController@doCreate')->name('admin.activity.create');
         Route::match(['get', 'post'],'/update', 'ActivityController@doUpdate')->name('admin.activity.update');
         Route::get('/delete', 'ActivityController@getDelete')->name('admin.activity.delete');
+        Route::get('/lottery/{aid}', 'ActivityController@getLottery')->name('admin.activity.lottery');
     });
 
     // gift

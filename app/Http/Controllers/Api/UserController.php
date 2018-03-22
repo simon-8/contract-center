@@ -83,9 +83,11 @@ class UserController extends ApiController
         if ($validator->fails()) {
             return self::error($validator->messages()->first());
         }
+        // 使用mobile代替openid
+        $data['openid'] = $data['mobile'];
         $user = $userRepository->updateOrCreate($data);
         if (!$user) {
-            return self::error();
+            return self::error('报名失败');
         }
 
         $lotteryApply = LotteryApply::firstOrCreate([

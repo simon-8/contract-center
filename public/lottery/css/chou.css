@@ -247,15 +247,42 @@ input:focus{ outline:none; }
 }
 .right-bottom{
 	width: 750px;
-	height: 236px;
+	height: 216px;
 	background: rgba(225, 225, 225, .18);
 	border-radius: 20px;
 	margin: 0 auto;
+	padding-top: 20px;
+}
+.wrpers{
+		width: 700px;
+		height: 170px;
+		margin: 0 auto;
+		margin-top: 10px;
+		overflow-x:hidden;
+		overflow-y:scroll
+}
+.jiangxiang{
+	height: 120px;
+			overflow-x:hidden;
+		overflow-y:scroll
+}
+.jiangname:hover{
+	cursor: pointer;
 }
 .right-bottom p{
 	font-size: 16px;
 	color: #fff;
 	line-height: 28px;
+}
+.right-bottom p.names{
+	width: 160px;
+}
+.right-bottom p.mobiles{
+	text-align: center;
+	width: 130px;
+}
+.right-bottom p.ipones{
+	width: 160px;
 }
 .right-bottom .moumou{
 	color: #fcd71e;
@@ -314,11 +341,12 @@ input:focus{ outline:none; }
 }
 .seclitem{
 	width: 280px;
-	height: 200px;
+	height: 180px;
 	background: rgba(0, 0, 0, .6);
 	border-radius: 20px;
 	text-align: center;
 	margin: 0 auto;
+	padding-top: 20px;
 }
 .posiab{
 	display: none;
@@ -332,16 +360,11 @@ input:focus{ outline:none; }
 .jiangname{
 	color: #fcd71e;
 	font-size: 16px;
-	padding: 5px 0;
-}
-.jiangname:hover{
-	background: #fcd71e;
-	color: black;
-	cursor: pointer;
 }
 .havechoice{
 	font-size: 16px;
 	color: #fff;
+	padding-bottom: 10px;
 }
 .ipts{
 	position: relative;
@@ -400,3 +423,24 @@ ul{
  ul li{
 	line-height: 26px;
 }
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(89,12,47,.5);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(225,225,225,.73);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+::selection {
+    color: #fff;
+    background-color: #08c;
+}
+.text-red { color: red;}

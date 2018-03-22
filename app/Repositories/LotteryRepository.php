@@ -14,12 +14,17 @@ class LotteryRepository
 
     /**
      * 列表
+     * @param null $aid
      * @param null $pagesize
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function lists($pagesize = null)
+    public function lists($aid = null, $pagesize = null)
     {
-        return $this->model->paginate($pagesize ? intval($pagesize) : self::$pageSize);
+        if ($aid) {
+            return $this->model->where('aid', $aid)->paginate($pagesize ? intval($pagesize) : self::$pageSize);
+        } else {
+            return $this->model->paginate($pagesize ? intval($pagesize) : self::$pageSize);
+        }
     }
 
     /**

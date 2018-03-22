@@ -26,6 +26,13 @@ class IndexController extends ApiController
     {
         // todo 获取banner 指定活动信息 奖品列表
         $activity = $activityRepository->find($aid);
+        if (empty($activity) || $activity->status < 1) {
+            return [
+                'banner' => [],
+                'activity' => [],
+                'gift' => []
+            ];
+        }
         $ad = $activity->AdPlace()->first()->ad;
         $gift = $activity->Gift;
         unset($activity->Gift);

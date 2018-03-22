@@ -77,12 +77,16 @@
                     <div class="tits">
                         <img src="{{ skin_path('/') }}lottery/images/huojiang.png">
                     </div>
-                    <div class="right-bottom flex-juscenter">
-                        @foreach ($activity->Lottery as $lottery)
-                        <p><span class="moumou">{{ $lottery->Apply->truename }}</span></p>
-                        <p class="middles">{{ $lottery->Apply->mobile }}</p>
-                        <p class="moumou">{{ $lottery->gname }}</p>
-                        @endforeach
+                    <div class="right-bottom">
+                        <div class="wrpers">
+                            @foreach ($activity->Lottery as $lottery)
+                            <div class="listitem flex-juscenter">
+                                <p class="names"><span class="moumou">{{ $lottery->Apply->truename }}</span></p>
+                                <p class="middles mobiles">{{ $lottery->Apply->mobile }}</p>
+                                <p class="moumou ipones">{{ $lottery->gname }}</p>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -166,10 +170,11 @@
                     giftID: this.giftID,
                     giftNumber: $('.number').val()
                 };
-                //var loading = layer.load();
+                var loading = layer.load();
                 this.$http.post(this.getAPI('doLottery'), data).then(function(result) {
-                    if (result.code) {
-                        layer.alert(result.message, function(e) {
+                    layer.close(loading);
+                    if (result.data.code) {
+                        layer.alert(result.data.message, function(e) {
                             layer.close(e);
                         });
                         return false;
@@ -178,15 +183,16 @@
                         names = '',
                         gname = ''; // array
                     for (i in data) {
-                        names += data[i].truename;
-                        gname = data[i].gname;
+                        names += "<b class=\"text-red\">" + data[i].truename + "</b>&nbsp;";
+                        gname = "<b class=\"text-red\">" + data[i].gname + "</b>";
                     }
-                    layer.alert('恭喜 ' + names + ' 获得'+ gname, function(e) {
+                    layer.alert('恭喜 ' + names + ' 获得奖品 '+ gname, function(e) {
                         // todo
                         window.location.reload();
                         layer.close(e);
                     });
                 }).catch(function(result) {
+                    layer.close(loading);
                     layer.alert(JSON.stringify(result), function(e) {
                         layer.close(e);
                     });

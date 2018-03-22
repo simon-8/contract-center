@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\ActivityStore;
 use App\Repositories\ActivityRepository;
+use App\Repositories\LotteryRepository;
 
 class ActivityController extends Controller
 {
@@ -92,5 +93,19 @@ class ActivityController extends Controller
         } else {
             return back()->withErrors('删除失败')->withInput();
         }
+    }
+
+    /**
+     * 指定活动已抽奖记录
+     * @param LotteryRepository $repository
+     * @param $aid
+     * @return mixed
+     */
+    public function getLottery(LotteryRepository $repository, $aid)
+    {
+        $lists = $repository->lists($aid);
+        return admin_view('activity.lottery', [
+            'lists' => $lists
+        ]);
     }
 }

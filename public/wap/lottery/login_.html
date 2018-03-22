@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<link rel="stylesheet" type="text/css" href="login.css">
+<link rel="stylesheet" type="text/css" href="sweetalert.css">
+<script type="text/javascript" src="js/flexible.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+    <div class='allpage'>
+	    <img src="./images/bigbg.png" class="allbig"></img>
+		<div class='luckdraw'>
+		    <div class='heads'>活动报名</div>
+		    <div class='jian'>
+		      <img src="./images/jian.png"></img>
+		    </div>
+		    <div class='actiname'>活动名称</div>
+		    <form  id="form1" method="post" onsubmit="return false">
+			      <div class="ipt">
+			        <input type='text' placeholder='请输入姓名' placeholder-class='places' name='truename' ></input>
+			      </div>
+			      <div class='ipt'>
+			        <input type='number' placeholder='请输入手机号码' placeholder-class='places' name="mobile" ></input>
+			      </div>
+			      <div class='confirms'>
+			        <button type='button' onclick="login()">确认报名</button>
+			      </div>
+		    </form>
+		    <div class='logoarea'>
+		      <img src="./images/logo.png"></img>
+		    </div>
+		    <div class='fotnsa'>专业医疗数据公司 数据改变医疗</div>
+	    </div>
+	</div>
+</body>
+<script type="text/javascript" src="js/sweetalert.min.js"></script>
+<script type="text/javascript">
+        function login() {
+            $.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "https://xcj.3dsort.com/api/user/checkin/"+aid ,//url
+                data: $('#form1').serialize(),
+                success: function (result) {
+                    swal("提示!", "报名成功", "success");
+                },
+                error : function() {
+                    swal("提示!", "报名失败", "error");
+                }
+            });
+        }
+        function getQueryVariable(aid){
+	       var query = window.location.search.substring(1);
+	       var vars = query.split("&");
+	       for (var i=0;i<vars.length;i++) {
+	            var pair = vars[i].split("=");
+	            if(pair[0] == aid){return pair[1];}
+	       }
+	       return(false);
+       }
+        var aid = getQueryVariable('aid')
+    </script>
+</html>

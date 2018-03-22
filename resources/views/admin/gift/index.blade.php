@@ -16,7 +16,7 @@
                     <td>简介</td>
                     <td>图片</td>
                     <td>等级</td>
-                    <td width="80">库存</td>
+                    {{--<td width="80">库存</td>--}}
                     <td>已抽中</td>
                     <td>状态</td>
                     <td>创建时间</td>
@@ -34,7 +34,7 @@
                             <td>{{ $v->introduce ? $v->introduce : '无' }}</td>
                             <td><a class="fa fa-file-image-o" onclick="preview('{!! imgurl($v->thumb) !!}', 150, 150)" title="点击查看缩略图"></a></td>
                             <td>{{ $v->level }}</td>
-                            <td>{{ $v->amount }}</td>
+                            {{--<td>{{ $v->amount }}</td>--}}
                             <td>{{ $v->sales }}</td>
                             <td>{{ $v->status ? '正常' : '关闭' }}</td>
                             <td>{{ $v->created_at }}</td>

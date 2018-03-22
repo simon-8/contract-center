@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
-                <div class="form-group">
+                <div class="form-group hidden">
                     <label class="col-sm-2 control-label">库存</label>
                     <div class="col-sm-10">
                         <label>
@@ -68,7 +68,7 @@
                         <span class="help-block m-b-none">库存为0时不予前台展示</span>
                     </div>
                 </div>
-                <div class="hr-line-dashed"></div>
+                <div class="hr-line-dashed hidden"></div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">状态</label>
                     <div class="col-sm-10">

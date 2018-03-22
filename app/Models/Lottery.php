@@ -14,6 +14,7 @@ class Lottery extends Model
 
     protected $fillable = [
         'apply_id',
+        'userid',
         'aid',
         'gid',
         'gname',
