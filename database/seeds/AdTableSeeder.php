@@ -19,15 +19,27 @@ class AdTableSeeder extends Seeder
         \DB::table('ad')->insert(array (
             0 => 
             array (
-                'id' => 1,
-                'pid' => 1,
-                'thumb' => 'http://blog.cc/manage/img/profile_small.jpg',
-                'url' => 'http://blog.cc/manage/img/profile_small.jpg',
-                'title' => '123',
-                'content' => '321',
+                'id' => 2,
+                'pid' => 2,
+                'thumb' => '/uploads/thumbs/201803/1521680276888.jpg',
+                'url' => '',
+                'title' => '广告图1',
+                'content' => '',
                 'listorder' => 0,
-                'created_at' => '2018-03-21 00:18:39',
-                'updated_at' => '2018-03-20 00:18:41',
+                'created_at' => '2018-03-22 08:57:56',
+                'updated_at' => '2018-03-22 08:57:56',
+            ),
+            1 => 
+            array (
+                'id' => 3,
+                'pid' => 2,
+                'thumb' => '/uploads/thumbs/201803/1521680290575.jpg',
+                'url' => '',
+                'title' => '广告图2',
+                'content' => '',
+                'listorder' => 0,
+                'created_at' => '2018-03-22 08:58:10',
+                'updated_at' => '2018-03-22 08:58:10',
             ),
         ));
         

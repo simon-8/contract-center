@@ -113,7 +113,7 @@ function upload_base64_thumb($thumb)
  */
 function imgurl($url)
 {
-    return config('app.url') . $url;
+    return substr($url, 0, 4) === 'http' ? $url : config('app.url') . $url;
 }
 
 
