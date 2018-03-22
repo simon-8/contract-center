@@ -57,10 +57,9 @@ class UserStore extends FormRequest
 
     /**
      * 更新数据验证规则
-     * @param $id
      * @return array
      */
-    protected static function updateRules($id)
+    protected static function updateRules()
     {
         return [
             //'openid' => 'required',

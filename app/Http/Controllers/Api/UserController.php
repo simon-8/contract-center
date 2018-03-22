@@ -28,6 +28,7 @@ class UserController extends ApiController
     }
 
     /**
+     * 获取用户信息
      * @param UserRepository $repository
      * @param $id
      * @return mixed|static
@@ -38,6 +39,7 @@ class UserController extends ApiController
     }
 
     /**
+     * 获奖历史
      * @param UserRepository $userRepository
      * @param User $userModel
      * @param $aid
@@ -62,6 +64,7 @@ class UserController extends ApiController
     }
 
     /**
+     * 登记
      * @param \Request $request
      * @param UserRepository $userRepository
      * @param ActivityRepository $activityRepository
@@ -84,7 +87,7 @@ class UserController extends ApiController
             return self::error($validator->messages()->first());
         }
         // 使用mobile代替openid
-        $data['openid'] = $data['mobile'];
+        if (empty($data['openid'])) $data['openid'] = $data['mobile'];
         $user = $userRepository->updateOrCreate($data);
         if (!$user) {
             return self::error('报名失败');
