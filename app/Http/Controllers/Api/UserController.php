@@ -93,13 +93,21 @@ class UserController extends ApiController
             return self::error('报名失败');
         }
 
-        $lotteryApply = LotteryApply::firstOrCreate([
+        $condition = [
             'aid' => $aid,
             'userid' => $user->id
-        ],[
-            'truename' => $user->truename,
-            'mobile'   => $user->mobile
-        ]);
+        ];
+        $lotteryApply = LotteryApply::where($condition)->first();
+        if (!empty($lotteryApply)) {
+            return self::error('您已报名, 不可重复报名');
+        }
+
+        $lotteryApply = LotteryApply::create(
+            array_merge($condition, [
+                'truename' => $user->truename,
+                'mobile'   => $user->mobile
+            ])
+        );
         if ($lotteryApply->id) {
             return self::response('操作成功');
         } else {
