@@ -16,90 +16,97 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->namespace('Admin')->group(function() {
-    // ajax
-    Route::any('ajax' , 'AjaxController@getIndex')->name('admin.ajax.index');
+    Route::group(['middleware' => 'auth.admin'], function() {
+        // ajax
+        Route::any('ajax' , 'AjaxController@getIndex')->name('admin.ajax.index');
 
-    // 首页
-    Route::get('/', 'IndexController@getMain')->name('admin.index.main');
-    Route::get('index', 'IndexController@getIndex')->name('admin.index.index');
+        // 首页
+        Route::get('/', 'IndexController@getMain')->name('admin.index.main');
+        Route::get('index', 'IndexController@getIndex')->name('admin.index.index');
 
-    // 用户
-    //Route::prefix('user')->group(function() {
-    //    $namePrefix = 'admin.user.';
-    //    Route::get('/', 'UserController@getIndex')->name('admin.user.index');
-    //    Route::get('/create', 'UserController@getCreate')->name('admin.user.create');
-    //    Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
-    //});
 
-    // 菜单
-    Route::prefix('menu')->group(function() {
-        Route::get('/', 'MenuController@getIndex')->name('admin.menu.index');
-        Route::post('/create', 'MenuController@postCreate')->name('admin.menu.create');
-        Route::post('/update', 'MenuController@postUpdate')->name('admin.menu.update');
-        Route::get('/delete', 'MenuController@getDelete')->name('admin.menu.delete');
-    });
+        // 用户
+        //Route::prefix('user')->group(function() {
+        //    $namePrefix = 'admin.user.';
+        //    Route::get('/', 'UserController@getIndex')->name('admin.user.index');
+        //    Route::get('/create', 'UserController@getCreate')->name('admin.user.create');
+        //    Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
+        //});
 
-    // ad place
-    Route::prefix('ad')->group(function() {
-        Route::get('/', 'AdController@getIndex')->name('admin.ad.index');
-        Route::post('/create', 'AdController@postCreate')->name('admin.ad.create');
-        Route::post('/update', 'AdController@postUpdate')->name('admin.ad.update');
-        Route::get('/delete', 'AdController@getDelete')->name('admin.ad.delete');
+        // 菜单
+        Route::prefix('menu')->group(function() {
+            Route::get('/', 'MenuController@getIndex')->name('admin.menu.index');
+            Route::post('/create', 'MenuController@postCreate')->name('admin.menu.create');
+            Route::post('/update', 'MenuController@postUpdate')->name('admin.menu.update');
+            Route::get('/delete', 'MenuController@getDelete')->name('admin.menu.delete');
+        });
 
-        // ad
-        Route::get('/items/{pid}', 'AdController@itemIndex')->name('admin.ad.item.index')->where('pid','\d+');
-        Route::post('/item/create', 'AdController@itemCreate')->name('admin.ad.item.create');
-        Route::post('/item/update', 'AdController@itemUpdate')->name('admin.ad.item.update');
-        Route::get('/item/delete', 'AdController@itemDelete')->name('admin.ad.item.delete');
-    });
+        // ad place
+        Route::prefix('ad')->group(function() {
+            Route::get('/', 'AdController@getIndex')->name('admin.ad.index');
+            Route::post('/create', 'AdController@postCreate')->name('admin.ad.create');
+            Route::post('/update', 'AdController@postUpdate')->name('admin.ad.update');
+            Route::get('/delete', 'AdController@getDelete')->name('admin.ad.delete');
 
-    // manager
-    Route::prefix('manager')->group(function() {
-        Route::get('/', 'ManagerController@getIndex')->name('admin.manager.index');
-        Route::match(['get', 'post'],'/create', 'ManagerController@doCreate')->name('admin.manager.create');
-        Route::match(['get', 'post'],'/update', 'ManagerController@doUpdate')->name('admin.manager.update');
-        Route::get('/delete', 'ManagerController@getDelete')->name('admin.manager.delete');
-    });
+            // ad
+            Route::get('/items/{pid}', 'AdController@itemIndex')->name('admin.ad.item.index')->where('pid','\d+');
+            Route::post('/item/create', 'AdController@itemCreate')->name('admin.ad.item.create');
+            Route::post('/item/update', 'AdController@itemUpdate')->name('admin.ad.item.update');
+            Route::get('/item/delete', 'AdController@itemDelete')->name('admin.ad.item.delete');
+        });
 
-    // database
-    Route::prefix('database')->group(function() {
-        Route::get('/', 'DatabaseController@getIndex')->name('admin.database.index');
-        Route::get('/fields', 'DatabaseController@getFields')->name('admin.database.fields');
-        Route::get('/repair', 'DatabaseController@getRepair')->name('admin.database.repair');
-        Route::get('/optimize', 'DatabaseController@getOptimize')->name('admin.database.optimize');
-    });
+        // manager
+        Route::prefix('manager')->group(function() {
+            Route::get('/', 'ManagerController@getIndex')->name('admin.manager.index');
+            Route::match(['get', 'post'],'/create', 'ManagerController@doCreate')->name('admin.manager.create');
+            Route::match(['get', 'post'],'/update', 'ManagerController@doUpdate')->name('admin.manager.update');
+            Route::get('/delete', 'ManagerController@getDelete')->name('admin.manager.delete');
+        });
 
-    // activity
-    Route::prefix('activity')->group(function() {
-        Route::get('/', 'ActivityController@getIndex')->name('admin.activity.index');
-        Route::match(['get', 'post'],'/create', 'ActivityController@doCreate')->name('admin.activity.create');
-        Route::match(['get', 'post'],'/update', 'ActivityController@doUpdate')->name('admin.activity.update');
-        Route::get('/delete', 'ActivityController@getDelete')->name('admin.activity.delete');
-        Route::get('/lottery/{aid}', 'ActivityController@getLottery')->name('admin.activity.lottery');
-    });
+        // database
+        Route::prefix('database')->group(function() {
+            Route::get('/', 'DatabaseController@getIndex')->name('admin.database.index');
+            Route::get('/fields', 'DatabaseController@getFields')->name('admin.database.fields');
+            Route::get('/repair', 'DatabaseController@getRepair')->name('admin.database.repair');
+            Route::get('/optimize', 'DatabaseController@getOptimize')->name('admin.database.optimize');
+        });
 
-    // gift
-    Route::prefix('gift')->group(function() {
-        Route::get('/', 'GiftController@getIndex')->name('admin.gift.index');
-        Route::match(['get', 'post'],'/create', 'GiftController@doCreate')->name('admin.gift.create');
-        Route::match(['get', 'post'],'/update', 'GiftController@doUpdate')->name('admin.gift.update');
-        Route::get('/delete', 'GiftController@getDelete')->name('admin.gift.delete');
-    });
+        // activity
+        Route::prefix('activity')->group(function() {
+            Route::get('/', 'ActivityController@getIndex')->name('admin.activity.index');
+            Route::match(['get', 'post'],'/create', 'ActivityController@doCreate')->name('admin.activity.create');
+            Route::match(['get', 'post'],'/update', 'ActivityController@doUpdate')->name('admin.activity.update');
+            Route::get('/delete', 'ActivityController@getDelete')->name('admin.activity.delete');
+            Route::get('/lottery/{aid}', 'ActivityController@getLottery')->name('admin.activity.lottery');
+        });
 
-    // setting
-    Route::prefix('setting')->group(function() {
-        Route::get('/', 'SettingController@getIndex')->name('admin.setting.index');
-        Route::post('/create', 'SettingController@postCreate')->name('admin.setting.create');
-        Route::post('/update', 'SettingController@postUpdate')->name('admin.setting.update');
-        Route::get('/delete', 'SettingController@getDelete')->name('admin.setting.delete');
-    });
+        // gift
+        Route::prefix('gift')->group(function() {
+            Route::get('/', 'GiftController@getIndex')->name('admin.gift.index');
+            Route::match(['get', 'post'],'/create', 'GiftController@doCreate')->name('admin.gift.create');
+            Route::match(['get', 'post'],'/update', 'GiftController@doUpdate')->name('admin.gift.update');
+            Route::get('/delete', 'GiftController@getDelete')->name('admin.gift.delete');
+        });
 
-    // user
-    Route::prefix('user')->group(function() {
-        Route::get('/', 'UserController@getIndex')->name('admin.user.index');
-        Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
+        // setting
+        Route::prefix('setting')->group(function() {
+            Route::get('/', 'SettingController@getIndex')->name('admin.setting.index');
+            Route::post('/create', 'SettingController@postCreate')->name('admin.setting.create');
+            Route::post('/update', 'SettingController@postUpdate')->name('admin.setting.update');
+            Route::get('/delete', 'SettingController@getDelete')->name('admin.setting.delete');
+        });
+
+        // user
+        Route::prefix('user')->group(function() {
+            Route::get('/', 'UserController@getIndex')->name('admin.user.index');
+            Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
+        });
     });
 });
 
 Route::get('/activity/{aid}', 'Home\ActivityController@getActivity')->name('home.activity.show');
 //Route::view('/activity/{aid}', 'home.activity.lottery', ['id', decrypt(\Request::input('aid'))]);
+
+Route::get('/admin/login', 'Admin\LoginController@getLogin')->name('admin.login.get');
+Route::post('/admin/login', 'Admin\LoginController@login')->name('admin.login.post');
+Route::get('/admin/logout', 'Admin\LoginController@logout')->name('admin.logout.get');
