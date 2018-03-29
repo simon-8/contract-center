@@ -8,17 +8,17 @@
                     <span><img alt="image" class="img-circle" src="{{ skin_path() }}img/profile_small.jpg" /></span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
-                            <span class="block m-t-xs"><strong class="font-bold">Simon</strong></span>
+                            <span class="block m-t-xs"><strong class="font-bold">{{ auth()->guard('admin')->user()->truename }}</strong></span>
                             <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                         </span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a class="J_menuItem" href="form_avatar.html">修改头像</a></li>
-                        <li><a class="J_menuItem" href="profile.html">个人资料</a></li>
-                        <li><a class="J_menuItem" href="contacts.html">联系我们</a></li>
-                        <li><a class="J_menuItem" href="mailbox.html">信箱</a></li>
+                        <li><a class="J_menuItem" href="">修改头像</a></li>
+                        <li><a class="J_menuItem" href="">个人资料</a></li>
+                        <li><a class="J_menuItem" href="">联系我们</a></li>
+                        <li><a class="J_menuItem" href="">信箱</a></li>
                         <li class="divider"></li>
-                        <li><a href="login.html">安全退出</a></li>
+                        <li><a href="{{ route('admin.logout.get') }}">安全退出</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">SCMS</div>
