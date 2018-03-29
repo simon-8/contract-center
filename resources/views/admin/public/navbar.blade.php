@@ -24,6 +24,7 @@
                 <div class="logo-element">SCMS</div>
             </li>
             @foreach ($menus as $menu)
+            @if (auth()->guard('admin')->user()->is_admin || in_array($menu['id'], auth()->guard('admin')->user()->role))
             <li>
                 <a class="J_menuItem" href="{{ empty($menu['child']) ? $menu['url'] : '' }}">
                     <i class="{{ $menu['ico'] }}"></i>
@@ -42,6 +43,7 @@
                 </ul>
                 @endif
             </li>
+            @endif
             @endforeach
         </ul>
     </div>
