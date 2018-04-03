@@ -53,10 +53,9 @@ class GiftStore extends FormRequest
 
     /**
      * 更新数据验证规则
-     * @param $id
      * @return array
      */
-    protected static function updateRules($id)
+    protected static function updateRules()
     {
         return [
             'name' => 'required',
@@ -86,6 +85,6 @@ class GiftStore extends FormRequest
      */
     public static function validateUpdate($data)
     {
-        return \Validator::make($data, self::updateRules($data['id']));
+        return \Validator::make($data, self::updateRules());
     }
 }

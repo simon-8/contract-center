@@ -16,6 +16,11 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->namespace('Admin')->group(function() {
+
+    Route::get('login', 'LoginController@getLogin')->name('admin.login.get');
+    Route::post('login', 'LoginController@login')->name('admin.login.post');
+    Route::get('logout', 'LoginController@logout')->name('admin.logout.get');
+
     Route::group(['middleware' => 'auth.admin'], function() {
         // ajax
         Route::any('ajax' , 'AjaxController@getIndex')->name('admin.ajax.index');
@@ -23,15 +28,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         // 首页
         Route::get('/', 'IndexController@getMain')->name('admin.index.main');
         Route::get('index', 'IndexController@getIndex')->name('admin.index.index');
-
-
-        // 用户
-        //Route::prefix('user')->group(function() {
-        //    $namePrefix = 'admin.user.';
-        //    Route::get('/', 'UserController@getIndex')->name('admin.user.index');
-        //    Route::get('/create', 'UserController@getCreate')->name('admin.user.create');
-        //    Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
-        //});
 
         // 菜单
         Route::prefix('menu')->group(function() {
@@ -63,6 +59,13 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::get('/delete', 'ManagerController@getDelete')->name('admin.manager.delete');
         });
 
+        Route::prefix('article')->group(function() {
+            Route::get('/', 'ArticleController@getIndex')->name('admin.article.index');
+            Route::match(['get', 'post'],'/create', 'ArticleController@doCreate')->name('admin.article.create');
+            Route::match(['get', 'post'],'/update', 'ArticleController@doUpdate')->name('admin.article.update');
+            Route::get('/delete', 'ArticleController@getDelete')->name('admin.article.delete');
+        });
+
         // database
         Route::prefix('database')->group(function() {
             Route::get('/', 'DatabaseController@getIndex')->name('admin.database.index');
@@ -72,21 +75,21 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         });
 
         // activity
-        Route::prefix('activity')->group(function() {
-            Route::get('/', 'ActivityController@getIndex')->name('admin.activity.index');
-            Route::match(['get', 'post'],'/create', 'ActivityController@doCreate')->name('admin.activity.create');
-            Route::match(['get', 'post'],'/update', 'ActivityController@doUpdate')->name('admin.activity.update');
-            Route::get('/delete', 'ActivityController@getDelete')->name('admin.activity.delete');
-            Route::get('/lottery/{aid}', 'ActivityController@getLottery')->name('admin.activity.lottery');
-        });
+        //Route::prefix('activity')->group(function() {
+        //    Route::get('/', 'ActivityController@getIndex')->name('admin.activity.index');
+        //    Route::match(['get', 'post'],'/create', 'ActivityController@doCreate')->name('admin.activity.create');
+        //    Route::match(['get', 'post'],'/update', 'ActivityController@doUpdate')->name('admin.activity.update');
+        //    Route::get('/delete', 'ActivityController@getDelete')->name('admin.activity.delete');
+        //    Route::get('/lottery/{aid}', 'ActivityController@getLottery')->name('admin.activity.lottery');
+        //});
 
         // gift
-        Route::prefix('gift')->group(function() {
-            Route::get('/', 'GiftController@getIndex')->name('admin.gift.index');
-            Route::match(['get', 'post'],'/create', 'GiftController@doCreate')->name('admin.gift.create');
-            Route::match(['get', 'post'],'/update', 'GiftController@doUpdate')->name('admin.gift.update');
-            Route::get('/delete', 'GiftController@getDelete')->name('admin.gift.delete');
-        });
+        //Route::prefix('gift')->group(function() {
+        //    Route::get('/', 'GiftController@getIndex')->name('admin.gift.index');
+        //    Route::match(['get', 'post'],'/create', 'GiftController@doCreate')->name('admin.gift.create');
+        //    Route::match(['get', 'post'],'/update', 'GiftController@doUpdate')->name('admin.gift.update');
+        //    Route::get('/delete', 'GiftController@getDelete')->name('admin.gift.delete');
+        //});
 
         // setting
         Route::prefix('setting')->group(function() {
@@ -103,10 +106,3 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         });
     });
 });
-
-Route::get('/activity/{aid}', 'Home\ActivityController@getActivity')->name('home.activity.show');
-//Route::view('/activity/{aid}', 'home.activity.lottery', ['id', decrypt(\Request::input('aid'))]);
-
-Route::get('/admin/login', 'Admin\LoginController@getLogin')->name('admin.login.get');
-Route::post('/admin/login', 'Admin\LoginController@login')->name('admin.login.post');
-Route::get('/admin/logout', 'Admin\LoginController@logout')->name('admin.logout.get');

@@ -113,6 +113,9 @@ function upload_base64_thumb($thumb)
  */
 function imgurl($url)
 {
+    if(empty($url)) {
+        return '/manage/images/nopic.png';
+    }
     return substr($url, 0, 4) === 'http' ? $url : config('app.url') . $url;
 }
 
@@ -159,37 +162,38 @@ php;
 
 }
 
-function number2text($number) {
-    $len = strlen($number);
-    switch ($number) {
-        case 1:
-            return '一';
-            break;
-        case 2:
-            return '二';
-            break;
-        case 3:
-            return '三';
-            break;
-        case 4:
-            return '四';
-            break;
-        case 5:
-            return '五';
-            break;
-        case 6:
-            return '六';
-            break;
-        case 7:
-            return '七';
-            break;
-        case 8:
-            return '八';
-            break;
-        case 9:
-            return '九';
-            break;
-        default:
-            break;
+/**
+ * 调用编辑器
+ * @param string $content
+ * @param string $name
+ * @param string $editor
+ * @param string $extends
+ * @return bool
+ */
+function seditor($content = '' , $name = 'content', $editor = 'ueditor', $extends = '')
+{
+    if ($editor == 'kindeditor') {
+        $url = "/plugins/editor/kindeditor/kindeditor.js";
+        $lang = "/plugins/editor/kindeditor/lang/zh_CN.js";
+        echo "<script charset='utf-8' src='$url'></script>";
+        echo "<script charset='utf-8' src='$lang'></script>";
+        echo "<script>";
+        echo " KindEditor.ready(function(K) { window.editor = K.create('#$name',{width:'100%',cssPath : '/plugins/editor/kindeditor/plugins/code/new.css',resizeMode:0});});";
+        echo "</script>";
+
+    } else if ($editor == 'ueditor') {
+        echo "<script id='content' type='text/plain' style='width:100%;height:500px;' name='{$name}' {$extends}>" . $content . "</script>";
+        echo "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.config.js'></script>";
+        echo "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.all.js'></script>";
+        echo "<script type='text/javascript'> var ue = UE.getEditor('{$name}',{elementPathEnabled:false,contextMenu:[],enableAutoSave: false,saveInterval:500000});</script>";
+
+    } else if ($editor == 'markdown') {
+        echo "<textarea name='" . $name . "' data-provide='markdown' {$extends} rows='10'>" . $content . "</textarea>";
+        echo "<link rel='stylesheet' type='text/css' href='/manage/css/plugins/markdown/bootstrap-markdown.min.css' />";
+        echo "<script type='text/javascript' src='/manage/plugins/markdown/markdown.js'></script>";
+        echo "<script type='text/javascript' src='/manage/plugins/markdown/to-markdown.js'></script>";
+        echo "<script type='text/javascript' src='/manage/plugins/markdown/bootstrap-markdown.js'></script>";
+        echo "<script type='text/javascript' src='/manage/plugins/markdown/bootstrap-markdown.zh.js'></script>";
     }
+    return false;
 }
