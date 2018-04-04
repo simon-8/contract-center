@@ -8,15 +8,11 @@
 namespace App\Repositories;
 use App\Models\Setting;
 
-class SettingRepository
+class SettingRepository extends BaseRepository
 {
-    protected $model;
-
-    protected static $pageSize = 15;
-
     public function __construct()
     {
-        $this->model = new Setting();
+        parent::__construct(new Setting());
     }
 
     /**
@@ -25,15 +21,6 @@ class SettingRepository
     public function lists()
     {
         return $this->model->all()->toArray();
-    }
-
-    /**
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Model|null|object|static
-     */
-    public function find($id)
-    {
-        return $this->model->find($id);
     }
 
     /**
@@ -66,13 +53,4 @@ class SettingRepository
         return true;
     }
 
-    /**
-     * 删除
-     * @param $id
-     * @return int
-     */
-    public function delete($id)
-    {
-        return $this->model->destroy($id);
-    }
 }

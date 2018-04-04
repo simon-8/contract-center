@@ -8,14 +8,11 @@
 namespace App\Repositories;
 use App\Models\User;
 
-class UserRepository
+class UserRepository extends BaseRepository
 {
-    protected $model;
-    protected static $pageSize = 15;
-
     public function __construct()
     {
-        $this->model = new User();
+        parent::__construct(new User());
     }
 
     /**
@@ -31,15 +28,6 @@ class UserRepository
         } else {
             return $this->model->paginate(self::$pageSize);
         }
-    }
-
-    /**
-     * @param $id
-     * @return mixed|static
-     */
-    public function find($id)
-    {
-        return $this->model->find($id);
     }
 
     /**
@@ -73,16 +61,6 @@ class UserRepository
     }
 
     /**
-     * 创建
-     * @param $data
-     * @return $this|\Illuminate\Database\Eloquent\Model
-     */
-    public function create($data)
-    {
-        return $this->model->create($data);
-    }
-
-    /**
      * @param $data
      * @return mixed
      */
@@ -91,26 +69,5 @@ class UserRepository
         return $this->model->updateOrCreate([
             'openid' => $data['openid']
         ], $data);
-    }
-
-    /**
-     * 更新
-     * @param $data
-     * @return bool
-     */
-    public function update($data)
-    {
-        $item = $this->model->find($data['id']);
-        return $item->update($data);
-    }
-
-    /**
-     * 删除
-     * @param $id
-     * @return int
-     */
-    public function delete($id)
-    {
-        return $this->model->destroy($id);
     }
 }

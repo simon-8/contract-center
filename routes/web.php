@@ -74,6 +74,10 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::get('/optimize', 'DatabaseController@getOptimize')->name('admin.database.optimize');
         });
 
+        // category
+        Route::prefix('category')->group(function() {
+            //Route::get('/', 'C')
+        });
         // activity
         //Route::prefix('activity')->group(function() {
         //    Route::get('/', 'ActivityController@getIndex')->name('admin.activity.index');

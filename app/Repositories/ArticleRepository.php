@@ -9,23 +9,11 @@ namespace App\Repositories;
 use App\Models\Article;
 use App\Models\ArticleContent;
 
-class ArticleRepository
+class ArticleRepository extends BaseRepository
 {
-    protected $model, $content_model;
-    protected static $pageSize = 15;
-
     public function __construct()
     {
-        $this->model = new Article();
-        $this->content_model = new ArticleContent();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function lists()
-    {
-        return $this->model->paginate(self::$pageSize);
+        parent::__construct(new Article());
     }
 
     /**
@@ -39,8 +27,9 @@ class ArticleRepository
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * 新增
+     * @param array $data
+     * @return bool|mixed
      */
     public function create($data)
     {
@@ -54,8 +43,9 @@ class ArticleRepository
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * 更新
+     * @param array $data
+     * @return bool|mixed
      */
     public function update($data)
     {
@@ -67,15 +57,6 @@ class ArticleRepository
             ]));
         }
         return false;
-    }
-
-    /**
-     * @param $id
-     * @return int
-     */
-    public function delete($id)
-    {
-        return $this->model->destroy($id);
     }
 
     /**

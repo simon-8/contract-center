@@ -15,11 +15,10 @@ class ArticleController extends Controller
 {
     /**
      * 列表页
-     * @param \Request $request
      * @param ArticleRepository $repository
      * @return mixed
      */
-    public function getIndex(\Request $request, ArticleRepository $repository)
+    public function getIndex(ArticleRepository $repository)
     {
         $lists = $repository->lists();
         $status_num = $repository->get_status_num();

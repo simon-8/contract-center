@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: 后台管理菜单
+ * Note: 后台管理菜单资源库
  * User: Liu
  * Date: 2018/3/18
  * Time: 19:00
@@ -8,13 +8,11 @@
 namespace App\Repositories;
 use App\Models\Menu;
 
-class MenuRepository
+class MenuRepository extends BaseRepository
 {
-    protected $model;
-
     public function __construct()
     {
-        $this->model = new Menu();
+        parent::__construct(new Menu());
     }
 
     /**
@@ -41,27 +39,6 @@ class MenuRepository
             $data[$v['pid']]['child'][$v['id']] = $v;
         }
         return $data;
-    }
-
-    /**
-     * 创建
-     * @param $data
-     * @return $this|\Illuminate\Database\Eloquent\Model
-     */
-    public function create($data)
-    {
-        return $this->model->create($data);
-    }
-
-    /**
-     * 更新
-     * @param $data
-     * @return bool
-     */
-    public function update($data)
-    {
-        $menu = $this->model->find($data['id']);
-        return $menu->update($data);
     }
 
     /**

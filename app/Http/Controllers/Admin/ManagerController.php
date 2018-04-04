@@ -65,6 +65,7 @@ class ManagerController extends Controller
             return admin_view('manager.create', $data);
         }
         $data = $request::all();
+        if (empty($data['password'])) unset($data['password']);
 
         $validator = ManagerStore::validateUpdate($data);
         if ($validator->fails()) {
