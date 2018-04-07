@@ -45,9 +45,10 @@ class ArticleRepository extends BaseRepository
     /**
      * 更新
      * @param array $data
+     * @param string $attribute
      * @return bool|mixed
      */
-    public function update($data)
+    public function update($data, $attribute = 'id')
     {
         $item = $this->model->find($data['id']);
         $result = $item->update($data);

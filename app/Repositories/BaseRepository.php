@@ -54,7 +54,7 @@ class BaseRepository
      * @param array $data
      * @return mixed
      */
-    public function create(array $data)
+    public function create($data)
     {
         return $this->model->create($data);
     }
@@ -65,7 +65,7 @@ class BaseRepository
      * @param string $attribute
      * @return mixed
      */
-    public function update(array $data, $attribute = 'id')
+    public function update($data, $attribute = 'id')
     {
         $item = $this->find($data[$attribute]);
         return $item->update($data);
