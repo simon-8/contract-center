@@ -96,28 +96,6 @@ class MenusTableSeeder extends Seeder
             ),
             7 => 
             array (
-                'id' => 10,
-                'pid' => 0,
-                'name' => '活动管理',
-                'prefix' => 'admin.activity',
-                'route' => 'index',
-                'ico' => 'fa fa-gamepad',
-                'listorder' => 95,
-                'items' => 0,
-            ),
-            8 => 
-            array (
-                'id' => 11,
-                'pid' => 0,
-                'name' => '奖品管理',
-                'prefix' => 'admin.gift',
-                'route' => 'index',
-                'ico' => 'fa fa-gift',
-                'listorder' => 94,
-                'items' => 0,
-            ),
-            9 => 
-            array (
                 'id' => 12,
                 'pid' => 6,
                 'name' => '基本设置',
@@ -127,7 +105,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 99,
                 'items' => 0,
             ),
-            10 => 
+            8 => 
             array (
                 'id' => 13,
                 'pid' => 0,
@@ -136,6 +114,17 @@ class MenusTableSeeder extends Seeder
                 'route' => 'index',
                 'ico' => 'fa fa-user',
                 'listorder' => 93,
+                'items' => 0,
+            ),
+            9 => 
+            array (
+                'id' => 14,
+                'pid' => 0,
+                'name' => '文章管理',
+                'prefix' => 'admin.article',
+                'route' => 'index',
+                'ico' => 'fa fa-book',
+                'listorder' => 94,
                 'items' => 0,
             ),
         ));
