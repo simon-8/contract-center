@@ -108,5 +108,12 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::get('/', 'UserController@getIndex')->name('admin.user.index');
             Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
         });
+
+        // category
+        Route::prefix('category')->group(function() {
+            Route::get('/', 'CategoryController@getIndex')->name('admin.category.index');
+        });
+
+        //Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('admin.setting.logs');
     });
 });

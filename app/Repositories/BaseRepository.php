@@ -62,12 +62,11 @@ class BaseRepository
     /**
      * 更新
      * @param array $data
-     * @param string $attribute
      * @return mixed
      */
-    public function update($data, $attribute = 'id')
+    public function update($data)
     {
-        $item = $this->find($data[$attribute]);
+        $item = $this->find($data[$this->model->getKeyName()]);
         return $item->update($data);
     }
 
