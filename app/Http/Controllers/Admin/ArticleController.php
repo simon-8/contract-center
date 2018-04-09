@@ -9,23 +9,43 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Repositories\ArticleRepository;
+use App\Repositories\CategoryRepository;
 use App\Http\Requests\ArticleStore;
 
 class ArticleController extends Controller
 {
+    protected static $MID = 1;
+
     /**
      * 列表页
+     * @param \Request $request
      * @param ArticleRepository $repository
+     * @param CategoryRepository $categoryRepository
      * @return mixed
      */
-    public function getIndex(ArticleRepository $repository)
+    public function getIndex(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
     {
-        $lists = $repository->list();
+        $catid = $request::input('catid', 0);
+        $status = $request::input('status', 0);
+        $keyword = $request::input('keyword', null);
+
+        $where = [];
+        if ($catid) $where['catid'] = $catid;
+        if ($status) $where['status'] = $status;
+        if ($keyword) $where['keyword'] = $keyword;
+
+        $lists = $repository->listBy($where);
+
+        $categorys = $categoryRepository->listBy(['pid' => self::$MID])->toArray()['data'];
         $status_num = $repository->get_status_num();
 
         $data = [
             'lists' => $lists,
-            'status_num' => $status_num
+            'status_num' => $status_num,
+            'categorys'  => $categorys,
+            'catid' => $catid,
+            'status' => $status,
+            'keyword' => $keyword,
         ];
         return admin_view('article.index', $data);
     }
@@ -34,12 +54,16 @@ class ArticleController extends Controller
      * 新增
      * @param \Request $request
      * @param ArticleRepository $repository
-     * @return mixed
+     * @param CategoryRepository $categoryRepository
+     * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doCreate(\Request $request, ArticleRepository $repository)
+    public function doCreate(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
     {
         if ($request::isMethod('get')) {
-            return admin_view('article.create');
+            $categorys = $categoryRepository->listBy(['pid' => self::$MID])->toArray()['data'];
+            return admin_view('article.create', [
+                'categorys' => $categorys
+            ]);
         }
 
         $data = $request::all();
@@ -61,12 +85,15 @@ class ArticleController extends Controller
      * 更新
      * @param \Request $request
      * @param ArticleRepository $repository
+     * @param CategoryRepository $categoryRepository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doUpdate(\Request $request, ArticleRepository $repository)
+    public function doUpdate(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
     {
         if ($request::isMethod('get')) {
             $data = $repository->find($request::input('id'), true);
+            $categorys = $categoryRepository->listBy(['pid' => self::$MID])->toArray()['data'];
+            $data['categorys'] = $categorys;
             return admin_view('article.create', $data);
         }
 

@@ -72,4 +72,19 @@ class ArticleRepository extends BaseRepository
         $data['2'] = $this->model->where('status',2)->count();
         return $data;
     }
+
+    /**
+     * @param $where
+     * @return mixed
+     */
+    public function listBy($where)
+    {
+        if (!empty($where['keyword'])) {
+            $keyword = $where['keyword'];
+            unset($where['keyword']);
+        }
+        $query = $this->model->with('category')->where($where);
+        if (isset($keyword)) $query = $query->title($keyword);
+        return $query->paginate(self::$pageSize);
+    }
 }

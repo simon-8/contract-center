@@ -44,7 +44,7 @@ class CategoryController extends Controller
     {
         $data = $request::all();
         if ($repository->create($data)) {
-            return redirect()->route('admin.category.index')->with('Message' , '添加成功');
+            return redirect()->route('admin.category.index', ['pid' => $data['pid']])->with('Message' , '添加成功');
         } else {
             return back()->withErrors('添加失败')->withInput();
         }
@@ -60,7 +60,7 @@ class CategoryController extends Controller
     {
         $data = $request::all();
         if ($repository->update($data)) {
-            return redirect()->route('admin.category.index')->with('Message' , '更新成功');
+            return redirect()->route('admin.category.index', ['pid' => $data['pid']])->with('Message' , '更新成功');
         } else {
             return back()->withErrors('更新失败')->withInput();
         }
@@ -75,8 +75,9 @@ class CategoryController extends Controller
     public function getDelete(\Request $request, CategoryRepository $repository)
     {
         $data = $request::all();
-        if ($repository->delete($data['id'])) {
-            return redirect()->route('admin.category.index')->with('Message' , '删除成功');
+        $item = $repository->find($data['id']);
+        if ($item->delete()) {
+            return redirect()->route('admin.category.index', ['pid' => $item['pid']])->with('Message' , '删除成功');
         } else {
             return back()->withErrors('删除失败')->withInput();
         }

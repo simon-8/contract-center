@@ -28,4 +28,14 @@ class Article extends Model
     {
         return $this->hasOne('App\Models\ArticleContent', 'id', 'id');
     }
+
+    public function category()
+    {
+        return $this->hasOne('App\Models\Category', 'id', 'catid');
+    }
+
+    public function scopeTitle($query, $title)
+    {
+        return $query->where('title', 'like', '%'. $title .'%');
+    }
 }

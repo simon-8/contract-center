@@ -92,7 +92,7 @@
         <div class="footer">
             <div class="pull-right">
                 &copy; {{ date('Y') - 1 }}-{{ date('Y') + 1 }}
-                <a>manager</a>
+                <a>SCMS</a>
             </div>
         </div>
     </div>

@@ -61,7 +61,11 @@
                         <label class="col-sm-2 control-label">分类</label>
                         <div class="col-sm-10">
                             <select name="catid" class="form-control">
-                                <option value="1">PHP</option>
+                                @if(!empty($categorys))
+                                    @foreach ($categorys as $category)
+                                        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>

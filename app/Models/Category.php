@@ -31,4 +31,9 @@ class Category extends Model
     {
         return $this->belongsTo('App\Models\Category', 'pid', 'id');
     }
+
+    //public function article()
+    //{
+    //    return $this->belongsToMany('App\Models\Category', 'id', 'catid');
+    //}
 }
