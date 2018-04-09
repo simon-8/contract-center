@@ -2,50 +2,57 @@
 
 @section('content')
 <div class="col-sm-12 animated fadeInRight">
-    <table class="table table-bordered table-hover bg-white text-center">
-        <tr>
-            <td>表名</td>
-            <td>引擎</td>
-            <td>编码格式</td>
-            <td>总记录数</td>
-            <td>已用空间</td>
-            <td> 总空间 </td>
-            <td>空间使用</td>
-            <td>创建时间</td>
-            <td>操 作</td>
-        </tr>
-        @if(count($lists) > 0)
-            @foreach($lists as $v)
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>数据表</h5>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-bordered table-hover bg-white text-center">
                 <tr>
-                    <td>{{ $v->Name }}</td>
-                    <td>{{ $v->Engine }}</td>
-                    <td>{{ $v->Collation }}</td>
-                    <td>{{ $v->Rows }}</td>
-                    <td>{{ $v->Data_length > 1073741824 ? round($v->Data_length/1073741824 , 2).'GB' : round($v->Data_length/1048576,2).'MB' }}</td>
-                    <td>{{ $v->Max_data_length > 1099511627776 ? round($v->Max_data_length/1099511627776 , 2).'TB' : round($v->Max_data_length/1073741824,2).'GB' }}</td>
-                    <td>
-                        <div class="progress">
-                            <div style="width: {{ ($v->Data_length == 0 || $v->Max_data_length == 0) ? 0 : ceil($v->Data_length/$v->Max_data_length) }}%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="35" role="progressbar" class="progress-bar progress-bar-success">
-                                <span class="sr-only"></span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>{{ $v->Create_time }}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm" onclick="ShowFields('{{ $v->Name }}')">数据字典</button>
-                        <button class="btn btn-info btn-sm" onclick="RepairTable('{{ $v->Name }}')">修复</button>
-                        <button class="btn btn-info btn-sm" onclick="OptimizeTable('{{ $v->Name }}')">优化</button>
-                    </td>
+                    <td>表名</td>
+                    <td>引擎</td>
+                    <td>编码格式</td>
+                    <td>总记录数</td>
+                    <td>已用空间</td>
+                    <td> 总空间 </td>
+                    <td>空间使用</td>
+                    <td>创建时间</td>
+                    <td>操 作</td>
                 </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="7">
-                    未找到数据
-                </td>
-            </tr>
-        @endif
-    </table>
+                @if(count($lists) > 0)
+                    @foreach($lists as $v)
+                        <tr>
+                            <td>{{ $v->Name }}</td>
+                            <td>{{ $v->Engine }}</td>
+                            <td>{{ $v->Collation }}</td>
+                            <td>{{ $v->Rows }}</td>
+                            <td>{{ $v->Data_length > 1073741824 ? round($v->Data_length/1073741824 , 2).'GB' : round($v->Data_length/1048576,2).'MB' }}</td>
+                            <td>{{ $v->Max_data_length > 1099511627776 ? round($v->Max_data_length/1099511627776 , 2).'TB' : round($v->Max_data_length/1073741824,2).'GB' }}</td>
+                            <td>
+                                <div class="progress">
+                                    <div style="width: {{ ($v->Data_length == 0 || $v->Max_data_length == 0) ? 0 : ceil($v->Data_length/$v->Max_data_length) }}%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="35" role="progressbar" class="progress-bar progress-bar-success">
+                                        <span class="sr-only"></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ $v->Create_time }}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="ShowFields('{{ $v->Name }}')">数据字典</button>
+                                <button class="btn btn-info btn-sm" onclick="RepairTable('{{ $v->Name }}')">修复</button>
+                                <button class="btn btn-info btn-sm" onclick="OptimizeTable('{{ $v->Name }}')">优化</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="7">
+                            未找到数据
+                        </td>
+                    </tr>
+                @endif
+            </table>
+        </div>
+    </div>
 </div>
 @endsection('content')
 <script>

@@ -5,11 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 
 use App\Models\Article;
-use App\Models\Activity;
 use App\Models\AdPlace;
 use App\Models\Menu;
-use App\Models\Lottery;
-use App\Models\LotteryApply;
 
 class ModelObserverProvider extends ServiceProvider
 {
@@ -21,11 +18,8 @@ class ModelObserverProvider extends ServiceProvider
     public function boot()
     {
         Article::observe('App\Observers\ArticleObserver');
-        Activity::observe('App\Observers\ActivityObserver');
         AdPlace::observe('App\Observers\AdPlaceObserver');
         Menu::observe('App\Observers\MenuObserver');
-        Lottery::observe('App\Observers\LotteryObserver');
-        LotteryApply::observe('App\Observers\LotteryApplyObserver');
     }
 
     /**

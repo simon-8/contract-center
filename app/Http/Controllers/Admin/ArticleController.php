@@ -20,7 +20,7 @@ class ArticleController extends Controller
      */
     public function getIndex(ArticleRepository $repository)
     {
-        $lists = $repository->lists();
+        $lists = $repository->list();
         $status_num = $repository->get_status_num();
 
         $data = [

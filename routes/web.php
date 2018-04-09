@@ -74,10 +74,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::get('/optimize', 'DatabaseController@getOptimize')->name('admin.database.optimize');
         });
 
-        // category
-        Route::prefix('category')->group(function() {
-            //Route::get('/', 'C')
-        });
         // activity
         //Route::prefix('activity')->group(function() {
         //    Route::get('/', 'ActivityController@getIndex')->name('admin.activity.index');
@@ -112,8 +108,11 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         // category
         Route::prefix('category')->group(function() {
             Route::get('/', 'CategoryController@getIndex')->name('admin.category.index');
+            Route::post('/create', 'CategoryController@postCreate')->name('admin.category.create');
+            Route::post('/update', 'CategoryController@postUpdate')->name('admin.category.update');
+            Route::get('/delete', 'CategoryController@getDelete')->name('admin.category.delete');
         });
 
-        //Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('admin.setting.logs');
+        //Route::get('logs', '\Arcanedev\LogViewer\Http\Controllers\LogViewerController@index')->name('admin.setting.logs');
     });
 });

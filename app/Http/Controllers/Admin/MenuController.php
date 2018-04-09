@@ -14,12 +14,12 @@ class MenuController extends Controller
 {
     /**
      * 列表
-     * @param MenuRepository $menuRepository
+     * @param MenuRepository $repository
      * @return mixed
      */
-    public function getIndex(MenuRepository $menuRepository)
+    public function getIndex(MenuRepository $repository)
     {
-        $lists = $menuRepository->lists();
+        $lists = $repository->list();
         $data = [
             'lists' => $lists
         ];
@@ -29,13 +29,13 @@ class MenuController extends Controller
     /**
      * 添加
      * @param \Request $request
-     * @param MenuRepository $menuRepository
+     * @param MenuRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postCreate(\Request $request, MenuRepository $menuRepository)
+    public function postCreate(\Request $request, MenuRepository $repository)
     {
         $data = $request::all();
-        if ($menuRepository->create($data)) {
+        if ($repository->create($data)) {
             return redirect()->route('admin.menu.index')->with('Message' , '添加成功');
         } else {
             return back()->withErrors('添加失败')->withInput();
@@ -45,13 +45,13 @@ class MenuController extends Controller
     /**
      * 更新
      * @param \Request $request
-     * @param MenuRepository $menuRepository
+     * @param MenuRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postUpdate(\Request $request, MenuRepository $menuRepository)
+    public function postUpdate(\Request $request, MenuRepository $repository)
     {
         $data = $request::all();
-        if ($menuRepository->update($data)) {
+        if ($repository->update($data)) {
             return redirect()->route('admin.menu.index')->with('Message' , '更新成功');
         } else {
             return back()->withErrors('更新失败')->withInput();
@@ -61,13 +61,13 @@ class MenuController extends Controller
     /**
      * 删除
      * @param \Request $request
-     * @param MenuRepository $menuRepository
+     * @param MenuRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function getDelete(\Request $request, MenuRepository $menuRepository)
+    public function getDelete(\Request $request, MenuRepository $repository)
     {
         $data = $request::all();
-        if ($menuRepository->delete($data['id'])) {
+        if ($repository->delete($data['id'])) {
             return redirect()->route('admin.menu.index')->with('Message' , '删除成功');
         } else {
             return back()->withErrors('删除失败, 请检查是否有子菜单')->withInput();

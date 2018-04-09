@@ -17,13 +17,18 @@ class Category extends Model
         'listorder'
     ];
 
-    public function childCategory()
+    public function child()
     {
         return $this->hasMany('App\Models\Category', 'pid', 'id');
     }
 
-    public function allChildrenCategorys()
+    //public function allChildrenCategorys()
+    //{
+    //    return $this->childCategory()->with('allChildrenCategorys');
+    //}
+
+    public function parent()
     {
-        return $this->childCategory()->with('allChildrenCategorys');
+        return $this->belongsTo('App\Models\Category', 'pid', 'id');
     }
 }

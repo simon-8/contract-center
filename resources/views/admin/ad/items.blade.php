@@ -50,7 +50,6 @@
             </table>
             <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告</button>
             <a class="btn btn-info" href="{{ route('admin.ad.index') }}">返回广告位</a>
-            <a class="btn btn-info" href="{{ route('admin.activity.index') }}">返回活动列表</a>
         </div>
     </div>
 

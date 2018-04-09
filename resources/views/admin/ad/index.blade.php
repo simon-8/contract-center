@@ -8,8 +8,6 @@
         <div class="ibox-content">
             <table class="table table-bordered table-hover bg-white text-center">
                 <tr>
-                    <th width="150">所属活动</th>
-                    <th width="80">活动ID</th>
                     <th width="50">编号</th>
                     <th width="150">名称</th>
                     <th width="100">宽度</th>
@@ -20,8 +18,6 @@
                 @if(isset($lists) && count($lists) > 0)
                     @foreach($lists as $v)
                         <tr>
-                            <td>{{ $v->Activity()->first()->name }}</td>
-                            <td>{{ $v['aid'] }}</td>
                             <td>{{ $v['id'] }}</td>
                             <td>{{ $v['name'] }}</td>
                             <td>{{ $v['width'] }}</td>
@@ -30,7 +26,7 @@
                             <td>
                                 <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加广告</button>
                                 <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }})">编辑</button>
-                                {{--<button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>--}}
+                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -42,8 +38,7 @@
                     </tr>
                 @endif
             </table>
-            {{--<button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告位</button>--}}
-            <a class="btn btn-success" href="{{ route('admin.activity.index') }}">返回活动列表</a>
+            <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告位</button>
         </div>
     </div>
 

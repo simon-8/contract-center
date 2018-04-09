@@ -20,7 +20,7 @@ class ManagerController extends Controller
      */
     public function getIndex(ManagerRepository $repository)
     {
-        $lists = $repository->lists();
+        $lists = $repository->list();
         $data = [
             'lists' => $lists,
         ];

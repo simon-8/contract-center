@@ -1,63 +1,70 @@
 @extends('layout.admin')
 @section('content')
 <div class="col-sm-12 animated fadeInRight">
-    <table class="table table-bordered table-hover bg-white text-center">
-        <tr>
-            <td width="50">排序</td>
-            <td width="50">编号</td>
-            {{--<td>上级菜单</td>--}}
-            <td width="150" align="left">菜单名称</td>
-            <td>控制器</td>
-            <td>方法名</td>
-            <td>图标</td>
-            <td width="100">子菜单数量</td>
-            <td width="180">操作</td>
-        </tr>
-        @if(isset($lists) && count($lists) > 0)
-            @foreach($lists as $v)
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>菜单管理</h5>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-bordered table-striped table-hover bg-white text-center">
                 <tr>
-                    <td>{{ $v['listorder'] }}</td>
-                    <td>{{ $v['id'] }}</td>
-                    {{--<td>{{ isset($lists[$v['pid']]['name']) ? $lists[$v['pid']]['name'] : '顶级菜单' }}</td>--}}
-                    <td align="left">{{ $v['name'] }}</td>
-                    <td>{{ $v['prefix'] }}</td>
-                    <td>{{ $v['route'] }}</td>
-                    <td>{{ $v['ico'] }}</td>
-                    <td>{{ $v['items'] }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加</button>
-                        <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }})">编辑</button>
-                        <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
-                    </td>
+                    <td width="50">排序</td>
+                    <td width="50">编号</td>
+                    {{--<td>上级菜单</td>--}}
+                    <td width="150" align="left">菜单名称</td>
+                    <td>控制器</td>
+                    <td>方法名</td>
+                    <td>图标</td>
+                    <td width="100">子菜单数量</td>
+                    <td width="180">操作</td>
                 </tr>
-                @if(isset($v['child']) && count($v['child']))
-                    @foreach($v['child'] as $vv)
+                @if(isset($lists) && count($lists) > 0)
+                    @foreach($lists as $v)
                         <tr>
-                            <td>{{ $vv['listorder'] }}</td>
-                            <td>{{ $vv['id'] }}</td>
-                            {{--<td>┗</td>--}}
-                            <td>&nbsp;&nbsp;┗ {{ $vv['name'] }}</td>
-                            <td>{{ $vv['prefix'] }}</td>
-                            <td>{{ $vv['route'] }}</td>
-                            <td>{{ $vv['ico'] }}</td>
-                            <td>{{ $vv['items'] }}</td>
+                            <td>{{ $v['listorder'] }}</td>
+                            <td>{{ $v['id'] }}</td>
+                            {{--<td>{{ isset($lists[$v['pid']]['name']) ? $lists[$v['pid']]['name'] : '顶级菜单' }}</td>--}}
+                            <td align="left">{{ $v['name'] }}</td>
+                            <td>{{ $v['prefix'] }}</td>
+                            <td>{{ $v['route'] }}</td>
+                            <td>{{ $v['ico'] }}</td>
+                            <td>{{ $v['items'] }}</td>
                             <td>
-                                <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data="{{ json_encode($vv) }}" onclick="Edit({{ $vv['id'] }})">编辑</button>
-                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $vv['id'] }})">删除</button>
+                                <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加</button>
+                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }})">编辑</button>
+                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
                             </td>
                         </tr>
+                        @if(isset($v['child']) && count($v['child']))
+                            @foreach($v['child'] as $vv)
+                                <tr>
+                                    <td>{{ $vv['listorder'] }}</td>
+                                    <td>{{ $vv['id'] }}</td>
+                                    {{--<td>┗</td>--}}
+                                    <td align="left">&nbsp;&nbsp;┗ {{ $vv['name'] }}</td>
+                                    <td>{{ $vv['prefix'] }}</td>
+                                    <td>{{ $vv['route'] }}</td>
+                                    <td>{{ $vv['ico'] }}</td>
+                                    <td>{{ $vv['items'] }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data="{{ json_encode($vv) }}" onclick="Edit({{ $vv['id'] }})">编辑</button>
+                                        <button class="btn btn-sm btn-danger" onclick="Delete({{ $vv['id'] }})">删除</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     @endforeach
+                @else
+                    <tr>
+                        <td colspan="7">
+                            未找到数据
+                        </td>
+                    </tr>
                 @endif
-            @endforeach
-        @else
-            <tr>
-                <td colspan="7">
-                    未找到数据
-                </td>
-            </tr>
-        @endif
-    </table>
-    <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加菜单</button>
+            </table>
+            <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加菜单</button>
+        </div>
+    </div>
     <script>
 
         var deleteModal = '#deleteModal';

@@ -41,13 +41,4 @@ class AdPlace extends Model
     {
         return $this->hasMany('App\Models\Ad', 'pid', 'id');
     }
-
-    /**
-     * 广告位对应的活动
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function Activity()
-    {
-        return $this->belongsTo('App\Models\Activity', 'aid', 'id');
-    }
 }

@@ -25,9 +25,14 @@ class BaseRepository
     /**
      * @return mixed
      */
-    public function lists()
+    public function list()
     {
         return $this->model->paginate(self::$pageSize);
+    }
+
+    public function listBy($where)
+    {
+        return $this->model->where($where)->paginate(self::$pageSize);
     }
 
     /**
