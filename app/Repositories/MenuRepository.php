@@ -25,17 +25,31 @@ class MenuRepository extends BaseRepository
         $data = [];
         foreach ($all as $k => $v) {
             if($v['pid'] == 0) {
-                if($v['prefix']){
-                    $v['url'] = routeNoCatch($v['prefix'] . '.' . $v['route']);
-                }else{
-                    $v['url'] = routeNoCatch($v['route']);
+                try {
+                    if($v['prefix']){
+                        $v['url'] = route($v['prefix'] . '.' . $v['route']);
+                    }else{
+                        $v['url'] = route($v['route']);
+                    }
+                } catch (\Exception $exception) {
+                    $v['url'] = $v['route'];
                 }
+
                 $data[$v['id']] = $v;
                 unset($all[$k]);
             }
         }
         foreach ($all as $k=>$v) {
-            $v['url'] = routeNoCatch($v['prefix'] . '.' . $v['route']);
+            try {
+                if($v['prefix']){
+                    $v['url'] = route($v['prefix'] . '.' . $v['route']);
+                }else{
+                    $v['url'] = route($v['route']);
+                }
+            } catch (\Exception $exception) {
+                $v['url'] = $v['route'];
+            }
+
             $data[$v['pid']]['child'][$v['id']] = $v;
         }
         return $data;

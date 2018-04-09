@@ -84,14 +84,7 @@
             var json = $('#edit_' + id).attr('data');
             json = JSON.parse(json);
             $.each(json , function(k , v){
-                if( k == 'pid' )
-                {
-                    $(updateModal).find('select[name=' + k + ']').val(v);
-                }
-                else
-                {
-                    $(updateModal).find('input[name=' + k + ']').val(v);
-                }
+                $(updateModal).find('input[name=' + k + ']').val(v);
             });
 
             $(updateModal).modal('show');
@@ -145,14 +138,14 @@
                             <label class="col-sm-2 control-label">路由前缀</label>
                             <div class="col-sm-10">
                                 <input id="prefix" type="text" class="form-control" name="prefix" value="{{ old('prefix') }}" placeholder="Manager">
-                                <span class="help-block m-b-none"></span>
+                                <span class="help-block m-b-none">若是URL地址请勿填写</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">详细路由</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="route" value="{{ old('route') }}" placeholder="getIndex">
-                                <span class="help-block m-b-none"></span>
+                                <span class="help-block m-b-none">若是URL地址请填写</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -218,14 +211,14 @@
                             <label class="col-sm-2 control-label">路由前缀</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="prefix" value="" placeholder="Manager">
-                                <span class="help-block m-b-none"></span>
+                                <span class="help-block m-b-none">若是URL地址请勿填写</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">详细路由</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="route" value="" placeholder="getIndex">
-                                <span class="help-block m-b-none"></span>
+                                <span class="help-block m-b-none">若是URL地址请填写</span>
                             </div>
                         </div>
                         <div class="form-group">

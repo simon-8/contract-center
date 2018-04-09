@@ -19,7 +19,7 @@ class MenuController extends Controller
      */
     public function getIndex(MenuRepository $repository)
     {
-        $lists = $repository->list();
+        $lists = $repository->lists();
         $data = [
             'lists' => $lists
         ];
