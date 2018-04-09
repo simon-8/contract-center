@@ -59,7 +59,7 @@ class MenusTableSeeder extends Seeder
                 'route' => 'index',
                 'ico' => 'fa fa-cog',
                 'listorder' => 0,
-                'items' => 3,
+                'items' => 5,
             ),
             4 => 
             array (
@@ -125,6 +125,28 @@ class MenusTableSeeder extends Seeder
                 'route' => 'index',
                 'ico' => 'fa fa-book',
                 'listorder' => 94,
+                'items' => 0,
+            ),
+            10 => 
+            array (
+                'id' => 15,
+                'pid' => 6,
+                'name' => '分类管理',
+                'prefix' => 'admin.category',
+                'route' => 'index',
+                'ico' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            11 => 
+            array (
+                'id' => 16,
+                'pid' => 6,
+                'name' => '系统日志',
+                'prefix' => '',
+                'route' => '/admin/logs',
+                'ico' => '',
+                'listorder' => 0,
                 'items' => 0,
             ),
         ));
