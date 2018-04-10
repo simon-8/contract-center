@@ -30,27 +30,30 @@ $(document).ready(function () {
         $(".sidebard-panel").css("min-height", e + "px")
     }
 
-    $("#side-menu").metisMenu(), $(".right-sidebar-toggle").click(function () {
+    $("#side-menu").metisMenu();
+    $(".right-sidebar-toggle").click(function () {
         $("#right-sidebar").toggleClass("sidebar-open")
     });
-    $(".sidebar-container").slimScroll({
-        height: "100%", railOpacity: .4, wheelStep: 10
-    });
+    //$(".sidebar-container").slimScroll({
+    //    height: "100%", railOpacity: .4, wheelStep: 10
+    //});
     $(".open-small-chat").click(function () {
-        $(this).children().toggleClass("fa-comments").toggleClass("fa-remove"), $(".small-chat-box").toggleClass("active")
+        $(this).children().toggleClass("fa-comments").toggleClass("fa-remove");
+        $(".small-chat-box").toggleClass("active")
     });
-    $(".small-chat-box .content").slimScroll({
-        height: "234px", railOpacity: .4
-    });
+    //$(".small-chat-box .content").slimScroll({
+    //    height: "234px", railOpacity: .4
+    //});
     $(".check-link").click(function () {
         var e = $(this).find("i"), a = $(this).next("span");
         return e.toggleClass("fa-check-square").toggleClass("fa-square-o"), a.toggleClass("todo-completed"), !1
     });
-    $(function () {
-        $(".sidebar-collapse").slimScroll({height: "100%", railOpacity: .9, alwaysVisible: !1})
-    });
+    //$(function () {
+    //    $(".sidebar-collapse").slimScroll({height: "100%", railOpacity: .9, alwaysVisible: !1})
+    //});
     $(".navbar-minimalize").click(function () {
-        $("body").toggleClass("mini-navbar"), SmoothlyMenu()
+        $("body").toggleClass("mini-navbar");
+        SmoothlyMenu()
     });
     e();
     $(window).bind("load resize click scroll", function () {
@@ -59,9 +62,9 @@ $(document).ready(function () {
     $(window).scroll(function () {
         $(window).scrollTop() > 0 && !$("body").hasClass("fixed-nav") ? $("#right-sidebar").addClass("sidebar-top") : $("#right-sidebar").removeClass("sidebar-top")
     });
-    $(".full-height-scroll").slimScroll({height: "100%"}), $("#side-menu>li").click(function () {
-        $("body").hasClass("mini-navbar") && NavToggle()
-    });
+    //$(".full-height-scroll").slimScroll({height: "100%"}), $("#side-menu>li").click(function () {
+    //    $("body").hasClass("mini-navbar") && NavToggle()
+    //});
     $("#side-menu>li li a").click(function () {
         $(window).width() < 769 && NavToggle()
     });
