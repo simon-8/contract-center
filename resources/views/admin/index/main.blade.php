@@ -29,7 +29,7 @@
     </script>
 </head>
 
-<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<body class="fixed-sidebar full-height-layout gray-bg skin-1" style="overflow:hidden">
 <div id="wrapper">
     <!--左侧导航开始-->
 @include('admin.public.navbar')
