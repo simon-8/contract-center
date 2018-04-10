@@ -38,4 +38,9 @@ class Article extends Model
     {
         return $query->where('title', 'like', '%'. $title .'%');
     }
+
+    public function getThumbAttribute($value)
+    {
+        return imgurl($value);
+    }
 }

@@ -20,7 +20,7 @@ class AdTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 2,
-                'pid' => 2,
+                'pid' => 1,
                 'thumb' => '/uploads/thumbs/201803/1521680276888.jpg',
                 'url' => '',
                 'title' => '广告图1',
@@ -32,7 +32,7 @@ class AdTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 3,
-                'pid' => 2,
+                'pid' => 1,
                 'thumb' => '/uploads/thumbs/201803/1521680290575.jpg',
                 'url' => '',
                 'title' => '广告图2',

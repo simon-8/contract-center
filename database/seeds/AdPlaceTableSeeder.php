@@ -19,7 +19,7 @@ class AdPlaceTableSeeder extends Seeder
         \DB::table('ad_place')->insert(array (
             0 => 
             array (
-                'id' => 2,
+                'id' => 1,
                 'aid' => 2,
                 'name' => '活动编号2的Banner',
                 'width' => 640,

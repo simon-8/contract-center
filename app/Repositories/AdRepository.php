@@ -29,6 +29,10 @@ class AdRepository
         return $this->placeModel->get();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function find($id)
     {
         return $this->placeModel->find($id);

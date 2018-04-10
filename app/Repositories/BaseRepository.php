@@ -30,9 +30,9 @@ class BaseRepository
         return $this->model->paginate(self::$pageSize);
     }
 
-    public function listBy($where)
+    public function listBy($where, $page = true)
     {
-        return $this->model->where($where)->paginate(self::$pageSize);
+        return $page ? $this->model->where($where)->paginate(self::$pageSize) : $this->model->where($where)->get();
     }
 
     /**
