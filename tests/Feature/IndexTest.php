@@ -13,7 +13,7 @@ class IndexTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testArticle()
     {
         // articles
         $response = $this->get('/api/article');
@@ -26,16 +26,20 @@ class IndexTest extends TestCase
         $response = $this->get('/api/article/'.$article['id']);
         $response->assertStatus(200)
                 ->assertJsonStructure(['id', 'content']);
+    }
 
-        // categorys
+    public function testCategorys()
+    {
         $response = $this->get('/api/category');
         $categorys = json_decode($response->getContent(), true);
         $category = array_shift($categorys);
 
         $response->assertStatus(200);
         $this->assertArrayHasKey('name', $category);
+    }
 
-        // banners
+    public function testBanners()
+    {
         $response = $this->get('/api/banner');
         $banners = json_decode($response->getContent(), true);
         $banner = array_shift($banners);

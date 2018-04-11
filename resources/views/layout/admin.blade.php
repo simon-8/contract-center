@@ -94,9 +94,9 @@
     function loading(close) {
         Boolean(close) ? $('#loadding_box').fadeOut(800) : $('#loadding_box').fadeIn(800);
     }
-
+    loading();
     $(function() {
-        //loading(true);
+        loading(true);
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green'
