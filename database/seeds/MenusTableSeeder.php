@@ -149,6 +149,17 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
+            12 => 
+            array (
+                'id' => 17,
+                'pid' => 0,
+                'name' => '单页管理',
+                'prefix' => 'admin.single',
+                'route' => 'index',
+                'ico' => 'fa fa-newspaper-o',
+                'listorder' => 93,
+                'items' => 0,
+            ),
         ));
         
         
