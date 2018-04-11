@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Article;
 use App\Models\AdPlace;
 use App\Models\Menu;
+use App\Models\SinglePage;
 
 class ModelObserverProvider extends ServiceProvider
 {
@@ -20,6 +21,7 @@ class ModelObserverProvider extends ServiceProvider
         Article::observe('App\Observers\ArticleObserver');
         AdPlace::observe('App\Observers\AdPlaceObserver');
         Menu::observe('App\Observers\MenuObserver');
+        SinglePage::observe('App\Observers\SinglePageObserver');
     }
 
     /**

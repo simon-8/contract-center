@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: *
+ * Note: 首页所需接口
  * User: Liu
  * Date: 2018/4/10
  */
@@ -13,6 +13,9 @@ use App\Repositories\CategoryRepository;
 
 class IndexController extends Controller
 {
+    protected static $bannerID = 1;
+    protected static $articlePID = 1;
+
     /**
      * @param ArticleRepository $articleRepository
      * @return mixed
@@ -23,12 +26,22 @@ class IndexController extends Controller
     }
 
     /**
+     * @param ArticleRepository $articleRepository
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
+     */
+    public function getArticleContent(ArticleRepository $articleRepository, $id)
+    {
+        return $articleRepository->find($id, true);
+    }
+
+    /**
      * @param AdRepository $adRepository
      * @return mixed
      */
     public function getBanner(AdRepository $adRepository)
     {
-        return $adRepository->find(1)->ad;
+        return $adRepository->find(self::$bannerID)->ad;
     }
 
     /**
@@ -37,8 +50,9 @@ class IndexController extends Controller
      */
     public function getCategory(CategoryRepository $categoryRepository)
     {
-        return $categoryRepository->listBy([
-            'pid' => 1
-        ], false);
+        $where = [
+            'pid' => self::$articlePID
+        ];
+        return $categoryRepository->listBy($where, false);
     }
 }

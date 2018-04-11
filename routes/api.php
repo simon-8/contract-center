@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 
 Route::prefix('/')->namespace('Api')->group(function() {
     Route::get('/article', 'IndexController@getArticle');
+    Route::get('/article/{id}', 'IndexController@getArticleContent');
     Route::get('/banner', 'IndexController@getBanner');
     Route::get('/category', 'IndexController@getCategory');
 });
