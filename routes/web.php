@@ -59,6 +59,7 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::get('/delete', 'ManagerController@getDelete')->name('admin.manager.delete');
         });
 
+        // article
         Route::prefix('article')->group(function() {
             Route::get('/', 'ArticleController@getIndex')->name('admin.article.index');
             Route::match(['get', 'post'],'/create', 'ArticleController@doCreate')->name('admin.article.create');
@@ -66,6 +67,7 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::get('/delete', 'ArticleController@getDelete')->name('admin.article.delete');
         });
 
+        // single
         Route::prefix('single')->group(function() {
             Route::get('/', 'SinglePageController@getIndex')->name('admin.single.index');
             Route::match(['get', 'post'],'/create', 'SinglePageController@doCreate')->name('admin.single.create');

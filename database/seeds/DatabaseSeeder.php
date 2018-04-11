@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AdTableSeeder::class);
         $this->call(AdPlaceTableSeeder::class);
         $this->call(ManagerTableSeeder::class);
-        $this->call(ActivityTableSeeder::class);
+        //$this->call(ActivityTableSeeder::class);
         $this->call(SettingsTableSeeder::class);
-        $this->call(GiftsTableSeeder::class);
+        //$this->call(GiftsTableSeeder::class);
         $this->call(UserTableSeeder::class);
         $this->call(CategorysTableSeeder::class);
         $this->call(ArticleTableSeeder::class);
