@@ -75,9 +75,10 @@ class ArticleRepository extends BaseRepository
 
     /**
      * @param $where
-     * @return mixed
+     * @param bool $page
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function listBy($where)
+    public function listBy($where, $page = true)
     {
         if (!empty($where['keyword'])) {
             $keyword = $where['keyword'];
