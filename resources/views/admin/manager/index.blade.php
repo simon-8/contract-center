@@ -10,6 +10,7 @@
                 <tr>
                     {{--<td width="30"><input type="checkbox" name="" id="" class="i-checks"></td>--}}
                     <td width="50">编号</td>
+                    <td>头像</td>
                     <td>用户名</td>
                     <td>昵称</td>
                     <td>邮箱</td>
@@ -24,6 +25,7 @@
                         <tr>
                             {{--<td width="30"><input type="checkbox" name="" id="" class="i-checks"></td>--}}
                             <td>{{ $v->id }}</td>
+                            <td><img src="{{ $v->avatar }}" alt="" width="30"></td>
                             <td>{{ $v->username }}</td>
                             <td>{{ $v->truename }}</td>
                             <td>{{ $v->email }}</td>

@@ -5,7 +5,7 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <span><img alt="image" class="img-circle" src="{{ skin_path() }}img/profile_small.jpg" /></span>
+                    <span><img alt="image" class="img-circle" src="{{ auth()->guard('admin')->user()->avatar }}" width="64"/></span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
                             <span class="block m-t-xs"><strong class="font-bold">{{ auth()->guard('admin')->user()->truename }}</strong></span>

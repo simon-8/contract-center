@@ -15,6 +15,7 @@ class Manager extends Authenticatable
         'truename',
         'email',
         'is_admin',
+        'avatar',
         'role',
         'salt',
         'lasttime',
@@ -35,5 +36,10 @@ class Manager extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = password_hash($value , PASSWORD_DEFAULT);
+    }
+
+    public function getAvatar($value)
+    {
+        $this->attributes['avatar'] = imgurl($value);
     }
 }

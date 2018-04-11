@@ -39,6 +39,7 @@ class ManagerController extends Controller
             return admin_view('manager.create');
         }
         $data = $request::all();
+        $data['avatar'] = upload_base64_thumb($data['avatar']);
 
         $validator = ManagerStore::validateCreate($data);
         if ($validator->fails()) {
@@ -65,6 +66,7 @@ class ManagerController extends Controller
             return admin_view('manager.create', $data);
         }
         $data = $request::all();
+        $data['avatar'] = upload_base64_thumb($data['avatar']);
         if (empty($data['password'])) unset($data['password']);
 
         $validator = ManagerStore::validateUpdate($data);

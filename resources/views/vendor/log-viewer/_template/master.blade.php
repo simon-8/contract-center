@@ -24,7 +24,7 @@
         @yield('content')
     </div>
 
-    @include('log-viewer::_template.footer')
+    {{--@include('log-viewer::_template.footer')--}}
 
     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

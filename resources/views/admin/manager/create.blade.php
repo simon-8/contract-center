@@ -91,38 +91,22 @@
                 </div>
             </div>
         </div>
-        {{--<div class="col-sm-12 col-md-6">--}}
-            {{--<div class="ibox-title">--}}
-                {{--<h5>其他设置</h5>--}}
-            {{--</div>--}}
-            {{--<div class="ibox-content">--}}
-                {{--<div class="form-group">--}}
-                    {{--<label class="col-sm-2 control-label">模块权限</label>--}}
-                    {{--<div class="col-sm-10">--}}
-                        {{--<input type="text" class="form-control" name="" value="">--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="hr-line-dashed"></div>--}}
-                {{--<div class="form-group">--}}
-                    {{--<label class="col-sm-2 control-label">功能细分</label>--}}
-                    {{--<div class="col-sm-10">--}}
-                        {{--<input type="password" class="form-control" name="" value="">--}}
-                        {{--<span class="help-block m-b-none">仅支持数字和字母的组合</span>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-
-                {{--<div class="hr-line-dashed"></div>--}}
-                {{--<div class="form-group">--}}
-                    {{--<label class="col-sm-2 control-label">权限管理</label>--}}
-                    {{--<div class="col-sm-10">--}}
-                        {{--<input type="password" class="form-control" name="" value="">--}}
-                        {{--<span class="help-block m-b-none">仅支持数字和字母的组合</span>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="form-group"></div>--}}
-                {{--<div class="hr-line-dashed"></div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
+        <div class="col-sm-12 col-md-6">
+            <div class="ibox-title">
+                <h5>其他设置</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">头像设置</label>
+                    <div class="col-sm-10">
+                        <img src="{{ imgurl(isset($avatar) ? $avatar : old('avatar')) }}" id="pavatar" class="bg-warning" style="width: 100px; height: 100px;">
+                        <input type="hidden" id="avatar" name="avatar" value="{{ empty($avatar) ? old('avatar') : $avatar }}">
+                        <button class="btn btn-lg" type="button" onclick="Sthumb('avatar', 100, 100);" style="height: 100px; margin-bottom: 0;">上传</button>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+            </div>
+        </div>
     </form>
 </div>
 

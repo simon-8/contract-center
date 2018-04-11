@@ -20,7 +20,7 @@
                                 <div class="info-box-content">
                                     <span class="info-box-text">{{ $item['name'] }}</span>
                                     <span class="info-box-number">
-                                        {{ $item['count'] }} entries - {!! $item['percent'] !!} %
+                                        {{ $item['count'] }} 个 - {!! $item['percent'] !!} %
                                     </span>
                                     <div class="progress">
                                         <div class="progress-bar" style="width: {{ $item['percent'] }}%"></div>
