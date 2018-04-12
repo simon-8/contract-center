@@ -119,7 +119,7 @@
                     @endforeach
                 @else
                     <tr class="unread">
-                        <td>
+                        <td colspan="7">
                             暂无数据
                         </td>
                     </tr>
