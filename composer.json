@@ -11,6 +11,7 @@
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "mews/captcha": "^2.2",
         "orangehill/iseed": "^2.5",
         "overtrue/laravel-wechat": "~4.0"
     },

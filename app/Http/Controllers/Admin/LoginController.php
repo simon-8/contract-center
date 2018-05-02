@@ -69,5 +69,15 @@ class LoginController extends Controller
         return redirect('/admin');
     }
 
-
+    /**
+     * @param Request $request
+     */
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'captcha'  => 'required|captcha'
+        ]);
+    }
 }

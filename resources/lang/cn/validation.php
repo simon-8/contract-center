@@ -87,6 +87,7 @@ return [
     'unique'               => ':attribute 已经存在.',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => ':attribute 格式错误.',
+    'captcha'              => ':attribute 不正确',
 
     /*
     |--------------------------------------------------------------------------
@@ -118,6 +119,7 @@ return [
 
     'attributes' => [
         'catid'     => '分类',
+        'captcha'   => '验证码',
         'content'   => '内容',
         'email'     => '邮箱',
         'height'    => '高度',
