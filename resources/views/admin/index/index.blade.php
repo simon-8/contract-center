@@ -31,28 +31,30 @@
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-success pull-right">月</span>
-                    <h5>收入</h5>
+                    <span class="label label-success pull-right">今天</span>
+                    <h5>新增文档</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">40 886,200</h1>
-                    <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i>
+                    <h1 class="no-margins">{{ $counts['articleDaily'] }}</h1>
+                    <div class="stat-percent font-bold text-success">
+                        {{ $counts['articleInsertPrecent'] }}% <i class="fa fa-level-up"></i>
                     </div>
-                    <small>总收入</small>
+                    <small>总文档</small>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-info pull-right">全年</span>
-                    <h5>订单</h5>
+                    <span class="label label-info pull-right">今天</span>
+                    <h5>新增单页</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">275,800</h1>
-                    <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i>
+                    <h1 class="no-margins">{{ $counts['singleDaily'] }}</h1>
+                    <div class="stat-percent font-bold text-info">
+                        {{ $counts['singleInsertPrecent'] }}% <i class="fa fa-level-up"></i>
                     </div>
-                    <small>新订单</small>
+                    <small>总单页</small>
                 </div>
             </div>
         </div>
@@ -63,8 +65,9 @@
                     <h5>访客</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">106,120</h1>
-                    <div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i>
+                    <h1 class="no-margins">{{ $counts['hitsDaily'] }}</h1>
+                    <div class="stat-percent font-bold text-navy">
+                        0% <i class="fa fa-level-up"></i>
                     </div>
                     <small>新访客</small>
                 </div>
@@ -89,7 +92,7 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>订单</h5>
+                    <h5>文档</h5>
                     <div class="pull-right">
                         <div class="btn-group">
                             <button type="button" class="btn btn-xs btn-white active">天</button>
@@ -109,7 +112,7 @@
                             <ul class="stat-list">
                                 <li>
                                     <h2 class="no-margins">2,346</h2>
-                                    <small>订单总数</small>
+                                    <small>文档总数</small>
                                     <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i>
                                     </div>
                                     <div class="progress progress-mini">
@@ -118,7 +121,7 @@
                                 </li>
                                 <li>
                                     <h2 class="no-margins ">4,422</h2>
-                                    <small>最近一个月订单</small>
+                                    <small>最近一个月文档</small>
                                     <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i>
                                     </div>
                                     <div class="progress progress-mini">
@@ -533,7 +536,7 @@
 <script src="{{ skin_path() }}js/demo/sparkline-demo.min.js"></script>
 
 <script>
-    $(document).ready(function(){$(".chart").easyPieChart({barColor:"#f8ac59",scaleLength:5,lineWidth:4,size:80});$(".chart2").easyPieChart({barColor:"#1c84c6",scaleLength:5,lineWidth:4,size:80});var h=[[c(2012,1,1),7],[c(2012,1,2),6],[c(2012,1,3),4],[c(2012,1,4),8],[c(2012,1,5),9],[c(2012,1,6),7],[c(2012,1,7),5],[c(2012,1,8),4],[c(2012,1,9),7],[c(2012,1,10),8],[c(2012,1,11),9],[c(2012,1,12),6],[c(2012,1,13),4],[c(2012,1,14),5],[c(2012,1,15),11],[c(2012,1,16),8],[c(2012,1,17),8],[c(2012,1,18),11],[c(2012,1,19),11],[c(2012,1,20),6],[c(2012,1,21),6],[c(2012,1,22),8],[c(2012,1,23),11],[c(2012,1,24),13],[c(2012,1,25),7],[c(2012,1,26),9],[c(2012,1,27),9],[c(2012,1,28),8],[c(2012,1,29),5],[c(2012,1,30),8],[c(2012,1,31),25]];var g=[[c(2012,1,1),800],[c(2012,1,2),500],[c(2012,1,3),600],[c(2012,1,4),700],[c(2012,1,5),500],[c(2012,1,6),456],[c(2012,1,7),800],[c(2012,1,8),589],[c(2012,1,9),467],[c(2012,1,10),876],[c(2012,1,11),689],[c(2012,1,12),700],[c(2012,1,13),500],[c(2012,1,14),600],[c(2012,1,15),700],[c(2012,1,16),786],[c(2012,1,17),345],[c(2012,1,18),888],[c(2012,1,19),888],[c(2012,1,20),888],[c(2012,1,21),987],[c(2012,1,22),444],[c(2012,1,23),999],[c(2012,1,24),567],[c(2012,1,25),786],[c(2012,1,26),666],[c(2012,1,27),888],[c(2012,1,28),900],[c(2012,1,29),178],[c(2012,1,30),555],[c(2012,1,31),993]];var e=[{label:"订单数",data:g,color:"#1ab394",bars:{show:true,align:"center",barWidth:24*60*60*600,lineWidth:0}},{label:"付款数",data:h,yaxis:2,color:"#464f88",lines:{lineWidth:1,show:true,fill:true,fillColor:{colors:[{opacity:0.2},{opacity:0.2}]}},splines:{show:false,tension:0.6,lineWidth:1,fill:0.1},}];var a={xaxis:{mode:"time",tickSize:[3,"day"],tickLength:0,axisLabel:"Date",axisLabelUseCanvas:true,axisLabelFontSizePixels:12,axisLabelFontFamily:"Arial",axisLabelPadding:10,color:"#838383"},yaxes:[{position:"left",max:1070,color:"#838383",axisLabelUseCanvas:true,axisLabelFontSizePixels:12,axisLabelFontFamily:"Arial",axisLabelPadding:3},{position:"right",clolor:"#838383",axisLabelUseCanvas:true,axisLabelFontSizePixels:12,axisLabelFontFamily:" Arial",axisLabelPadding:67}],legend:{noColumns:1,labelBoxBorderColor:"#000000",position:"nw"},grid:{hoverable:false,borderWidth:0,color:"#838383"}};function c(j,k,i){return new Date(j,k-1,i).getTime()}var b=null,d=null;$.plot($("#flot-dashboard-chart"),e,a);var f={"US":298,"SA":200,"DE":220,"FR":540,"CN":120,"AU":760,"BR":550,"IN":200,"GB":120,};$("#world-map").vectorMap({map:"world_mill_en",backgroundColor:"transparent",regionStyle:{initial:{fill:"#e4e4e4","fill-opacity":0.9,stroke:"none","stroke-width":0,"stroke-opacity":0}},series:{regions:[{values:f,scale:["#1ab394","#22d6b1"],normalizeFunction:"polynomial"}]},})});
+    $(document).ready(function(){$(".chart").easyPieChart({barColor:"#f8ac59",scaleLength:5,lineWidth:4,size:80});$(".chart2").easyPieChart({barColor:"#1c84c6",scaleLength:5,lineWidth:4,size:80});var h=[[c(2012,1,1),7],[c(2012,1,2),6],[c(2012,1,3),4],[c(2012,1,4),8],[c(2012,1,5),9],[c(2012,1,6),7],[c(2012,1,7),5],[c(2012,1,8),4],[c(2012,1,9),7],[c(2012,1,10),8],[c(2012,1,11),9],[c(2012,1,12),6],[c(2012,1,13),4],[c(2012,1,14),5],[c(2012,1,15),11],[c(2012,1,16),8],[c(2012,1,17),8],[c(2012,1,18),11],[c(2012,1,19),11],[c(2012,1,20),6],[c(2012,1,21),6],[c(2012,1,22),8],[c(2012,1,23),11],[c(2012,1,24),13],[c(2012,1,25),7],[c(2012,1,26),9],[c(2012,1,27),9],[c(2012,1,28),8],[c(2012,1,29),5],[c(2012,1,30),8],[c(2012,1,31),25]];var g=[[c(2012,1,1),800],[c(2012,1,2),500],[c(2012,1,3),600],[c(2012,1,4),700],[c(2012,1,5),500],[c(2012,1,6),456],[c(2012,1,7),800],[c(2012,1,8),589],[c(2012,1,9),467],[c(2012,1,10),876],[c(2012,1,11),689],[c(2012,1,12),700],[c(2012,1,13),500],[c(2012,1,14),600],[c(2012,1,15),700],[c(2012,1,16),786],[c(2012,1,17),345],[c(2012,1,18),888],[c(2012,1,19),888],[c(2012,1,20),888],[c(2012,1,21),987],[c(2012,1,22),444],[c(2012,1,23),999],[c(2012,1,24),567],[c(2012,1,25),786],[c(2012,1,26),666],[c(2012,1,27),888],[c(2012,1,28),900],[c(2012,1,29),178],[c(2012,1,30),555],[c(2012,1,31),993]];var e=[{label:"文档数",data:g,color:"#1ab394",bars:{show:true,align:"center",barWidth:24*60*60*600,lineWidth:0}},{label:"付款数",data:h,yaxis:2,color:"#464f88",lines:{lineWidth:1,show:true,fill:true,fillColor:{colors:[{opacity:0.2},{opacity:0.2}]}},splines:{show:false,tension:0.6,lineWidth:1,fill:0.1},}];var a={xaxis:{mode:"time",tickSize:[3,"day"],tickLength:0,axisLabel:"Date",axisLabelUseCanvas:true,axisLabelFontSizePixels:12,axisLabelFontFamily:"Arial",axisLabelPadding:10,color:"#838383"},yaxes:[{position:"left",max:1070,color:"#838383",axisLabelUseCanvas:true,axisLabelFontSizePixels:12,axisLabelFontFamily:"Arial",axisLabelPadding:3},{position:"right",clolor:"#838383",axisLabelUseCanvas:true,axisLabelFontSizePixels:12,axisLabelFontFamily:" Arial",axisLabelPadding:67}],legend:{noColumns:1,labelBoxBorderColor:"#000000",position:"nw"},grid:{hoverable:false,borderWidth:0,color:"#838383"}};function c(j,k,i){return new Date(j,k-1,i).getTime()}var b=null,d=null;$.plot($("#flot-dashboard-chart"),e,a);var f={"US":298,"SA":200,"DE":220,"FR":540,"CN":120,"AU":760,"BR":550,"IN":200,"GB":120,};$("#world-map").vectorMap({map:"world_mill_en",backgroundColor:"transparent",regionStyle:{initial:{fill:"#e4e4e4","fill-opacity":0.9,stroke:"none","stroke-width":0,"stroke-opacity":0}},series:{regions:[{values:f,scale:["#1ab394","#22d6b1"],normalizeFunction:"polynomial"}]},})});
 </script>
 
 

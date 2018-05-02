@@ -9,6 +9,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Repositories\MenuRepository;
+use App\Repositories\ArticleRepository;
+use App\Repositories\SinglePageRepository;
+use App\Repositories\HitRecordRepository;
+
 class IndexController extends Controller
 {
     public function getMain(MenuRepository $menuRepository)
@@ -20,7 +24,7 @@ class IndexController extends Controller
         return admin_view('index.main', $data);
     }
 
-    public function getIndex()
+    public function getIndex(ArticleRepository $articleRepository, SinglePageRepository $singlePageRepository, HitRecordRepository $hitRecordRepository)
     {
         $envs = [
             ['name' => 'PHP version',       'value' => 'PHP/'.PHP_VERSION],
@@ -36,8 +40,18 @@ class IndexController extends Controller
             ['name' => 'Env',               'value' => config('app.env')],
             ['name' => 'URL',               'value' => config('app.url')],
         ];
+        $counts = [
+            'articleTotal' => $articleRepository->count(),
+            'articleDaily' => $articleRepository->dailyInsertCount(),
+            'singleTotal'  => $singlePageRepository->count(),
+            'singleDaily'  => $singlePageRepository->dailyInsertCount(),
+            'hitsDaily'    => $hitRecordRepository->sum(date('Y-m-d'))
+        ];
+        $counts['articleInsertPrecent'] = $counts['articleDaily'] ? sprintf('%.2f', ($counts['articleDaily'] / $counts['articleTotal'])*100) : 0;
+        $counts['singleInsertPrecent'] = $counts['singleDaily'] ? sprintf('%.2f', ($counts['singleDaily'] / $counts['singleTotal'])*100) : 0;
         $data = [
-            'envs'  => $envs
+            'envs'  => $envs,
+            'counts'=> $counts
         ];
         return admin_view('index.index', $data);
     }

@@ -88,4 +88,20 @@ class ArticleRepository extends BaseRepository
         if (isset($keyword)) $query = $query->title($keyword);
         return $query->paginate(self::$pageSize);
     }
+
+    /**
+     * @return mixed
+     */
+    public function count()
+    {
+        return $this->model->count();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function dailyInsertCount()
+    {
+        return $this->model->where('created_at', '>', date('Y-m-d 00:00:00'))->count();
+    }
 }
