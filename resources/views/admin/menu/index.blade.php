@@ -84,7 +84,7 @@
             var json = $('#edit_' + id).attr('data');
             json = JSON.parse(json);
             $.each(json , function(k , v){
-                $(updateModal).find('input[name=' + k + ']').val(v);
+                $(updateModal).find('[name=' + k + ']').val(v);
             });
 
             $(updateModal).modal('show');

@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class RoleGroup extends Model
 {
+    public $table = 'role_group';
+
     public $fillable = [
         'name',
         'access',
@@ -30,4 +32,11 @@ class RoleGroup extends Model
     {
         return $this->hasMany('App\Models\Manager', 'groupid', 'id');
     }
+
+    //public function accessName()
+    //{
+    //    foreach ($this->access as $access) {
+    //
+    //    }
+    //}
 }

@@ -37,7 +37,7 @@ class MenusTableSeeder extends Seeder
                 'route' => 'index',
                 'ico' => 'fa fa-users',
                 'listorder' => 96,
-                'items' => 0,
+                'items' => 3,
             ),
             2 => 
             array (
@@ -158,6 +158,39 @@ class MenusTableSeeder extends Seeder
                 'route' => 'index',
                 'ico' => 'fa fa-newspaper-o',
                 'listorder' => 93,
+                'items' => 0,
+            ),
+            13 => 
+            array (
+                'id' => 18,
+                'pid' => 2,
+                'name' => '权限管理',
+                'prefix' => 'admin.manager',
+                'route' => 'access',
+                'ico' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            14 => 
+            array (
+                'id' => 19,
+                'pid' => 2,
+                'name' => '用户列表',
+                'prefix' => 'admin.manager',
+                'route' => 'index',
+                'ico' => '',
+                'listorder' => 3,
+                'items' => 0,
+            ),
+            15 => 
+            array (
+                'id' => 20,
+                'pid' => 2,
+                'name' => '会员组管理',
+                'prefix' => 'admin.rolegroup',
+                'route' => 'index',
+                'ico' => '',
+                'listorder' => 0,
                 'items' => 0,
             ),
         ));
