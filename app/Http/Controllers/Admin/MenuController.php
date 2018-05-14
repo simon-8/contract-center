@@ -8,6 +8,8 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\MenuStore;
+
 use App\Repositories\MenuRepository;
 
 class MenuController extends Controller
@@ -20,8 +22,10 @@ class MenuController extends Controller
     public function getIndex(MenuRepository $repository)
     {
         $lists = $repository->lists();
+        $routeNames = \Route::getRoutes()->getRoutesByName();
         $data = [
-            'lists' => $lists
+            'lists' => $lists,
+            'routeNames' => $routeNames
         ];
         return admin_view('menu.index', $data);
     }
@@ -32,7 +36,7 @@ class MenuController extends Controller
      * @param MenuRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postCreate(\Request $request, MenuRepository $repository)
+    public function postCreate(MenuStore $menuStore, \Request $request, MenuRepository $repository)
     {
         $data = $request::all();
         if ($repository->create($data)) {
@@ -48,7 +52,7 @@ class MenuController extends Controller
      * @param MenuRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postUpdate(\Request $request, MenuRepository $repository)
+    public function postUpdate(MenuStore $menuStore, \Request $request, MenuRepository $repository)
     {
         $data = $request::all();
         if ($repository->update($data)) {

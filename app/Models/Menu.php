@@ -20,8 +20,8 @@ class Menu extends Model
     protected $fillable = [
         'pid',
         'name',
-        'prefix',
         'route',
+        'link',
         'ico',
         'listorder',
         'items',

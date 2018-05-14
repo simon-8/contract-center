@@ -12,8 +12,8 @@
                     <td width="50">编号</td>
                     {{--<td>上级菜单</td>--}}
                     <td width="150" align="left">菜单名称</td>
-                    <td>控制器</td>
-                    <td>方法名</td>
+                    <td>路由名称</td>
+                    <td>链接地址</td>
                     <td>图标</td>
                     <td width="100">子菜单数量</td>
                     <td width="180">操作</td>
@@ -25,8 +25,8 @@
                             <td>{{ $v['id'] }}</td>
                             {{--<td>{{ isset($lists[$v['pid']]['name']) ? $lists[$v['pid']]['name'] : '顶级菜单' }}</td>--}}
                             <td align="left">{{ $v['name'] }}</td>
-                            <td>{{ $v['prefix'] }}</td>
-                            <td>{{ $v['route'] }}</td>
+                            <td>{{ $v['route']?:'无' }}</td>
+                            <td>{{ $v['link']?:'无' }}</td>
                             <td>{{ $v['ico'] }}</td>
                             <td>{{ $v['items'] }}</td>
                             <td>
@@ -42,8 +42,8 @@
                                     <td>{{ $vv['id'] }}</td>
                                     {{--<td>┗</td>--}}
                                     <td align="left">&nbsp;&nbsp;┗ {{ $vv['name'] }}</td>
-                                    <td>{{ $vv['prefix'] }}</td>
-                                    <td>{{ $vv['route'] }}</td>
+                                    <td>{{ $vv['route']?:'无' }}</td>
+                                    <td>{{ $vv['link']?:'无' }}</td>
                                     <td>{{ $vv['ico'] }}</td>
                                     <td>{{ $vv['items'] }}</td>
                                     <td>
@@ -135,16 +135,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">路由前缀</label>
+                            <label class="col-sm-2 control-label">路由名称</label>
                             <div class="col-sm-10">
-                                <input id="prefix" type="text" class="form-control" name="prefix" value="{{ old('prefix') }}" placeholder="Manager">
-                                <span class="help-block m-b-none">若是URL地址请勿填写</span>
+                                <select name="route" class="form-control">
+                                    <option value="">请选择</option>
+                                        @foreach($routeNames as $k => $v)
+                                            <option value="{{ $k }}">{{ $k }}</option>
+                                        @endforeach
+                                </select>
+                                <span class="help-block m-b-none">若是URL地址请留空</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">详细路由</label>
+                            <label class="col-sm-2 control-label">链接地址</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="route" value="{{ old('route') }}" placeholder="getIndex">
+                                <input type="text" class="form-control" name="link" value="{{ old('link') }}" placeholder="">
                                 <span class="help-block m-b-none">若是URL地址请填写</span>
                             </div>
                         </div>
@@ -190,7 +195,7 @@
                             <label class="col-sm-2 control-label">父分类</label>
                             <div class="col-sm-10">
                                 <select name="pid" id="" class="form-control">
-                                    <option value="0">请选择</option>
+                                    <option value="">请选择</option>
                                     @if (isset($lists))
                                         @foreach($lists as $v)
                                             <option value="{{ $v['id'] }}">{{ $v['name'] }}</option>
@@ -208,16 +213,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">路由前缀</label>
+                            <label class="col-sm-2 control-label">路由名称</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="prefix" value="" placeholder="Manager">
-                                <span class="help-block m-b-none">若是URL地址请勿填写</span>
+                                <select name="route" class="form-control">
+                                    <option value="0">请选择</option>
+                                    @foreach($routeNames as $k => $v)
+                                        <option value="{{ $k }}">{{ $k }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="help-block m-b-none">若是URL地址请留空</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">详细路由</label>
+                            <label class="col-sm-2 control-label">链接地址</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="route" value="" placeholder="getIndex">
+                                <input type="text" class="form-control" name="link" value="" placeholder="">
                                 <span class="help-block m-b-none">若是URL地址请填写</span>
                             </div>
                         </div>

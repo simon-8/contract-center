@@ -25,9 +25,9 @@ class MenuStore extends FormRequest
     {
         return [
             'pid' => 'required',
-            'name',
-            'prefix',
-            'route',
+            'name' => 'required',
+            'route' => 'required_without:link',
+            'link' => 'required_without:route',
             'ico',
             'listorder',
             'items',

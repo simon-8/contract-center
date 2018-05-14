@@ -24,32 +24,22 @@ class MenuRepository extends BaseRepository
         $all = $this->model->orderBy('listorder', 'desc')->get()->toArray();
         $data = [];
         foreach ($all as $k => $v) {
-            if($v['pid'] == 0) {
-                try {
-                    if($v['prefix']){
-                        $v['url'] = route($v['prefix'] . '.' . $v['route']);
-                    }else{
-                        $v['url'] = route($v['route']);
-                    }
-                } catch (\Exception $exception) {
-                    $v['url'] = $v['route'];
+            if ($v['pid'] == 0) {
+                if ($v['route']) {
+                    $v['url'] = route($v['route']);
+                } else {
+                    $v['url'] = $v['link'];
                 }
-
                 $data[$v['id']] = $v;
                 unset($all[$k]);
             }
         }
-        foreach ($all as $k=>$v) {
-            try {
-                if($v['prefix']){
-                    $v['url'] = route($v['prefix'] . '.' . $v['route']);
-                }else{
-                    $v['url'] = route($v['route']);
-                }
-            } catch (\Exception $exception) {
-                $v['url'] = $v['route'];
+        foreach ($all as $k => $v) {
+            if ($v['route']) {
+                $v['url'] = route($v['route']);
+            } else {
+                $v['url'] = $v['link'];
             }
-
             $data[$v['pid']]['child'][$v['id']] = $v;
         }
         return $data;
