@@ -17,6 +17,7 @@ class CreateRoleAccessTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('pid')->comment('上级权限');
             $table->string('name')->comment('权限名称');
+            $table->string('method')->comment('方法类型');
             $table->string('path')->comment('权限路径');
         });
     }

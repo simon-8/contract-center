@@ -6855,7 +6855,9 @@ body.skin-3 {
 .checkbox-inline, .checkbox-inline + .checkbox-inline, .radio-inline, .radio-inline + .radio-inline {
     margin: 0 15px 0 0
 }
-
+.checkbox label:first-child, .radio label:first-child {
+    padding-left: 0;
+}
 .navbar-toggle {
     background-color: #fff
 }

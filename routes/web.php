@@ -67,6 +67,14 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::get('/delete', 'RoleGroupController@getDelete')->name('admin.rolegroup.delete');
         });
 
+        // access
+        Route::prefix('role-access')->group(function() {
+            Route::get('/', 'RoleAccessController@getIndex')->name('admin.roleaccess.index');
+            Route::match(['get', 'post'],'/create', 'RoleAccessController@doCreate')->name('admin.roleaccess.create');
+            Route::match(['get', 'post'],'/update', 'RoleAccessController@doUpdate')->name('admin.roleaccess.update');
+            Route::get('/delete', 'RoleAccessController@getDelete')->name('admin.roleaccess.delete');
+        });
+
         // article
         Route::prefix('article')->group(function() {
             Route::get('/', 'ArticleController@getIndex')->name('admin.article.index');

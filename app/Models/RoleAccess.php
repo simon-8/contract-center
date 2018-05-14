@@ -10,11 +10,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class RoleAccess extends Model
 {
+    public $table = 'role_access';
+
+    public $timestamps = false;
+
     public $fillable = [
         'pid',
         'name',
+        'method',
         'path'
     ];
+
+    public function getMethodAttribute($value)
+    {
+        return $value ? explode(',', $value) : [];
+    }
+
+    public function setMethodAttribute($value)
+    {
+        $this->attributes['method'] = $value ? implode(',', $value) : '';
+    }
 
     public function child()
     {

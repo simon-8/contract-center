@@ -14,14 +14,4 @@ class RoleGroupRepository extends BaseRepository
     {
         parent::__construct(new RoleGroup());
     }
-    /**
-     * 密码校验
-     * @param $input_password
-     * @param $password
-     * @return bool
-     */
-    //public function compare_password($input_password , $password)
-    //{
-    //    return password_verify($input_password , $password);
-    //}
 }
