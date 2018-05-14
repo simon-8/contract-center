@@ -93,7 +93,7 @@
             var json = $('#edit_' + id).attr('data');
             json = JSON.parse(json);
             $(createModal).find('select[name=pid]').val(json.id);
-            $(createModal).find('input[name=prefix]').val(json.prefix);
+            //$(createModal).find('input[name=prefix]').val(json.prefix);
             $(createModal).modal('show');
         }
     </script>
@@ -195,7 +195,7 @@
                             <label class="col-sm-2 control-label">父分类</label>
                             <div class="col-sm-10">
                                 <select name="pid" id="" class="form-control">
-                                    <option value="">请选择</option>
+                                    <option value="0">请选择</option>
                                     @if (isset($lists))
                                         @foreach($lists as $v)
                                             <option value="{{ $v['id'] }}">{{ $v['name'] }}</option>
@@ -216,7 +216,7 @@
                             <label class="col-sm-2 control-label">路由名称</label>
                             <div class="col-sm-10">
                                 <select name="route" class="form-control">
-                                    <option value="0">请选择</option>
+                                    <option value="">请选择</option>
                                     @foreach($routeNames as $k => $v)
                                         <option value="{{ $k }}">{{ $k }}</option>
                                     @endforeach
