@@ -25,29 +25,75 @@
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">请求路径</label>
-                    <div class="col-sm-10">
-                        <input id="path" type="text" class="form-control" name="path" value="{{ isset($path) ? $path : old('path') }}">
-                        <span class="help-block m-b-none"></span>
-                    </div>
-                </div>
-                <div class="hr-line-dashed"></div>
 
-                <div class="form-group role-div">
-                    <label class="col-sm-2 control-label">请求类型</label>
-                    <div class="col-sm-10">
-                        <div class="checkbox">
-                            @foreach($allowMethods as $v)
-                                <label>
-                                    <input type="checkbox" class="i-checks" name="method[]" value="{{ $v }}" {{ (isset($method) && in_array($v, $method)) ? 'checked' : '' }}>{{ $v }}
-                                </label>
-                            @endforeach
+                {{--<div class="form-group role-div">--}}
+                    {{--<label class="col-sm-2 control-label">匹配模式</label>--}}
+                    {{--<div class="col-sm-10">--}}
+                        {{--<div class="checkbox">--}}
+                            {{--<label>--}}
+                                {{--<input type="radio" class="i-checks" name="mode" value="1" {{ 0 ? 'checked' : '' }}>URL匹配--}}
+                            {{--</label>--}}
+                            {{--<label>--}}
+                                {{--<input type="radio" class="i-checks" name="mode" value="2" {{ 1 ? 'checked' : '' }}>路由匹配--}}
+                            {{--</label>--}}
+                        {{--</div>--}}
+                        {{--<span class="help-block m-b-none"></span>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="hr-line-dashed"></div>--}}
+
+                {{--<div id="content_1">--}}
+                    {{--<div class="form-group">--}}
+                        {{--<label class="col-sm-2 control-label">请求路径</label>--}}
+                        {{--<div class="col-sm-10">--}}
+                            {{--<input id="path" type="text" class="form-control" name="path"--}}
+                                   {{--value="{{ isset($path) ? $path : old('path') }}">--}}
+                            {{--<span class="help-block m-b-none">支持通配符*</span>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="hr-line-dashed"></div>--}}
+
+                    <div class="form-group role-div">
+                        <label class="col-sm-2 control-label">请求类型</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                @foreach($allowMethods as $v)
+                                    <label>
+                                        <input type="checkbox" class="i-checks" name="method[]"
+                                               value="{{ $v }}" {{ (isset($method) && in_array($v, $method)) ? 'checked' : '' }}>{{ $v }}
+                                    </label>
+                                @endforeach
+                            </div>
+                            <span class="help-block m-b-none">留空表示所有请求类型</span>
                         </div>
-                        <span class="help-block m-b-none">留空表示所有请求类型</span>
                     </div>
-                </div>
-                <div class="hr-line-dashed"></div>
+                    <div class="hr-line-dashed"></div>
+                {{--</div>--}}
+                {{--<div id="content_2">--}}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">路由名称</label>
+                        <div class="col-sm-10">
+
+                            <input name="path" list="routelist" type="text" class="form-control">
+                            <datalist id="routelist">
+                                @foreach($routeNames as $k => $v)
+                                    <option value="{{ $k }}">{{ $k }}</option>
+                                @endforeach
+                            </datalist>
+
+
+                            {{--<select name="route" class="form-control">--}}
+                                {{--<option value="">请选择</option>--}}
+                                {{--@foreach($routeNames as $k => $v)--}}
+                                    {{--<option value="{{ $k }}">{{ $k }}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                            {{--<input id="path" type="text" class="form-control" name="path" value="{{ isset($path) ? $path : old('path') }}">--}}
+                            <span class="help-block m-b-none">若是URL地址请留空</span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                {{--</div>--}}
 
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
@@ -75,5 +121,18 @@
         </div>
     </form>
 </div>
-
+<script>
+    $(function() {
+        $('[name=mode]').change(function() {
+            console.log($(this).val());
+            if ($(this).val() === '1') {
+                $('#content_1').show();
+                $('#content_2').hide();
+            } else {
+                $('#content_2').show();
+                $('#content_1').hide();
+            }
+        });
+    });
+</script>
 @endsection('content')

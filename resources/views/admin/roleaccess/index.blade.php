@@ -36,7 +36,7 @@
                             </td>
                             <td>{{ $v['path'] }}</td>
                             <td>
-                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }})">编辑</button>
+                                <a class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" href="{{ route('admin.roleaccess.update', ['id' => $v['id']]) }}">编辑</a>
                                 <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
                             </td>
                         </tr>

@@ -12,7 +12,7 @@ use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Http\Requests\ArticleStore;
 
-class ArticleController extends Controller
+class ArticleController extends BaseController
 {
     protected static $MID = 1;
 

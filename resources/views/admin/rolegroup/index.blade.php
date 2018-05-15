@@ -3,7 +3,7 @@
 <div class="col-sm-12 animated fadeInRight">
     <div class="ibox">
         <div class="ibox-title">
-            <h5>管理员组管理</h5>
+            <h5>会员组管理</h5>
         </div>
         <div class="ibox-content">
             <table class="table table-bordered table-striped table-hover bg-white text-center">
@@ -37,7 +37,7 @@
                     </tr>
                 @endif
             </table>
-            <a href="{{ route('admin.rolegroup.create') }}" class="btn btn-info">添加管理员</a>
+            <a href="{{ route('admin.rolegroup.create') }}" class="btn btn-info">添加会员组</a>
             <div class="text-center">
                 @if(count($lists))
                     {!! $lists->render() !!}

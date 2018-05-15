@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleGroupStore;
 use App\Repositories\RoleGroupRepository;
 
+
 class RoleGroupController extends Controller
 {
     /**
@@ -20,10 +21,6 @@ class RoleGroupController extends Controller
      */
     public function getIndex(RoleGroupRepository $repository)
     {
-        dd(\Route::getRoutes()->getRoutesByName());
-        //foreach(\Route::getRoutesByName() as $k => $v) {
-        //    var_dump($v);
-        //};
         $lists = $repository->list();
         $data = [
             'lists' => $lists,

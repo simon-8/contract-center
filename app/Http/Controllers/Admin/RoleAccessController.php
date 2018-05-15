@@ -40,8 +40,10 @@ class RoleAccessController extends Controller
     public function doCreate(\Request $request, RoleAccessRepository $repository)
     {
         if ($request::isMethod('get')) {
+            $routeNames = \Route::getRoutes()->getRoutesByName();
             $data = [
-                'allowMethods' => self::$allowMethods
+                'allowMethods' => self::$allowMethods,
+                'routeNames'   => $routeNames
             ];
             return admin_view('roleaccess.create', $data);
         }
@@ -70,6 +72,7 @@ class RoleAccessController extends Controller
         if ($request::isMethod('get')) {
             $data = $repository->find($request::input('id'));
             $data['allowMethods'] = self::$allowMethods;
+            $data['routeNames'] = \Route::getRoutes()->getRoutesByName();
             return admin_view('roleaccess.create', $data);
         }
         $data = $request::all();
