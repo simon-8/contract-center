@@ -50,6 +50,11 @@
                 @endif
             </table>
             <a class="btn btn-success" href="{{ route('admin.roleaccess.create') }}">添加权限</a>
+            @if(count($lists))
+                <div class="text-center">
+                    {!! $lists->render() !!}
+                </div>
+            @endif
         </div>
     </div>
 </div>

@@ -45,6 +45,25 @@ class AdminAuthenticate
             }
         }
 
+        //$roles = auth()->guard('admin')->getUser()->getRoles()->where('status', 1)->get();
+        //$access = [];
+        //foreach ($roles as $role) {
+        //    $access = array_merge($access, $role->getAccess->toArray());
+        //}
+        //$access = collect($access)->sortBy('route');
+        //$routes = array_column($access->toArray(), 'route');
+        //
+        //$currentRouteName = \Route::currentRouteName();
+        //if (array_search($currentRouteName, $routes) !== false) {
+        //    return true;
+        //}
+        //
+        //foreach ($routes as $route) {
+        //    // 最短匹配
+        //    if (substr($currentRouteName, 0, strlen($route)) === $route) {
+        //        return true;
+        //    }
+        //}
         return $next($request);
     }
 }

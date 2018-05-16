@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\RoleGroupStore;
 use App\Repositories\RoleGroupRepository;
-
+use App\Repositories\RoleAccessRepository;
 
 class RoleGroupController extends Controller
 {
@@ -35,13 +35,16 @@ class RoleGroupController extends Controller
      * @param RoleGroupRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doCreate(\Request $request, RoleGroupRepository $repository)
+    public function doCreate(\Request $request, RoleGroupRepository $repository, RoleAccessRepository $roleAccessRepository)
     {
         if ($request::isMethod('get')) {
-            return admin_view('rolegroup.create');
+            $accessLists = $roleAccessRepository->list();
+            $data = [
+                'accessLists' => $accessLists
+            ];
+            return admin_view('rolegroup.create', $data);
         }
         $data = $request::all();
-        $data['avatar'] = upload_base64_thumb($data['avatar']);
 
         $validator = RoleGroupStore::validateCreate($data);
         if ($validator->fails()) {
@@ -68,8 +71,6 @@ class RoleGroupController extends Controller
             return admin_view('rolegroup.create', $data);
         }
         $data = $request::all();
-        $data['avatar'] = upload_base64_thumb($data['avatar']);
-        if (empty($data['password'])) unset($data['password']);
 
         $validator = RoleGroupStore::validateUpdate($data);
         if ($validator->fails()) {

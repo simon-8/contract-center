@@ -74,7 +74,7 @@
                         <label class="col-sm-2 control-label">路由名称</label>
                         <div class="col-sm-10">
 
-                            <input name="path" list="routelist" type="text" class="form-control">
+                            <input name="path" list="routelist" type="text" class="form-control" value="{{ isset($path) ? $path : old('path') }}">
                             <datalist id="routelist">
                                 @foreach($routeNames as $k => $v)
                                     <option value="{{ $k }}">{{ $k }}</option>

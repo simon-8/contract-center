@@ -17,7 +17,7 @@ class CreateManagerTable extends Migration
             $table->increments('id');
             $table->string('username',50)->comment('用户名');
             $table->string('password',255)->comment('密码');
-            $table->unsignedTinyInteger('groupid')->comment('会员组ID');
+            //$table->unsignedTinyInteger('groupid')->comment('会员组ID');
             $table->string('truename',50)->comment('真实姓名')->default('');
             $table->string('email',100)->comment('邮箱号码')->default('');
             $table->unsignedTinyInteger('is_admin')->comment('是否管理员')->default(0);

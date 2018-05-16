@@ -12,6 +12,8 @@ class RoleGroup extends Model
 {
     public $table = 'role_group';
 
+    public $timestamps = false;
+
     public $fillable = [
         'name',
         'access',
@@ -28,15 +30,13 @@ class RoleGroup extends Model
         $this->attributes['access'] = $value ? implode(',', $value) : '';
     }
     
-    public function member()
+    public function getUsers()
     {
         return $this->hasMany('App\Models\Manager', 'groupid', 'id');
     }
 
-    //public function accessName()
-    //{
-    //    foreach ($this->access as $access) {
-    //
-    //    }
-    //}
+    public function getAccess()
+    {
+        return $this->hasMany('App\Models\RoleAccess', 'id', 'access');
+    }
 }

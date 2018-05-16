@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRoleAccessTable extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateRoleAccessTable extends Migration
      */
     public function up()
     {
-        Schema::create('role_access', function(Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->comment('权限名称');
-            $table->string('route')->comment('权限路由');
+            $table->string('name')->comment('角色名称');
+            $table->unsignedTinyInteger('status')->default(0)->comment('状态');
         });
     }
 
@@ -27,6 +27,6 @@ class CreateRoleAccessTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role_access');
+        Schema::dropIfExists('roles');
     }
 }

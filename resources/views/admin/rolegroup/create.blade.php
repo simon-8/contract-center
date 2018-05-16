@@ -30,9 +30,13 @@
                     <label class="col-sm-2 control-label">拥有权限</label>
                     <div class="col-sm-10">
                         <div class="checkbox">
-                            <label>
-                                <input type="checkbox" class="i-checks" name="access[]" value="1" {{ (isset($access) && $access) ? 'checked' : '' }}>是
-                            </label>
+                            @foreach ($accessLists as $v)
+                            <div class="col-sm-2">
+                                <label>
+                                    <input type="checkbox" class="i-checks" name="access[]" value="{{ $v['id'] }}" {{ (isset($access) && in_array($v, $access)) ? 'checked' : '' }}>{{ $v['name'] }}
+                                </label>
+                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -43,7 +47,7 @@
                     <div class="col-sm-10">
                         <div class="checkbox">
                             <label>
-                                <input type="radio" class="i-checks" name="status" value="0" {{ (isset($status) && !$status) ? 'checked' : '' }}>禁用
+                                <input type="radio" class="i-checks" name="status" value="0" {{ (!isset($status) || !$status) ? 'checked' : '' }}>禁用
                             </label>
                             <label>
                                 <input type="radio" class="i-checks" name="status" value="1" {{ (isset($status) && $status) ? 'checked' : '' }}>开启

@@ -21,7 +21,15 @@
                             {{--<td width="30"><input type="checkbox" name="" id="" class="i-checks"></td>--}}
                             <td>{{ $v->id }}</td>
                             <td>{{ $v->name }}</td>
-                            <td>{{ implode(',', $v->access) }}</td>
+                            <td>
+                                @if (count($v['access']))
+                                    @foreach ($v['access'] as $vm)
+                                        <span class="label label-primary">
+                                        {{ $vm }}
+                                    </span>&nbsp;
+                                    @endforeach
+                                @endif
+                            </td>
                             <td>{{ $v->status ? '正常' : '关闭' }}</td>
                             <td>
                                 <a class="btn btn-sm btn-info" href="{{ route('admin.rolegroup.update', ['id' => $v->id]) }}">编辑</a>

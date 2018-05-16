@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: 权限
+ * Note: 用户权限关联表
  * User: Liu
  * Date: 2018/4/20
  */
@@ -8,15 +8,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RoleAccess extends Model
+class RoleUser extends Model
 {
-    public $table = 'role_access';
+    public $table = 'role_user';
 
     public $timestamps = false;
 
     public $fillable = [
-        'name',
-        'route'
+        'user_id',
+        'role_id'
     ];
-
 }

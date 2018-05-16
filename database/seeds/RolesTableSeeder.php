@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class RoleGroupTableSeeder extends Seeder
+class RolesTableSeeder extends Seeder
 {
 
     /**
@@ -14,22 +14,20 @@ class RoleGroupTableSeeder extends Seeder
     {
         
 
-        \DB::table('role_group')->delete();
+        \DB::table('roles')->delete();
         
-        \DB::table('role_group')->insert(array (
+        \DB::table('roles')->insert(array (
             0 => 
             array (
                 'id' => 1,
                 'name' => '超级管理员',
-                'access' => '1',
                 'status' => 1,
             ),
             1 => 
             array (
                 'id' => 2,
                 'name' => '文章管理员',
-                'access' => '2,3,4,5',
-                'status' => 0,
+                'status' => 1,
             ),
         ));
         
