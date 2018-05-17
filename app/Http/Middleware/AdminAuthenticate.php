@@ -45,13 +45,17 @@ class AdminAuthenticate
             }
         }
 
-        $roles = auth()->guard('admin')->getUser()->getRoles()->where('status', 1)->get();
-        $access = [];
-        foreach ($roles as $role) {
-            $access = array_merge($access, $role->getAccess->toArray());
-        }
-        $access = collect($access)->sortBy('route');
-        $routes = array_column($access->toArray(), 'route');
+        $userAccessKey = 'userAccess'.auth()->guard('admin')->getUser()->id;
+        $routes = \Cache::remember($userAccessKey, 1440, function() {
+            $roles = auth()->guard('admin')->getUser()->getRoles()->where('status', 1)->get();
+            $access = [];
+            foreach ($roles as $role) {
+                $access = array_merge($access, $role->getAccess->toArray());
+            }
+            $access = collect($access)->sortBy('route');
+            $routes = array_column($access->toArray(), 'route');
+            return $routes;
+        });
 
         $currentRouteName = \Route::currentRouteName();
 

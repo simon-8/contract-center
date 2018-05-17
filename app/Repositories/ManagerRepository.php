@@ -7,11 +7,17 @@
  */
 namespace App\Repositories;
 use App\Models\Manager;
+use Illuminate\Support\Facades\Cache;
 
 class ManagerRepository extends BaseRepository
 {
     public function __construct()
     {
         parent::__construct(new Manager());
+    }
+
+    public function setAccess()
+    {
+
     }
 }
