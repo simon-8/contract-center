@@ -9,7 +9,7 @@
 /**
  * 载入admin目录模板
  * @param $template
- * @return mixed
+ * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
  */
 function admin_view($template)
 {

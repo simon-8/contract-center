@@ -57,8 +57,7 @@ class AdminAuthenticate
 
         $cross = array_search_value($currentRouteName, $routes);
         if (!$cross) {
-            //echo '没有权限';
-            //\Log::debug('没有权限');
+            return response(admin_view('auth.access'));
         }
         return $next($request);
     }

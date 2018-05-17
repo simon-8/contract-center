@@ -186,7 +186,7 @@ class MenusTableSeeder extends Seeder
             array (
                 'id' => 20,
                 'pid' => 2,
-                'name' => '会员组管理',
+                'name' => '角色管理',
                 'route' => 'admin.roles.index',
                 'link' => '',
                 'ico' => '',
