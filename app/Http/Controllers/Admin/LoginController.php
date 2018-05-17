@@ -80,4 +80,16 @@ class LoginController extends Controller
             'captcha'  => 'required|captcha'
         ]);
     }
+
+    /**
+     * 用户通过认证 记录登录时间/IP
+     * @param Request $request
+     * @param $user
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $user->lasttime = date('Y-m-d H:i:s');
+        $user->lastip = $request->ip();
+        $user->save();
+    }
 }
