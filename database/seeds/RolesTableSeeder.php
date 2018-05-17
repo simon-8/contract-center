@@ -21,12 +21,14 @@ class RolesTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'name' => '超级管理员',
+                'access' => '',
                 'status' => 1,
             ),
             1 => 
             array (
                 'id' => 2,
                 'name' => '文章管理员',
+                'access' => '2,3,4,5,10,11,12,13,16,18,20',
                 'status' => 1,
             ),
         ));

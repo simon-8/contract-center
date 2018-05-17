@@ -119,6 +119,12 @@ class RoleAccessTableSeeder extends Seeder
                 'name' => '系统日志',
                 'route' => 'log-viewer',
             ),
+            17 => 
+            array (
+                'id' => 20,
+                'name' => '后台首页',
+                'route' => 'admin.index',
+            ),
         ));
         
         
