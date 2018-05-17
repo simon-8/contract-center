@@ -42,9 +42,12 @@ class IndexController extends Controller
             foreach ($menu['child'] as $ck => $cmenu) {
                 if ($cmenu['route']) {
                     if (array_search_value($cmenu['route'], $routes)) {
-                        $myMenus[$k]['child'][$ck] = $cmenu;
+                        $menu['child'][$ck] = $cmenu;
                         continue;
                     }
+                } else {
+                    $menu['child'][$ck] = $cmenu;
+                    continue;
                 }
                 unset($menu['child'][$ck]);
             }
