@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\ManagerStore;
 use App\Repositories\ManagerRepository;
+use App\Repositories\RolesRepository;
 
 class ManagerController extends Controller
 {
@@ -28,15 +29,18 @@ class ManagerController extends Controller
     }
 
     /**
-     * 新增
      * @param \Request $request
      * @param ManagerRepository $repository
+     * @param RolesRepository $rolesRepository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doCreate(\Request $request, ManagerRepository $repository)
+    public function doCreate(\Request $request, ManagerRepository $repository, RolesRepository $rolesRepository)
     {
         if ($request::isMethod('get')) {
-            return admin_view('manager.create');
+            $data = [
+                'roles' => $rolesRepository->listBy(['status' => 1], false)
+            ];
+            return admin_view('manager.create', $data);
         }
         $data = $request::all();
         $data['avatar'] = upload_base64_thumb($data['avatar']);
@@ -57,12 +61,14 @@ class ManagerController extends Controller
      * 更新
      * @param \Request $request
      * @param ManagerRepository $repository
+     * @param RolesRepository $rolesRepository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doUpdate(\Request $request, ManagerRepository $repository)
+    public function doUpdate(\Request $request, ManagerRepository $repository, RolesRepository $rolesRepository)
     {
         if ($request::isMethod('get')) {
             $data = $repository->find($request::input('id'));
+            $data['roles'] = $rolesRepository->listBy(['status' => 1], false);
             return admin_view('manager.create', $data);
         }
         $data = $request::all();

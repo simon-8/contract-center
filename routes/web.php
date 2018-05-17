@@ -59,12 +59,12 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::get('/delete', 'ManagerController@getDelete')->name('admin.manager.delete');
         });
 
-        // group
-        Route::prefix('role-group')->group(function() {
-            Route::get('/', 'RoleGroupController@getIndex')->name('admin.rolegroup.index');
-            Route::match(['get', 'post'],'/create', 'RoleGroupController@doCreate')->name('admin.rolegroup.create');
-            Route::match(['get', 'post'],'/update', 'RoleGroupController@doUpdate')->name('admin.rolegroup.update');
-            Route::get('/delete', 'RoleGroupController@getDelete')->name('admin.rolegroup.delete');
+        // roles
+        Route::prefix('roles')->group(function() {
+            Route::get('/', 'RolesController@getIndex')->name('admin.roles.index');
+            Route::match(['get', 'post'],'/create', 'RolesController@doCreate')->name('admin.roles.create');
+            Route::match(['get', 'post'],'/update', 'RolesController@doUpdate')->name('admin.roles.update');
+            Route::get('/delete', 'RolesController@getDelete')->name('admin.roles.delete');
         });
 
         // access

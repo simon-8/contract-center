@@ -45,7 +45,8 @@ class ManagerStore extends FormRequest
             'password' => 'required',
             'truename' => 'required',
             'email' => 'nullable|email',
-            'is_admin' => 'required_without:role'
+            'role'  => 'required|array'
+            //'is_admin' => 'required_without:role'
         ];
     }
 
@@ -60,7 +61,8 @@ class ManagerStore extends FormRequest
             'username' => 'required|unique:manager,username,'. $id,
             'truename' => 'required',
             'email' => 'nullable|email',
-            'is_admin' => 'required_without:role'
+            'role'  => 'required|array'
+            //'is_admin' => 'required_without:role'
         ];
     }
 

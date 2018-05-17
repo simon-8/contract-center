@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingStore extends FormRequest
+class RolesStore extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -41,9 +41,9 @@ class SettingStore extends FormRequest
     protected static function createRules()
     {
         return [
-            'item' => 'required|unique:settings',
-            'name' => 'required',
-            'value' => 'required',
+            'name' => 'required|unique:roles',
+            'access' => 'required|array',
+            'status' => 'required'
         ];
     }
 
@@ -55,9 +55,9 @@ class SettingStore extends FormRequest
     protected static function updateRules($id)
     {
         return [
-            'item' => 'required|unique:settings,item,'.$id,
-            'name' => 'required',
-            'value' => 'required',
+            'name' => 'required|unique:roles,name,'. $id,
+            'access' => 'required|array',
+            'status' => 'required'
         ];
     }
 

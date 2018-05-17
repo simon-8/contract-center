@@ -49,39 +49,31 @@
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">管理员</label>
+                {{--<div class="form-group">--}}
+                    {{--<label class="col-sm-2 control-label">管理员</label>--}}
+                    {{--<div class="col-sm-10">--}}
+                        {{--<div class="checkbox">--}}
+                            {{--<label>--}}
+                                {{--<input type="checkbox" class="i-checks" name="is_admin" value="1" {{ (isset($is_admin) && $is_admin) ? 'checked' : '' }}>是--}}
+                            {{--</label>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="hr-line-dashed"></div>--}}
+
+                <div class="form-group role-div">
+                    <label class="col-sm-2 control-label">角色管理</label>
                     <div class="col-sm-10">
                         <div class="checkbox">
-                            <label>
-                                <input type="checkbox" class="i-checks" name="is_admin" value="1" {{ (isset($is_admin) && $is_admin) ? 'checked' : '' }}>是
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="hr-line-dashed"></div>
-                @if(isset($is_admin) && $is_admin)
-                    <div class="form-group role-div" style="display: none;">
-                @else
-                    <div class="form-group role-div">
-                @endif
-                    <label class="col-sm-2 control-label">权限管理</label>
-                    <div class="col-sm-10">
-                        <div class="checkbox">
-                            @foreach((new \App\Repositories\MenuRepository())->getTopMenus() as $menu)
-                            <label>
-                                <input type="checkbox" class="i-checks" name="role[]" value="{{ $menu['id'] }}" {{ (isset($role) && in_array($menu['id'], $role)) ? 'checked' : '' }}>{{ $menu['name'] }}
-                            </label>
+                            @foreach($roles as $r)
+                                <label>
+                                    <input type="checkbox" class="i-checks" name="role[]" value="{{ $r['id'] }}" {{ !empty($role) && in_array($r['id'], $role) ? 'checked' : '' }}>{{ $r['name'] }}
+                                </label>
                             @endforeach
                         </div>
                     </div>
                 </div>
-
-                @if(isset($is_admin) && $is_admin)
-                    <div class="hr-line-dashed role-div" style="display: none;"></div>
-                @else
-                    <div class="hr-line-dashed role-div"></div>
-                @endif
+                <div class="hr-line-dashed role-div"></div>
 
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
@@ -158,12 +150,12 @@
         });
         @endif
 
-        $('[name=is_admin]').on('ifChecked', function(event) {
-            $(".role-div").hide(300);
-        })
-        $('[name=is_admin]').on('ifUnchecked', function(event) {
-            $(".role-div").show(300);
-        })
+        //$('[name=is_admin]').on('ifChecked', function(event) {
+        //    $(".role-div").hide(300);
+        //})
+        //$('[name=is_admin]').on('ifUnchecked', function(event) {
+        //    $(".role-div").show(300);
+        //})
     });
 </script>
 @endsection('content')

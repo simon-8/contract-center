@@ -35,6 +35,11 @@ class BaseRepository
         return $page ? $this->model->where($where)->paginate(self::$pageSize) : $this->model->where($where)->get();
     }
 
+    public function getAll($where = [])
+    {
+        return $where ? $this->model->where($where)->all() : $this->model->all();
+    }
+
     /**
      * @param $id
      * @return mixed

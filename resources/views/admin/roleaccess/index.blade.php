@@ -1,6 +1,6 @@
 @extends('layout.admin')
 @section('content')
-<div class="col-sm-6 animated fadeInRight">
+<div class="col-sm-12 animated fadeInRight">
     <div class="ibox">
         <div class="ibox-title">
             <h5>权限管理</h5>
@@ -12,7 +12,7 @@
                     {{--<td>上级权限</td>--}}
                     <td width="150" align="left">权限名称</td>
                     <td>请求类型</td>
-                    <td>URL路径</td>
+                    <td>路由地址</td>
                     <td width="180">操作</td>
                 </tr>
                 @if(isset($lists) && count($lists) > 0)
@@ -34,7 +34,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td>{{ $v['path'] }}</td>
+                            <td>{{ $v['route'] }}</td>
                             <td>
                                 <a class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" href="{{ route('admin.roleaccess.update', ['id' => $v['id']]) }}">编辑</a>
                                 <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
@@ -58,56 +58,56 @@
         </div>
     </div>
 </div>
-<div class="col-sm-6 animated fadeInRight">
-    <div class="ibox">
-        <div class="ibox-title">
-            <h5>权限管理</h5>
-        </div>
-        <div class="ibox-content">
-            <form method="post" class="form-horizontal" action="{{ isset($id) ? route('admin.manager.update') : route('admin.manager.create') }}" id="sform">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">权限名称</label>
-                    <div class="col-sm-10">
-                        <input id="username" type="text" class="form-control" name="username" value="{{ isset($username) ? $username : old('username') }}">
-                        <span class="help-block m-b-none"></span>
-                    </div>
-                </div>
-                <div class="hr-line-dashed"></div>
+{{--<div class="col-sm-6 animated fadeInRight">--}}
+    {{--<div class="ibox">--}}
+        {{--<div class="ibox-title">--}}
+            {{--<h5>权限管理</h5>--}}
+        {{--</div>--}}
+        {{--<div class="ibox-content">--}}
+            {{--<form method="post" class="form-horizontal" action="{{ isset($id) ? route('admin.manager.update') : route('admin.manager.create') }}" id="sform">--}}
+                {{--<div class="form-group">--}}
+                    {{--<label class="col-sm-2 control-label">权限名称</label>--}}
+                    {{--<div class="col-sm-10">--}}
+                        {{--<input id="username" type="text" class="form-control" name="username" value="{{ isset($username) ? $username : old('username') }}">--}}
+                        {{--<span class="help-block m-b-none"></span>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="hr-line-dashed"></div>--}}
 
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">请求路径</label>
-                    <div class="col-sm-10">
-                        <input id="username" type="text" class="form-control" name="username" value="{{ isset($username) ? $username : old('username') }}">
-                        <span class="help-block m-b-none">支持*</span>
-                    </div>
-                </div>
-                <div class="hr-line-dashed"></div>
+                {{--<div class="form-group">--}}
+                    {{--<label class="col-sm-2 control-label">请求路径</label>--}}
+                    {{--<div class="col-sm-10">--}}
+                        {{--<input id="username" type="text" class="form-control" name="username" value="{{ isset($username) ? $username : old('username') }}">--}}
+                        {{--<span class="help-block m-b-none">支持*</span>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="hr-line-dashed"></div>--}}
 
-                <div class="form-group role-div">
-                    <label class="col-sm-2 control-label">请求类型</label>
-                    <div class="col-sm-10">
-                        <div class="checkbox">
-                            @foreach(['GET','POST','PUT','DELETE'] as $v)
-                                <label>
-                                    <input type="checkbox" class="i-checks" name="role[]" value="$v" {{ (isset($role) && in_array($menu['id'], $role)) ? 'checked' : '' }}>{{ $v }}
-                                </label>
-                            @endforeach
-                        </div>
-                        <span class="help-block m-b-none">留空表示所有请求类型</span>
-                    </div>
-                </div>
-                <div class="hr-line-dashed"></div>
+                {{--<div class="form-group role-div">--}}
+                    {{--<label class="col-sm-2 control-label">请求类型</label>--}}
+                    {{--<div class="col-sm-10">--}}
+                        {{--<div class="checkbox">--}}
+                            {{--@foreach(['GET','POST','PUT','DELETE'] as $v)--}}
+                                {{--<label>--}}
+                                    {{--<input type="checkbox" class="i-checks" name="role[]" value="$v" {{ (isset($role) && in_array($menu['id'], $role)) ? 'checked' : '' }}>{{ $v }}--}}
+                                {{--</label>--}}
+                            {{--@endforeach--}}
+                        {{--</div>--}}
+                        {{--<span class="help-block m-b-none">留空表示所有请求类型</span>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="hr-line-dashed"></div>--}}
 
-                <div class="form-group">
-                    <div class="col-sm-4 col-sm-offset-2">
-                        <button class="btn btn-primary" type="submit">保存内容</button>
-                        <a class="btn btn-white" href="{{ route('admin.manager.index') }}">返回</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                {{--<div class="form-group">--}}
+                    {{--<div class="col-sm-4 col-sm-offset-2">--}}
+                        {{--<button class="btn btn-primary" type="submit">保存内容</button>--}}
+                        {{--<a class="btn btn-white" href="{{ route('admin.manager.index') }}">返回</a>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</form>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+{{--</div>--}}
 <script>
 
     var deleteModal = '#deleteModal';

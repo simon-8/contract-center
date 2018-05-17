@@ -14,7 +14,7 @@ class Manager extends Authenticatable
         'password',
         'truename',
         'email',
-        'is_admin',
+        //'is_admin',
         'avatar',
         'role',
         'salt',

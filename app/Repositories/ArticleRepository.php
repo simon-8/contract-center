@@ -84,7 +84,7 @@ class ArticleRepository extends BaseRepository
             $keyword = $where['keyword'];
             unset($where['keyword']);
         }
-        $query = $this->model->with('category')->where($where);
+        $query = $this->model->with('category')->where($where)->orderBy('id', 'DESC');
         if (isset($keyword)) $query = $query->title($keyword);
         return $query->paginate(self::$pageSize);
     }

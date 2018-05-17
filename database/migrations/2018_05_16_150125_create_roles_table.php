@@ -16,6 +16,7 @@ class CreateRolesTable extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('角色名称');
+            $table->string('access')->comment('权限ID集合');
             $table->unsignedTinyInteger('status')->default(0)->comment('状态');
         });
     }

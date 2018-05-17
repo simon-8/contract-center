@@ -74,7 +74,7 @@
                         <label class="col-sm-2 control-label">路由名称</label>
                         <div class="col-sm-10">
 
-                            <input name="path" list="routelist" type="text" class="form-control" value="{{ isset($path) ? $path : old('path') }}">
+                            <input name="route" list="routelist" type="text" class="form-control" value="{{ isset($route) ? $route : old('route') }}">
                             <datalist id="routelist">
                                 @foreach($routeNames as $k => $v)
                                     <option value="{{ $k }}">{{ $k }}</option>
@@ -89,7 +89,7 @@
                                 {{--@endforeach--}}
                             {{--</select>--}}
                             {{--<input id="path" type="text" class="form-control" name="path" value="{{ isset($path) ? $path : old('path') }}">--}}
-                            <span class="help-block m-b-none">若是URL地址请留空</span>
+                            <span class="help-block m-b-none"></span>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>

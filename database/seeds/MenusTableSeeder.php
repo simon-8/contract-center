@@ -187,7 +187,7 @@ class MenusTableSeeder extends Seeder
                 'id' => 20,
                 'pid' => 2,
                 'name' => '会员组管理',
-                'route' => 'admin.rolegroup.index',
+                'route' => 'admin.roles.index',
                 'link' => '',
                 'ico' => '',
                 'listorder' => 0,

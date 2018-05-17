@@ -3,7 +3,7 @@
 <div class="col-sm-12 animated fadeInRight">
     <div class="ibox">
         <div class="ibox-title">
-            <h5>会员组管理</h5>
+            <h5>角色管理</h5>
         </div>
         <div class="ibox-content">
             <table class="table table-bordered table-striped table-hover bg-white text-center">
@@ -22,17 +22,17 @@
                             <td>{{ $v->id }}</td>
                             <td>{{ $v->name }}</td>
                             <td>
-                                @if (count($v['access']))
-                                    @foreach ($v['access'] as $vm)
+                                @if (count($v->getAccess))
+                                    @foreach ($v->getAccess as $vm)
                                         <span class="label label-primary">
-                                        {{ $vm }}
+                                        {{ $vm['name'] }}
                                     </span>&nbsp;
                                     @endforeach
                                 @endif
                             </td>
                             <td>{{ $v->status ? '正常' : '关闭' }}</td>
                             <td>
-                                <a class="btn btn-sm btn-info" href="{{ route('admin.rolegroup.update', ['id' => $v->id]) }}">编辑</a>
+                                <a class="btn btn-sm btn-info" href="{{ route('admin.roles.update', ['id' => $v->id]) }}">编辑</a>
                                 <button class="btn btn-sm btn-danger" onclick="Delete({{ $v->id }})">删除</button>
                             </td>
                         </tr>
@@ -45,7 +45,7 @@
                     </tr>
                 @endif
             </table>
-            <a href="{{ route('admin.rolegroup.create') }}" class="btn btn-info">添加会员组</a>
+            <a href="{{ route('admin.roles.create') }}" class="btn btn-info">添加角色</a>
             <div class="text-center">
                 @if(count($lists))
                     {!! $lists->render() !!}
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    {{--<a href="{{ route('admin.rolegroup.delete') }}" class="btn btn-warning">批量删除</a>--}}
+    {{--<a href="{{ route('admin.roles.delete') }}" class="btn btn-warning">批量删除</a>--}}
     {{--<a class="btn btn-warning">权限管理</a>--}}
     {{--<a class="btn btn-success">模块配置</a>--}}
 </div>
@@ -89,6 +89,6 @@
     }
 </script>
 
-@include('admin.modal.delete' , ['formurl' => route('admin.rolegroup.delete')])
+@include('admin.modal.delete' , ['formurl' => route('admin.roles.delete')])
 
 @endsection('content')

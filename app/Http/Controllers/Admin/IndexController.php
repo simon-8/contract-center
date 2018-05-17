@@ -17,9 +17,44 @@ class IndexController extends Controller
 {
     public function getMain(MenuRepository $menuRepository)
     {
+        $roles = auth()->guard('admin')->getUser()->getRoles()->where('status', 1)->get();
+        $access = [];
+        foreach ($roles as $role) {
+            $access = array_merge($access, $role->getAccess->toArray());
+        }
+        $access = collect($access)->sortBy('route');
+        $routes = array_column($access->toArray(), 'route');
+
         $menus = $menuRepository->lists();
+        $myMenus = [];
+        foreach ($menus as $k => $menu) {
+            if (empty($menu['child'])) {
+                if ($menu['route']) {
+                    if (array_search_value($menu['route'], $routes)) {
+                        $myMenus[$k] = $menu;
+                    }
+                } else {
+                    $myMenus[$k] = $menu;
+                }
+                continue;
+            }
+
+            foreach ($menu['child'] as $ck => $cmenu) {
+                if ($cmenu['route']) {
+                    if (array_search_value($cmenu['route'], $routes)) {
+                        $myMenus[$k]['child'][$ck] = $cmenu;
+                        continue;
+                    }
+                }
+                unset($menu['child'][$ck]);
+            }
+            if (!empty($menu['child'])) {
+                $myMenus[$k] = $menu;
+            }
+        }
+
         $data = [
-            'menus' => $menus
+            'menus' => $myMenus
         ];
         return admin_view('index.main', $data);
     }

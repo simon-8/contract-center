@@ -190,10 +190,32 @@ function seditor($content = '' , $name = 'content', $editor = 'ueditor', $extend
     } else if ($editor == 'markdown') {
         echo "<textarea name='" . $name . "' data-provide='markdown' {$extends} rows='10'>" . $content . "</textarea>";
         echo "<link rel='stylesheet' type='text/css' href='/manage/css/plugins/markdown/bootstrap-markdown.min.css' />";
-        echo "<script type='text/javascript' src='/manage/plugins/markdown/markdown.js'></script>";
-        echo "<script type='text/javascript' src='/manage/plugins/markdown/to-markdown.js'></script>";
-        echo "<script type='text/javascript' src='/manage/plugins/markdown/bootstrap-markdown.js'></script>";
-        echo "<script type='text/javascript' src='/manage/plugins/markdown/bootstrap-markdown.zh.js'></script>";
+        echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/markdown.js'></script>";
+        echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/to-markdown.js'></script>";
+        echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/bootstrap-markdown.js'></script>";
+        echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/bootstrap-markdown.zh.js'></script>";
     }
     return false;
+}
+
+
+/**
+ * 查找数组中是否包含指定的value
+ * @param $val
+ * @param $arr
+ * @return bool
+ */
+function array_search_value($val, $arr) {
+    $result = false;
+    if (array_search($val, $arr) !== false) {
+        $result = true;
+    }
+    if (!$result) {
+        foreach ($arr as $v) {
+            if (substr($val, 0, strlen($v)) === $v) {
+                $result = true;
+            }
+        }
+    }
+    return $result;
 }
