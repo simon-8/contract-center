@@ -16,7 +16,8 @@ class CreateArticleContentTable extends Migration
         Schema::create('article_content', function (Blueprint $table) {
             $table->unsignedInteger('id');
             $table->longText('content')->comment('内容');
-            //$table->timestamps();
+
+            $table->primary('id');
         });
     }
 

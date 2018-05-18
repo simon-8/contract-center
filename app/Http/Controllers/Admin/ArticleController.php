@@ -68,6 +68,7 @@ class ArticleController extends BaseController
 
         $data = $request::all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
+        $data['is_md'] = env('WEB_EDITOR', 'markdown') === 'markdown' ? 1 : 0;
 
         $validator = ArticleStore::validateCreate($data);
         if ($validator->fails()) {
@@ -99,6 +100,7 @@ class ArticleController extends BaseController
 
         $data = $request::all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
+        $data['is_md'] = env('WEB_EDITOR', 'markdown') === 'markdown' ? 1 : 0;
 
         $validator = ArticleStore::validateUpdate($data);
         if ($validator->fails()) {

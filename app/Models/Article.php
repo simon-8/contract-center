@@ -21,6 +21,7 @@ class Article extends Model
         'comment',
         'zan',
         'hits',
+        'is_md',
         'status'
     ];
 
@@ -41,6 +42,6 @@ class Article extends Model
 
     public function getThumbAttribute($value)
     {
-        return imgurl($value);
+        return $value ? imgurl($value) : '';
     }
 }

@@ -53,9 +53,9 @@ class ArticleRepository extends BaseRepository
         $item = $this->model->find($data['id']);
         $result = $item->update($data);
         if ($result) {
-            return $item->content()->save(new ArticleContent([
+            return $item->content()->update([
                 'content' => $data['content']
-            ]));
+            ]);
         }
         return false;
     }

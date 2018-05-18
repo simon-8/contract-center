@@ -184,6 +184,8 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         // 数据迁移
         Orangehill\Iseed\IseedServiceProvider::class,
+        // markdown 编辑器
+        Chenhua\MarkdownEditor\MarkdownEditorServiceProvider::class,
     ],
 
     /*
@@ -233,6 +235,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'MarkdownEditor' => Chenhua\MarkdownEditor\Facades\MarkdownEditor::class,
     ],
 
 ];

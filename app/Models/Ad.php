@@ -33,6 +33,6 @@ class Ad extends Model
 
     public function getThumbAttribute($value)
     {
-        return imgurl($value);
+        return $value ? imgurl($value) : '';
     }
 }

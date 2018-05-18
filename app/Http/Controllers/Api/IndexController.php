@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ArticleRepository;
 use App\Repositories\AdRepository;
 use App\Repositories\CategoryRepository;
+use Chenhua\MarkdownEditor\Facades\MarkdownEditor;
 
 class IndexController extends Controller
 {
@@ -32,7 +33,12 @@ class IndexController extends Controller
      */
     public function getArticleContent(ArticleRepository $articleRepository, $id)
     {
-        return $articleRepository->find($id, true);
+        $article = $articleRepository->find($id, true)->toArray();
+        $article['content'] = $article['content']['content'];
+        if ($article['is_md']) {
+            $article['content'] = MarkdownEditor::parse($article['content']);
+        }
+        return $article;
     }
 
     /**

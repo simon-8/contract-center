@@ -172,6 +172,7 @@ php;
  */
 function seditor($content = '' , $name = 'content', $editor = 'ueditor', $extends = '')
 {
+    $str = '';
     if ($editor == 'kindeditor') {
         $url = "/plugins/editor/kindeditor/kindeditor.js";
         $lang = "/plugins/editor/kindeditor/lang/zh_CN.js";
@@ -182,18 +183,22 @@ function seditor($content = '' , $name = 'content', $editor = 'ueditor', $extend
         echo "</script>";
 
     } else if ($editor == 'ueditor') {
-        echo "<script id='content' type='text/plain' style='width:100%;height:500px;' name='{$name}' {$extends}>" . $content . "</script>";
-        echo "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.config.js'></script>";
-        echo "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.all.js'></script>";
-        echo "<script type='text/javascript'> var ue = UE.getEditor('{$name}',{elementPathEnabled:false,contextMenu:[],enableAutoSave: false,saveInterval:500000});</script>";
+        $str .= "<script id='content' type='text/plain' style='width:100%;height:500px;' name='{$name}' {$extends}>" . $content . "</script>";
+        $str .= "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.config.js'></script>";
+        $str .= "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.all.js'></script>";
+        $str .= "<script type='text/javascript'> var ue = UE.getEditor('{$name}',{elementPathEnabled:false,contextMenu:[],enableAutoSave: false,saveInterval:500000});</script>";
+        return $str;
 
     } else if ($editor == 'markdown') {
-        echo "<textarea name='" . $name . "' data-provide='markdown' {$extends} rows='10'>" . $content . "</textarea>";
-        echo "<link rel='stylesheet' type='text/css' href='/manage/css/plugins/markdown/bootstrap-markdown.min.css' />";
-        echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/markdown.js'></script>";
-        echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/to-markdown.js'></script>";
-        echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/bootstrap-markdown.js'></script>";
-        echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/bootstrap-markdown.zh.js'></script>";
+        //echo "<textarea name='" . $name . "' data-provide='markdown' {$extends} rows='10'>" . $content . "</textarea>";
+        //echo "<link rel='stylesheet' type='text/css' href='/manage/css/plugins/markdown/bootstrap-markdown.min.css' />";
+        //echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/markdown.js'></script>";
+        //echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/to-markdown.js'></script>";
+        //echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/bootstrap-markdown.js'></script>";
+        //echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/bootstrap-markdown.zh.js'></script>";
+        $str .= "<div id='{$name}'><textarea name='{$name}' style='display:none;'>{$content}</textarea></div>";
+        $str .= view('markdown::encode', ['editors'=>[$name]]);
+        return $str;
     }
     return false;
 }
