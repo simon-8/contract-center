@@ -18,12 +18,11 @@ class IndexController extends Controller
 
     public function article(\Request $request, ArticleRepository $articleRepository, $id)
     {
-        $article = $articleRepository->find($id, true)->toArray();
-        $article['content'] = $article['content']['content'];
+        $article = $articleRepository->find($id, true);
+        $article = $article->toArray();
         if ($article['is_md']) {
-            $article['content'] = MarkdownEditor::parse($article['content']);
-        }
-        //dd($article['content']);
+            $article['content'] =  MarkdownEditor::parse($article['content']['content']);
+        };
         return home_view('index.article', $article);
     }
 }

@@ -23,7 +23,7 @@ class ArticleRepository extends BaseRepository
      */
     public function find($id, $preload = false)
     {
-        return $preload ? $this->model->with('content')->find($id) : $this->model->find($id);
+        return $preload ? $this->model->with('content')->findOrFail($id) : $this->model->findOrFail($id);
     }
 
     /**

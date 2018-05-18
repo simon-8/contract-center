@@ -33,7 +33,9 @@ class IndexController extends Controller
      */
     public function getArticleContent(ArticleRepository $articleRepository, $id)
     {
-        $article = $articleRepository->find($id, true)->toArray();
+        $article = $articleRepository->find($id, true);
+
+        $article = $article->toArray();
         $article['content'] = $article['content']['content'];
         if ($article['is_md']) {
             $article['content'] = MarkdownEditor::parse($article['content']);

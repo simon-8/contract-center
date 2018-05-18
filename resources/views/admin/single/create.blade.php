@@ -28,8 +28,7 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">内容</label>
                         <div class="col-sm-11">
-                            {{--{{ seditor($content , 'content','markdown' ,'rows=10') }}--}}
-                            {{ seditor(isset($content) ? $content['content'] : old('content') , 'content') }}
+                            {!! seditor(old('content') ? old('content') : (isset($content) ? $content['content'] : '') , 'content') !!}
                             <span class="help-block m-b-none">单页内容</span>
                         </div>
                     </div>
