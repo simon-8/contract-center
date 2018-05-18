@@ -166,22 +166,22 @@ php;
  * 调用编辑器
  * @param string $content
  * @param string $name
- * @param string $editor
  * @param string $extends
  * @return bool
  */
-function seditor($content = '' , $name = 'content', $editor = 'ueditor', $extends = '')
+function seditor($content = '' , $name = 'content', $extends = '')
 {
+    $editor = env('WEB_EDITOR', 'ueditor');
     $str = '';
     if ($editor == 'kindeditor') {
         $url = "/plugins/editor/kindeditor/kindeditor.js";
         $lang = "/plugins/editor/kindeditor/lang/zh_CN.js";
-        echo "<script charset='utf-8' src='$url'></script>";
-        echo "<script charset='utf-8' src='$lang'></script>";
-        echo "<script>";
-        echo " KindEditor.ready(function(K) { window.editor = K.create('#$name',{width:'100%',cssPath : '/plugins/editor/kindeditor/plugins/code/new.css',resizeMode:0});});";
-        echo "</script>";
-
+        $str .= "<script charset='utf-8' src='$url'></script>";
+        $str .= "<script charset='utf-8' src='$lang'></script>";
+        $str .= "<script>";
+        $str .= " KindEditor.ready(function(K) { window.editor = K.create('#$name',{width:'100%',cssPath : '/plugins/editor/kindeditor/plugins/code/new.css',resizeMode:0});});";
+        $str .= "</script>";
+        return $str;
     } else if ($editor == 'ueditor') {
         $str .= "<script id='content' type='text/plain' style='width:100%;height:500px;' name='{$name}' {$extends}>" . $content . "</script>";
         $str .= "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.config.js'></script>";
@@ -203,6 +203,10 @@ function seditor($content = '' , $name = 'content', $editor = 'ueditor', $extend
     return false;
 }
 
+function is_markdown()
+{
+    return env('WEB_EDITOR') === 'markdown' ? 1 : 0;
+}
 
 /**
  * 查找数组中是否包含指定的value

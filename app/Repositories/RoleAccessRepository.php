@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: 权限
+ * Note: 权限资源库
  * User: Liu
  * Date: 2018/3/18
  * Time: 19:00

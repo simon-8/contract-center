@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: *
+ * Note: 分类资源库
  * User: Liu
  * Date: 2018/4/9
  */
@@ -13,5 +13,10 @@ class CategoryRepository extends BaseRepository
     public function __construct(Category $category)
     {
         parent::__construct($category);
+    }
+
+    public function listByPID($pid)
+    {
+        return $this->listBy(['pid' => $pid], false)->toArray();
     }
 }

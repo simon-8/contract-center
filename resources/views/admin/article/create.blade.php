@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">内容</label>
                         <div class="col-sm-11">
-                            {!! seditor(old('content') ? old('content') : (isset($content) ? $content['content'] : '') , 'content', env('WEB_EDITOR', 'ueditor')) !!}
+                            {!! seditor(old('content') ? old('content') : (isset($content) ? $content['content'] : '') , 'content') !!}
                             <span class="help-block m-b-none">文章内容</span>
                         </div>
                     </div>

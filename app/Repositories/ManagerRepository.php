@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: 后台管理员
+ * Note: 后台管理员资源库
  * User: Liu
  * Date: 2018/3/18
  * Time: 19:00

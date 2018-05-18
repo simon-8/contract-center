@@ -14,7 +14,7 @@ use App\Http\Requests\ArticleStore;
 
 class ArticleController extends BaseController
 {
-    protected static $MID = 1;
+    protected static $PID = 1;
 
     /**
      * 列表页
@@ -36,7 +36,7 @@ class ArticleController extends BaseController
 
         $lists = $repository->listBy($where);
 
-        $categorys = $categoryRepository->listBy(['pid' => self::$MID])->toArray()['data'];
+        $categorys = $categoryRepository->listByPID(self::$PID);
         $status_num = $repository->get_status_num();
 
         $data = [
@@ -60,7 +60,7 @@ class ArticleController extends BaseController
     public function doCreate(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
     {
         if ($request::isMethod('get')) {
-            $categorys = $categoryRepository->listBy(['pid' => self::$MID])->toArray()['data'];
+            $categorys = $categoryRepository->listByPID(self::$PID);
             return admin_view('article.create', [
                 'categorys' => $categorys
             ]);
@@ -68,7 +68,7 @@ class ArticleController extends BaseController
 
         $data = $request::all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
-        $data['is_md'] = env('WEB_EDITOR', 'markdown') === 'markdown' ? 1 : 0;
+        $data['is_md'] = is_markdown();
 
         $validator = ArticleStore::validateCreate($data);
         if ($validator->fails()) {
@@ -93,14 +93,14 @@ class ArticleController extends BaseController
     {
         if ($request::isMethod('get')) {
             $data = $repository->find($request::input('id'), true);
-            $categorys = $categoryRepository->listBy(['pid' => self::$MID])->toArray()['data'];
+            $categorys = $categoryRepository->listByPID(self::$PID);
             $data['categorys'] = $categorys;
             return admin_view('article.create', $data);
         }
 
         $data = $request::all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
-        $data['is_md'] = env('WEB_EDITOR', 'markdown') === 'markdown' ? 1 : 0;
+        $data['is_md'] = is_markdown();
 
         $validator = ArticleStore::validateUpdate($data);
         if ($validator->fails()) {

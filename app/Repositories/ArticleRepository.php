@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: 文章
+ * Note: 文章资源库
  * User: Liu
  * Date: 2018/4/3
  */
