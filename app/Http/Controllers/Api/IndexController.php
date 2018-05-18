@@ -33,7 +33,11 @@ class IndexController extends Controller
      */
     public function getArticleContent(ArticleRepository $articleRepository, $id)
     {
-        $article = $articleRepository->find($id, true);
+        try {
+            $article = $articleRepository->find($id, true);
+        } catch (\Exception $exception) {
+            return response('', 404);
+        }
 
         $article = $article->toArray();
         $article['content'] = $article['content']['content'];

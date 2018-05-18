@@ -26,6 +26,9 @@ class IndexTest extends TestCase
         $response = $this->get('/api/article/'.$article['id']);
         $response->assertStatus(200)
                 ->assertJsonStructure(['id', 'content']);
+
+        $response = $this->get('/api/article/'. mt_rand(10000, 50000));
+        $response->assertStatus(404);
     }
 
     public function testCategorys()
