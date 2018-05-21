@@ -6,10 +6,15 @@
  */
 
 require('./bootstrap');
-import axios from 'axios'
 
 window.Vue = require('vue');
+import axios from 'axios';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+axios.defaults.baseURL = 'http://blog.cc/api/';
 Vue.prototype.$http = axios;
+Vue.use(ElementUI);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -17,8 +22,15 @@ Vue.prototype.$http = axios;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+import App from './App.vue';
+import router from './router/index.js';
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
 });
+// 载入App组件并替换#app为App标签
+// 相当于 app.js中  Vue.component('App', require('./components/App.vue'));
+// 然后vue页面中 <div id="app"><App></App></div>

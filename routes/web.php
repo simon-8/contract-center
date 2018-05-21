@@ -121,8 +121,8 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 });
 
 Route::prefix('/')->namespace('Home')->group(function() {
-    Route::get('/', function () {
+    Route::get('/{any}', function () {
         return view('welcome');
-    });
+    })->where('any', '.*');
     Route::get('article/{id}', 'IndexController@article')->name('home.index.article');
 });
