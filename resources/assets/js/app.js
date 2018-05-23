@@ -24,10 +24,12 @@ Vue.use(ElementUI);
 
 import App from './App.vue';
 import router from './router/index.js';
-
+import store from './store.js';
+Vue.component('Tag', require('./components/TagComponent'));
 const app = new Vue({
     el: '#app',
     router,
+    store,
     template: '<App/>',
     components: { App }
 });

@@ -23,6 +23,7 @@
     "dependencies": {
         "element-ui": "^2.3.9",
         "npm": "^6.0.1",
-        "vue-router": "^3.0.1"
+        "vue-router": "^3.0.1",
+        "vuex": "^3.0.1"
     }
 }

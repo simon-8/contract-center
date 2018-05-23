@@ -55,7 +55,7 @@
                 </div>
             </div>
         </section>
-
+        <div class="clear">&nbsp;</div>
         <router-view></router-view>
 
         <footer class="container">

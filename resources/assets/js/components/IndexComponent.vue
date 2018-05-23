@@ -3,7 +3,7 @@
         <div class="row">
 
             <div class="col-md-9">
-                <div class="articles">
+                <div class="articles" v-loading="loading">
                     <article v-for="item of articles" class="row">
                         <div class="article-thumb col-sm-3">
                             <!--<p class="thumb">-->
@@ -12,25 +12,27 @@
                         </div>
                         <div class="article-info col-sm-9">
                             <h3>
-                                <a :href="getLink(item.id)">{{ item.title }}</a>
+                                <a :href="makeUrl(item.id)">{{ item.title }}</a>
                             </h3>
 
                             <p class="introduce">
                                 {{ item.introduce }}
                             </p>
                             <p class="meta">
-                            <span class="meta-info">
-                                <i class="el-icon-date"></i>
-                                {{ item.created_at }}
-                            </span>
                                 <span class="meta-info">
-                                <i class="el-icon-edit"></i>
-                                PHP
-                            </span>
+                                    <i class="el-icon-date"></i>
+                                    {{ item.created_at }}
+                                </span>
+                                    <span class="meta-info">
+                                    <i class="el-icon-edit"></i>
+                                    PHP
+                                </span>
                             </p>
                         </div>
                     </article>
                 </div>
+
+                <div class="clear">&nbsp;</div>
 
                 <div class="text-center" v-if="articles.length">
                     <el-pagination
@@ -43,12 +45,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <h3>标签云</h3>
-                <ul>
-                    <li class="pull-left" v-for="i in 10">
-                        <a href=""><el-tag type="success">标签1</el-tag></a>
-                    </li>
-                </ul>
+                <Tag></Tag>
             </div>
         </div>
     </div>
@@ -61,9 +58,7 @@
     li {
         list-style: none;
     }
-    .articles {
-        margin: 10px 0;
-    }
+
     article {
         border-bottom: 1px solid #eee;
         padding: 10px 0;
@@ -90,17 +85,31 @@
     article .article-info .meta-info {
         margin-right: 10px;
     }
+
 </style>
 <script>
+
     export default {
         data() {
             return {
                 articles: [],
-                currentPage: 2
+                currentPage: 2,
+                loading: true
             }
         },
         methods: {
+            getCache (name) {
+                return this.$store.state[name];
+            },
+            setCache (name, data) {
+                this.$store.state[name] = data;
+            },
             getData () {
+                let cacheData = this.getCache('indexArticle');
+                if (cacheData.length) {
+                    this.articles = cacheData;
+                    return;
+                }
                 this.$http.get('article').then((res) => {
                     let data = res.data;
                     this.articles = data.data;
@@ -108,13 +117,19 @@
                     console.log(res);
                 });
             },
-            getLink(id) {
+            makeUrl(id) {
                 return '/content/'+id;
             }
         },
-
+        watch: {
+            articles (newValue, oldValue) {
+                if (newValue.length) {
+                    this.setCache('indexArticle', newValue);
+                }
+                this.loading = false;
+            }
+        },
         mounted() {
-            console.log('Component mounted.');
             this.getData();
         }
     }
