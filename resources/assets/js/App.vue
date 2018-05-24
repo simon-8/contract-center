@@ -11,12 +11,15 @@
                 <el-menu mode="horizontal"
                          text-color="rgba(255, 255, 255, .5)"
                          background-color="#4183c4"
-                         active-text-color="#FFFFFF" :default-active="navselected"
+                         active-text-color="#FFFFFF" :default-active="menuSelected"
                          @select="handleSelect" router>
-                    <el-menu-item index="/">首页</el-menu-item>
-                    <el-menu-item index="/article">AAA管理</el-menu-item>
+                    <template v-for="item in menus">
+                        <el-menu-item :index="item.href">{{ item.name }}</el-menu-item>
+                    </template>
+
+                    <!--<el-menu-item index="/article">AAA管理</el-menu-item>-->
                     <!--<el-submenu index="2">-->
-                    <!--<template slot="title">我的工作台</template>-->
+                    <!--<template slot="title">文章分类</template>-->
                     <!--<el-menu-item index="2-1">选项1</el-menu-item>-->
                     <!--<el-menu-item index="2-2">选项2</el-menu-item>-->
                     <!--<el-menu-item index="2-3">选项3</el-menu-item>-->
@@ -27,8 +30,12 @@
                     <!--<el-menu-item index="2-4-3">选项3</el-menu-item>-->
                     <!--</el-submenu>-->
                     <!--</el-submenu>-->
-                    <el-menu-item index="/webpage">BBB管理</el-menu-item>
-                    <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">CCC管理</a></el-menu-item>
+                    <!--<el-menu-item index="/webpage">关于XXXX</el-menu-item>-->
+                    <!--<el-menu-item index="/friend-link">-->
+                        <!--<a href="https://www.ele.me" target="_blank">-->
+                            <!--友情链接-->
+                        <!--</a>-->
+                    <!--</el-menu-item>-->
                 </el-menu>
             </div>
         </header>
@@ -40,15 +47,15 @@
                         <div class="collection-info">
                             <span class="meta-info mobile-hidden">
                                 <i class="el-icon-location-outline"></i>
-                                Wuhan, China
+                                Simon, China
                             </span>
                             <span class="meta-info">
                                 <i class="el-icon-mobile-phone"></i>
-                                <a href="http://www.zkh360.com" target="_blank">zkh360.com</a>
+                                <a href="http://www.zkh360.com" target="_blank">simon8.com</a>
                             </span>
                             <span class="meta-info">
                                 <i class="el-icon-star-off"></i>
-                                <a href="https://github.com/mzlogin" target="_blank">mzlogin</a>
+                                <a href="https://github.com/mzlogin" target="_blank">Simon</a>
                             </span>
                         </div>
                     </div>
@@ -76,27 +83,14 @@
                 </a>
                 <ul class="site-footer-links mobile-hidden">
 
-                    <li>
-                        <a href="https://mazhuang.org/" title="首页" target="">首页</a>
+                    <li v-for="item of footerButton">
+                        <a :href="item.href" :title="item.name" :target="item.target">{{ item.name }}</a>
                     </li>
-
                     <li>
-                        <a href="https://mazhuang.org/categories/" title="分类" target="">分类</a>
+                        <a href="https://mazhuang.org/feed.xml">
+                            <span class="octicon octicon-rss" style="color:orange;"></span>
+                        </a>
                     </li>
-
-                    <li>
-                        <a href="https://mazhuang.org/wiki/" title="维基" target="">维基</a>
-                    </li>
-
-                    <li>
-                        <a href="https://mazhuang.org/links/" title="链接" target="">链接</a>
-                    </li>
-
-                    <li>
-                        <a href="https://mazhuang.org/about/" title="关于" target="">关于</a>
-                    </li>
-
-                    <li><a href="https://mazhuang.org/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
                 </ul>
 
             </div>
@@ -109,13 +103,26 @@
         name: "App",
         data() {
             return {
-                msg: 'Vue',
-                navselected: "/"
+                menuSelected: "/",
+                menus: [
+                    { name: "首页", href: "/", target: false },
+                    { name: "PHP", href: "/article?catid=1", target: false },
+                    { name: "MySQL", href: "/article?catid=2", target: false },
+                    { name: "Linux", href: "/article?catid=3", target: false },
+                    { name: "关于", href: "/刘文静", target: false }
+                ],
+                footerButton: [
+                    { name: "首页", href: "", target: true },
+                    { name: "分类", href: "", target: true },
+                    { name: "维基", href: "", target: true },
+                    { name: "链接", href: "", target: true },
+                    { name: "关于", href: "", target: true }
+                ]
             }
         },
         methods: {
             handleSelect(key, keyPath) {
-                console.log(key, keyPath);
+                //console.log(key, keyPath);
             }
         }
     }

@@ -27,17 +27,17 @@ class BaseRepository
      */
     public function list()
     {
-        return $this->model->paginate(self::$pageSize);
+        return $this->model->orderBy('id', 'DESC')->paginate(self::$pageSize);
     }
 
     public function listBy($where, $page = true)
     {
-        return $page ? $this->model->where($where)->paginate(self::$pageSize) : $this->model->where($where)->get();
+        return $page ? $this->model->where($where)->orderBy('id', 'DESC')->paginate(self::$pageSize) : $this->model->where($where)->orderBy('id', 'DESC')->get();
     }
 
     public function getAll($where = [])
     {
-        return $where ? $this->model->where($where)->all() : $this->model->all();
+        return $where ? $this->model->where($where)->orderBy('id', 'DESC')->all() : $this->model->orderBy('id', 'DESC')->all();
     }
 
     /**

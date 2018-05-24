@@ -7,7 +7,7 @@
                     <article v-for="item of articles" class="row">
                         <div class="article-thumb col-sm-3">
                             <!--<p class="thumb">-->
-                            <img src="https://simon8.com/upload/thumb/201705/20170522155350_93623.gif" alt="">
+                            <img :src="item.thumb" alt="">
                             <!--</p>-->
                         </div>
                         <div class="article-info col-sm-9">
@@ -15,18 +15,25 @@
                                 <a :href="makeUrl(item.id)">{{ item.title }}</a>
                             </h3>
 
-                            <p class="introduce">
-                                {{ item.introduce }}
-                            </p>
+                            <p class="introduce" v-html="item.introduce"></p>
                             <p class="meta">
                                 <span class="meta-info">
-                                    <i class="el-icon-date"></i>
+                                    <i class="glyphicon glyphicon-time"></i>
                                     {{ item.created_at }}
                                 </span>
-                                    <span class="meta-info">
-                                    <i class="el-icon-edit"></i>
-                                    PHP
+                                <span class="meta-info">
+                                    <i class="glyphicon glyphicon-tags"></i>
+                                     PHP
                                 </span>
+                                <span class="meta-info">
+                                    <i class="glyphicon glyphicon-thumbs-up"></i>
+                                    {{ item.zan }}
+                                </span>
+                                <span class="meta-info">
+                                    <i class="glyphicon glyphicon-comment"></i>
+                                    {{ item.comment }}
+                                </span>
+
                             </p>
                         </div>
                     </article>
@@ -38,8 +45,10 @@
                     <el-pagination
                             background
                             layout="prev, pager, next"
-                            :total="50"
+                            :page-size="15"
+                            :total="total"
                             :current-page="currentPage"
+                            @current-change="getData"
                             >
                     </el-pagination>
                 </div>
@@ -52,9 +61,6 @@
 </template>
 
 <style scoped>
-    /** {*/
-        /*font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;*/
-    /*}*/
     li {
         list-style: none;
     }
@@ -93,8 +99,9 @@
         data() {
             return {
                 articles: [],
-                currentPage: 2,
-                loading: true
+                currentPage: 1,
+                total: 0,
+                loading: false
             }
         },
         methods: {
@@ -104,15 +111,21 @@
             setCache (name, data) {
                 this.$store.state[name] = data;
             },
-            getData () {
-                let cacheData = this.getCache('indexArticle');
-                if (cacheData.length) {
-                    this.articles = cacheData;
-                    return;
+            getData (page = 1) {
+                if (page === this.currentPage) {
+                    let cacheData = this.getCache('indexArticle');
+                    if (cacheData.length) {
+                        this.articles = cacheData;
+                        return;
+                    }
                 }
-                this.$http.get('article').then((res) => {
+                this.currentPage = page;
+                this.loading = true;
+                this.$http.get('article?page='+ page).then((res) => {
                     let data = res.data;
                     this.articles = data.data;
+                    this.total = data.total;
+                    this.loading = false;
                 }).catch((res) => {
                     console.log(res);
                 });
@@ -126,10 +139,11 @@
                 if (newValue.length) {
                     this.setCache('indexArticle', newValue);
                 }
-                this.loading = false;
             }
         },
         mounted() {
+            console.log(111);
+            console.log(this.$route.params);
             this.getData();
         }
     }

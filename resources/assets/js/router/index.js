@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import IndexComponent from '../components/IndexComponent';
-import ArticleComponent from '../components/ArticleComponent';
-import WebpageComponent from '../components/WebpageComponent';
-import ContentComponent from '../components/ContentComponent';
+
+import Index from '../pages/Index';
+import Article from '../pages/Article';
+import Single from '../pages/Single';
+import Content from '../pages/Content';
 
 Vue.use(VueRouter);
 
@@ -14,22 +15,27 @@ export default new VueRouter({
         {
             name: 'index',
             path: '/',
-            component: IndexComponent
+            component: Index
+        },
+        {
+            //name: 'index',
+            path: '/:name',
+            component: Single,
         },
         {
             name: 'article',
             path: '/article',
-            component: ArticleComponent
+            component: Article
         },
         {
-            name: 'webpage',
-            path: '/webpage',
-            component: WebpageComponent
+            name: 'single',
+            path: '/single/:id',
+            component: Single
         },
         {
             name: 'content',
             path: '/content/:id',
-            component: ContentComponent
+            component: Content
         }
     ]
 });

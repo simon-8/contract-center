@@ -50,4 +50,13 @@ class IndexTest extends TestCase
         $response->assertStatus(200);
         $this->assertArrayHasKey('title', $banner);
     }
+
+    public function testSinglePage()
+    {
+        $response = $this->get('/api/single/1');
+        $data = json_decode($response->getContent(), true);
+
+        $response->assertStatus(200);
+        $this->assertArrayHasKey('id', $data);
+    }
 }

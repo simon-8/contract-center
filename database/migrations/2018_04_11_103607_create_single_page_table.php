@@ -22,6 +22,7 @@ class CreateSinglePageTable extends Migration
             $table->unsignedInteger('comment')->comment('评论数量')->default(0);
             $table->unsignedInteger('zan')->comment('赞数量')->default(0);
             $table->unsignedBigInteger('hits')->comment('点击量')->default(0);
+            $table->unsignedTinyInteger('is_md')->comment('是否是markdown')->default(0);
             $table->unsignedTinyInteger('status')->comment('状态')->default(0);
             $table->timestamps();
         });

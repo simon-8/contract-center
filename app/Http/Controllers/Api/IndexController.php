@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ArticleRepository;
 use App\Repositories\AdRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\SinglePageRepository;
 use Chenhua\MarkdownEditor\Facades\MarkdownEditor;
 
 class IndexController extends Controller
@@ -34,17 +35,17 @@ class IndexController extends Controller
     public function getArticleContent(ArticleRepository $articleRepository, $id)
     {
         try {
-            $article = $articleRepository->find($id, true);
+            $data = $articleRepository->find($id, true);
         } catch (\Exception $exception) {
             return response('', 404);
         }
 
-        $article = $article->toArray();
-        $article['content'] = $article['content']['content'];
-        if ($article['is_md']) {
-            $article['content'] = MarkdownEditor::parse($article['content']);
+        $data = $data->toArray();
+        $data['content'] = $data['content']['content'];
+        if ($data['is_md']) {
+            $data['content'] = MarkdownEditor::parse($data['content']);
         }
-        return $article;
+        return $data;
     }
 
     /**
@@ -66,5 +67,26 @@ class IndexController extends Controller
             'pid' => self::$articlePID
         ];
         return $categoryRepository->listBy($where, false);
+    }
+
+    /**
+     * @param SinglePageRepository $singlePageRepository
+     * @param $id
+     * @return array|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|\Symfony\Component\HttpFoundation\Response|static|static[]
+     */
+    public function getSinglePage(SinglePageRepository $singlePageRepository, $id)
+    {
+        try {
+            $data = $singlePageRepository->find($id, true);
+        } catch (\Exception $exception) {
+            return response('', 404);
+        }
+
+        $data = $data->toArray();
+        $data['content'] = $data['content']['content'];
+        if ($data['is_md']) {
+            $data['content'] = MarkdownEditor::parse($data['content']);
+        }
+        return $data;
     }
 }
