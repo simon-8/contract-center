@@ -1,19 +1,17 @@
 <template>
     <div class="container">
-        <div class="row">
-
-            <div class="col-md-9">
+        <el-row>
+            <el-col :span="16">
                 <div class="articles" v-loading="loading">
-                    <article v-for="item of articles" class="row">
-                        <div class="article-thumb col-sm-3">
-                            <!--<p class="thumb">-->
-                            <img :src="item.thumb" alt="">
-                            <!--</p>-->
-                        </div>
-                        <div class="article-info col-sm-9">
-                            <h3>
-                                <a :href="makeUrl(item.id)">{{ item.title }}</a>
-                            </h3>
+                    <el-row v-for="item of articles" tag="article" :gutter="10" :key="item.id">
+                        <el-col :span="6" class="article-thumb">
+                            <img :src="item.thumb" alt="" width="100%">
+                        </el-col>
+
+                        <el-col :span="18" class="article-info">
+                            <h4>
+                                <router-link :to="makeUrl(item.id)">{{ item.title }}</router-link>
+                            </h4>
 
                             <p class="introduce" v-html="item.introduce"></p>
                             <p class="meta">
@@ -33,10 +31,9 @@
                                     <i class="glyphicon glyphicon-comment"></i>
                                     {{ item.comment }}
                                 </span>
-
                             </p>
-                        </div>
-                    </article>
+                        </el-col>
+                    </el-row>
                 </div>
 
                 <div class="clear">&nbsp;</div>
@@ -45,18 +42,18 @@
                     <el-pagination
                             background
                             layout="prev, pager, next"
-                            :page-size="15"
+                            :page-size="pageSize"
                             :total="total"
                             :current-page="currentPage"
                             @current-change="getData"
-                            >
+                    >
                     </el-pagination>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <Tag></Tag>
-            </div>
-        </div>
+            </el-col>
+            <el-col :span="7" :offset="1">
+                <!--<Project></Project>-->
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -67,10 +64,11 @@
 
     article {
         border-bottom: 1px solid #eee;
-        padding: 10px 0;
+        padding: 12px 0;
+        margin: 10px 0;
         position: relative;
     }
-    article h3 {
+    article h4 {
         margin:0;
         padding: 0;
     }
@@ -82,6 +80,9 @@
         position: absolute;
         height: calc(100% - 20px);
         right: 0;
+    }
+    article .article-info p {
+        margin: 5px 0 7px 0;
     }
     article .article-info .meta {
         position: absolute;
@@ -100,6 +101,7 @@
             return {
                 articles: [],
                 currentPage: 1,
+                pageSize: 10,
                 total: 0,
                 loading: false
             }
@@ -112,16 +114,21 @@
                 this.$store.state[name] = data;
             },
             getData (page = 1) {
-                if (page === this.currentPage) {
-                    let cacheData = this.getCache('indexArticle');
-                    if (cacheData.length) {
-                        this.articles = cacheData;
+                //if (page > 1) {
+                    let cacheData = this.getCache('indexCache');
+                    console.log(cacheData, page);
+                    if (cacheData && cacheData.data.length && cacheData.current_page === page) {
+                        this.articles = cacheData.data;
+                        this.total = cacheData.total;
+                        this.currentPage = cacheData.current_page;
                         return;
                     }
-                }
+                //}
                 this.currentPage = page;
                 this.loading = true;
-                this.$http.get('article?page='+ page).then((res) => {
+                this.articles = [];
+                axios.get('article?page='+ page+'&pagesize='+this.pageSize).then((res) => {
+                    this.setCache('indexCache', res.data);
                     let data = res.data;
                     this.articles = data.data;
                     this.total = data.total;
@@ -131,19 +138,19 @@
                 });
             },
             makeUrl(id) {
-                return '/content/'+id;
+                return '/article/'+id+'.html';
             }
         },
         watch: {
             articles (newValue, oldValue) {
                 if (newValue.length) {
-                    this.setCache('indexArticle', newValue);
+                    //this.setCache('indexArticle', newValue);
                 }
             }
         },
         mounted() {
-            console.log(111);
-            console.log(this.$route.params);
+            console.log('Index Page');
+            //console.log(this.$route.params);
             this.getData();
         }
     }

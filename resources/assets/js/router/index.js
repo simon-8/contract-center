@@ -3,8 +3,8 @@ import VueRouter from 'vue-router';
 
 import Index from '../pages/Index';
 import Article from '../pages/Article';
-import Single from '../pages/Single';
-import Content from '../pages/Content';
+import SingleContent from '../pages/SingleContent';
+import ArticleContent from '../pages/ArticleContent';
 
 Vue.use(VueRouter);
 
@@ -18,24 +18,29 @@ export default new VueRouter({
             component: Index
         },
         {
-            //name: 'index',
-            path: '/:name',
-            component: Single,
-        },
-        {
-            name: 'article',
-            path: '/article',
+            name: 'category',
+            path: '/category/:catid(\\d+)',
             component: Article
         },
         {
-            name: 'single',
-            path: '/single/:id',
-            component: Single
+            name: 'article',
+            path: '/article/:id(\\d+).html',
+            component: ArticleContent
         },
         {
-            name: 'content',
-            path: '/content/:id',
-            component: Content
-        }
+            name: 'single',
+            path: '/single/:id(\\d+).html',
+            component: SingleContent
+        },
+        {
+            name: 'tag',
+            path: '/tag/:name',
+            component: ArticleContent
+        },
+        {
+            name: 'single2',
+            path: '/:name',
+            component: SingleContent,
+        },
     ]
 });

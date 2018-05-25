@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-9" v-loading="loading">
+        <el-row>
+            <el-col :span="16" v-loading="loading">
                 <div class="panel panel-default">
                     <div class="panel-heading">{{ article.title }}</div>
 
@@ -11,11 +11,11 @@
                         <div class="markdown-body" v-html="article.content"></div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3" v-loading="loading">
-                <Tag></Tag>
-            </div>
-        </div>
+            </el-col>
+            <el-col :span="7" :offset="1" v-loading="loading">
+                <!--<Tag></Tag>-->
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -55,7 +55,7 @@
             getData () {
                 this.getParam();
                 this.loading = true;
-                this.$http.get('/single/'+this.id).then((res) => {
+                axios.get('/single/'+this.id).then((res) => {
                     this.article = res.data;
                     this.loading = false;
                 }).catch((res) => {
@@ -64,6 +64,7 @@
             }
         },
         mounted() {
+            console.log('Single Page');
             this.getData();
         }
     }

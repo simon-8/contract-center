@@ -11,7 +11,7 @@
                 <el-menu mode="horizontal"
                          text-color="rgba(255, 255, 255, .5)"
                          background-color="#4183c4"
-                         active-text-color="#FFFFFF" :default-active="menuSelected"
+                         active-text-color="#FFFFFF" :default-active="$route.path"
                          @select="handleSelect" router>
                     <template v-for="item in menus">
                         <el-menu-item :index="item.href">{{ item.name }}</el-menu-item>
@@ -47,15 +47,15 @@
                         <div class="collection-info">
                             <span class="meta-info mobile-hidden">
                                 <i class="el-icon-location-outline"></i>
-                                Simon, China
+                                aaa, China
                             </span>
                             <span class="meta-info">
                                 <i class="el-icon-mobile-phone"></i>
-                                <a href="http://www.zkh360.com" target="_blank">simon8.com</a>
+                                <a href="" target="_blank">aaaa.com</a>
                             </span>
                             <span class="meta-info">
                                 <i class="el-icon-star-off"></i>
-                                <a href="https://github.com/mzlogin" target="_blank">Simon</a>
+                                <a href="" target="_blank">aaa</a>
                             </span>
                         </div>
                     </div>
@@ -63,13 +63,16 @@
             </div>
         </section>
         <div class="clear">&nbsp;</div>
-        <router-view></router-view>
+
+        <transition>
+            <router-view></router-view>
+        </transition>
 
         <footer class="container">
             <div class="site-footer" role="contentinfo">
                 <div class="copyright pull-left mobile-block">
-                    © 2015
-                    <span title="Zhuang Ma">Zhuang Ma</span>
+                    © {{ new Date().getFullYear() }}
+                    <span title="Simon">Simon</span>
                     <a href="javascript:window.scrollTo(0,0)" class="pull-right hidden-md hidden-lg">TOP</a>
                 </div>
 
@@ -78,18 +81,18 @@
                         <a href="javascript:window.scrollTo(0,0)">TOP</a>
                     </li>
                 </ul>
-                <a href="https://github.com/mzlogin/mzlogin.github.io" target="_blank" aria-label="view source code">
+                <router-link to="" target="_blank" aria-label="view source code">
                     <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
-                </a>
+                </router-link>
                 <ul class="site-footer-links mobile-hidden">
 
                     <li v-for="item of footerButton">
-                        <a :href="item.href" :title="item.name" :target="item.target">{{ item.name }}</a>
+                        <router-link :to="item.href" :title="item.name" :target="item.target">{{ item.name }}</router-link>
                     </li>
                     <li>
-                        <a href="https://mazhuang.org/feed.xml">
+                        <router-link to="">
                             <span class="octicon octicon-rss" style="color:orange;"></span>
-                        </a>
+                        </router-link>
                     </li>
                 </ul>
 
@@ -106,10 +109,10 @@
                 menuSelected: "/",
                 menus: [
                     { name: "首页", href: "/", target: false },
-                    { name: "PHP", href: "/article?catid=1", target: false },
-                    { name: "MySQL", href: "/article?catid=2", target: false },
-                    { name: "Linux", href: "/article?catid=3", target: false },
-                    { name: "关于", href: "/刘文静", target: false }
+                    { name: "PHP", href: "/category/2", target: false },
+                    { name: "MySQL", href: "/category/3", target: false },
+                    { name: "Linux", href: "/category/4", target: false },
+                    //{ name: "关于", href: "/刘文静", target: false }
                 ],
                 footerButton: [
                     { name: "首页", href: "", target: true },
@@ -124,6 +127,15 @@
             handleSelect(key, keyPath) {
                 //console.log(key, keyPath);
             }
+        },
+        mounted () {
+
+        },
+        watch: {
+            '$route' (to, from) {
+                console.log('index');
+                console.log(to, from);
+            },
         }
     }
 </script>

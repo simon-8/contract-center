@@ -19,12 +19,20 @@ class IndexController extends Controller
     protected static $articlePID = 1;
 
     /**
+     * @param \Request $request
      * @param ArticleRepository $articleRepository
      * @return mixed
      */
-    public function getArticle(ArticleRepository $articleRepository)
+    public function getArticle(\Request $request, ArticleRepository $articleRepository)
     {
-        return $articleRepository->list();
+        $where = [];
+        if ($request::has('catid')) {
+            $where['catid'] = $request::input('catid');
+        }
+        if ($request::has('pagesize')) {
+            $articleRepository::$pageSize = $request::input('pagesize');
+        }
+        return $articleRepository->listBy($where);
     }
 
     /**
@@ -45,6 +53,8 @@ class IndexController extends Controller
         if ($data['is_md']) {
             $data['content'] = MarkdownEditor::parse($data['content']);
         }
+        $data['prev'] = $articleRepository->previous($data['id']);
+        $data['next'] = $articleRepository->next($data['id']);
         return $data;
     }
 

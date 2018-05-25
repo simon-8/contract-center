@@ -8,12 +8,13 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import axios from 'axios';
+
+window.axios.defaults.baseURL = 'http://blog.cc/api/';
+
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
-axios.defaults.baseURL = 'http://blog.cc/api/';
-Vue.prototype.$http = axios;
+
 Vue.use(ElementUI);
 
 /**
@@ -26,6 +27,7 @@ import App from './App.vue';
 import router from './router/index.js';
 import store from './store.js';
 Vue.component('Tag', require('./components/TagComponent'));
+Vue.component('Project', require('./components/ProjectComponent'));
 const app = new Vue({
     el: '#app',
     router,

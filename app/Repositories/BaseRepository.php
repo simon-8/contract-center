@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class BaseRepository
 {
     protected $model;
-    protected static $pageSize = 15;
+    public static $pageSize = 15;
 
     /**
      * BaseRepository constructor.

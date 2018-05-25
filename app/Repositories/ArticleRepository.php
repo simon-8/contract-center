@@ -104,4 +104,28 @@ class ArticleRepository extends BaseRepository
     {
         return $this->model->where('created_at', '>', date('Y-m-d 00:00:00'))->count();
     }
+
+    /**
+     * 上一篇
+     * @param $id
+     * @param array $fields
+     * @return mixed
+     */
+    public function previous($id, $fields = ['id', 'title'])
+    {
+        $primaryKey = $this->model->getKeyName();
+        return $this->model->where($primaryKey, '<', $id)->select($fields)->orderBy($primaryKey, 'DESC')->first();
+    }
+
+    /**
+     * 下一篇
+     * @param $id
+     * @param array $fields
+     * @return mixed
+     */
+    public function next($id, $fields = ['id', 'title'])
+    {
+        $primaryKey = $this->model->getKeyName();
+        return $this->model->where($primaryKey, '>', $id)->select($fields)->orderBy($primaryKey, 'ASC')->first();
+    }
 }
