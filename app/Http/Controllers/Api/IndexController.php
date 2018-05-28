@@ -47,6 +47,7 @@ class IndexController extends Controller
         } catch (\Exception $exception) {
             return response('', 404);
         }
+        $data->increment('hits', 1);
 
         $data = $data->toArray();
         $data['content'] = $data['content']['content'];
@@ -91,6 +92,7 @@ class IndexController extends Controller
         } catch (\Exception $exception) {
             return response('', 404);
         }
+        $data->increment('hits', 1);
 
         $data = $data->toArray();
         $data['content'] = $data['content']['content'];

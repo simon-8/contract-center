@@ -5,12 +5,12 @@
                 <div class="articles" v-loading="loading">
                     <el-row v-for="item of articles" tag="article" :gutter="10" :key="item.id">
                         <el-col :span="6" class="article-thumb">
-                            <img :src="item.thumb" alt="" width="100%">
+                            <img :src="imgurl(item.thumb)" class="lazy" alt="" width="100%">
                         </el-col>
 
                         <el-col :span="18" class="article-info">
                             <h4>
-                                <router-link :to="makeUrl(item.id)">{{ item.title }}</router-link>
+                                <router-link :to="articleUrl(item.id)">{{ item.title }}</router-link>
                             </h4>
 
                             <p class="introduce" v-html="item.introduce"></p>
@@ -124,7 +124,7 @@
                 this.currentPage = page;
                 this.loading = true;
                 this.articles = [];
-                axios.get('article?catid='+this.catid+'&page='+ page+'&pagesize='+this.pageSize).then((res) => {
+                axios.get(this.getAPI('article') + '?catid='+this.catid+'&page='+ page+'&pagesize='+this.pageSize).then((res) => {
                     let data = res.data;
                     this.articles = data.data;
                     this.total = data.total;
@@ -132,9 +132,6 @@
                 }).catch((res) => {
                     console.log(res);
                 });
-            },
-            makeUrl(id) {
-                return '/article/'+id+'.html';
             }
         },
         watch: {
@@ -143,7 +140,6 @@
                     this.catid = this.$route.params.catid;
                     this.getData();
                 }
-                console.log(this.$route.params.catid);
                 //console.log(to.params.catid, this.catid);
             },
             articles (newValue, oldValue) {

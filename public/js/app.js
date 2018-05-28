@@ -16167,7 +16167,7 @@ function required(rule, value, source, errors, options, type) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(78);
-module.exports = __webpack_require__(231);
+module.exports = __webpack_require__(232);
 
 
 /***/ }),
@@ -16184,6 +16184,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__router_index_js__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__store_js__ = __webpack_require__(219);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_helperPlugin_js__ = __webpack_require__(221);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -16194,9 +16195,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __webpack_require__(79);
 
 window.Vue = __webpack_require__(2);
-
-window.axios.defaults.baseURL = 'http://blog.cc/api/';
-
 
 
 
@@ -16211,8 +16209,23 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_element_ui___default.a);
 
 
 
-Vue.component('Tag', __webpack_require__(221));
-Vue.component('Project', __webpack_require__(226));
+
+
+// 注册全局插件
+Vue.use(__WEBPACK_IMPORTED_MODULE_5__utils_helperPlugin_js__["a" /* default */]);
+
+// 注册全局组件
+Vue.component('Tag', __webpack_require__(222));
+Vue.component('Project', __webpack_require__(227));
+
+//router.beforeEach((to, from, next) => {
+//    /* 路由发生变化修改页面title */
+//    if (to.meta.title) {
+//        document.title = to.meta.title;
+//    }
+//    next();
+//});
+
 var app = new Vue({
   el: '#app',
   router: __WEBPACK_IMPORTED_MODULE_3__router_index_js__["a" /* default */],
@@ -16226,8 +16239,11 @@ var app = new Vue({
 
 /***/ }),
 /* 79 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_base__ = __webpack_require__(239);
 
 window._ = __webpack_require__(80);
 
@@ -16249,9 +16265,11 @@ window._ = __webpack_require__(80);
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(82);
 
+window.axios = __webpack_require__(82);
+window.axios.defaults.baseURL = __WEBPACK_IMPORTED_MODULE_0__config_base__["a" /* default */].baseURL;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.api = __WEBPACK_IMPORTED_MODULE_0__config_base__["a" /* default */].api;
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -78671,16 +78689,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        handleSelect: function handleSelect(key, keyPath) {
-            //console.log(key, keyPath);
-        }
+        handleSelect: function handleSelect(key, keyPath) {}
     },
     mounted: function mounted() {},
 
     watch: {
         '$route': function $route(to, from) {
-            console.log('index');
-            console.log(to, from);
+            var _this = this;
+
+            this.menus.forEach(function (item, index) {
+                if (item.href === to.path) {
+                    _this.seoInfo(item.name);
+                }
+            });
         }
     }
 });
@@ -81819,7 +81840,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //if (page > 1) {
             var cacheData = this.getCache('indexCache');
-            console.log(cacheData, page);
             if (cacheData && cacheData.data.length && cacheData.current_page === page) {
                 this.articles = cacheData.data;
                 this.total = cacheData.total;
@@ -81830,7 +81850,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.currentPage = page;
             this.loading = true;
             this.articles = [];
-            axios.get('article?page=' + page + '&pagesize=' + this.pageSize).then(function (res) {
+            axios.get(this.getAPI('article') + '?page=' + page + '&pagesize=' + this.pageSize).then(function (res) {
                 _this.setCache('indexCache', res.data);
                 var data = res.data;
                 _this.articles = data.data;
@@ -81839,9 +81859,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (res) {
                 console.log(res);
             });
-        },
-        makeUrl: function makeUrl(id) {
-            return '/article/' + id + '.html';
         }
     },
     watch: {
@@ -81853,7 +81870,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         console.log('Index Page');
-        //console.log(this.$route.params);
         this.getData();
     }
 });
@@ -81897,7 +81913,12 @@ var render = function() {
                       { staticClass: "article-thumb", attrs: { span: 6 } },
                       [
                         _c("img", {
-                          attrs: { src: item.thumb, alt: "", width: "100%" }
+                          staticClass: "lazy",
+                          attrs: {
+                            src: _vm.imgurl(item.thumb),
+                            alt: "",
+                            width: "100%"
+                          }
                         })
                       ]
                     ),
@@ -81911,7 +81932,7 @@ var render = function() {
                           [
                             _c(
                               "router-link",
-                              { attrs: { to: _vm.makeUrl(item.id) } },
+                              { attrs: { to: _vm.articleUrl(item.id) } },
                               [_vm._v(_vm._s(item.title))]
                             )
                           ],
@@ -82243,7 +82264,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.currentPage = page;
             this.loading = true;
             this.articles = [];
-            axios.get('article?catid=' + this.catid + '&page=' + page + '&pagesize=' + this.pageSize).then(function (res) {
+            axios.get(this.getAPI('article') + '?catid=' + this.catid + '&page=' + page + '&pagesize=' + this.pageSize).then(function (res) {
                 var data = res.data;
                 _this.articles = data.data;
                 _this.total = data.total;
@@ -82251,9 +82272,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (res) {
                 console.log(res);
             });
-        },
-        makeUrl: function makeUrl(id) {
-            return '/article/' + id + '.html';
         }
     },
     watch: {
@@ -82262,7 +82280,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.catid = this.$route.params.catid;
                 this.getData();
             }
-            console.log(this.$route.params.catid);
             //console.log(to.params.catid, this.catid);
         },
         articles: function articles(newValue, oldValue) {
@@ -82317,7 +82334,12 @@ var render = function() {
                       { staticClass: "article-thumb", attrs: { span: 6 } },
                       [
                         _c("img", {
-                          attrs: { src: item.thumb, alt: "", width: "100%" }
+                          staticClass: "lazy",
+                          attrs: {
+                            src: _vm.imgurl(item.thumb),
+                            alt: "",
+                            width: "100%"
+                          }
                         })
                       ]
                     ),
@@ -82331,7 +82353,7 @@ var render = function() {
                           [
                             _c(
                               "router-link",
-                              { attrs: { to: _vm.makeUrl(item.id) } },
+                              { attrs: { to: _vm.articleUrl(item.id) } },
                               [_vm._v(_vm._s(item.title))]
                             )
                           ],
@@ -82770,10 +82792,10 @@ if(false) {
 
 exports = module.exports = __webpack_require__(6)(false);
 // imports
-exports.push([module.i, "@import url(https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css);", ""]);
+
 
 // module
-exports.push([module.i, "\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -82784,6 +82806,7 @@ exports.push([module.i, "\n", ""]);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -82859,9 +82882,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             this.loading = true;
-            axios.get('/article/' + this.id).then(function (res) {
+            axios.get(this.getAPI('article') + '/' + this.id).then(function (res) {
                 _this.article = res.data;
                 _this.loading = false;
+                _this.seoInfo(_this.article.title, _this.article.introduce);
             }).catch(function (res) {
                 _this.loading = false;
                 console.log(res);
@@ -82874,7 +82898,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.id = this.$route.params.id;
                 this.getData();
             }
-            console.log(to, from);
         },
         articles: function articles(newValue, oldValue) {
             if (newValue.length) {
@@ -82901,6 +82924,16 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
+      _vm.article.is_md
+        ? _c("link", {
+            attrs: {
+              rel: "stylesheet",
+              href:
+                "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "el-row",
         [
@@ -82948,7 +82981,7 @@ var render = function() {
                           [
                             _c(
                               "router-link",
-                              { attrs: { to: _vm.makeUrl(_vm.article.id) } },
+                              { attrs: { to: _vm.articleUrl(_vm.article.id) } },
                               [_vm._v(_vm._s(_vm.article.title))]
                             )
                           ],
@@ -84007,18 +84040,65 @@ var index_esm = {
 
 /***/ }),
 /* 221 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    install: function install(Vue, options) {
+        var _arguments = arguments;
+
+        Vue.prototype.imgurl = function (url, size) {
+            if (url) {
+                return url;
+            }
+            size = size === undefined ? 60 : parseInt(size);
+            return '/images/nopic_' + size + '.png';
+        };
+        Vue.prototype.seoInfo = function (title) {
+            var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+            document.title = title;
+            //document.meta[name=description] = description;
+        };
+        Vue.prototype.getAPI = function (name) {
+            var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            var api = window.axios.defaults.api[name] ? window.axios.defaults.api[name] : null;
+            if (api === null) throw Error('API not Found!');
+            if (_arguments.length > 1) {
+                for (i = 1; i < _arguments.length; i++) {
+                    api = api.replace('{param}', _arguments[i]);
+                }
+            }
+            return api;
+        };
+        //Vue.prototype.getCache = (name) => {
+        //    return this.$store.state[name];
+        //};
+        //Vue.prototype.setCache = (name, data) => {
+        //    this.$store.state[name] = data;
+        //    return true;
+        //};
+        Vue.prototype.articleUrl = function (id) {
+            return '/article/' + id + '.html';
+        };
+    }
+});
+
+/***/ }),
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(222)
+  __webpack_require__(223)
 }
 var normalizeComponent = __webpack_require__(10)
 /* script */
-var __vue_script__ = __webpack_require__(224)
+var __vue_script__ = __webpack_require__(225)
 /* template */
-var __vue_template__ = __webpack_require__(225)
+var __vue_template__ = __webpack_require__(226)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -84057,13 +84137,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(223);
+var content = __webpack_require__(224);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -84083,7 +84163,7 @@ if(false) {
 }
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -84097,7 +84177,7 @@ exports.push([module.i, "\n.el-tag[data-v-08ca8ffa] {\n    background-color: rgb
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84133,7 +84213,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -84172,19 +84252,19 @@ if (false) {
 }
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(227)
+  __webpack_require__(228)
 }
 var normalizeComponent = __webpack_require__(10)
 /* script */
-var __vue_script__ = __webpack_require__(229)
+var __vue_script__ = __webpack_require__(230)
 /* template */
-var __vue_template__ = __webpack_require__(230)
+var __vue_template__ = __webpack_require__(231)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -84223,13 +84303,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(228);
+var content = __webpack_require__(229);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -84249,7 +84329,7 @@ if(false) {
 }
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -84263,7 +84343,7 @@ exports.push([module.i, "\n.project[data-v-4ba1a35b] {\n    padding: 0;\n    mar
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84322,7 +84402,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -84388,10 +84468,28 @@ if (false) {
 }
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    baseURL: '/',
+    api: {
+        article: 'api/article'
+    }
+});
 
 /***/ })
 /******/ ]);

@@ -9,12 +9,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-window.axios.defaults.baseURL = 'http://blog.cc/api/';
-
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
-
 Vue.use(ElementUI);
 
 /**
@@ -26,8 +22,23 @@ Vue.use(ElementUI);
 import App from './App.vue';
 import router from './router/index.js';
 import store from './store.js';
+import helperPlugin from './utils/helperPlugin.js';
+
+// 注册全局插件
+Vue.use(helperPlugin);
+
+// 注册全局组件
 Vue.component('Tag', require('./components/TagComponent'));
 Vue.component('Project', require('./components/ProjectComponent'));
+
+//router.beforeEach((to, from, next) => {
+//    /* 路由发生变化修改页面title */
+//    if (to.meta.title) {
+//        document.title = to.meta.title;
+//    }
+//    next();
+//});
+
 const app = new Vue({
     el: '#app',
     router,

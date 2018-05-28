@@ -8373,3 +8373,11 @@ button.close {
   background-color: #bbb;
 }
 
+.el-loading-spinner {
+  margin-top: 0 !important;
+}
+
+img.lazy {
+  background: url(/images/loading.gif) no-repeat center;
+}
+

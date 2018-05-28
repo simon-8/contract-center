@@ -5,12 +5,12 @@
                 <div class="articles" v-loading="loading">
                     <el-row v-for="item of articles" tag="article" :gutter="10" :key="item.id">
                         <el-col :span="6" class="article-thumb">
-                            <img :src="item.thumb" alt="" width="100%">
+                            <img :src="imgurl(item.thumb)" class="lazy" alt="" width="100%">
                         </el-col>
 
                         <el-col :span="18" class="article-info">
                             <h4>
-                                <router-link :to="makeUrl(item.id)">{{ item.title }}</router-link>
+                                <router-link :to="articleUrl(item.id)">{{ item.title }}</router-link>
                             </h4>
 
                             <p class="introduce" v-html="item.introduce"></p>
@@ -116,7 +116,6 @@
             getData (page = 1) {
                 //if (page > 1) {
                     let cacheData = this.getCache('indexCache');
-                    console.log(cacheData, page);
                     if (cacheData && cacheData.data.length && cacheData.current_page === page) {
                         this.articles = cacheData.data;
                         this.total = cacheData.total;
@@ -127,7 +126,7 @@
                 this.currentPage = page;
                 this.loading = true;
                 this.articles = [];
-                axios.get('article?page='+ page+'&pagesize='+this.pageSize).then((res) => {
+                axios.get(this.getAPI('article') + '?page='+ page+'&pagesize='+this.pageSize).then((res) => {
                     this.setCache('indexCache', res.data);
                     let data = res.data;
                     this.articles = data.data;
@@ -136,9 +135,6 @@
                 }).catch((res) => {
                     console.log(res);
                 });
-            },
-            makeUrl(id) {
-                return '/article/'+id+'.html';
             }
         },
         watch: {
@@ -150,7 +146,6 @@
         },
         mounted() {
             console.log('Index Page');
-            //console.log(this.$route.params);
             this.getData();
         }
     }

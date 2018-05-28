@@ -125,7 +125,7 @@
         },
         methods: {
             handleSelect(key, keyPath) {
-                //console.log(key, keyPath);
+
             }
         },
         mounted () {
@@ -133,8 +133,11 @@
         },
         watch: {
             '$route' (to, from) {
-                console.log('index');
-                console.log(to, from);
+                this.menus.forEach((item, index) => {
+                    if (item.href === to.path) {
+                        this.seoInfo(item.name);
+                    }
+                });
             },
         }
     }

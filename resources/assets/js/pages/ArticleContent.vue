@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" v-if="article.is_md">
         <el-row>
             <el-col :span="24" v-loading="loading">
 
@@ -14,7 +15,7 @@
                                 文章详情
                             </el-breadcrumb-item>
                             <el-breadcrumb-item>
-                                <router-link :to="makeUrl(article.id)">{{ article.title }}</router-link>
+                                <router-link :to="articleUrl(article.id)">{{ article.title }}</router-link>
                             </el-breadcrumb-item>
                         </el-breadcrumb>
                     </div>
@@ -46,7 +47,7 @@
 </template>
 
 <style>
-    @import 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css';
+
 </style>
 
 <script>
@@ -70,9 +71,10 @@
             },
             getData () {
                 this.loading = true;
-                axios.get('/article/'+this.id).then((res) => {
+                axios.get(this.getAPI('article') + '/'+this.id).then((res) => {
                     this.article = res.data;
                     this.loading = false;
+                    this.seoInfo(this.article.title, this.article.introduce);
                 }).catch((res) => {
                     this.loading = false;
                     console.log(res);
@@ -85,7 +87,6 @@
                     this.id = this.$route.params.id;
                     this.getData();
                 }
-                console.log(to, from);
             },
             articles (newValue, oldValue) {
                 if (newValue.length) {
