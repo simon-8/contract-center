@@ -49,15 +49,11 @@ class ArticleRepository extends BaseRepository
      */
     public function update($data)
     {
-
         $item = $this->model->find($data['id']);
-        $result = $item->update($data);
-        if ($result) {
-            return $item->content()->update([
-                'content' => $data['content']
-            ]);
-        }
-        return false;
+        $item->content()->update([
+            'content' => $data['content']
+        ]);
+        return true;
     }
 
     /**

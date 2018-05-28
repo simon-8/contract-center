@@ -62,7 +62,7 @@
                             <select name="catid" class="form-control">
                                 @if(!empty($categorys))
                                     @foreach ($categorys as $category)
-                                        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                                        <option value="{{ $category['id'] }}" {{ !empty($catid) && $catid == $category['id'] ? 'selected' : '' }}>{{ $category['name'] }}</option>
                                     @endforeach
                                 @endif
                             </select>

@@ -110,7 +110,7 @@ class ArticleController extends BaseController
         if ($repository->update($data)) {
             return redirect()->route('admin.article.index')->with('Message', '更新成功');
         } else {
-            return back()->withErrors('添加失败')->withInput();
+            return back()->withErrors('更新失败')->withInput();
         }
     }
 

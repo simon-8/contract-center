@@ -10,7 +10,7 @@
     
 > 运行安装脚本, 按提示输入相关信息
     
-    php artisan story:install
+    php artisan blog:install
     
 ![install](https://raw.githubusercontent.com/simon-8/MarkdownPhotos/master/blog/install.jpg)
 

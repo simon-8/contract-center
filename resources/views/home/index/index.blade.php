@@ -10,6 +10,12 @@
     <!-- Styles -->
     <style></style>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    {{-- 配置基本信息 --}}
+    <script>
+        var appConfig = {
+            baseURL: '{{ env("APP_URL") }}/api/'
+        };
+    </script>
 </head>
 <body>
 <div id="app">
