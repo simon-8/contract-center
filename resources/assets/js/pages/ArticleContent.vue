@@ -29,12 +29,12 @@
                 <div>
                     <div class="pull-left">
                         上一篇:
-                        <router-link :to="makeUrl(article.prev.id)" v-if="article.prev">{{ article.prev.title }}</router-link>
+                        <router-link :to="articleUrl(article.prev.id)" v-if="article.prev">{{ article.prev.title }}</router-link>
                         <a v-else>没有了</a>
                     </div>
                     <div class="pull-right">
                         下一篇:
-                        <router-link :to="makeUrl(article.next.id)" v-if="article.next">{{ article.next.title }}</router-link>
+                        <router-link :to="articleUrl(article.next.id)" v-if="article.next">{{ article.next.title }}</router-link>
                         <a v-else>没有了</a>
                     </div>
                 </div>
@@ -65,9 +65,6 @@
             },
             setCache (name, data) {
                 this.$store.state[name] = data;
-            },
-            makeUrl(id) {
-                return '/article/'+id+'.html';
             },
             getData () {
                 this.loading = true;

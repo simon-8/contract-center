@@ -82875,9 +82875,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         setCache: function setCache(name, data) {
             this.$store.state[name] = data;
         },
-        makeUrl: function makeUrl(id) {
-            return '/article/' + id + '.html';
-        },
         getData: function getData() {
             var _this = this;
 
@@ -83022,7 +83019,9 @@ var render = function() {
                     _vm.article.prev
                       ? _c(
                           "router-link",
-                          { attrs: { to: _vm.makeUrl(_vm.article.prev.id) } },
+                          {
+                            attrs: { to: _vm.articleUrl(_vm.article.prev.id) }
+                          },
                           [_vm._v(_vm._s(_vm.article.prev.title))]
                         )
                       : _c("a", [_vm._v("没有了")])
@@ -83040,7 +83039,9 @@ var render = function() {
                     _vm.article.next
                       ? _c(
                           "router-link",
-                          { attrs: { to: _vm.makeUrl(_vm.article.next.id) } },
+                          {
+                            attrs: { to: _vm.articleUrl(_vm.article.next.id) }
+                          },
                           [_vm._v(_vm._s(_vm.article.next.title))]
                         )
                       : _c("a", [_vm._v("没有了")])
