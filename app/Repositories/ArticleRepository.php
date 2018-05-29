@@ -50,6 +50,7 @@ class ArticleRepository extends BaseRepository
     public function update($data)
     {
         $item = $this->model->find($data['id']);
+        $item->update($data);
         $item->content()->update([
             'content' => $data['content']
         ]);
