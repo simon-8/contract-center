@@ -8,6 +8,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
+use App\Services\AuthService;
+
 class AdminAuthenticate
 {
     /**
@@ -45,18 +47,8 @@ class AdminAuthenticate
             }
         }
 
-        $userAccessKey = 'userAccess'.auth()->guard('admin')->getUser()->id;
-        $routes = \Cache::remember($userAccessKey, 1440, function() {
-            $roles = auth()->guard('admin')->getUser()->getRoles()->where('status', 1)->get();
-            $access = [];
-            foreach ($roles as $role) {
-                $access = array_merge($access, $role->getAccess->toArray());
-            }
-            $access = collect($access)->sortBy('route');
-            $routes = array_column($access->toArray(), 'route');
-            return $routes;
-        });
-
+        $authService = new AuthService();
+        $routes = $authService->getUserRoutes(auth()->guard('admin')->getUser()->id);
         $currentRouteName = \Route::currentRouteName();
 
         $cross = array_search_value($currentRouteName, $routes);

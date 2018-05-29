@@ -1,3 +1,5 @@
+@inject('authPresenter', 'App\Presenters\AuthPresenter')
+
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="nav-close"><i class="fa fa-times-circle"></i>
     </div>
@@ -5,10 +7,10 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <span><img alt="image" class="img-circle" src="{{ auth()->guard('admin')->user()->avatar }}" width="64"/></span>
+                    <span><img alt="image" class="img-circle" src="{{ $authPresenter->showAvatar() }}" width="64"/></span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
-                            <span class="block m-t-xs"><strong class="font-bold">{{ auth()->guard('admin')->user()->truename }}</strong></span>
+                            <span class="block m-t-xs"><strong class="font-bold">{{ $authPresenter->showTrueName() }}</strong></span>
                             <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                         </span>
                     </a>

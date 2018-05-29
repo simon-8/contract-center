@@ -8,48 +8,17 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
-use App\Repositories\MenuRepository;
 use App\Repositories\ArticleRepository;
 use App\Repositories\SinglePageRepository;
 use App\Repositories\HitRecordRepository;
 
+use App\Services\AuthService;
+
 class IndexController extends Controller
 {
-    public function getMain(MenuRepository $menuRepository)
+    public function getMain(AuthService $authService)
     {
-        $userAccessKey = 'userAccess'.auth()->guard('admin')->getUser()->id;
-        $routes = \Cache::get($userAccessKey);
-
-        $menus = $menuRepository->lists();
-        $myMenus = [];
-        foreach ($menus as $k => $menu) {
-            if (empty($menu['child'])) {
-                if ($menu['route']) {
-                    if (array_search_value($menu['route'], $routes)) {
-                        $myMenus[$k] = $menu;
-                    }
-                } else {
-                    $myMenus[$k] = $menu;
-                }
-                continue;
-            }
-
-            foreach ($menu['child'] as $ck => $cmenu) {
-                if ($cmenu['route']) {
-                    if (array_search_value($cmenu['route'], $routes)) {
-                        $menu['child'][$ck] = $cmenu;
-                        continue;
-                    }
-                } else {
-                    $menu['child'][$ck] = $cmenu;
-                    continue;
-                }
-                unset($menu['child'][$ck]);
-            }
-            if (!empty($menu['child'])) {
-                $myMenus[$k] = $menu;
-            }
-        }
+        $myMenus = $authService->getRoleMenus(auth()->guard('admin')->getUser()->id);
 
         $data = [
             'menus' => $myMenus
