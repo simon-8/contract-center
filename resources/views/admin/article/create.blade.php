@@ -85,7 +85,7 @@
                         <div class="col-sm-10">
                             <div class="i-checks radio">
                                 <label>
-                                    <input type="radio" name="status" value="1" {{ !empty($status) && $status == 1 ? 'checked' : '' }}>开启
+                                    <input type="radio" name="status" value="1" {{ !empty($status) && $status ? 'checked' : '' }}>开启
                                 </label>
                                 <label>
                                     <input type="radio" name="status" value="0"  {{ empty($status) ? 'checked' : '' }}>关闭
