@@ -22,7 +22,7 @@
 
                     <div class="panel-body">
                         {{ article.created_at }}
-                        <h4 v-html="article.introduce"></h4>
+                        <!--<h4 v-html="article.introduce"></h4>-->
                         <div class="markdown-body" v-html="article.content"></div>
                     </div>
                 </div>
