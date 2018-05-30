@@ -37,3 +37,9 @@
 img.lazy{
     background: url(/images/loading.gif) no-repeat center;
 }
+
+.text-ellipsis {
+    overflow: hidden;
+    //white-space: nowrap;
+    text-overflow: ellipsis
+}

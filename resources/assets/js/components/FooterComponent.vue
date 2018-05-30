@@ -1,22 +1,13 @@
 <template>
     <footer class="container">
         <div class="site-footer" role="contentinfo">
-            <div class="copyright pull-left mobile-block">
+            <div class="col-xs-12 col-sm-2 copyright pull-left mobile-block">
                 © {{ new Date().getFullYear() }}
                 <span title="Simon">Simon</span>
                 <a href="javascript:window.scrollTo(0,0)" class="pull-right hidden-md hidden-lg">TOP</a>
             </div>
 
-            <ul class="site-footer-links pull-right hidden-sm hidden-xs">
-                <li>
-                    <a href="javascript:window.scrollTo(0,0)">TOP</a>
-                </li>
-            </ul>
-            <router-link to="" target="_blank" aria-label="view source code">
-                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
-            </router-link>
-            <ul class="site-footer-links mobile-hidden">
-
+            <ul class="col-md-2 site-footer-links  hidden-sm hidden-xs">
                 <li v-for="item of footerButton">
                     <router-link :to="item.href" :title="item.name" :target="item.target">{{ item.name }}</router-link>
                 </li>
@@ -26,6 +17,15 @@
                     </router-link>
                 </li>
             </ul>
+
+            <ul class="site-footer-links pull-right hidden-sm hidden-xs">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)">TOP</a>
+                </li>
+            </ul>
+            <router-link to="" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </router-link>
 
         </div>
     </footer>

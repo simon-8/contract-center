@@ -55178,7 +55178,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\nheader[data-v-6dd1125c] {\n    background-color: #4183c4;\n}\nheader .container h1[data-v-6dd1125c] {\n    float: left;\n    margin: 0;\n    height: 60px;\n    line-height: 60px;\n}\n\n/* banner */\n.banner[data-v-6dd1125c] {\n    background: #4183c4;\n    color: #fff;\n}\n.banner .collection-head[data-v-6dd1125c] {\n    padding: 1.5rem 0;\n    color: #fff;\n    background: 0 0;\n    box-shadow: none;\n    -webkit-box-shadow: none;\n}\n.banner .container[data-v-6dd1125c] {\n    padding-left: 20px;\n    padding-right: 20px;\n}\n.banner .collection-head .collection-title[data-v-6dd1125c] {\n    display: table-cell;\n    padding: 20px 0;\n    vertical-align: middle;\n}\n.collection-head .collection-header[data-v-6dd1125c] {\n    margin-top: 0;\n    font-size: 45px;\n    line-height: 1.5;\n    font-weight: 400;\n}\n.collection-head .collection-header[data-v-6dd1125c] {\n    margin-top: 0;\n    font-size: 45px;\n    line-height: 1.5;\n    font-weight: 400;\n}\n.collection-head a[data-v-6dd1125c] {\n    color: #fff;\n}\n.collection-info .meta-info[data-v-6dd1125c] {\n    margin-right: 10px;\n}\n", ""]);
+exports.push([module.i, "\nheader[data-v-6dd1125c] {\n    background-color: #4183c4;\n}\nheader .container h1[data-v-6dd1125c] {\n    float: left;\n    margin: 0;\n    height: 60px;\n    line-height: 60px;\n}\n\n/* banner */\n.banner[data-v-6dd1125c] {\n    background: #4183c4;\n    color: #fff;\n    overflow: hidden;\n}\n.banner .collection-head[data-v-6dd1125c] {\n    padding: 1.5rem 0;\n    color: #fff;\n    background: 0 0;\n    box-shadow: none;\n    -webkit-box-shadow: none;\n}\n.banner .container[data-v-6dd1125c] {\n    padding-left: 20px;\n    padding-right: 20px;\n}\n.banner .collection-head .collection-title[data-v-6dd1125c] {\n    display: table-cell;\n    padding: 20px 0;\n    vertical-align: middle;\n}\n.collection-head .collection-header[data-v-6dd1125c] {\n    margin-top: 0;\n    font-size: 45px;\n    line-height: 1.5;\n    font-weight: 400;\n}\n.collection-head .collection-header[data-v-6dd1125c] {\n    margin-top: 0;\n    font-size: 45px;\n    line-height: 1.5;\n    font-weight: 400;\n}\n.collection-head a[data-v-6dd1125c] {\n    color: #fff;\n}\n.collection-info .meta-info[data-v-6dd1125c] {\n    margin-right: 10px;\n}\n", ""]);
 
 // exports
 
@@ -55633,46 +55633,33 @@ var render = function() {
       "div",
       { staticClass: "site-footer", attrs: { role: "contentinfo" } },
       [
-        _c("div", { staticClass: "copyright pull-left mobile-block" }, [
-          _vm._v(
-            "\n            © " +
-              _vm._s(new Date().getFullYear()) +
-              "\n            "
-          ),
-          _c("span", { attrs: { title: "Simon" } }, [_vm._v("Simon")]),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "pull-right hidden-md hidden-lg",
-              attrs: { href: "javascript:window.scrollTo(0,0)" }
-            },
-            [_vm._v("TOP")]
-          )
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
         _c(
-          "router-link",
+          "div",
           {
-            attrs: {
-              to: "",
-              target: "_blank",
-              "aria-label": "view source code"
-            }
+            staticClass: "col-xs-12 col-sm-2 copyright pull-left mobile-block"
           },
           [
-            _c("span", {
-              staticClass: "mega-octicon octicon-mark-github",
-              attrs: { title: "GitHub" }
-            })
+            _vm._v(
+              "\n            © " +
+                _vm._s(new Date().getFullYear()) +
+                "\n            "
+            ),
+            _c("span", { attrs: { title: "Simon" } }, [_vm._v("Simon")]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "pull-right hidden-md hidden-lg",
+                attrs: { href: "javascript:window.scrollTo(0,0)" }
+              },
+              [_vm._v("TOP")]
+            )
           ]
         ),
         _vm._v(" "),
         _c(
           "ul",
-          { staticClass: "site-footer-links mobile-hidden" },
+          { staticClass: "col-md-2 site-footer-links  hidden-sm hidden-xs" },
           [
             _vm._l(_vm.footerButton, function(item) {
               return _c(
@@ -55708,6 +55695,25 @@ var render = function() {
             )
           ],
           2
+        ),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "router-link",
+          {
+            attrs: {
+              to: "",
+              target: "_blank",
+              "aria-label": "view source code"
+            }
+          },
+          [
+            _c("span", {
+              staticClass: "mega-octicon octicon-mark-github",
+              attrs: { title: "GitHub" }
+            })
+          ]
         )
       ],
       1
@@ -55800,7 +55806,7 @@ var staticRenderFns = [
             _c(
               "h1",
               { staticClass: "collection-header", attrs: { id: "sub-title" } },
-              [_c("span", [_vm._v("1111111111111111")])]
+              [_c("span", [_vm._v("11111111111111")])]
             ),
             _vm._v(" "),
             _c("div", { staticClass: "collection-info" }, [
@@ -58755,7 +58761,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\narticle[data-v-a619ae4e] {\n    border-bottom: 1px solid #eee;\n    padding: 12px 0;\n    margin: 10px 0;\n    position: relative;\n}\narticle h4[data-v-a619ae4e] {\n    margin:0;\n    padding: 0;\n}\narticle .article-thumb img[data-v-a619ae4e] {\n    width: 100%;\n    border: 1px solid #eee;\n}\narticle .article-info[data-v-a619ae4e] {\n    position: absolute;\n    height: calc(100% - 20px);\n    right: 0;\n}\narticle .article-info p[data-v-a619ae4e] {\n    margin: 5px 0 7px 0;\n}\narticle .article-info .meta[data-v-a619ae4e] {\n    position: absolute;\n    bottom: 0;\n    margin: 0;\n}\narticle .article-info .meta-info[data-v-a619ae4e] {\n    margin-right: 10px;\n}\n\n", ""]);
+exports.push([module.i, "\narticle[data-v-a619ae4e] {\n    border-bottom: 1px solid #eee;\n    padding: 12px 0;\n    margin: 10px 0;\n    position: relative;\n}\narticle h4[data-v-a619ae4e] {\n    margin:0;\n    padding: 0;\n}\narticle .article-thumb img[data-v-a619ae4e] {\n    width: 100%;\n    border: 1px solid #eee;\n}\narticle .article-info[data-v-a619ae4e] {\n    position: absolute;\n    height: calc(100% - 20px);\n    right: 0;\n}\narticle .article-info p[data-v-a619ae4e] {\n    margin: 5px 0 7px 0;\n}\narticle .article-info .meta[data-v-a619ae4e] {\n    position: absolute;\n    bottom: 0;\n    margin: 0;\n}\narticle .article-info .meta-info[data-v-a619ae4e] {\n    margin-right: 10px;\n}\n@media screen and (max-width: 768px) {\narticle .article-info[data-v-a619ae4e] {\n        position: relative;\n}\narticle .article-info .meta[data-v-a619ae4e] {\n        position: relative;\n}\n}\n\n", ""]);
 
 // exports
 
@@ -58766,6 +58772,79 @@ exports.push([module.i, "\narticle[data-v-a619ae4e] {\n    border-bottom: 1px so
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -58905,76 +58984,73 @@ var render = function() {
         staticClass: "articles"
       },
       _vm._l(_vm.articles, function(item) {
-        return _c(
-          "el-row",
-          { key: item.id, attrs: { tag: "article", gutter: 10 } },
-          [
-            _c("el-col", { staticClass: "article-thumb", attrs: { span: 6 } }, [
+        return _c("article", { key: item.id, staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-xs-12 col-md-3 hidden-xs article-thumb" },
+            [
               _c("img", {
                 staticClass: "lazy",
                 attrs: { src: _vm.imgurl(item.thumb), alt: "", width: "100%" }
               })
-            ]),
-            _vm._v(" "),
-            _c("el-col", { staticClass: "article-info", attrs: { span: 18 } }, [
-              _c(
-                "h4",
-                [
-                  _c(
-                    "router-link",
-                    { attrs: { to: _vm.articleUrl(item.id) } },
-                    [_vm._v(_vm._s(item.title))]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("p", {
-                staticClass: "introduce",
-                domProps: { innerHTML: _vm._s(item.introduce) }
-              }),
-              _vm._v(" "),
-              _c("p", { staticClass: "meta" }, [
-                _c("span", { staticClass: "meta-info" }, [
-                  _c("i", { staticClass: "glyphicon glyphicon-time" }),
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(item.created_at) +
-                      "\n                    "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "meta-info" }, [
-                  _c("i", { staticClass: "glyphicon glyphicon-tags" }),
-                  _vm._v(
-                    "\n                         " +
-                      _vm._s(item.category.name) +
-                      "\n                    "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "meta-info" }, [
-                  _c("i", { staticClass: "glyphicon glyphicon-thumbs-up" }),
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(item.zan) +
-                      "\n                    "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "meta-info" }, [
-                  _c("i", { staticClass: "glyphicon glyphicon-comment" }),
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(item.comment) +
-                      "\n                    "
-                  )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12 col-md-9 article-info" }, [
+            _c(
+              "h4",
+              [
+                _c("router-link", { attrs: { to: _vm.articleUrl(item.id) } }, [
+                  _vm._v(_vm._s(item.title))
                 ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("p", {
+              staticClass: "introduce text-ellipsis",
+              domProps: { innerHTML: _vm._s(item.introduce) }
+            }),
+            _vm._v(" "),
+            _c("p", { staticClass: "meta" }, [
+              _c("span", { staticClass: "meta-info" }, [
+                _c("i", { staticClass: "glyphicon glyphicon-time" }),
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(item.created_at) +
+                    "\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "meta-info" }, [
+                _c("i", { staticClass: "glyphicon glyphicon-tags" }),
+                _vm._v(
+                  "\n                         " +
+                    _vm._s(item.category.name) +
+                    "\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "meta-info" }, [
+                _c("i", { staticClass: "glyphicon glyphicon-thumbs-up" }),
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(item.zan) +
+                    "\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "meta-info" }, [
+                _c("i", { staticClass: "glyphicon glyphicon-comment" }),
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(item.comment) +
+                    "\n                    "
+                )
               ])
             ])
-          ],
-          1
-        )
+          ])
+        ])
       })
     ),
     _vm._v(" "),
@@ -59157,6 +59233,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -59177,14 +59268,15 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "el-row",
+    "div",
+    { staticClass: "row" },
     [
       _c("h3", [_vm._v("推荐文章")]),
       _vm._v(" "),
       _vm._l(5, function(i) {
         return _c(
-          "el-col",
-          { key: i, staticClass: "project", attrs: { span: 24 } },
+          "div",
+          { key: i, staticClass: "col-xs-12 project" },
           [
             _c("el-card", { attrs: { "body-style": { padding: "0px" } } }, [
               _c("img", {
@@ -59242,27 +59334,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container" },
-    [
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row" }, [
       _c(
-        "el-row",
-        [
-          _c("el-col", { attrs: { span: 16 } }, [_c("articles-component")], 1),
-          _vm._v(" "),
-          _c(
-            "el-col",
-            { attrs: { span: 7, offset: 1 } },
-            [_c("recommends-component")],
-            1
-          )
-        ],
+        "div",
+        { staticClass: "col-xs-12 col-md-8" },
+        [_c("articles-component")],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-md-3 hidden-xs col-md-offset-1" },
+        [_c("recommends-component")],
         1
       )
-    ],
-    1
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -59612,7 +59700,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -59625,7 +59713,6 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_TagComponent__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_TagComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_TagComponent__);
-//
 //
 //
 //
@@ -59907,150 +59994,133 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container" },
-    [
-      _vm.article.is_md
-        ? _c("link", {
-            attrs: {
-              rel: "stylesheet",
-              href:
-                "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"
-            }
-          })
-        : _vm._e(),
-      _vm._v(" "),
+  return _c("div", { staticClass: "container" }, [
+    _vm.article.is_md
+      ? _c("link", {
+          attrs: {
+            rel: "stylesheet",
+            href:
+              "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"
+          }
+        })
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
       _c(
-        "el-row",
-        [
-          _c(
-            "el-col",
+        "div",
+        {
+          directives: [
             {
-              directives: [
-                {
-                  name: "loading",
-                  rawName: "v-loading",
-                  value: _vm.loading,
-                  expression: "loading"
-                }
-              ],
-              attrs: { span: 16 }
-            },
-            [
-              _c("div", { staticClass: "panel panel-default" }, [
+              name: "loading",
+              rawName: "v-loading",
+              value: _vm.loading,
+              expression: "loading"
+            }
+          ],
+          staticClass: "col-xs-12 col-md-8"
+        },
+        [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c(
+              "div",
+              { staticClass: "panel-heading" },
+              [
                 _c(
-                  "div",
-                  { staticClass: "panel-heading" },
+                  "el-breadcrumb",
+                  { attrs: { separator: "/" } },
                   [
                     _c(
-                      "el-breadcrumb",
-                      { attrs: { separator: "/" } },
+                      "el-breadcrumb-item",
+                      [
+                        _c("router-link", { attrs: { to: "/" } }, [
+                          _vm._v("首页")
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("el-breadcrumb-item", [
+                      _vm._v(
+                        "\n                            文章详情\n                        "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "el-breadcrumb-item",
                       [
                         _c(
-                          "el-breadcrumb-item",
-                          [
-                            _c("router-link", { attrs: { to: "/" } }, [
-                              _vm._v("首页")
-                            ])
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("el-breadcrumb-item", [
-                          _vm._v(
-                            "\n                            文章详情\n                        "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "el-breadcrumb-item",
-                          [
-                            _c(
-                              "router-link",
-                              { attrs: { to: _vm.articleUrl(_vm.article.id) } },
-                              [_vm._v(_vm._s(_vm.article.title))]
-                            )
-                          ],
-                          1
+                          "router-link",
+                          { attrs: { to: _vm.articleUrl(_vm.article.id) } },
+                          [_vm._v(_vm._s(_vm.article.title))]
                         )
                       ],
                       1
                     )
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "panel-body" }, [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(_vm.article.created_at) +
-                      "\n                    "
-                  ),
-                  _vm._v(" "),
-                  _c("div", {
-                    staticClass: "markdown-body",
-                    domProps: { innerHTML: _vm._s(_vm.article.content) }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c(
-                  "div",
-                  { staticClass: "pull-left" },
-                  [
-                    _vm._v(
-                      "\n                    上一篇:\n                    "
-                    ),
-                    _vm.article.prev
-                      ? _c(
-                          "router-link",
-                          {
-                            attrs: { to: _vm.articleUrl(_vm.article.prev.id) }
-                          },
-                          [_vm._v(_vm._s(_vm.article.prev.title))]
-                        )
-                      : _c("a", [_vm._v("没有了")])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "pull-right" },
-                  [
-                    _vm._v(
-                      "\n                    下一篇:\n                    "
-                    ),
-                    _vm.article.next
-                      ? _c(
-                          "router-link",
-                          {
-                            attrs: { to: _vm.articleUrl(_vm.article.next.id) }
-                          },
-                          [_vm._v(_vm._s(_vm.article.next.title))]
-                        )
-                      : _c("a", [_vm._v("没有了")])
-                  ],
-                  1
                 )
-              ])
-            ]
-          ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.article.created_at) +
+                  "\n                    "
+              ),
+              _vm._v(" "),
+              _c("div", {
+                staticClass: "markdown-body",
+                domProps: { innerHTML: _vm._s(_vm.article.content) }
+              })
+            ])
+          ]),
           _vm._v(" "),
-          _c(
-            "el-col",
-            { attrs: { span: 7, offset: 1 } },
-            [_c("tag-component")],
-            1
-          )
-        ],
+          _c("div", [
+            _c(
+              "div",
+              { staticClass: "col-xs-12 col-md-6" },
+              [
+                _vm._v("\n                    上一篇:\n                    "),
+                _vm.article.prev
+                  ? _c(
+                      "router-link",
+                      { attrs: { to: _vm.articleUrl(_vm.article.prev.id) } },
+                      [_vm._v(_vm._s(_vm.article.prev.title))]
+                    )
+                  : _c("a", [_vm._v("没有了")])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-xs-12 col-md-6" },
+              [
+                _vm._v("\n                    下一篇:\n                    "),
+                _vm.article.next
+                  ? _c(
+                      "router-link",
+                      { attrs: { to: _vm.articleUrl(_vm.article.next.id) } },
+                      [_vm._v(_vm._s(_vm.article.next.title))]
+                    )
+                  : _c("a", [_vm._v("没有了")])
+              ],
+              1
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-md-3 hidden-xs col-md-offset-1" },
+        [_c("tag-component")],
         1
       )
-    ],
-    1
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

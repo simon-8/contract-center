@@ -1,9 +1,8 @@
 <template>
     <div class="container">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" v-if="article.is_md">
-        <el-row>
-            <el-col :span="16" v-loading="loading">
-
+        <div class="row">
+            <div class="col-xs-12 col-md-8" v-loading="loading">
                 <div class="panel panel-default">
 
                     <div class="panel-heading">
@@ -27,22 +26,22 @@
                     </div>
                 </div>
                 <div>
-                    <div class="pull-left">
+                    <div class="col-xs-12 col-md-6">
                         上一篇:
                         <router-link :to="articleUrl(article.prev.id)" v-if="article.prev">{{ article.prev.title }}</router-link>
                         <a v-else>没有了</a>
                     </div>
-                    <div class="pull-right">
+                    <div class="col-xs-12 col-md-6">
                         下一篇:
                         <router-link :to="articleUrl(article.next.id)" v-if="article.next">{{ article.next.title }}</router-link>
                         <a v-else>没有了</a>
                     </div>
                 </div>
-            </el-col>
-            <el-col :span="7" :offset="1">
+            </div>
+            <div class="col-md-3 hidden-xs col-md-offset-1">
                 <tag-component></tag-component>
-            </el-col>
-        </el-row>
+            </div>
+        </div>
     </div>
 </template>
 

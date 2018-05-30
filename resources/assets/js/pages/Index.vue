@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-        <el-row>
-            <el-col :span="16">
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
                 <articles-component></articles-component>
-            </el-col>
-            <el-col :span="7" :offset="1">
+            </div>
+            <div class="col-md-3 hidden-xs col-md-offset-1">
                 <recommends-component></recommends-component>
-            </el-col>
-        </el-row>
+            </div>
+        </div>
     </div>
 </template>
 

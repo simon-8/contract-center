@@ -1,8 +1,7 @@
 <template>
-    <el-row>
+    <div class="row">
         <h3>推荐文章</h3>
-        <el-col :span="24" class="project" v-for="i of 5" :key="i">
-        <!--<div class="col-sm-10 project">-->
+        <div class="col-xs-12 project" v-for="i of 5" :key="i">
             <el-card :body-style="{ padding: '0px' }">
                 <img src="https://simon8.com/upload/thumb/201705/20170522155350_93623.gif" class="image">
                 <div style="padding: 14px;">
@@ -13,9 +12,25 @@
                     </div>
                 </div>
             </el-card>
-        <!--</div>-->
-        </el-col>
-    </el-row>
+        </div>
+    </div>
+    <!--<el-row>-->
+        <!--<h3>推荐文章</h3>-->
+        <!--<el-col :span="24" class="project" v-for="i of 5" :key="i">-->
+        <!--&lt;!&ndash;<div class="col-sm-10 project">&ndash;&gt;-->
+            <!--<el-card :body-style="{ padding: '0px' }">-->
+                <!--<img src="https://simon8.com/upload/thumb/201705/20170522155350_93623.gif" class="image">-->
+                <!--<div style="padding: 14px;">-->
+                    <!--<span>好吃的汉堡汉堡汉堡</span>-->
+                    <!--<div class="bottom clearfix">-->
+                        <!--<time class="time">2018年5月25日 11:27:10</time>-->
+                        <!--<el-button type="text" class="button">操作按钮</el-button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</el-card>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</el-col>-->
+    <!--</el-row>-->
 </template>
 
 <style scoped>

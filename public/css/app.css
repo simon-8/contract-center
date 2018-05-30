@@ -8381,3 +8381,8 @@ img.lazy {
   background: url(/images/loading.gif) no-repeat center;
 }
 
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
