@@ -75,18 +75,26 @@
                         <div class="col-sm-10">
                             <div class="input-group">
                                 {{--<input type="hidden" name="tags" value="">--}}
-                                <input type="hidden" name="tagInput" id="tag-input" value="">
-                                <input type="text" id="tag" class="form-control" value="">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary" id="tag-add">添加</button>
-                                </span>
+                                {{--<input type="hidden" name="tagInput" id="tag-input" value="">--}}
+                                {{--<input type="text" id="tag" class="form-control" value="">--}}
+                                {{--<span class="input-group-btn">--}}
+                                    {{--<button type="button" class="btn btn-primary" id="tag-add">添加</button>--}}
+                                {{--</span>--}}
                             </div>
-                            <div class="input-group">
-                                <span class="help-block m-b-none">多个标签请用英文逗号（,）分开</span>
-                            </div>
-                            <div class="form-group mt tag-list" id="tag-list">
+                            {{--<div class="input-group">--}}
+                                {{--<span class="help-block m-b-none">多个标签请用英文逗号（,）分开</span>--}}
+                            {{--</div>--}}
+                            <div class="input-group mt tag-list" id="tag-list">
+                                @if (!empty($tags))
+                                    @foreach ($tags as $tag)
+                                        <a href="javascript:" class="label label-info">
+                                            <input type="hidden" name="tags[]" value="{{ $tag['id'] }}">
+                                            {{ $tag['name'] }}
+                                        </a>
+                                    @endforeach
+                                @endif
                                 {{--<foreach name="tag_lists" item="t">--}}
-                                    <a href="javascript:" class="label label-info">AAA</a>
+                                    {{--<a href="javascript:" class="label label-info">AAA</a>--}}
                                 {{--</foreach>--}}
                             </div>
                             <div class="input-group">
@@ -140,47 +148,43 @@
             @endif
 
             // show
-            $('#tag-choice').click(function() {
-                $.post(AJPath, {ac: 'tags'}, function(data) {
+            $('#tag-choice').click(function () {
+                $.post(AJPath, {ac: 'tags'}, function (data) {
                     let tag = '';
-                    $.each(data, function(k,t){
-                        tag += '<a href="javascript:" class="label label-info">'+t.name+'</a>';
+                    $.each(data, function (k, t) {
+                        tag += '<a href="javascript:" class="label label-info" data-id='+t.id+'>' + t.name + '</a>';
                     });
                     $('#tagcloud').html(tag);
                 }, 'json');
             });
             // add
-            $('#tag-add').click(function() {
-                let $tag = $('#tag'),
-                    $tagInput = $('#tag-input'),
-                    $tagList = $('#tag-list'),
-                    t = $tag.val(),
-                    is_save = 0;
-                if(t.length){
-                    $tagList.find('a').each(function(){
-                        if (t === $(this).text()) is_save = 1;
-                    });
-                    if(is_save){
-                        layer.alert('您已经添加过此标签', {icon: 2});
-                        return;
-                    }
-                    let tag = '<a href="javascript:" class="label label-info">'+t+'</a><input type="hidden" name="tags[]" value="'+t+'"/>';
-                    $tag.val('');
-                    let v = $tagInput.val();
-                    $tagInput.val(v+t+',');
-                    $tagList.append(tag);
-                }
-            });
+            //$('#tag-add').click(function () {
+            //    let $tag = $('#tag'),
+            //        $tagInput = $('#tag-input'),
+            //        $tagList = $('#tag-list'),
+            //        t = $tag.val(),
+            //        is_save = 0;
+            //    if (t.length) {
+            //        $tagList.find('a').each(function () {
+            //            if (t === $(this).text()) is_save = 1;
+            //        });
+            //        if (is_save) {
+            //            layer.alert('您已经添加过此标签', {icon: 2});
+            //            return;
+            //        }
+            //        let tag = '<a href="javascript:" class="label label-info">' + t + '<input type="hidden" name="tags[]" value="' + t + '"/></a>';
+            //        $tag.val('');
+            //        let v = $tagInput.val();
+            //        $tagInput.val(v + t + ',');
+            //        $tagList.append(tag);
+            //    }
+            //});
             // remove
-            $('#tag-list').on('click','.label',function(){
-                let $tagInput = $('#tag-input'),
-                    $tagList = $('#tag-list'),
-                    t = $(this).text(),
-                    v = $tagInput.val();
-                $tagInput.val(v.replace(t+',',''));
-                $tagList.find('a').each(function(){
-                    if(t == $(this).text()) {
-                        console.log(111);
+            $('#tag-list').on('click', '.label', function () {
+                let $tagCloud = $('#tagcloud'),
+                    t = $(this).text().trim();
+                $tagCloud.find('a').each(function () {
+                    if (t === $(this).text().trim()) {
                         $(this).removeClass('label-warning').addClass('label-info');
                     }
                 });
@@ -188,25 +192,25 @@
                 return false;
             });
 
-            // choise
-            $('#tagcloud').on('click','.label',function(){
+            // choose
+            $('#tagcloud').on('click', '.label', function () {
                 let $tag = $('#tag'),
-                    $tagInput = $('#tag-input'),
-                    $tagList = $('#tag-list');
+                    $tagList = $('#tag-list'),
+                    t = $(this).text().trim(),
+                    id = $(this).attr('data-id'),
+                    is_save = 0;
+
                 $(this).removeClass('label-info').addClass('label-warning');
-                let t = $(this).text();
-                let is_save = 0;
-                $tagList.find('a').each(function(){
-                    if(t === $(this).text()) is_save = 1;
+
+                $tagList.find('a').each(function () {
+                    if (t === $(this).text().trim()) is_save = 1;
                 });
-                if(is_save){
+                if (is_save) {
                     layer.alert('您已经添加过此标签', {icon: 2});
                     return;
                 }
-                let tag = '<a href="javascript:" class="label label-info">'+t+'</a>';
                 $tag.val('');
-                let v = $tagInput.val();
-                $tagInput.val(v+t+',');
+                let tag = '<a href="javascript:" class="label label-info">' + t + '<input type="hidden" name="tags[]" value="' + id + '"/></a>';
                 $tagList.append(tag);
             });
         });

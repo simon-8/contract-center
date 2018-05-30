@@ -21,5 +21,6 @@ class ArticleObserver
     {
         $content = $article->content()->first();
         $content->delete();
+        $article->tags()->detach();
     }
 }

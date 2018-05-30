@@ -23,7 +23,7 @@ class ArticleRepository extends BaseRepository
      */
     public function find($id, $preload = false)
     {
-        return $preload ? $this->model->with('content')->findOrFail($id) : $this->model->findOrFail($id);
+        return $preload ? $this->model->with(['content', 'tags'])->findOrFail($id) : $this->model->findOrFail($id);
     }
 
     /**
@@ -35,9 +35,9 @@ class ArticleRepository extends BaseRepository
     {
         $item = $this->model->create($data);
         if ($item) {
-            return $item->content()->create([
-                'content' => $data['content']
-            ]);
+            $item->content()->create(['content' => $data['content']]);
+            if (!empty($data['tags'])) $item->tags()->attach($data['tags']);
+            return true;
         }
         return false;
     }
@@ -51,9 +51,8 @@ class ArticleRepository extends BaseRepository
     {
         $item = $this->model->find($data['id']);
         $item->update($data);
-        $item->content()->update([
-            'content' => $data['content']
-        ]);
+        $item->content()->update(['content' => $data['content']]);
+        $item->tags()->sync($data['tags']??[]);
         return true;
     }
 
