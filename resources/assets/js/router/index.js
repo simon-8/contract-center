@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Index from '../pages/Index';
-import Article from '../pages/Article';
+//import Article from '../pages/Article';
 import SingleContent from '../pages/SingleContent';
 import ArticleContent from '../pages/ArticleContent';
 
@@ -20,7 +20,7 @@ export default new VueRouter({
         {
             name: 'category',
             path: '/category/:catid(\\d+)',
-            component: Article
+            component: Index
         },
         {
             name: 'article',

@@ -14,6 +14,10 @@ let mix = require('laravel-mix');
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
 
+// 生产环境对资源文件名加上唯一的哈希值, 方便清除缓存
+if (mix.inProduction()) {
+    mix.version();
+}
 mix.browserSync({
     proxy: 'blog.cc'
 });

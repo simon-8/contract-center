@@ -8,35 +8,7 @@
                              alt="">
                     </a>
                 </h1>
-                <el-menu mode="horizontal"
-                         text-color="rgba(255, 255, 255, .5)"
-                         background-color="#4183c4"
-                         active-text-color="#FFFFFF" :default-active="$route.path"
-                         @select="handleSelect" router>
-                    <template v-for="item in menus">
-                        <el-menu-item :index="item.href">{{ item.name }}</el-menu-item>
-                    </template>
-
-                    <!--<el-menu-item index="/article">AAA管理</el-menu-item>-->
-                    <!--<el-submenu index="2">-->
-                    <!--<template slot="title">文章分类</template>-->
-                    <!--<el-menu-item index="2-1">选项1</el-menu-item>-->
-                    <!--<el-menu-item index="2-2">选项2</el-menu-item>-->
-                    <!--<el-menu-item index="2-3">选项3</el-menu-item>-->
-                    <!--<el-submenu index="2-4">-->
-                    <!--<template slot="title">选项4</template>-->
-                    <!--<el-menu-item index="2-4-1">选项1</el-menu-item>-->
-                    <!--<el-menu-item index="2-4-2">选项2</el-menu-item>-->
-                    <!--<el-menu-item index="2-4-3">选项3</el-menu-item>-->
-                    <!--</el-submenu>-->
-                    <!--</el-submenu>-->
-                    <!--<el-menu-item index="/webpage">关于XXXX</el-menu-item>-->
-                    <!--<el-menu-item index="/friend-link">-->
-                        <!--<a href="https://www.ele.me" target="_blank">-->
-                            <!--友情链接-->
-                        <!--</a>-->
-                    <!--</el-menu-item>-->
-                </el-menu>
+                <menus-component></menus-component>
             </div>
         </header>
         <section class="banner">
@@ -67,78 +39,38 @@
         <transition>
             <router-view></router-view>
         </transition>
-
-        <footer class="container">
-            <div class="site-footer" role="contentinfo">
-                <div class="copyright pull-left mobile-block">
-                    © {{ new Date().getFullYear() }}
-                    <span title="Simon">Simon</span>
-                    <a href="javascript:window.scrollTo(0,0)" class="pull-right hidden-md hidden-lg">TOP</a>
-                </div>
-
-                <ul class="site-footer-links pull-right hidden-sm hidden-xs">
-                    <li>
-                        <a href="javascript:window.scrollTo(0,0)">TOP</a>
-                    </li>
-                </ul>
-                <router-link to="" target="_blank" aria-label="view source code">
-                    <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
-                </router-link>
-                <ul class="site-footer-links mobile-hidden">
-
-                    <li v-for="item of footerButton">
-                        <router-link :to="item.href" :title="item.name" :target="item.target">{{ item.name }}</router-link>
-                    </li>
-                    <li>
-                        <router-link to="">
-                            <span class="octicon octicon-rss" style="color:orange;"></span>
-                        </router-link>
-                    </li>
-                </ul>
-
-            </div>
-        </footer>
+        <footer-component></footer-component>
     </div>
 </template>
 
 <script>
+    import MenusComponent from './components/MenusComponent';
+    import FooterComponent from './components/FooterComponent';
     export default {
         name: "App",
+        components: {
+            'menus-component': MenusComponent,
+            'footer-component': FooterComponent
+        },
         data() {
             return {
-                menuSelected: "/",
-                menus: [
-                    { name: "首页", href: "/", target: false },
-                    { name: "PHP", href: "/category/2", target: false },
-                    { name: "MySQL", href: "/category/3", target: false },
-                    { name: "Linux", href: "/category/4", target: false },
-                    //{ name: "关于", href: "/刘文静", target: false }
-                ],
-                footerButton: [
-                    { name: "首页", href: "", target: true },
-                    { name: "分类", href: "", target: true },
-                    { name: "维基", href: "", target: true },
-                    { name: "链接", href: "", target: true },
-                    { name: "关于", href: "", target: true }
-                ]
+
             }
         },
         methods: {
-            handleSelect(key, keyPath) {
 
-            }
         },
         mounted () {
 
         },
         watch: {
-            '$route' (to, from) {
-                this.menus.forEach((item, index) => {
-                    if (item.href === to.path) {
-                        this.seoInfo(item.name);
-                    }
-                });
-            },
+            //'$route' (to, from) {
+            //    this.menus.forEach((item, index) => {
+            //        if (item.href === to.path) {
+            //            this.seoInfo(item.name);
+            //        }
+            //    });
+            //},
         }
     }
 </script>
@@ -154,12 +86,7 @@
         height: 60px;
         line-height: 60px;
     }
-    header .container .el-menu {
-        float: right;
-    }
-    .el-menu--horizontal {
-        border: none;
-    }
+
     /* banner */
     .banner {
         background: #4183c4;
@@ -199,54 +126,4 @@
     .collection-info .meta-info {
         margin-right: 10px;
     }
-    /* footer */
-
-    .site-footer {
-        position: relative;
-        margin-top: 40px;
-        padding-top: 40px;
-        padding-bottom: 40px;
-        font-size: 12px;
-        line-height: 1.5;
-        color: #777;
-        border-top: 1px solid #eee
-    }
-
-    .site-footer .copyright {
-        padding-right: 20px
-    }
-
-    .site-footer:after {
-        clear: both
-    }
-
-    .site-footer .octicon-mark-github {
-        position: absolute;
-        top: 38px;
-        left: 50%;
-        height: 24px;
-        width: 24px;
-        margin-left: -12px;
-        font-size: 24px;
-        color: #ccc
-    }
-
-    .site-footer .octicon-mark-github:hover {
-        color: #bbb
-    }
-
-    .site-footer-links {
-        margin: 0;
-        list-style: none
-    }
-
-    .site-footer-links li {
-        display: inline-block;
-        line-height: 16px
-    }
-
-    .site-footer-links li+li {
-        margin-left: 10px
-    }
-
 </style>

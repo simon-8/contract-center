@@ -26,7 +26,7 @@ class IndexController extends Controller
     public function getArticle(\Request $request, ArticleRepository $articleRepository)
     {
         $where = [];
-        if ($request::has('catid')) {
+        if ($request::has('catid') && $request::input('catid')) {
             $where['catid'] = $request::input('catid');
         }
         if ($request::has('pagesize')) {

@@ -171,16 +171,12 @@ import helperPlugin from './utils/helperPlugin.js';
 Vue.use(helperPlugin);
 
 // 注册全局组件
-Vue.component('Tag', require('./components/TagComponent'));
-Vue.component('Project', require('./components/ProjectComponent'));
-
-//router.beforeEach((to, from, next) => {
-//    /* 路由发生变化修改页面title */
-//    if (to.meta.title) {
-//        document.title = to.meta.title;
-//    }
-//    next();
-//});
+//Vue.component('tag-component', require('./components/TagComponent'));
+//Vue.component('project-component', require('./components/ProjectComponent'));
+//Vue.component('recommend-component', require('./components/RecommendComponent'));
+//Vue.component('articles-component', require('./components/ArticlesComponent'));
+//Vue.component('menus-component', require('./components/MenusComponent'));
+//Vue.component('footer-component', require('./components/FooterComponent'));
 
 const app = new Vue({
     el: '#app',
@@ -189,6 +185,3 @@ const app = new Vue({
     template: '<App/>',
     components: { App }
 });
-// 载入App组件并替换#app为App标签
-// 相当于 app.js中  Vue.component('App', require('./components/App.vue'));
-// 然后vue页面中 <div id="app"><App></App></div>

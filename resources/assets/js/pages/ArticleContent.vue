@@ -2,7 +2,7 @@
     <div class="container">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" v-if="article.is_md">
         <el-row>
-            <el-col :span="24" v-loading="loading">
+            <el-col :span="16" v-loading="loading">
 
                 <div class="panel panel-default">
 
@@ -39,9 +39,9 @@
                     </div>
                 </div>
             </el-col>
-            <!--<el-col :span="6" v-loading="loading">-->
-                <!--<Tag></Tag>-->
-            <!--</el-col>-->
+            <el-col :span="7" :offset="1">
+                <tag-component></tag-component>
+            </el-col>
         </el-row>
     </div>
 </template>
@@ -51,7 +51,12 @@
 </style>
 
 <script>
+    import TagComponent from '../components/TagComponent';
+
     export default {
+        components: {
+            'tag-component': TagComponent
+        },
         data() {
             return {
                 id: 0,

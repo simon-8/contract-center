@@ -13,6 +13,7 @@ class AuthService
     private static $accessKeyPrefix = 'userAccess';
 
     /**
+     * 用户权限缓存名称
      * @param $userid
      * @return string
      */
