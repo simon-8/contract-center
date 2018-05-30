@@ -71,6 +71,35 @@
                     <div class="hr-line-dashed"></div>
 
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">标签</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                {{--<input type="hidden" name="tags" value="">--}}
+                                <input type="hidden" name="tagInput" id="tag-input" value="">
+                                <input type="text" id="tag" class="form-control" value="">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" id="tag-add">添加</button>
+                                </span>
+                            </div>
+                            <div class="input-group">
+                                <span class="help-block m-b-none">多个标签请用英文逗号（,）分开</span>
+                            </div>
+                            <div class="form-group mt tag-list" id="tag-list">
+                                {{--<foreach name="tag_lists" item="t">--}}
+                                    <a href="javascript:" class="label label-info">AAA</a>
+                                {{--</foreach>--}}
+                            </div>
+                            <div class="input-group">
+                                <a id="tag-choice">从常用标签库里选择</a>
+                            </div>
+                            <div class="form-group tag-list" id="tagcloud" style="border: none;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">缩略图</label>
                         <div class="col-sm-10">
                             <img src="{{ imgurl(isset($thumb) ? $thumb : old('thumb')) }}" id="pthumb" class="bg-warning" style="width: 220px; height: 140px;">
@@ -110,6 +139,90 @@
             $('[name=status][value={{ $status }}]').attr('checked', true);
             @endif
 
+            // show
+            $('#tag-choice').click(function() {
+                $.post(AJPath, {ac: 'tags'}, function(data) {
+                    let tag = '';
+                    $.each(data, function(k,t){
+                        tag += '<a href="javascript:" class="label label-info">'+t.name+'</a>';
+                    });
+                    $('#tagcloud').html(tag);
+                }, 'json');
+            });
+            // add
+            $('#tag-add').click(function() {
+                let $tag = $('#tag'),
+                    $tagInput = $('#tag-input'),
+                    $tagList = $('#tag-list'),
+                    t = $tag.val(),
+                    is_save = 0;
+                if(t.length){
+                    $tagList.find('a').each(function(){
+                        if (t === $(this).text()) is_save = 1;
+                    });
+                    if(is_save){
+                        layer.alert('您已经添加过此标签', {icon: 2});
+                        return;
+                    }
+                    let tag = '<a href="javascript:" class="label label-info">'+t+'</a><input type="hidden" name="tags[]" value="'+t+'"/>';
+                    $tag.val('');
+                    let v = $tagInput.val();
+                    $tagInput.val(v+t+',');
+                    $tagList.append(tag);
+                }
+            });
+            // remove
+            $('#tag-list').on('click','.label',function(){
+                let $tagInput = $('#tag-input'),
+                    $tagList = $('#tag-list'),
+                    t = $(this).text(),
+                    v = $tagInput.val();
+                $tagInput.val(v.replace(t+',',''));
+                $tagList.find('a').each(function(){
+                    if(t == $(this).text()) {
+                        console.log(111);
+                        $(this).removeClass('label-warning').addClass('label-info');
+                    }
+                });
+                $(this).remove();
+                return false;
+            });
+
+            // choise
+            $('#tagcloud').on('click','.label',function(){
+                let $tag = $('#tag'),
+                    $tagInput = $('#tag-input'),
+                    $tagList = $('#tag-list');
+                $(this).removeClass('label-info').addClass('label-warning');
+                let t = $(this).text();
+                let is_save = 0;
+                $tagList.find('a').each(function(){
+                    if(t === $(this).text()) is_save = 1;
+                });
+                if(is_save){
+                    layer.alert('您已经添加过此标签', {icon: 2});
+                    return;
+                }
+                let tag = '<a href="javascript:" class="label label-info">'+t+'</a>';
+                $tag.val('');
+                let v = $tagInput.val();
+                $tagInput.val(v+t+',');
+                $tagList.append(tag);
+            });
         });
     </script>
+    <style>
+        .tag-list{
+            border-radius: 3px;
+            border: 1px solid #eee;
+            margin: 10px 0 !important;
+            padding: 5px;
+        }
+        .tag-list .label {
+            margin: 2px 3px;
+            font-size: 15px;
+            display: inline-block;
+            padding: 5px 10px;
+        }
+    </style>
 @endsection('content')

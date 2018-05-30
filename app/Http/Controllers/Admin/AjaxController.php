@@ -20,6 +20,8 @@ class AjaxController extends Controller
             case 'thumb':
                 return admin_view('ajax.'.$ac , $request::all());
                 break;
+            case 'tags':
+                return (new \App\Models\Tag())->all(['id', 'name'])->toArray();
         }
         abort(404);
     }

@@ -31,6 +31,7 @@
                     </p>
                 </div>
             </article>
+            <p class="text-center" v-if="articles.length < 1">暂无数据</p>
             <!--<el-row v-for="item of articles" tag="article" :gutter="10" :key="item.id">-->
                 <!--<el-col :span="6" class="article-thumb">-->
                     <!--<img :src="imgurl(item.thumb)" class="lazy" alt="" width="100%">-->

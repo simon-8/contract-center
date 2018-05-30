@@ -37,7 +37,7 @@ class BaseRepository
 
     public function getAll($where = [])
     {
-        return $where ? $this->model->where($where)->orderBy('id', 'DESC')->all() : $this->model->orderBy('id', 'DESC')->all();
+        return $where ? $this->model->where($where)->orderBy('id', 'DESC')->get() : $this->model->orderBy('id', 'DESC')->get();
     }
 
     /**

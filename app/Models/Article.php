@@ -44,4 +44,9 @@ class Article extends Model
     {
         return $value ? imgurl($value) : '';
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Models\Tag')->withTimestamps();
+    }
 }
