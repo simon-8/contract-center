@@ -20,6 +20,7 @@ class SinglePage extends Model
         'comment',
         'zan',
         'hits',
+        'is_md',
         'status'
     ];
 

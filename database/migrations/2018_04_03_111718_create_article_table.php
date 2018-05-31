@@ -18,8 +18,6 @@ class CreateArticleTable extends Migration
             $table->unsignedInteger('catid')->comment('分类ID');
             $table->string('title')->comment('标题');
             $table->string('introduce')->comment('简介');
-            //$table->string('tag')->comment('标签');
-            //$table->longText('content')->comment('详情');
             $table->string('thumb')->comment('标题图片');
             $table->string('username')->comment('发布人');
             $table->unsignedInteger('comment')->comment('评论数量')->default(0);

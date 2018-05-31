@@ -7,11 +7,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\ArticleRepository;
 use App\Repositories\AdRepository;
 use App\Repositories\CategoryRepository;
+
+use App\Models\Tag;
 use App\Repositories\SinglePageRepository;
-use Chenhua\MarkdownEditor\Facades\MarkdownEditor;
 
 class IndexController extends Controller
 {
@@ -19,47 +19,7 @@ class IndexController extends Controller
     protected static $articlePID = 1;
 
     /**
-     * @param \Request $request
-     * @param ArticleRepository $articleRepository
-     * @return mixed
-     */
-    public function getArticle(\Request $request, ArticleRepository $articleRepository)
-    {
-        $where = [];
-        if ($request::has('catid') && $request::input('catid')) {
-            $where['catid'] = $request::input('catid');
-        }
-        if ($request::has('pagesize')) {
-            $articleRepository::$pageSize = $request::input('pagesize');
-        }
-        return $articleRepository->listBy($where);
-    }
-
-    /**
-     * @param ArticleRepository $articleRepository
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
-     */
-    public function getArticleContent(ArticleRepository $articleRepository, $id)
-    {
-        try {
-            $data = $articleRepository->find($id, true);
-        } catch (\Exception $exception) {
-            return response('', 404);
-        }
-        $data->increment('hits', 1);
-
-        $data = $data->toArray();
-        $data['content'] = $data['content']['content'];
-        if ($data['is_md']) {
-            $data['content'] = MarkdownEditor::parse($data['content']);
-        }
-        $data['prev'] = $articleRepository->previous($data['id']);
-        $data['next'] = $articleRepository->next($data['id']);
-        return $data;
-    }
-
-    /**
+     * banner
      * @param AdRepository $adRepository
      * @return mixed
      */
@@ -69,6 +29,7 @@ class IndexController extends Controller
     }
 
     /**
+     * 分类
      * @param CategoryRepository $categoryRepository
      * @return mixed
      */
@@ -81,24 +42,44 @@ class IndexController extends Controller
     }
 
     /**
-     * @param SinglePageRepository $singlePageRepository
-     * @param $id
-     * @return array|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|\Symfony\Component\HttpFoundation\Response|static|static[]
+     * 获取标签
+     * @param Tag $tag
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getSinglePage(SinglePageRepository $singlePageRepository, $id)
+    public function getTag(Tag $tag)
     {
-        try {
-            $data = $singlePageRepository->find($id, true);
-        } catch (\Exception $exception) {
-            return response('', 404);
-        }
-        $data->increment('hits', 1);
+        return $tag::all(['id', 'name']);
+    }
 
-        $data = $data->toArray();
-        $data['content'] = $data['content']['content'];
-        if ($data['is_md']) {
-            $data['content'] = MarkdownEditor::parse($data['content']);
+    /**
+     * 获取菜单
+     * @param CategoryRepository $categoryRepository
+     * @param SinglePageRepository $singlePageRepository
+     * @return array
+     */
+    public function getMenus(CategoryRepository $categoryRepository, SinglePageRepository $singlePageRepository)
+    {
+        $categorys = $this->getCategory($categoryRepository);
+        if ($categorys) {
+            $categorys->transform(function($category) {
+                return [
+                    'id' => $category['id'],
+                    'name' => $category['name']
+                ];
+            });
         }
-        return $data;
+        //$singles = $singlePageRepository->listBy(['status' => 1], false);
+        //if ($singles) {
+        //    $singles->transform(function($single) {
+        //        return [
+        //            'id' => $single['id'],
+        //            'name' => $single['title']
+        //        ];
+        //    });
+        //}
+        return [
+            'categorys' => $categorys,
+            //'singles'   => $singles
+        ];
     }
 }

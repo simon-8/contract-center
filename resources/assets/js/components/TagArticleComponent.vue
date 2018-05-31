@@ -106,7 +106,7 @@
         name: "Articles",
         data () {
             return {
-                catid: 0,
+                tag: {},
                 articles: [],
                 currentPage: 1,
                 pageSize: 10,
@@ -115,47 +115,58 @@
             }
         },
         methods: {
-            getData (page = 1) {
-                //if (page > 1) {
-                //    let cacheData = this.getCache('indexCache');
-                //    if (cacheData && cacheData.data.length && cacheData.current_page === page) {
-                //        this.articles = cacheData.data;
-                //        this.total = cacheData.total;
-                //        this.currentPage = cacheData.current_page;
-                //        return;
-                //    }
-                //}
-                this.currentPage = page;
+            getCache (name) {
+                return this.$store.state[name];
+            },
+            setCache (name, data) {
+                this.$store.state[name] = data;
+            },
+            getTag () {
+                let name = this.$route.params.name;
+                let tagsCache = this.getCache('tags') || [];
+                console.log(name, tagsCache)
+                if (tagsCache && tagsCache.length) {
+                    tagsCache.forEach((val, index) => {
+                        if (val.name === name) {
+                            this.tag = val;
+                        }
+                    })
+                }
+                return this.tag;
+            },
+            getData () {
                 this.loading = true;
-                this.articles = [];
-
-                axios.get(this.getAPI('article') + '?catid='+this.catid+'&page='+ page+'&pagesize='+this.pageSize).then((res) => {
+                axios.get(this.getAPI('tagArticle') + this.tag.id).then((res) => {
                     let data = res.data;
                     this.articles = data.data;
                     this.total = data.total;
                     this.loading = false;
                 }).catch((res) => {
-                    console.log(res);
+                    this.$message.error(res);
                 });
             }
         },
         watch: {
             '$route' (to, from) {
-                console.log('this is component');
-                console.log(this.$route.params.catid);
-                if (to.params.catid !== this.catid) {
-                    this.catid = isNaN(this.$route.params.catid) ? 0 : this.$route.params.catid;
-                    this.getData();
+                console.log('this is tag component');
+                console.log(this.$route.params.name);
+                if (to.params.name !== this.tag.name) {
+                    this.getTag();
+                    //this.getData();
                 }
             },
-            items (newValue, oldValue) {
-                console.log(newValue);
+            tag (newValue, oldValue) {
+                this.getData();
+            },
+            $store (newValue) {
+                console.log('store');
+                console.log(newValue)
             }
         },
         mounted () {
             console.log('this is component');
-            console.log(this.$route.params.catid);
-            this.getData();
+            this.getTag();
+            //this.getData();
         },
     }
 </script>

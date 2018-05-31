@@ -30,6 +30,10 @@ class Roles extends Model
         $this->attributes['access'] = $value ? implode(',', $value) : '';
     }
 
+    /**
+     * 权限关联
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function getAccess()
     {
         return $this->belongsToMany('App\Models\RoleAccess', 'role_permission', 'role_id', 'access_id');

@@ -13,16 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::prefix('/')->namespace('Api')->group(function() {
-    Route::get('/article', 'IndexController@getArticle');
-    Route::get('/article/{id}', 'IndexController@getArticleContent');
-    Route::get('/single/{id}', 'IndexController@getSinglePage');
-    Route::get('/banner', 'IndexController@getBanner');
-    Route::get('/category', 'IndexController@getCategory');
+    Route::get('banner', 'IndexController@getBanner');
+    Route::get('category', 'IndexController@getCategory');
+    Route::get('tag', 'IndexController@getTag');
+    Route::get('menus', 'IndexController@getMenus');
+
+    Route::get('article/tag/{tagid}', 'ArticleController@listByTag')->where('tagid', '\d+');
+    Route::resource('article', 'ArticleController');
+    Route::resource('single', 'SingleController');
+
 });
 
 //Route::prefix('/weapp')->namespace('Wechat')->group(function() {

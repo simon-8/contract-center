@@ -32,7 +32,7 @@ class BaseRepository
 
     public function listBy($where, $page = true)
     {
-        $query = $this->model->where($where)->orderBy($this->model->getKeyName(), 'DESC');
+        $query = $this->model->where($where)->orderBy('listorder', 'DESC');
         return $page ? $query->paginate(self::$pageSize) : $query->get();
     }
 
@@ -89,5 +89,13 @@ class BaseRepository
     public function delete($id)
     {
         return $this->model->destroy($id);
+    }
+
+    /**
+     * @return Model
+     */
+    public function getModel(): Model
+    {
+        return $this->model;
     }
 }

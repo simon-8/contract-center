@@ -49,15 +49,13 @@ class SinglePageRepository extends BaseRepository
      */
     public function update($data)
     {
-
         $item = $this->model->find($data['id']);
-        $result = $item->update($data);
-        if ($result) {
-            return $item->content()->save(new SinglePageContent([
-                'content' => $data['content']
-            ]));
-        }
-        return false;
+        $item->update($data);
+        $item->content()->save(new SinglePageContent([
+            'content' => $data['content']
+        ]));
+
+        return true;
     }
 
     /**
@@ -86,7 +84,7 @@ class SinglePageRepository extends BaseRepository
         }
         $query = $this->model->where($where);
         if (isset($keyword)) $query = $query->title($keyword);
-        return $query->paginate(self::$pageSize);
+        return $page ? $query->paginate(self::$pageSize) : $query->get();
     }
 
     /**

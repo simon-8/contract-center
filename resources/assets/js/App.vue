@@ -61,7 +61,7 @@
 
         },
         mounted () {
-
+            this.$message.info('欢迎来到XXX');
         },
         watch: {
             //'$route' (to, from) {

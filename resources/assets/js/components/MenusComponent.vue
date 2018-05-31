@@ -18,16 +18,47 @@
             return {
                 menus: [
                     { name: "首页", href: "/", target: false },
-                    { name: "PHP", href: "/category/2", target: false },
-                    { name: "MySQL", href: "/category/3", target: false },
-                    { name: "Linux", href: "/category/4", target: false },
-                    //{ name: "关于", href: "/刘文静", target: false }
                 ],
             }
         },
         methods: {
             handleSelect(key, keyPath) {
 
+            },
+            makeCatUrl (catid) {
+                return "/category/" + catid;
+            },
+            makeSingleUrl (id) {
+                return '/single/' + id;
+            },
+            getData () {
+                axios.get(this.getAPI('menus')).then((res) => {
+                    let data = res.data;
+                    if (data.categorys) {
+                        data.categorys.forEach((v, k) => {
+                            if (k > 2) return false;
+                            this.menus.push({
+                                href: this.makeCatUrl(v.id),
+                                name: v.name,
+                                target: false
+                            });
+                        })
+                    }
+                    //if (data.singles) {
+                    //    data.singles.forEach((v, k) => {
+                    //        console.log(v);
+                    //        this.menus.push({
+                    //            href: this.makeSingleUrl(v.id),
+                    //            name: v.name,
+                    //            target: false
+                    //        });
+                    //    })
+                    //}
+                    //console.log(this.menus);
+                }).catch((res) => {
+                    this.$message.error(res);
+                    console.error(res);
+                });
             }
         },
         watch: {
@@ -38,6 +69,9 @@
                     }
                 });
             },
+        },
+        mounted () {
+            this.getData();
         }
     }
 </script>

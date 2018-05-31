@@ -23,7 +23,19 @@ class ArticleRepository extends BaseRepository
      */
     public function find($id, $preload = false)
     {
-        return $preload ? $this->model->with(['content', 'tags'])->findOrFail($id) : $this->model->findOrFail($id);
+        if ($preload) {
+            return $this->model->with([
+                'content',
+                'category' => function($query) {
+                    $query->select(['id', 'name']);
+                },
+                'tags' => function($query) {
+                    $query->select(['id', 'name']);
+                }
+            ])->findOrFail($id) ;
+        } else {
+            return $this->model->findOrFail($id);
+        }
     }
 
     /**
@@ -80,9 +92,17 @@ class ArticleRepository extends BaseRepository
             $keyword = $where['keyword'];
             unset($where['keyword']);
         }
-        $query = $this->model->with('category')->where($where)->orderBy('id', 'DESC');
+        $query = $this->model->with([
+            'category' => function($query) {
+                $query->select(['id', 'name']);
+            },
+            'tags' => function($query) {
+                $query->select(['id', 'name']);
+            }
+        ])->where($where)->orderBy('id', 'DESC');
+
         if (isset($keyword)) $query = $query->title($keyword);
-        return $query->paginate(self::$pageSize);
+        return $page ? $query->paginate(self::$pageSize) : $query->get();
     }
 
     /**

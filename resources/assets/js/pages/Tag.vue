@@ -15,34 +15,34 @@
 
 </style>
 <script>
-    import ArticlesComponent from '../components/ArticlesComponent';
+    import TagArticleComponent from '../components/TagArticleComponent';
     import RecommendsComponent from '../components/RecommendsComponent';
     import TagComponent from '../components/TagComponent';
 
     export default {
         components: {
-            'articles-component': ArticlesComponent,
+            'articles-component': TagArticleComponent,
             'recommends-component': RecommendsComponent,
             'tag-component': TagComponent
         },
         data() {
             return {
-
+                tag: {},
+                articles: [],
+                currentPage: 1,
+                pageSize: 10,
+                total: 0,
+                loading: false
             }
         },
         methods: {
-            getCache (name) {
-                return this.$store.state[name];
-            },
-            setCache (name, data) {
-                this.$store.state[name] = data;
-            }
+
         },
         watch: {
 
         },
         mounted() {
-            console.log('Index Page');
+            console.log('Tag Page');
         }
     }
 </script>

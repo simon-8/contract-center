@@ -36,6 +36,7 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">内容</label>
                         <div class="col-sm-11">
+                            <input type="hidden" name="is_md" value="{{ isset($is_md) ? $is_md : is_markdown() }}">
                             {!! seditor(old('content') ? old('content') : (isset($content) ? $content['content'] : '') , 'content') !!}
                             <span class="help-block m-b-none">文章内容</span>
                         </div>
@@ -149,12 +150,14 @@
 
             // show
             $('#tag-choice').click(function () {
+                var self = $(this);
                 $.post(AJPath, {ac: 'tags'}, function (data) {
                     let tag = '';
                     $.each(data, function (k, t) {
                         tag += '<a href="javascript:" class="label label-info" data-id='+t.id+'>' + t.name + '</a>';
                     });
                     $('#tagcloud').html(tag);
+                    self.remove();
                 }, 'json');
             });
             // add
@@ -219,7 +222,7 @@
         .tag-list{
             border-radius: 3px;
             border: 1px solid #eee;
-            margin: 10px 0 !important;
+            margin: 0 0 10px 0 !important;
             padding: 5px;
         }
         .tag-list .label {

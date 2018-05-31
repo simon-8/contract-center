@@ -20,7 +20,9 @@
                     </div>
 
                     <div class="panel-body">
-                        {{ article.created_at }}
+                        <h3 class="text-center">{{ article.title }}</h3>
+                        <p class="text-center">{{ article.created_at }}</p>
+                        <div class="clear">&nbsp;</div>
                         <!--<h4 v-html="article.introduce"></h4>-->
                         <div class="markdown-body" v-html="article.content"></div>
                     </div>
@@ -31,7 +33,7 @@
                         <router-link :to="articleUrl(article.prev.id)" v-if="article.prev">{{ article.prev.title }}</router-link>
                         <a v-else>没有了</a>
                     </div>
-                    <div class="col-xs-12 col-md-6">
+                    <div class="col-xs-12 col-md-6 text-right">
                         下一篇:
                         <router-link :to="articleUrl(article.next.id)" v-if="article.next">{{ article.next.title }}</router-link>
                         <a v-else>没有了</a>
@@ -45,8 +47,10 @@
     </div>
 </template>
 
-<style>
-
+<style scoped>
+    .panel {
+        border: none;
+    }
 </style>
 
 <script>
