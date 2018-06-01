@@ -5,7 +5,7 @@
                 <articles-component></articles-component>
             </div>
             <div class="col-md-3 hidden-xs col-md-offset-1">
-                <tag-component></tag-component>
+                <tags-component></tags-component>
             </div>
         </div>
     </div>
@@ -17,13 +17,13 @@
 <script>
     import ArticlesComponent from '../components/ArticlesComponent';
     import RecommendsComponent from '../components/RecommendsComponent';
-    import TagComponent from '../components/TagComponent';
+    import TagsComponent from '../components/TagsComponent';
 
     export default {
         components: {
             'articles-component': ArticlesComponent,
             'recommends-component': RecommendsComponent,
-            'tag-component': TagComponent
+            'tags-component': TagsComponent
         },
         data() {
             return {
@@ -31,15 +31,9 @@
             }
         },
         methods: {
-            getCache (name) {
-                return this.$store.state[name];
-            },
-            setCache (name, data) {
-                this.$store.state[name] = data;
-            }
+
         },
         watch: {
-
         },
         mounted() {
             console.log('Index Page');

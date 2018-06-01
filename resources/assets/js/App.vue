@@ -15,7 +15,7 @@
             <div class="collection-head">
                 <div class="container">
                     <div class="collection-title">
-                        <h1 class="collection-header" id="sub-title"><span>11111111111111</span></h1>
+                        <h1 class="collection-header" id="sub-title"><span>{{ new Date().getFullYear() }}</span></h1>
                         <div class="collection-info">
                             <span class="meta-info mobile-hidden">
                                 <i class="el-icon-location-outline"></i>

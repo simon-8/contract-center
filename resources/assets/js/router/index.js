@@ -2,8 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Index from '../pages/Index';
-import Tag from '../pages/Tag';
-//import Article from '../pages/Article';
+//import Tag from '../pages/Tag';
 import SingleContent from '../pages/SingleContent';
 import ArticleContent from '../pages/ArticleContent';
 
@@ -36,7 +35,7 @@ export default new VueRouter({
         {
             name: 'tag',
             path: '/tag/:name',
-            component: Tag
+            component: Index
         },
         {
             name: 'single2',

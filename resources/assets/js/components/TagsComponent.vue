@@ -25,10 +25,10 @@
         },
         methods: {
             getCache (name) {
-                return this.$store.state[name];
+                return this.$store.state.article[name];
             },
             setCache (name, data) {
-                this.$store.state[name] = data;
+                this.$store.commit('setTags', data);
                 return true;
             },
             tagUrl (name) {
@@ -59,7 +59,14 @@
                 })
             }
         },
+        watch: {
+            '$route' (to, from) {
+
+            },
+        },
         mounted () {
+            let name = this.$route.params.name;
+            console.log(name)
             this.getData();
         }
     }

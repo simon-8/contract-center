@@ -124,15 +124,16 @@
             getTag () {
                 let name = this.$route.params.name;
                 let tagsCache = this.getCache('tags') || [];
-                console.log(name, tagsCache)
                 if (tagsCache && tagsCache.length) {
                     tagsCache.forEach((val, index) => {
                         if (val.name === name) {
                             this.tag = val;
                         }
-                    })
+                    });
+                    return this.tag;
                 }
-                return this.tag;
+                return [];
+
             },
             getData () {
                 this.loading = true;

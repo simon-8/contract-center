@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-md-8">
-                <articles-component></articles-component>
+                <tag-article-component></tag-article-component>
             </div>
             <div class="col-md-3 hidden-xs col-md-offset-1">
                 <tag-component></tag-component>
@@ -17,13 +17,13 @@
 <script>
     import TagArticleComponent from '../components/TagArticleComponent';
     import RecommendsComponent from '../components/RecommendsComponent';
-    import TagComponent from '../components/TagComponent';
+    import TagsComponent from '../components/TagsComponent';
 
     export default {
         components: {
-            'articles-component': TagArticleComponent,
+            'tag-article-component': TagArticleComponent,
             'recommends-component': RecommendsComponent,
-            'tag-component': TagComponent
+            'tag-component': TagsComponent
         },
         data() {
             return {

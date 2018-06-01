@@ -107,6 +107,7 @@
         data () {
             return {
                 catid: 0,
+                name: null,
                 articles: [],
                 currentPage: 1,
                 pageSize: 10,
@@ -114,47 +115,82 @@
                 loading: false
             }
         },
-        methods: {
-            getData (page = 1) {
-                //if (page > 1) {
-                //    let cacheData = this.getCache('indexCache');
-                //    if (cacheData && cacheData.data.length && cacheData.current_page === page) {
-                //        this.articles = cacheData.data;
-                //        this.total = cacheData.total;
-                //        this.currentPage = cacheData.current_page;
-                //        return;
-                //    }
-                //}
-                this.currentPage = page;
-                this.loading = true;
-                this.articles = [];
+        computed: {
+            tags () {
 
-                axios.get(this.getAPI('article') + '?catid='+this.catid+'&page='+ page+'&pagesize='+this.pageSize).then((res) => {
+            }
+        },
+        methods: {
+            getCache (name) {
+                return this.$store.state.article[name];
+            },
+            setCache (name, data) {
+                this.$store.commit('setArticles', data);
+                return true;
+            },
+            getTagData () {
+                axios.get(this.getAPI('tag')).then((res) => {
+                    this.tags = res.data;
+                    this.setCache('tags', this.tags);
+                }).catch((res) => {
+                    this.$message.error('获取标签出错');
+                    console.log(res);
+                })
+            },
+            getTagid () {
+                let name = this.$route.params.name;
+                let tagsCache = this.getCache('tags') || [];
+                let tagid = 0;
+                if (tagsCache && tagsCache.length) {
+                    tagsCache.forEach((val, index) => {
+                        if (val.name === name) {
+                            tagid = val.id;
+                        }
+                    });
+                }
+                return tagid;
+            },
+            requestData (requestUrl) {
+                axios.get(requestUrl).then((res) => {
                     let data = res.data;
                     this.articles = data.data;
                     this.total = data.total;
                     this.loading = false;
+                    //this.setCache('', this.articles);
                 }).catch((res) => {
                     console.log(res);
                 });
+            },
+            getData (page = 1) {
+                this.currentPage = page;
+                this.loading = true;
+                this.articles = [];
+
+                let params = '?page=' + this.currentPage + '&pagesize=' + this.pageSize;
+                let url = this.getAPI('article');
+                if (this.$route.params.catid) {
+                    params += '&catid=' + this.$route.params.catid;
+                } else if (this.$route.params.name) {
+                    let tagid = this.getTagid();
+                    url = this.getAPI('tagArticle') + tagid;
+                }
+                this.requestData(url + params);
+
             }
         },
         watch: {
             '$route' (to, from) {
-                console.log('this is component');
-                console.log(this.$route.params.catid);
-                if (to.params.catid !== this.catid) {
-                    this.catid = isNaN(this.$route.params.catid) ? 0 : this.$route.params.catid;
-                    this.getData();
+                if (to.params.catid && to.params.catid !== this.catid) {
+                    this.catid = this.$route.params.catid;
                 }
-            },
-            items (newValue, oldValue) {
-                console.log(newValue);
+                if (to.params.name && to.params.name !== this.name) {
+                    this.name = this.$route.params.name;
+                }
+                this.getData();
             }
         },
         mounted () {
-            console.log('this is component');
-            console.log(this.$route.params.catid);
+            console.log('this is articles component');
             this.getData();
         },
     }

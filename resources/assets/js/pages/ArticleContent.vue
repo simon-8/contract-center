@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="col-md-3 hidden-xs col-md-offset-1">
-                <tag-component></tag-component>
+                <tags-component></tags-component>
             </div>
         </div>
     </div>
@@ -54,11 +54,11 @@
 </style>
 
 <script>
-    import TagComponent from '../components/TagComponent';
+    import TagsComponent from '../components/TagsComponent';
 
     export default {
         components: {
-            'tag-component': TagComponent
+            'tags-component': TagsComponent
         },
         data() {
             return {

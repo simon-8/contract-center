@@ -3,15 +3,10 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const store = {
-    state: {
-        count: 0,
-        indexArticle: [] // 存储首页文章列表数据
-    },
-    mutations: {
-        increment(state) {
-            state.count++;
-        }
+import article_store from './stores/article.js';
+
+export default new Vuex.Store({
+    modules: {
+        article: article_store
     }
-};
-export default store;
+})
