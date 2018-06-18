@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\ManagerStore;
+use App\Http\Requests\ManagerRequest;
 use App\Repositories\ManagerRepository;
 use App\Repositories\RolesRepository;
 
@@ -19,7 +19,7 @@ class ManagerController extends Controller
      * @param ManagerRepository $repository
      * @return mixed
      */
-    public function getIndex(ManagerRepository $repository)
+    public function index(ManagerRepository $repository)
     {
         $lists = $repository->list();
         $data = [
@@ -29,77 +29,83 @@ class ManagerController extends Controller
     }
 
     /**
+     * 创建
+     * @param RolesRepository $rolesRepository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(RolesRepository $rolesRepository)
+    {
+        $data = [
+            'roles' => $rolesRepository->listBy(['status' => 1], false)
+        ];
+        return admin_view('manager.create', $data);
+    }
+
+    /**
+     * 保存
+     * @param ManagerRequest $request
+     * @param ManagerRepository $repository
+     * @return $this|\Illuminate\Http\RedirectResponse|mixed
+     */
+    public function store(ManagerRequest $request, ManagerRepository $repository)
+    {
+        $data = $request->all();
+        $data['avatar'] = upload_base64_thumb($data['avatar']);
+
+        $request->validateCreate($data);
+
+        if (!$repository->create($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
+        }
+        return redirect()->route('manager.index')->with('Message' , __('web.success'));
+    }
+
+    /**
+     * 编辑
      * @param \Request $request
      * @param ManagerRepository $repository
      * @param RolesRepository $rolesRepository
-     * @return $this|\Illuminate\Http\RedirectResponse|mixed
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function doCreate(\Request $request, ManagerRepository $repository, RolesRepository $rolesRepository)
+    public function edit(\Request $request, ManagerRepository $repository, RolesRepository $rolesRepository, $id)
     {
-        if ($request::isMethod('get')) {
-            $data = [
-                'roles' => $rolesRepository->listBy(['status' => 1], false)
-            ];
-            return admin_view('manager.create', $data);
-        }
-        $data = $request::all();
-        $data['avatar'] = upload_base64_thumb($data['avatar']);
-
-        $validator = ManagerStore::validateCreate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        if ($repository->create($data)) {
-            return redirect()->route('admin.manager.index')->with('Message' , '添加成功');
-        } else {
-            return back()->withErrors('添加失败')->withInput();
-        }
+        $data = $repository->find($request::input('id'));
+        $data['roles'] = $rolesRepository->listBy(['status' => 1], false);
+        return admin_view('manager.create', $data);
     }
 
     /**
      * 更新
-     * @param \Request $request
+     * @param ManagerRequest $request
      * @param ManagerRepository $repository
-     * @param RolesRepository $rolesRepository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doUpdate(\Request $request, ManagerRepository $repository, RolesRepository $rolesRepository)
+    public function update(ManagerRequest $request, ManagerRepository $repository)
     {
-        if ($request::isMethod('get')) {
-            $data = $repository->find($request::input('id'));
-            $data['roles'] = $rolesRepository->listBy(['status' => 1], false);
-            return admin_view('manager.create', $data);
-        }
-        $data = $request::all();
+        $data = $request->all();
         $data['avatar'] = upload_base64_thumb($data['avatar']);
         if (empty($data['password'])) unset($data['password']);
 
-        $validator = ManagerStore::validateUpdate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        $request->validateUpdate($data);
 
-        if ($repository->update($data)) {
-            return redirect()->route('admin.manager.index')->with('Message' , '更新成功');
-        } else {
-            return back()->withErrors('更新失败')->withInput();
+        if (!$repository->update($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('manager.index')->with('Message' , __('web.success'));
     }
 
     /**
      * 删除
-     * @param \Request $request
      * @param ManagerRepository $repository
+     * @param $id
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function getDelete(\Request $request, ManagerRepository $repository)
+    public function destroy(ManagerRepository $repository, $id)
     {
-        $data = $request::all();
-        if ($repository->delete($data['id'])) {
-            return redirect()->route('admin.manager.index')->with('Message' , '删除成功');
-        } else {
-            return back()->withErrors('删除失败')->withInput();
+        if ($repository->delete($id)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('manager.index')->with('Message' , __('web.success'));
     }
 }

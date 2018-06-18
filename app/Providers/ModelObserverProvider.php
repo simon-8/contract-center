@@ -20,12 +20,12 @@ class ModelObserverProvider extends ServiceProvider
      */
     public function boot()
     {
-        Article::observe('App\Observers\ArticleObserver');
-        AdPlace::observe('App\Observers\AdPlaceObserver');
-        Menu::observe('App\Observers\MenuObserver');
-        Manager::observe('App\Observers\ManagerObserver');
-        Roles::observe('App\Observers\RolesObserver');
-        SinglePage::observe('App\Observers\SinglePageObserver');
+        Article::observe(\App\Observers\ArticleObserver::class);
+        AdPlace::observe(\App\Observers\AdPlaceObserver::class);
+        Menu::observe(\App\Observers\MenuObserver::class);
+        Manager::observe(\App\Observers\ManagerObserver::class);
+        Roles::observe(\App\Observers\RolesObserver::class);
+        SinglePage::observe(\App\Observers\SinglePageObserver::class);
     }
 
     /**

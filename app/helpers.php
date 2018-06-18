@@ -228,3 +228,35 @@ function array_search_value($val, $arr) {
     }
     return $result;
 }
+
+/**
+ * @param $message
+ * @param array $data
+ * @param int $status
+ * @return \Illuminate\Http\JsonResponse
+ */
+function response_message($message, $data = [], $status = 0) {
+    return response()->json([
+        'status' => $status,
+        'message' => $message,
+        'data' => $data
+    ], 200);
+}
+
+/**
+ * @param $message
+ * @param array $data
+ * @param int $status
+ * @return \Illuminate\Http\JsonResponse
+ */
+function response_exception($message, $data = [], $status = 422) {
+    return response()->json([
+        'status' => 0,
+        'message' => $message,
+        'data' => $data
+    ], $status);
+}
+
+function editURL($route, $id, $name = 'id') {
+    return route($route, [$name => $id]);
+}

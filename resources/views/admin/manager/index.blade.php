@@ -34,8 +34,8 @@
                             <td>{{ $v->lasttime ? $v->lasttime : '从未登录' }}</td>
                             <td>{{ $v->lastip ? $v->lastip : '从未登录' }}</td>
                             <td>
-                                <a class="btn btn-sm btn-info" href="{{ route('admin.manager.update', ['id' => $v->id]) }}">编辑</a>
-                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $v->id }})">删除</button>
+                                <a class="btn btn-sm btn-info" href="{{ route('manager.edit', ['id' => $v->id]) }}">编辑</a>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('manager.destroy', $v->id) }}')">删除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -47,7 +47,7 @@
                     </tr>
                 @endif
             </table>
-            <a href="{{ route('admin.manager.create') }}" class="btn btn-info">添加管理员</a>
+            <a href="{{ route('manager.create') }}" class="btn btn-info">添加管理员</a>
             <div class="text-center">
                 @if(count($lists))
                     {!! $lists->render() !!}
@@ -55,42 +55,11 @@
             </div>
         </div>
     </div>
-    {{--<a href="{{ route('admin.manager.delete') }}" class="btn btn-warning">批量删除</a>--}}
+    {{--<a href="{{ route('manager.delete') }}" class="btn btn-warning">批量删除</a>--}}
     {{--<a class="btn btn-warning">权限管理</a>--}}
     {{--<a class="btn btn-success">模块配置</a>--}}
 </div>
-<script>
 
-    var deleteModal = '#deleteModal';
-    var updateModal = '#updateModal';
-    var createModal = '#createModal';
-
-    function Delete(id , name)
-    {
-        name = name ? name : 'id';
-        $(deleteModal).find('input[name='+name+']').val(id);
-        $(deleteModal).modal('show');
-    }
-
-    function Edit(id)
-    {
-        var json = $('#edit_' + id).attr('data');
-        json = JSON.parse(json);
-        $.each(json , function(k , v){
-            $(updateModal).find('[name=' + k + ']').val(v);
-        });
-
-        $(updateModal).modal('show');
-    }
-    function AddChild(id) {
-        var json = $('#edit_' + id).attr('data');
-        json = JSON.parse(json);
-        $(createModal).find('select[name=pid]').val(json.id);
-        $(createModal).find('input[name=prefix]').val(json.prefix);
-        $(createModal).modal('show');
-    }
-</script>
-
-@include('admin.modal.delete' , ['formurl' => route('admin.manager.delete')])
+@include('admin.modal.delete')
 
 @endsection('content')

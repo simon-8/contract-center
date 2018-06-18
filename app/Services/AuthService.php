@@ -82,6 +82,7 @@ class AuthService
 
         $menuRepository = new MenuRepository();
         $menus = $menuRepository->lists();
+        return $menus;
         $myMenus = [];
         foreach ($menus as $k => $menu) {
             if (empty($menu['child'])) {

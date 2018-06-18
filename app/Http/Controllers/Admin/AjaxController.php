@@ -13,7 +13,7 @@ class AjaxController extends Controller
      * @param \Request $request
      * @return mixed
      */
-    public function getIndex(\Request $request)
+    public function index(\Request $request)
     {
         $ac = $request::input('ac');
         switch ($ac){

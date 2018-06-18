@@ -13,25 +13,22 @@
 
 Route::prefix('admin')->namespace('Admin')->group(function() {
 
-    Route::get('login', 'LoginController@getLogin')->name('admin.login.get');
+    Route::get('login', 'LoginController@showLoginForm')->name('admin.login.get');
     Route::post('login', 'LoginController@login')->name('admin.login.post');
     Route::get('logout', 'LoginController@logout')->name('admin.logout.get');
 
-    Route::group(['middleware' => 'auth.admin'], function() {
+    Route::group(['middleware' => 'admin.auth'], function() {
         // ajax
-        Route::any('ajax' , 'AjaxController@getIndex')->name('admin.ajax.index');
+        Route::any('ajax' , 'AjaxController@index')->name('admin.ajax.index');
 
         // 首页
         Route::get('/', 'IndexController@getMain')->name('admin.index.main');
         Route::get('index', 'IndexController@getIndex')->name('admin.index.index');
 
-        // 菜单
-        Route::prefix('menu')->group(function() {
-            Route::get('/', 'MenuController@getIndex')->name('admin.menu.index');
-            Route::post('/create', 'MenuController@postCreate')->name('admin.menu.create');
-            Route::post('/update', 'MenuController@postUpdate')->name('admin.menu.update');
-            Route::get('/delete', 'MenuController@getDelete')->name('admin.menu.delete');
-        });
+        Route::resource('article', 'ArticleController');
+        Route::resource('manager', 'ManagerController');
+        Route::resource('menu', 'MenuController');
+        Route::resource('single', 'SinglePageController');
 
         // ad place
         Route::prefix('ad')->group(function() {
@@ -45,14 +42,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::post('/item/create', 'AdController@itemCreate')->name('admin.ad.item.create');
             Route::post('/item/update', 'AdController@itemUpdate')->name('admin.ad.item.update');
             Route::get('/item/delete', 'AdController@itemDelete')->name('admin.ad.item.delete');
-        });
-
-        // manager
-        Route::prefix('manager')->group(function() {
-            Route::get('/', 'ManagerController@getIndex')->name('admin.manager.index');
-            Route::match(['get', 'post'],'/create', 'ManagerController@doCreate')->name('admin.manager.create');
-            Route::match(['get', 'post'],'/update', 'ManagerController@doUpdate')->name('admin.manager.update');
-            Route::get('/delete', 'ManagerController@getDelete')->name('admin.manager.delete');
         });
 
         // roles
@@ -69,22 +58,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
             Route::match(['get', 'post'],'/create', 'RoleAccessController@doCreate')->name('admin.roleaccess.create');
             Route::match(['get', 'post'],'/update', 'RoleAccessController@doUpdate')->name('admin.roleaccess.update');
             Route::get('/delete', 'RoleAccessController@getDelete')->name('admin.roleaccess.delete');
-        });
-
-        // article
-        Route::prefix('article')->group(function() {
-            Route::get('/', 'ArticleController@getIndex')->name('admin.article.index');
-            Route::match(['get', 'post'],'/create', 'ArticleController@doCreate')->name('admin.article.create');
-            Route::match(['get', 'post'],'/update', 'ArticleController@doUpdate')->name('admin.article.update');
-            Route::get('/delete', 'ArticleController@getDelete')->name('admin.article.delete');
-        });
-
-        // single
-        Route::prefix('single')->group(function() {
-            Route::get('/', 'SinglePageController@getIndex')->name('admin.single.index');
-            Route::match(['get', 'post'],'/create', 'SinglePageController@doCreate')->name('admin.single.create');
-            Route::match(['get', 'post'],'/update', 'SinglePageController@doUpdate')->name('admin.single.update');
-            Route::get('/delete', 'SinglePageController@getDelete')->name('admin.single.delete');
         });
 
         // database

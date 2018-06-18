@@ -16,9 +16,9 @@ use App\Services\AuthService;
 
 class IndexController extends Controller
 {
-    public function getMain(AuthService $authService)
+    public function getMain(\Request $request, AuthService $authService)
     {
-        $myMenus = $authService->getRoleMenus(auth()->guard('admin')->getUser()->id);
+        $myMenus = $authService->getRoleMenus($request::user('admin')->id);
 
         $data = [
             'menus' => $myMenus

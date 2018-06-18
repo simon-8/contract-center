@@ -3,8 +3,9 @@
 @section('content')
 
     <div class="ibox float-e-margins">
-        <form method="post" class="form-horizontal" action="{{ isset($id) ? route('admin.single.update') : route('admin.single.create') }}" id="sform">
+        <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('single.update', $id) : route('single.store') }}" id="sform">
             {!! csrf_field() !!}
+            {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
             <div class="col-sm-12 col-md-8">
                 <div class="ibox-title">
                     @if(isset($id))
@@ -19,7 +20,7 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">单页标题</label>
                         <div class="col-sm-11">
-                            <input id="name" type="text" class="form-control" name="title" value="{{ isset($title) ? $title : old('title') }}">
+                            <input id="name" type="text" class="form-control" name="title" value="{{ $title ?? old('title') }}">
                             <span class="help-block m-b-none"></span>
                         </div>
                     </div>
@@ -37,7 +38,7 @@
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
                             <button class="btn btn-primary" type="submit">保存内容</button>
-                            <a class="btn btn-white" href="{{ route('admin.single.index') }}">返回</a>
+                            <a class="btn btn-white" href="javascript:history.go(-1);">返回</a>
                         </div>
                     </div>
                 </div>
@@ -65,8 +66,8 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">缩略图</label>
                         <div class="col-sm-10">
-                            <img src="{{ imgurl(isset($thumb) ? $thumb : old('thumb')) }}" id="pthumb" class="bg-warning" style="width: 220px; height: 140px;">
-                            <input type="hidden" id="thumb" name="thumb" value="{{ empty($thumb) ? old('thumb') : $thumb }}">
+                            <img src="{{ imgurl($thumb ?? old('thumb')) }}" id="pthumb" class="bg-warning" style="width: 220px; height: 140px;">
+                            <input type="hidden" id="thumb" name="thumb" value="{{ $thumb ?? old('thumb') }}">
                             <button class="btn btn-lg" type="button" onclick="Sthumb('thumb', 220, 140);" style="height: 140px; margin-bottom: 0;">上传</button>
                         </div>
                     </div>

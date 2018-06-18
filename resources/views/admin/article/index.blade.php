@@ -5,24 +5,24 @@
         <div class="ibox float-e-margins">
             <div class="ibox-content mailbox-content">
                 <div class="file-manager">
-                    <a class="btn btn-block btn-primary compose-mail" href="{{ route('admin.article.create') }}">发布文章</a>
+                    <a class="btn btn-block btn-primary compose-mail" href="{{ route('article.create') }}">发布文章</a>
                     <div class="space-25"></div>
                     <h5>文件夹</h5>
                     <ul class="folder-list m-b-md" style="padding: 0">
                         <li>
-                            <a href="{{ route('admin.article.index') }}">
+                            <a href="{{ route('article.index') }}">
                                 <i class="fa fa-inbox "></i> 已发布
                                 <span class="label label-warning pull-right">{{ $status_num[1] }}</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.article.index', ['status' => 0]) }}">
+                            <a href="{{ route('article.index', ['status' => 0]) }}">
                                 <i class="fa fa-file-text-o"></i> 草稿
                                 <span class="label label-danger pull-right">{{ $status_num[0] }}</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.article.index', ['status' => 2]) }}">
+                            <a href="{{ route('article.index', ['status' => 2]) }}">
                                 <i class="fa fa-trash-o"></i> 垃圾箱
                                 <span class="label label-danger pull-right">{{ $status_num[2] }}</span>
                             </a>
@@ -31,14 +31,14 @@
                     <h5>分类</h5>
                     <ul class="category-list" style="padding: 0">
                         <li>
-                            <a href="{{ route('admin.article.index') }}">
+                            <a href="{{ route('article.index') }}">
                                 <i class="fa fa-circle {{ $catid ? 'text-navy' : 'text-danger' }}"></i> 全部
                             </a>
                         </li>
                         @if(!empty($categorys))
                         @foreach ($categorys as $category)
                         <li>
-                            <a href="{{ route('admin.article.index', ['catid' => $category['id']]) }}">
+                            <a href="{{ route('article.index', ['catid' => $category['id']]) }}">
                                 <i class="fa fa-circle {{ $category['id'] == $catid ? 'text-danger' : 'text-navy' }}"></i> {{ $category['name'] }}
                             </a>
                         </li>
@@ -105,7 +105,7 @@
                     @foreach($lists as $v)
                         <tr class="">
                             <td>{{ $v['id'] }}</td>
-                            <td width="80"><a href="{{ route('admin.article.index', ['catid' => $v->category->id]) }}">{{ $v->category->name }}</a></td>
+                            <td width="80"><a href="{{ route('article.index', ['catid' => $v->category->id]) }}">{{ $v->category->name }}</a></td>
                             <td>
                                 <i class="fa fa-file-image-o" onclick="preview('{{ $v['thumb'] }}', 220, 140)"></i>
                             </td>
@@ -114,8 +114,8 @@
                             <td>{{ $v['created_at'] }}</td>
                             <td>{{ $v['updated_at'] }}</td>
                             <td>
-                                <a href="{{ route('admin.article.update', ['id' => $v['id']]) }}" class="btn btn-sm btn-info">编辑</a>
-                                <a onclick="Delete({{ $v['id'] }});" class="btn btn-sm btn-danger">删除</a>
+                                <a href="{{ editURL('article.edit', $v['id']) }}" class="btn btn-sm btn-info">编辑</a>
+                                <a onclick="Delete('{{ editURL('article.destroy', $v['id']) }}');" class="btn btn-sm btn-danger">删除</a>
                             </td>
                         </tr>
                     @endforeach
@@ -137,16 +137,6 @@
         </div>
     </div>
 </div>
-<script>
-    var deleteModal = '#deleteModal';
-
-    function Delete(id , name)
-    {
-        name = name ? name : 'id';
-        $(deleteModal).find('input[name='+name+']').val(id);
-        $(deleteModal).modal('show');
-    }
-</script>
 {{--delete--}}
-@include('admin.modal.delete' , ['formurl' => route('admin.article.delete')])
+@include('admin.modal.delete')
 @endsection('content')

@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
-use App\Http\Requests\ArticleStore;
+use App\Http\Requests\ArticleRequest;
 
 class ArticleController extends BaseController
 {
@@ -23,7 +23,7 @@ class ArticleController extends BaseController
      * @param CategoryRepository $categoryRepository
      * @return mixed
      */
-    public function getIndex(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
+    public function index(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
     {
         $catid = $request::input('catid', 0);
         $status = $request::input('status', 0);
@@ -50,84 +50,79 @@ class ArticleController extends BaseController
         return admin_view('article.index', $data);
     }
 
+    public function create(CategoryRepository $categoryRepository)
+    {
+        $categorys = $categoryRepository->listByPID(self::$PID);
+        return admin_view('article.create', [
+            'categorys' => $categorys
+        ]);
+    }
+
     /**
      * 新增
-     * @param \Request $request
+     * @param ArticleRequest $request
      * @param ArticleRepository $repository
-     * @param CategoryRepository $categoryRepository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doCreate(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
+    public function store(ArticleRequest $request, ArticleRepository $repository)
     {
-        if ($request::isMethod('get')) {
-            $categorys = $categoryRepository->listByPID(self::$PID);
-            return admin_view('article.create', [
-                'categorys' => $categorys
-            ]);
-        }
-
-        $data = $request::all();
+        $data = $request->all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
         $data['is_md'] = is_markdown();
 
-        $validator = ArticleStore::validateCreate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        $request->validateCreate($data);
 
-        if ($repository->create($data)) {
-            return redirect()->route('admin.article.index')->with('Message' , '添加成功');
-        } else {
-            return back()->withErrors('添加失败')->withInput();
+        if (!$repository->create($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('admin.article.index')->with('Message' , __('web.success'));
+    }
+
+    /**
+     * @param \Request $request
+     * @param ArticleRepository $repository
+     * @param CategoryRepository $categoryRepository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
+    {
+        $data = $repository->find($request::input('id'), true);
+        $categorys = $categoryRepository->listByPID(self::$PID);
+        $data['categorys'] = $categorys;
+        return admin_view('article.create', $data);
     }
 
     /**
      * 更新
-     * @param \Request $request
+     * @param ArticleRequest $request
      * @param ArticleRepository $repository
-     * @param CategoryRepository $categoryRepository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doUpdate(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
+    public function update(ArticleRequest $request, ArticleRepository $repository)
     {
-        if ($request::isMethod('get')) {
-            $data = $repository->find($request::input('id'), true);
-            $categorys = $categoryRepository->listByPID(self::$PID);
-            $data['categorys'] = $categorys;
-            return admin_view('article.create', $data);
-        }
-
-        $data = $request::all();
+        $data = $request->all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
         $data['is_md'] = is_markdown();
 
-        $validator = ArticleStore::validateUpdate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        $request->validateUpdate($data);
 
-        if ($repository->update($data)) {
-            return redirect()->route('admin.article.index')->with('Message', '更新成功');
-        } else {
-            return back()->withErrors('更新失败')->withInput();
+        if (!$repository->update($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('admin.article.index')->with('Message', __('web.success'));
     }
 
     /**
      * 删除
-     * @param \Request $request
      * @param ArticleRepository $repository
+     * @param $id
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function getDelete(\Request $request, ArticleRepository $repository)
+    public function destroy(ArticleRepository $repository, $id)
     {
-        $data = $request::all();
-        $item = $repository->find($data['id']);
-        if ($item->delete()) {
-            return redirect()->route('admin.article.index')->with('Message' , '删除成功');
-        } else {
-            return back()->withErrors('删除失败')->withInput();
+        if (!$repository->delete($id)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('admin.article.index')->with('Message' , __('web.success'));
     }
 }

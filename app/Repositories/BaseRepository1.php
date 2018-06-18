@@ -1,14 +1,14 @@
 <?php
 /**
- * Note: 资源库基类
+ * Note: 仓库基类
  * User: Liu
- * Date: 2018/4/4
+ * Date: 2018/6/4
  */
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BaseRepository
+class BaseRepository1
 {
     protected $model;
     public static $pageSize = 15;
@@ -23,27 +23,31 @@ class BaseRepository
     }
 
     /**
-     * @return mixed
+     * 查询所有
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function list()
+    public function all()
     {
-        return $this->model->orderBy($this->model->getKeyName(), 'DESC')->paginate(self::$pageSize);
-    }
-
-    public function listBy($where, $page = true)
-    {
-        $query = $this->model->where($where);
-        return $page ? $query->paginate(self::$pageSize) : $query->get();
-    }
-
-    public function getAll()
-    {
-        return $this->model->orderBy($this->model->getKeyName(), 'DESC')->get();
+        return $this->model->all();
     }
 
     /**
+     * 列表查询
+     * @param $where
+     * @param $page
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
+     */
+    public function lists($where = [], $page = true)
+    {
+        $query = $this->model;
+        if ($where) $query = $query->where($where);
+        return $page ? $query->paginate(self::$pageSize) : $query->get();
+    }
+
+    /**
+     * 根据主键ID查找
      * @param $id
-     * @return mixed
+     * @return mixed|static
      */
     public function find($id)
     {
@@ -51,9 +55,19 @@ class BaseRepository
     }
 
     /**
+     * @param $where
+     * @return mixed
+     */
+    public function first($where)
+    {
+        return $this->model->where($where)->first();
+    }
+
+    /**
+     * 根据字段查找
      * @param $field
      * @param $value
-     * @return mixed
+     * @return Model|null|object|static
      */
     public function findBy($field, $value)
     {

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SinglePageStore extends FormRequest
+class ArticleRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,21 +21,23 @@ class SinglePageStore extends FormRequest
      *
      * @return array
      */
-    /*    public function rules()
-        {
-            return [
-                //
-            ];
-        }*/
+    public function rules()
+    {
+        return [
+            //
+        ];
+    }
 
     /**
      *
      * @return array
      */
-    protected static function createRules()
+    protected function createRules()
     {
         return [
+            'catid' => 'required|numeric',
             'title' => 'required|min:1',
+            'introduce' => 'nullable',
             'status' => 'numeric'
         ];
     }
@@ -43,29 +45,31 @@ class SinglePageStore extends FormRequest
     /**
      * @return array
      */
-    protected static function updateRules()
+    protected function updateRules()
     {
         return [
+            'catid' => 'required|numeric',
             'title' => 'required|min:1',
+            'introduce' => 'nullable',
             'status' => 'numeric'
         ];
     }
 
     /**
      * @param $data
-     * @return \Illuminate\Validation\Validator
+     * @return $this|bool|\Illuminate\Http\JsonResponse
      */
-    public static function validateCreate($data)
+    public function validateCreate($data)
     {
-        return \Validator::make($data, self::createRules());
+        return $this->check($data, $this->createRules());
     }
 
     /**
      * @param $data
-     * @return \Illuminate\Validation\Validator
+     * @return $this|bool|\Illuminate\Http\JsonResponse
      */
-    public static function validateUpdate($data)
+    public function validateUpdate($data)
     {
-        return \Validator::make($data, self::updateRules());
+        return $this->check($data, $this->updateRules());
     }
 }

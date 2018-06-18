@@ -4,8 +4,9 @@
 
 <div class="ibox float-e-margins">
 
-    <form method="post" class="form-horizontal" action="{{ isset($id) ? route('admin.manager.update') : route('admin.manager.create') }}" id="sform">
+    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('manager.update', $id) : route('manager.store') }}" id="sform">
         {!! csrf_field() !!}
+        {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
         <div class="col-sm-12 col-md-6">
             <div class="ibox-title">
                 @if(isset($id))
@@ -20,7 +21,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">用户名</label>
                     <div class="col-sm-10">
-                        <input id="username" type="text" class="form-control" name="username" value="{{ isset($username) ? $username : old('username') }}">
+                        <input id="username" type="text" class="form-control" name="username" value="{{ $username ?? old('username') }}">
                         <span class="help-block m-b-none">用户用来登录的账户名称</span>
                     </div>
                 </div>
@@ -36,7 +37,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">真实姓名</label>
                     <div class="col-sm-10">
-                        <input id="truename" type="text" class="form-control" name="truename" value="{{ isset($truename) ? $truename : old('truename') }}">
+                        <input id="truename" type="text" class="form-control" name="truename" value="{{ $truename ?? old('truename') }}">
                         <span class="help-block m-b-none">用于登录后显示的昵称</span>
                     </div>
                 </div>
@@ -44,7 +45,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">邮箱</label>
                     <div class="col-sm-10">
-                        <input id="email" type="text" class="form-control" name="email" value="{{ isset($email) ? $email : old('email') }}">
+                        <input id="email" type="text" class="form-control" name="email" value="{{ $email ?? old('email') }}">
                         <span class="help-block m-b-none">便于邮件推送系统消息</span>
                     </div>
                 </div>
@@ -78,7 +79,7 @@
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
                         <button class="btn btn-primary" type="submit">保存内容</button>
-                        <a class="btn btn-white" href="{{ route('admin.manager.index') }}">返回</a>
+                        <a class="btn btn-white" href="javascript:history.go(-1);">返回</a>
                     </div>
                 </div>
             </div>
@@ -91,8 +92,8 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">头像设置</label>
                     <div class="col-sm-10">
-                        <img src="{{ imgurl(isset($avatar) ? $avatar : old('avatar')) }}" id="pavatar" class="bg-warning" style="width: 100px; height: 100px;">
-                        <input type="hidden" id="avatar" name="avatar" value="{{ empty($avatar) ? old('avatar') : $avatar }}">
+                        <img src="{{ imgurl($avatar ?? old('avatar')) }}" id="pavatar" class="bg-warning" style="width: 100px; height: 100px;">
+                        <input type="hidden" id="avatar" name="avatar" value="{{ $avatar ?? old('avatar') }}">
                         <button class="btn btn-lg" type="button" onclick="Sthumb('avatar', 100, 100);" style="height: 100px; margin-bottom: 0;">上传</button>
                     </div>
                 </div>

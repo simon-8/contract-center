@@ -31,8 +31,8 @@
                             <td>{{ $v['items'] }}</td>
                             <td>
                                 <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加</button>
-                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }})">编辑</button>
-                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
+                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }}, '{{ editURL('menu.update', $v['id']) }}')">编辑</button>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('menu.destroy', $v['id']) }}')">删除</button>
                             </td>
                         </tr>
                         @if(isset($v['child']) && count($v['child']))
@@ -47,8 +47,8 @@
                                     <td>{{ $vv['ico'] }}</td>
                                     <td>{{ $vv['items'] }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data="{{ json_encode($vv) }}" onclick="Edit({{ $vv['id'] }})">编辑</button>
-                                        <button class="btn btn-sm btn-danger" onclick="Delete({{ $vv['id'] }})">删除</button>
+                                        <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data="{{ json_encode($vv) }}" onclick="Edit({{ $vv['id'] }}, '{{ editURL('menu.update', $vv['id']) }}')">编辑</button>
+                                        <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('menu.destroy', $vv['id']) }}')">删除</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -66,29 +66,8 @@
         </div>
     </div>
     <script>
-
-        var deleteModal = '#deleteModal';
-        var updateModal = '#updateModal';
         var createModal = '#createModal';
 
-        function Delete(id , name)
-        {
-            name = name ? name : 'id';
-            $(deleteModal).find('input[name='+name+']').val(id);
-            $(deleteModal).modal('show');
-        }
-
-        function Edit(id)
-        {
-
-            var json = $('#edit_' + id).attr('data');
-            json = JSON.parse(json);
-            $.each(json , function(k , v){
-                $(updateModal).find('[name=' + k + ']').val(v);
-            });
-
-            $(updateModal).modal('show');
-        }
         function AddChild(id) {
             var json = $('#edit_' + id).attr('data');
             json = JSON.parse(json);
@@ -99,13 +78,13 @@
     </script>
 
     {{--delete--}}
-    @include('admin.modal.delete' , ['formurl' => route('admin.menu.delete')])
+    @include('admin.modal.delete')
 
     {{--create--}}
     <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated flipInX">
-                <form action="{{ route('admin.menu.create') }}" method="POST" class="form-horizontal">
+                <form action="{{ route('menu.store') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -182,8 +161,9 @@
     <div class="modal inmodal" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated flipInX">
-                <form action="{{ route('admin.menu.update') }}" method="POST" class="form-horizontal">
+                <form action="" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
+                    {!! method_field('PUT') !!}
                     <input type="hidden" name="id" value="">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

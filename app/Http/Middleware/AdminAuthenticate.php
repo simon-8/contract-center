@@ -47,14 +47,31 @@ class AdminAuthenticate
             }
         }
 
-        $authService = new AuthService();
-        $routes = $authService->getUserRoutes(auth()->guard('admin')->getUser()->id);
-        $currentRouteName = \Route::currentRouteName();
-
-        $cross = array_search_value($currentRouteName, $routes);
-        if (!$cross) {
-            return response(admin_view('auth.access'));
-        }
+        //$authService = new AuthService();
+        //$routes = $authService->getUserRoutes($request->user('admin')->id);
+        //$currentRouteName = \Route::currentRouteName();
+        //
+        //$cross = array_search_value($currentRouteName, $routes);
+        //if (!$cross) {
+        //    return response(admin_view('auth.access'));
+        //}
         return $next($request);
+
+        //if (!$request->user('admin')) {
+        //    if ($request->ajax()) {
+        //        return response('Unauthorized.', 401);
+        //    } else {
+        //        return redirect()->guest(route('login.get'));
+        //    }
+        //}
+        //
+        //// 权限检查
+        //$continue = (new AuthService())->checkPermission($request->user('admin'));
+        //if (!$continue) {
+        //    abort(401, __('no_permission'));
+        //}
+        //
+        //return $next($request);
+
     }
 }

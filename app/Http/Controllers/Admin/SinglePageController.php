@@ -9,7 +9,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Repositories\SinglePageRepository;
-use App\Http\Requests\SinglePageStore;
+use App\Http\Requests\SinglePageRequest;
 
 class SinglePageController extends Controller
 {
@@ -21,7 +21,7 @@ class SinglePageController extends Controller
      * @param SinglePageRepository $repository
      * @return mixed
      */
-    public function getIndex(\Request $request, SinglePageRepository $repository)
+    public function index(\Request $request, SinglePageRepository $repository)
     {
         $status = $request::input('status', 0);
         $keyword = $request::input('keyword', null);
@@ -44,74 +44,72 @@ class SinglePageController extends Controller
     }
 
     /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create()
+    {
+        return admin_view('single.create');
+    }
+
+    /**
      * 新增
-     * @param \Request $request
+     * @param SinglePageRequest $request
      * @param SinglePageRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doCreate(\Request $request, SinglePageRepository $repository)
+    public function store(SinglePageRequest $request, SinglePageRepository $repository)
     {
-        if ($request::isMethod('get')) {
-            return admin_view('single.create');
-        }
-
-        $data = $request::all();
+        $data = $request->all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
 
-        $validator = SinglePageStore::validateCreate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        $request->validateCreate($data);
 
-        if ($repository->create($data)) {
-            return redirect()->route('admin.single.index')->with('Message' , '添加成功');
-        } else {
-            return back()->withErrors('添加失败')->withInput();
+        if (!$repository->create($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('admin.single.index')->with('Message' , __('web.success'));
+    }
+
+    /**
+     * @param \Request $request
+     * @param SinglePageRepository $repository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(\Request $request, SinglePageRepository $repository)
+    {
+        $data = $repository->find($request::input('id'), true);
+        return admin_view('single.create', $data);
     }
 
     /**
      * 更新
-     * @param \Request $request
+     * @param SinglePageRequest $request
      * @param SinglePageRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doUpdate(\Request $request, SinglePageRepository $repository)
+    public function update(SinglePageRequest $request, SinglePageRepository $repository)
     {
-        if ($request::isMethod('get')) {
-            $data = $repository->find($request::input('id'), true);
-            return admin_view('single.create', $data);
-        }
-
-        $data = $request::all();
+        $data = $request->all();
         $data['thumb'] = upload_base64_thumb($data['thumb']);
 
-        $validator = SinglePageStore::validateUpdate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        $request->validateUpdate($data);
 
-        if ($repository->update($data)) {
-            return redirect()->route('admin.single.index')->with('Message', '更新成功');
-        } else {
-            return back()->withErrors('添加失败')->withInput();
+        if (!$repository->update($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('admin.single.index')->with('Message', __('web.success'));
     }
 
     /**
      * 删除
-     * @param \Request $request
      * @param SinglePageRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function getDelete(\Request $request, SinglePageRepository $repository)
+    public function destroy(SinglePageRepository $repository, $id)
     {
-        $data = $request::all();
-        $item = $repository->find($data['id']);
-        if ($item->delete()) {
-            return redirect()->route('admin.single.index')->with('Message' , '删除成功');
-        } else {
-            return back()->withErrors('删除失败')->withInput();
+        if (!$repository->delete($id)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('admin.single.index')->with('Message' , __('web.success'));
     }
 }

@@ -88,6 +88,25 @@
         }
     }
 
+    function Delete(url)
+    {
+        var deleteModal = '#deleteModal';
+        $(deleteModal).find('form#deleteForm').attr('action', url);
+        $(deleteModal).modal('show');
+    }
+
+    function Edit(id, url)
+    {
+        var updateModal = '#updateModal';
+        var json = $('#edit_' + id).attr('data');
+        json = JSON.parse(json);
+        $.each(json , function(k , v){
+            $(updateModal).find('[name=' + k + ']').val(v);
+        });
+        $(updateModal).find('form').attr('action', url);
+        $(updateModal).modal('show');
+    }
+
     /*
     * 加载层
     * */
