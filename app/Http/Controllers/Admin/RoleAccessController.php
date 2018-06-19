@@ -28,7 +28,7 @@ class RoleAccessController extends Controller
             'lists' => $lists,
             'routeNames' => $routeNames
         ];
-        return admin_view('roleaccess.index' , $data);
+        return admin_view('role_access.index' , $data);
     }
 
     /**
@@ -41,7 +41,7 @@ class RoleAccessController extends Controller
             'allowMethods' => self::$allowMethods,
             'routeNames'   => $routeNames
         ];
-        return admin_view('roleaccess.create', $data);
+        return admin_view('role_access.create', $data);
     }
 
     /**
@@ -59,7 +59,7 @@ class RoleAccessController extends Controller
         if (!$repository->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('roleaccess.index')->with('Message', __('web.success'));
+        return redirect()->route('role-access.index')->with('Message', __('web.success'));
     }
 
     /**
@@ -72,7 +72,7 @@ class RoleAccessController extends Controller
         $data = $repository->find($id);
         $data['allowMethods'] = self::$allowMethods;
         $data['routeNames'] = \Route::getRoutes()->getRoutesByName();
-        return admin_view('roleaccess.create', $data);
+        return admin_view('role_access.create', $data);
     }
 
     /**
@@ -90,7 +90,7 @@ class RoleAccessController extends Controller
         if (!$repository->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('roleaccess.index')->with('Message', __('web.success'));
+        return redirect()->route('role-access.index')->with('Message', __('web.success'));
     }
 
 
@@ -105,6 +105,6 @@ class RoleAccessController extends Controller
         if (!$repository->delete($id)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('roleaccess.index')->with('Message', __('web.success'));
+        return redirect()->route('role-access.index')->with('Message', __('web.success'));
     }
 }

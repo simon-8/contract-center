@@ -20,7 +20,6 @@ class AdPlaceTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'aid' => 2,
                 'name' => '活动编号2的Banner',
                 'width' => 640,
                 'height' => 350,

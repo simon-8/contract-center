@@ -36,8 +36,8 @@
                             </td>
                             <td>{{ $v['route'] }}</td>
                             <td>
-                                <a class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" href="{{ editURL('roleaccess.edit', $v['id']) }}">编辑</a>
-                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('roleaccess.destroy', $v['id']) }}')">删除</button>
+                                <a class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" href="{{ editURL('role-access.edit', $v['id']) }}">编辑</a>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('role-access.destroy', $v['id']) }}')">删除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -49,7 +49,7 @@
                     </tr>
                 @endif
             </table>
-            <a class="btn btn-success" href="{{ route('roleaccess.create') }}">添加权限</a>
+            <a class="btn btn-success" href="{{ route('role-access.create') }}">添加权限</a>
             @if(count($lists))
                 <div class="text-center">
                     {!! $lists->render() !!}

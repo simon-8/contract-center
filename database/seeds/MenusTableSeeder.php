@@ -44,7 +44,7 @@ class MenusTableSeeder extends Seeder
                 'id' => 5,
                 'pid' => 6,
                 'name' => '数据管理',
-                'route' => 'admin.database.index',
+                'route' => 'database.index',
                 'link' => '',
                 'ico' => 'fa fa-database',
                 'listorder' => 0,
@@ -55,7 +55,7 @@ class MenusTableSeeder extends Seeder
                 'id' => 6,
                 'pid' => 0,
                 'name' => '系统设置',
-                'route' => 'admin.setting.index',
+                'route' => 'setting.index',
                 'link' => '',
                 'ico' => 'fa fa-cog',
                 'listorder' => 0,
@@ -88,7 +88,7 @@ class MenusTableSeeder extends Seeder
                 'id' => 9,
                 'pid' => 6,
                 'name' => '广告管理',
-                'route' => 'admin.ad.index',
+                'route' => 'ad-place.index',
                 'link' => '',
                 'ico' => '',
                 'listorder' => 0,
@@ -99,7 +99,7 @@ class MenusTableSeeder extends Seeder
                 'id' => 12,
                 'pid' => 6,
                 'name' => '基本设置',
-                'route' => 'admin.setting.index',
+                'route' => 'setting.index',
                 'link' => '',
                 'ico' => '',
                 'listorder' => 99,
@@ -107,32 +107,32 @@ class MenusTableSeeder extends Seeder
             ),
             8 => 
             array (
-                'id' => 13,
-                'pid' => 0,
-                'name' => '用户管理',
-                'route' => 'admin.user.index',
-                'link' => '',
-                'ico' => 'fa fa-user',
-                'listorder' => 93,
-                'items' => 0,
-            ),
-            9 => 
-            array (
                 'id' => 14,
                 'pid' => 0,
                 'name' => '文章管理',
-                'route' => 'admin.article.index',
+                'route' => 'article.index',
                 'link' => '',
                 'ico' => 'fa fa-book',
                 'listorder' => 94,
                 'items' => 0,
             ),
-            10 => 
+            9 => 
             array (
                 'id' => 15,
                 'pid' => 6,
                 'name' => '分类管理',
-                'route' => 'admin.category.index',
+                'route' => 'category.index',
+                'link' => '',
+                'ico' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            10 => 
+            array (
+                'id' => 16,
+                'pid' => 6,
+                'name' => '系统日志',
+                'route' => 'log-viewer::dashboard',
                 'link' => '',
                 'ico' => '',
                 'listorder' => 0,
@@ -140,38 +140,27 @@ class MenusTableSeeder extends Seeder
             ),
             11 => 
             array (
-                'id' => 16,
-                'pid' => 6,
-                'name' => '系统日志',
-                'route' => '',
-                'link' => '/admin/logs',
-                'ico' => '',
-                'listorder' => 0,
-                'items' => 0,
-            ),
-            12 => 
-            array (
                 'id' => 17,
                 'pid' => 0,
                 'name' => '单页管理',
-                'route' => 'admin.single.index',
+                'route' => 'single.index',
                 'link' => '',
                 'ico' => 'fa fa-newspaper-o',
                 'listorder' => 93,
                 'items' => 0,
             ),
-            13 => 
+            12 => 
             array (
                 'id' => 18,
                 'pid' => 2,
                 'name' => '权限管理',
-                'route' => 'admin.roleaccess.index',
+                'route' => 'role-access.index',
                 'link' => '',
                 'ico' => '',
                 'listorder' => 0,
                 'items' => 0,
             ),
-            14 => 
+            13 => 
             array (
                 'id' => 19,
                 'pid' => 2,
@@ -182,12 +171,12 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 3,
                 'items' => 0,
             ),
-            15 => 
+            14 => 
             array (
                 'id' => 20,
                 'pid' => 2,
                 'name' => '角色管理',
-                'route' => 'admin.roles.index',
+                'route' => 'roles.index',
                 'link' => '',
                 'ico' => '',
                 'listorder' => 0,

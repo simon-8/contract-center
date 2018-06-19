@@ -4,7 +4,7 @@
 
 <div class="ibox float-e-margins">
 
-    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('roleaccess.update', $id) : route('roleaccess.store') }}" id="sform">
+    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('role-access.update', $id) : route('role-access.store') }}" id="sform">
         {!! csrf_field() !!}
         {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
         <div class="col-sm-12 col-md-6">

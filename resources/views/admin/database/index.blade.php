@@ -60,7 +60,7 @@
     function ShowFields(table)
     {
         loading();
-        $.get('{!! route('admin.database.fields') !!}' , {'table' : table} , function(response){
+        $.get('{!! route('database.fields') !!}' , {'table' : table} , function(response){
             var tr = '';
             $('#tablename').text(table);
             $.each(response , function(k , v){
@@ -78,7 +78,7 @@
     function RepairTable(table)
     {
         loading();
-        $.get('{!! route('admin.database.repair') !!}' , {'table' : table} ,function(response){
+        $.get('{!! route('database.repair') !!}' , {'table' : table} ,function(response){
             if(response)
             {
                 layer.alert('修复成功',{icon:1});
@@ -93,7 +93,7 @@
     function OptimizeTable(table)
     {
         loading();
-        $.get('{!! route('admin.database.optimize') !!}' , {'table' : table} ,function(response){
+        $.get('{!! route('database.optimize') !!}' , {'table' : table} ,function(response){
             if(response)
             {
                 layer.alert('优化成功',{icon:1});

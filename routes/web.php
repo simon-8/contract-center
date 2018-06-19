@@ -38,18 +38,11 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 
         // database
         Route::prefix('database')->group(function() {
-            Route::get('/', 'DatabaseController@getIndex')->name('admin.database.index');
-            Route::get('/fields', 'DatabaseController@getFields')->name('admin.database.fields');
-            Route::get('/repair', 'DatabaseController@getRepair')->name('admin.database.repair');
-            Route::get('/optimize', 'DatabaseController@getOptimize')->name('admin.database.optimize');
+            Route::get('/', 'DatabaseController@getIndex')->name('database.index');
+            Route::get('/fields', 'DatabaseController@getFields')->name('database.fields');
+            Route::get('/repair', 'DatabaseController@getRepair')->name('database.repair');
+            Route::get('/optimize', 'DatabaseController@getOptimize')->name('database.optimize');
         });
-
-        // user
-        Route::prefix('user')->group(function() {
-            Route::get('/', 'UserController@getIndex')->name('admin.user.index');
-            Route::get('/delete', 'UserController@getDelete')->name('admin.user.delete');
-        });
-
     });
 });
 
