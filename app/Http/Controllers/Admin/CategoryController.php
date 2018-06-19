@@ -17,7 +17,7 @@ class CategoryController extends Controller
      * @param CategoryRepository $repository
      * @return mixed
      */
-    public function getIndex(\Request $request, CategoryRepository $repository)
+    public function index(\Request $request, CategoryRepository $repository)
     {
         $pid = $request::input('pid', 0);
         $parent = $repository->find($pid);
@@ -40,14 +40,13 @@ class CategoryController extends Controller
      * @param CategoryRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postCreate(\Request $request, CategoryRepository $repository)
+    public function store(\Request $request, CategoryRepository $repository)
     {
         $data = $request::all();
-        if ($repository->create($data)) {
-            return redirect()->route('admin.category.index', ['pid' => $data['pid']])->with('Message' , '添加成功');
-        } else {
-            return back()->withErrors('添加失败')->withInput();
+        if (!$repository->create($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('category.index', ['pid' => $data['pid']])->with('Message', __('web.success'));
     }
 
     /**
@@ -56,30 +55,27 @@ class CategoryController extends Controller
      * @param CategoryRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postUpdate(\Request $request, CategoryRepository $repository)
+    public function update(\Request $request, CategoryRepository $repository)
     {
         $data = $request::all();
-        if ($repository->update($data)) {
-            return redirect()->route('admin.category.index', ['pid' => $data['pid']])->with('Message' , '更新成功');
-        } else {
-            return back()->withErrors('更新失败')->withInput();
+        if (!$repository->update($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('category.index', ['pid' => $data['pid']])->with('Message', __('web.success'));
     }
 
     /**
      * 删除
-     * @param \Request $request
      * @param CategoryRepository $repository
+     * @param $id
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function getDelete(\Request $request, CategoryRepository $repository)
+    public function destroy(CategoryRepository $repository, $id)
     {
-        $data = $request::all();
-        $item = $repository->find($data['id']);
-        if ($item->delete()) {
-            return redirect()->route('admin.category.index', ['pid' => $item['pid']])->with('Message' , '删除成功');
-        } else {
-            return back()->withErrors('删除失败')->withInput();
+        $item = $repository->find($id);
+        if (!$item->delete()) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('category.index', ['pid' => $item['pid']])->with('Message', __('web.success'));
     }
 }

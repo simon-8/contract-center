@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\SettingStore;
+use App\Http\Requests\SettingRequest;
 use App\Repositories\SettingRepository;
 
 class SettingController extends Controller
@@ -18,7 +18,7 @@ class SettingController extends Controller
      * @param SettingRepository $repository
      * @return mixed
      */
-    public function getIndex(SettingRepository $repository)
+    public function index(SettingRepository $repository)
     {
         $lists = $repository->list();
 
@@ -29,58 +29,50 @@ class SettingController extends Controller
     }
 
     /**
-     * @param \Request $request
+     * @param SettingRequest $request
      * @param SettingRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postCreate(\Request $request, SettingRepository $repository)
+    public function store(SettingRequest $request, SettingRepository $repository)
     {
-        $data = $request::all();
-        $validator = SettingStore::validateCreate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        $data = $request->all();
 
-        if ($repository->updateOrCreate($data)) {
-            return redirect()->route('admin.setting.index')->with('Message' , '操作成功');
-        } else {
-            return back()->withErrors('操作失败')->withInput();
+        $request->validateCreate($data);
+
+        if (!$repository->updateOrCreate($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('setting.index')->with('Message', __('web.success'));
     }
 
     /**
-     * @param \Request $request
+     * @param SettingRequest $request
      * @param SettingRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postUpdate(\Request $request, SettingRepository $repository)
+    public function update(SettingRequest $request, SettingRepository $repository)
     {
-        $data = $request::input('data');
-        //$validator = SettingStore::validateUpdate($data);
-        //if ($validator->fails()) {
-        //    return back()->withErrors($validator)->withInput();
-        //}
+        $data = $request->input('data');
 
-        if ($repository->updateAll($data)) {
-            return redirect()->route('admin.setting.index')->with('Message' , '更新成功');
-        } else {
-            return back()->withErrors('更新失败')->withInput();
+        //$request->validateUpdate($data);
+
+        if (!$repository->updateAll($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('setting.index')->with('Message', __('web.success'));
     }
 
     /**
      * 删除
-     * @param \Request $request
      * @param SettingRepository $repository
+     * @param $id
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function getDelete(\Request $request, SettingRepository $repository)
+    public function destroy(SettingRepository $repository, $id)
     {
-        $data = $request::all();
-        if ($repository->delete($data['id'])) {
-            return redirect()->route('admin.setting.index')->with('Message' , '删除成功');
-        } else {
-            return back()->withErrors('删除失败')->withInput();
+        if (!$repository->delete($id)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('setting.index')->with('Message', __('web.success'));
     }
 }

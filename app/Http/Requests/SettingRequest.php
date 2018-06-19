@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingStore extends FormRequest
+class SettingRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,24 +21,18 @@ class SettingStore extends FormRequest
      *
      * @return array
      */
-/*    public function rules()
+    public function rules()
     {
         return [
-            'pid' => 'required',
-            'name',
-            'prefix',
-            'route',
-            'ico',
-            'listorder',
-            'items',
+
         ];
-    }*/
+    }
 
     /**
      * 新增数据验证规则
      * @return array
      */
-    protected static function createRules()
+    protected function createRules()
     {
         return [
             'item' => 'required|unique:settings',
@@ -52,7 +46,7 @@ class SettingStore extends FormRequest
      * @param $id
      * @return array
      */
-    protected static function updateRules($id)
+    protected function updateRules($id)
     {
         return [
             'item' => 'required|unique:settings,item,'.$id,
@@ -62,22 +56,20 @@ class SettingStore extends FormRequest
     }
 
     /**
-     * 新增数据验证
      * @param $data
-     * @return \Illuminate\Validation\Validator
+     * @return $this|bool|\Illuminate\Http\JsonResponse
      */
-    public static function validateCreate($data)
+    public function validateCreate($data)
     {
-        return \Validator::make($data, self::createRules());
+        return $this->check($data, $this->createRules());
     }
 
     /**
-     * 更新数据验证
      * @param $data
-     * @return \Illuminate\Validation\Validator
+     * @return $this|bool|\Illuminate\Http\JsonResponse
      */
-    public static function validateUpdate($data)
+    public function validateUpdate($data)
     {
-        return \Validator::make($data, self::updateRules($data['id']));
+        return $this->check($data, $this->updateRules($data['id']));
     }
 }

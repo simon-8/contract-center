@@ -7,16 +7,14 @@
             <h5>基本设置</h5>
         </div>
         <div class="ibox-content clear">
-            <form method="post" action="{{ route('admin.setting.update') }}" class="form-horizontal">
-                {{ csrf_field() }}
-
+            <form method="post" action="{{ editURL('setting.update', 1) }}" class="form-horizontal">
+                {!! csrf_field() !!}
+                {!! method_field('PUT') !!}
                 @if(count($lists))
                     @foreach($lists as $k => $v)
                         <div class="form-group">
                             <div class="col-sm-1">
                                 <label class="control-label">
-                                    {{--<input type="hidden" name="data[{{ $v['item'] }}][name]" value="{{ $v['name'] }}">--}}
-                                    {{--<input type="hidden" name="data[{{ $v['item'] }}][item]" value="{{ $v['name'] }}">--}}
                                     {{ $v['name'] }}
                                 </label>
                             </div>
@@ -26,8 +24,8 @@
                                 <div class="input-group-btn">
                                     <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">操作 <span class="caret"></span></button>
                                     <ul class="dropdown-menu pull-right">
-                                        <li><a onclick="Edit({{ $k }})" id="edit_{{ $k }}" data="{{ json_encode($v) }}">编辑</a></li>
-                                        <li><a onclick="Delete('{{ $v['item'] }}')">删除</a></li>
+                                        <li><a onclick="Edit({{ $k }}, '{{ route('setting.store') }}')" id="edit_{{ $k }}" data="{{ json_encode($v) }}">编辑</a></li>
+                                        <li><a onclick="Delete('{{ editURL('setting.destroy', $v['item']) }}')">删除</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -47,40 +45,15 @@
         </div>
     </div>
 </div>
-<script>
-
-    var deleteModal = '#deleteModal';
-    var updateModal = '#updateModal';
-    var createModal = '#createModal';
-
-    function Delete(id , name)
-    {
-        name = name ? name : 'id';
-        $(deleteModal).find('input[name='+name+']').val(id);
-        $(deleteModal).modal('show');
-    }
-
-    function Edit(id)
-    {
-        var json = $('#edit_' + id).attr('data');
-        json = JSON.parse(json);
-        $.each(json , function(k , v){
-            $(updateModal).find('input[name=' + k + ']').val(v);
-        });
-
-        $(updateModal).modal('show');
-    }
-
-</script>
 
 {{--delete--}}
-@include('admin.modal.delete' , ['formurl' => route('admin.setting.delete')])
+@include('admin.modal.delete')
 
 {{--create--}}
 <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated flipInX">
-            <form action="{{ route('admin.setting.create') }}" method="POST" class="form-horizontal">
+            <form action="{{ route('setting.store') }}" method="POST" class="form-horizontal">
                 {!! csrf_field() !!}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -122,7 +95,7 @@
 <div class="modal inmodal" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated flipInX">
-            <form action="{{ route('admin.setting.create') }}" method="POST" class="form-horizontal">
+            <form action="" method="POST" class="form-horizontal">
                 {!! csrf_field() !!}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -139,7 +112,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">字段名</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="item" value="{{ old('item') }}" placeholder="字段名">
+                            <input readonly type="text" class="form-control" name="item" value="{{ old('item') }}" placeholder="字段名">
                             <span class="help-block m-b-none">数据库中存储的字段名称</span>
                         </div>
                     </div>

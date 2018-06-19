@@ -8,8 +8,9 @@
 </style>
 <div class="ibox float-e-margins">
 
-    <form method="post" class="form-horizontal" action="{{ isset($id) ? route('admin.roles.update') : route('admin.roles.create') }}" id="sform">
+    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('roles.update', $id) : route('roles.store') }}" id="sform">
         {!! csrf_field() !!}
+        {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
         <div class="col-sm-12 col-md-6">
             <div class="ibox-title">
                 @if(isset($id))
@@ -24,7 +25,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">角色名</label>
                     <div class="col-sm-10">
-                        <input id="name" type="text" class="form-control" name="name" value="{{ isset($name) ? $name : old('name') }}">
+                        <input id="name" type="text" class="form-control" name="name" value="{{ $name ?? old('name') }}">
                         <span class="help-block m-b-none"></span>
                     </div>
                 </div>
@@ -64,27 +65,11 @@
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
                         <button class="btn btn-primary" type="submit">保存</button>
-                        <a class="btn btn-white" href="{{ route('admin.roles.index') }}">返回</a>
+                        <a class="btn btn-white" href="javascript:history.go(-1);">返回</a>
                     </div>
                 </div>
             </div>
         </div>
-        {{--<div class="col-sm-12 col-md-6">--}}
-            {{--<div class="ibox-title">--}}
-                {{--<h5>其他设置</h5>--}}
-            {{--</div>--}}
-            {{--<div class="ibox-content">--}}
-                {{--<div class="form-group">--}}
-                    {{--<label class="col-sm-2 control-label">头像设置</label>--}}
-                    {{--<div class="col-sm-10">--}}
-                        {{--<img src="{{ imgurl(isset($avatar) ? $avatar : old('avatar')) }}" id="pavatar" class="bg-warning" style="width: 100px; height: 100px;">--}}
-                        {{--<input type="hidden" id="avatar" name="avatar" value="{{ empty($avatar) ? old('avatar') : $avatar }}">--}}
-                        {{--<button class="btn btn-lg" type="button" onclick="Sthumb('avatar', 100, 100);" style="height: 100px; margin-bottom: 0;">上传</button>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="hr-line-dashed"></div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
     </form>
 </div>
 
@@ -136,12 +121,12 @@
         });
         @endif
 
-        $('[name=is_admin]').on('ifChecked', function(event) {
-            $(".role-div").hide(300);
-        })
-        $('[name=is_admin]').on('ifUnchecked', function(event) {
-            $(".role-div").show(300);
-        })
+        //$('[name=is_admin]').on('ifChecked', function(event) {
+        //    $(".role-div").hide(300);
+        //})
+        //$('[name=is_admin]').on('ifUnchecked', function(event) {
+        //    $(".role-div").show(300);
+        //})
     });
 </script>
 @endsection('content')

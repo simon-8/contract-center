@@ -46,7 +46,7 @@
             @endforeach
         @endif
 
-        <form class="m-t" role="form" action="{{ route('admin.login.post') }}" method="post">
+        <form class="m-t" role="form" action="{{ route('login.post') }}" method="post">
 
             {!! csrf_field() !!}
 

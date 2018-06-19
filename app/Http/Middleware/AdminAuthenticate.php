@@ -43,7 +43,7 @@ class AdminAuthenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest(route('admin.login.get'));
+                return redirect()->guest(route('login.get'));
             }
         }
 

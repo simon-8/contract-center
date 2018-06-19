@@ -20,7 +20,7 @@
     <link href="{{ skin_path() }}css/style.min.css?v=4.0.0" rel="stylesheet">
     <script src="{{ skin_path() }}js/jquery.min.js?v=2.1.4"></script>
     <script>
-        var AJPath = '{{ route('admin.ajax.index') }}';
+        var AJPath = '{{ route('ajax.index') }}';
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -53,7 +53,7 @@
             <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="{{ route('admin.index.index') }}">首页</a>
+                    <a href="javascript:;" class="active J_menuTab" data-id="{{ route('index.index') }}">首页</a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRefresh" title="刷新当前页面"><i class="fa fa-refresh"></i></button>
@@ -70,11 +70,11 @@
                     </li>
                 </ul>
             </button>
-            <a href="{{ route('admin.logout.get') }}" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            <a href="{{ route('logout.get') }}" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{ route('admin.index.index') }}"
-                    frameborder="0" data-id="{{ route('admin.index.index') }}" seamless></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{ route('index.index') }}"
+                    frameborder="0" data-id="{{ route('index.index') }}" seamless></iframe>
             <div id="loadding_box">
                 <div id="loadding_animate" class="sk-spinner sk-spinner-cube-grid">
                     <div class="sk-cube"></div>

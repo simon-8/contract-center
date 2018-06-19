@@ -24,9 +24,9 @@
                             <td align="left">{{ $v['name'] }}</td>
                             <td>{{ $v->child()->count() }}</td>
                             <td>
-                                <a href="{{ route('admin.category.index', ['pid' => $v['id']]) }}" class="btn btn-sm btn-success">子分类</a>
-                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }})">编辑</button>
-                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $v['id'] }})">删除</button>
+                                <a href="{{ route('category.index', ['pid' => $v['id']]) }}" class="btn btn-sm btn-success">子分类</a>
+                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }}, '{{ editURL('category.update', $v['id']) }}')">编辑</button>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('category.destroy', $v['id']) }}')">删除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -40,50 +40,19 @@
             </table>
             <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加分类</button>
             @if ($pid)
-                <a href="{{ route('admin.category.index', ['pid' => $parent['pid']]) }}" class="btn btn-warning">返回上级</a>
+                <a href="{{ route('category.index', ['pid' => $parent['pid']]) }}" class="btn btn-warning">返回上级</a>
             @endif
         </div>
     </div>
 
-    <script>
-
-        var deleteModal = '#deleteModal';
-        var updateModal = '#updateModal';
-        var createModal = '#createModal';
-
-        function Delete(id , name)
-        {
-            name = name ? name : 'id';
-            $(deleteModal).find('input[name='+name+']').val(id);
-            $(deleteModal).modal('show');
-        }
-
-        function Edit(id)
-        {
-            var json = $('#edit_' + id).attr('data');
-            json = JSON.parse(json);
-            $.each(json , function(k , v){
-                $(updateModal).find('[name=' + k + ']').val(v);
-            });
-
-            $(updateModal).modal('show');
-        }
-        function AddChild(id) {
-            var json = $('#edit_' + id).attr('data');
-            json = JSON.parse(json);
-            $(createModal).find('select[name=pid]').val(json.id);
-            $(createModal).modal('show');
-        }
-    </script>
-
     {{--delete--}}
-    @include('admin.modal.delete' , ['formurl' => route('admin.category.delete')])
+    @include('admin.modal.delete')
 
     {{--create--}}
     <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated flipInX">
-                <form action="{{ route('admin.category.create') }}" method="POST" class="form-horizontal">
+                <form action="{{ route('category.store') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -121,7 +90,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">排序</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="listorder" value="{{ old('listorder') ? old('listorder') : 0 }}" placeholder="0">
+                                <input type="text" class="form-control" name="listorder" value="{{ old('listorder') ?: 0 }}" placeholder="0">
                                 <span class="help-block m-b-none">越大越靠前</span>
                             </div>
                         </div>
@@ -140,8 +109,9 @@
     <div class="modal inmodal" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated flipInX">
-                <form action="{{ route('admin.category.update') }}" method="POST" class="form-horizontal">
+                <form action="" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
+                    {!! method_field('PUT') !!}
                     <input type="hidden" name="id" value="">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

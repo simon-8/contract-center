@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\RolesStore;
+use App\Http\Requests\RolesRequest;
 use App\Repositories\RolesRepository;
 use App\Repositories\RoleAccessRepository;
 
@@ -19,7 +19,7 @@ class RolesController extends Controller
      * @param RolesRepository $repository
      * @return mixed
      */
-    public function getIndex(RolesRepository $repository)
+    public function index(RolesRepository $repository)
     {
         $lists = $repository->list();
         $data = [
@@ -30,78 +30,79 @@ class RolesController extends Controller
     }
 
     /**
-     * 新增
-     * @param \Request $request
-     * @param RolesRepository $repository
      * @param RoleAccessRepository $roleAccessRepository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(RoleAccessRepository $roleAccessRepository)
+    {
+        $accessLists = $roleAccessRepository->getAll();
+        $data = [
+            'accessLists' => $accessLists
+        ];
+        return admin_view('roles.create', $data);
+    }
+
+    /**
+     * 新增
+     * @param RolesRequest $request
+     * @param RolesRepository $repository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doCreate(\Request $request, RolesRepository $repository, RoleAccessRepository $roleAccessRepository)
+    public function store(RolesRequest $request, RolesRepository $repository)
     {
-        if ($request::isMethod('get')) {
-            $accessLists = $roleAccessRepository->getAll();
-            $data = [
-                'accessLists' => $accessLists
-            ];
-            return admin_view('roles.create', $data);
-        }
+        $data = $request->all();
 
-        $data = $request::all();
+        $request->validateCreate($data);
 
-        $validator = RolesStore::validateCreate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        if (!$repository->create($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('roles.index')->with('Message', __('web.success'));
+    }
 
-        if ($repository->create($data)) {
-            return redirect()->route('admin.roles.index')->with('Message' , '添加成功');
-        } else {
-            return back()->withErrors('添加失败')->withInput();
-        }
+    /**
+     * @param RolesRepository $repository
+     * @param RoleAccessRepository $roleAccessRepository
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(RolesRepository $repository, RoleAccessRepository $roleAccessRepository, $id)
+    {
+        $data = $repository->find($id);
+        $accessLists = $roleAccessRepository->getAll();
+        $data['accessLists'] = $accessLists;
+        return admin_view('roles.create', $data);
     }
 
     /**
      * 更新
-     * @param \Request $request
+     * @param RolesRequest $request
      * @param RolesRepository $repository
-     * @param RoleAccessRepository $roleAccessRepository
      * @return $this|\Illuminate\Http\RedirectResponse|mixed
      */
-    public function doUpdate(\Request $request, RolesRepository $repository, RoleAccessRepository $roleAccessRepository)
+    public function update(RolesRequest $request, RolesRepository $repository)
     {
-        if ($request::isMethod('get')) {
-            $data = $repository->find($request::input('id'));
-            $accessLists = $roleAccessRepository->getAll();
-            $data['accessLists'] = $accessLists;
-            return admin_view('roles.create', $data);
-        }
-        $data = $request::all();
+        $data = $request->all();
 
-        $validator = RolesStore::validateUpdate($data);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        $request->validateUpdate($data);
 
-        if ($repository->update($data)) {
-            return redirect()->route('admin.roles.index')->with('Message' , '更新成功');
-        } else {
-            return back()->withErrors('更新失败')->withInput();
+        if (!$repository->update($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
         }
+        return redirect()->route('roles.index')->with('Message', __('web.success'));
     }
 
     /**
      * 删除
-     * @param \Request $request
      * @param RolesRepository $repository
+     * @param $id
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function getDelete(\Request $request, RolesRepository $repository)
+    public function destroy(RolesRepository $repository, $id)
     {
-        $data = $request::all();
-        if ($repository->delete($data['id'])) {
-            return redirect()->route('admin.roles.index')->with('Message' , '删除成功');
-        } else {
-            return back()->withErrors('删除失败')->withInput();
+        if (!$repository->delete($id)) {
+            return back()->withErrors('web.failed')->withInput();
         }
+        return redirect()->route('roles.index')->with('Message', __('web.success'));
     }
 }

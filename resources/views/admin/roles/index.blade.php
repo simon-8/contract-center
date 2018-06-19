@@ -32,8 +32,8 @@
                             </td>
                             <td>{{ $v->status ? '正常' : '关闭' }}</td>
                             <td>
-                                <a class="btn btn-sm btn-info" href="{{ route('admin.roles.update', ['id' => $v->id]) }}">编辑</a>
-                                <button class="btn btn-sm btn-danger" onclick="Delete({{ $v->id }})">删除</button>
+                                <a class="btn btn-sm btn-info" href="{{ editURL('roles.edit', $v->id) }}">编辑</a>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('roles.destroy', $v->id) }}')">删除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -45,7 +45,7 @@
                     </tr>
                 @endif
             </table>
-            <a href="{{ route('admin.roles.create') }}" class="btn btn-info">添加角色</a>
+            <a href="{{ route('roles.create') }}" class="btn btn-info">添加角色</a>
             <div class="text-center">
                 @if(count($lists))
                     {!! $lists->render() !!}
@@ -53,33 +53,10 @@
             </div>
         </div>
     </div>
-    {{--<a href="{{ route('admin.roles.delete') }}" class="btn btn-warning">批量删除</a>--}}
-    {{--<a class="btn btn-warning">权限管理</a>--}}
-    {{--<a class="btn btn-success">模块配置</a>--}}
 </div>
 <script>
-
-    var deleteModal = '#deleteModal';
-    var updateModal = '#updateModal';
     var createModal = '#createModal';
 
-    function Delete(id , name)
-    {
-        name = name ? name : 'id';
-        $(deleteModal).find('input[name='+name+']').val(id);
-        $(deleteModal).modal('show');
-    }
-
-    function Edit(id)
-    {
-        var json = $('#edit_' + id).attr('data');
-        json = JSON.parse(json);
-        $.each(json , function(k , v){
-            $(updateModal).find('[name=' + k + ']').val(v);
-        });
-
-        $(updateModal).modal('show');
-    }
     function AddChild(id) {
         var json = $('#edit_' + id).attr('data');
         json = JSON.parse(json);
@@ -89,6 +66,6 @@
     }
 </script>
 
-@include('admin.modal.delete' , ['formurl' => route('admin.roles.delete')])
+@include('admin.modal.delete')
 
 @endsection('content')

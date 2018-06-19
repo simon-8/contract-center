@@ -77,7 +77,7 @@ class MenusTableSeeder extends Seeder
                 'id' => 8,
                 'pid' => 0,
                 'name' => '后台首页',
-                'route' => 'admin.index.index',
+                'route' => 'index.index',
                 'link' => '',
                 'ico' => 'fa fa-desktop',
                 'listorder' => 98,

@@ -20,7 +20,7 @@
                         <li><a class="J_menuItem" href="">联系我们</a></li>
                         <li><a class="J_menuItem" href="">信箱</a></li>
                         <li class="divider"></li>
-                        <li><a href="{{ route('admin.logout.get') }}">安全退出</a></li>
+                        <li><a href="{{ route('logout.get') }}">安全退出</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">SCMS</div>

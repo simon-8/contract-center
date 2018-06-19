@@ -19,7 +19,7 @@
     <script src="{{ skin_path() }}js/jquery.min.js?v=2.1.4"></script>
     <script src="{{ skin_path() }}js/bootstrap.min.js?v=3.4.0"></script>
     <script>
-        var AJPath = '{{ route('admin.ajax.index') }}';
+        var AJPath = '{{ route('ajax.index') }}';
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
