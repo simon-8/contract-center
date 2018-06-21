@@ -20,7 +20,7 @@ class SettingController extends Controller
      */
     public function index(SettingRepository $repository)
     {
-        $lists = $repository->list();
+        $lists = $repository->all()->toArray();
 
         $data = [
             'lists' => $lists,

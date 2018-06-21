@@ -18,12 +18,11 @@ class SinglePageRepository extends BaseRepository
 
     /**
      * @param $id
-     * @param bool $preload
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
      */
-    public function find($id, $preload = false)
+    public function find($id)
     {
-        return $preload ? $this->model->with('content')->find($id) : $this->model->find($id);
+        return $this->model->with('content')->find($id);
     }
 
     /**
@@ -76,7 +75,7 @@ class SinglePageRepository extends BaseRepository
      * @param bool $page
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function listBy($where, $page = true)
+    public function lists($where = [], $page = true)
     {
         if (!empty($where['keyword'])) {
             $keyword = $where['keyword'];

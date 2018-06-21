@@ -17,6 +17,6 @@ class CategoryRepository extends BaseRepository
 
     public function listByPID($pid)
     {
-        return $this->listBy(['pid' => $pid], false)->toArray();
+        return $this->lists(['pid' => $pid], false)->toArray();
     }
 }

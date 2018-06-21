@@ -21,7 +21,7 @@ class RolesController extends Controller
      */
     public function index(RolesRepository $repository)
     {
-        $lists = $repository->list();
+        $lists = $repository->lists();
         $data = [
             'lists' => $lists,
         ];
@@ -35,7 +35,7 @@ class RolesController extends Controller
      */
     public function create(RoleAccessRepository $roleAccessRepository)
     {
-        $accessLists = $roleAccessRepository->getAll();
+        $accessLists = $roleAccessRepository->all();
         $data = [
             'accessLists' => $accessLists
         ];
@@ -69,7 +69,7 @@ class RolesController extends Controller
     public function edit(RolesRepository $repository, RoleAccessRepository $roleAccessRepository, $id)
     {
         $data = $repository->find($id);
-        $accessLists = $roleAccessRepository->getAll();
+        $accessLists = $roleAccessRepository->all();
         $data['accessLists'] = $accessLists;
         return admin_view('roles.create', $data);
     }

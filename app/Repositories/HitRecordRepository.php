@@ -16,38 +16,6 @@ class HitRecordRepository extends BaseRepository
     }
 
     /**
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
-     */
-    public function find($id)
-    {
-        return $this->model->find($id);
-    }
-
-    /**
-     * 新增
-     * @param array $data
-     * @return bool|mixed
-     */
-    public function create($data)
-    {
-        $item = $this->model->create($data);
-        return $item;
-    }
-
-    /**
-     * 更新
-     * @param array $data
-     * @return bool|mixed
-     */
-    public function update($data)
-    {
-        $item = $this->model->find($data['id']);
-        $result = $item->update($data);
-        return $result;
-    }
-
-    /**
      * @param $startDate
      * @param null $endDate
      * @param null $aid

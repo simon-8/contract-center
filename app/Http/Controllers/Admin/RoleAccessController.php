@@ -22,7 +22,7 @@ class RoleAccessController extends Controller
      */
     public function index(RoleAccessRepository $repository)
     {
-        $lists = $repository->list();
+        $lists = $repository->lists();
         $routeNames = \Route::getRoutes()->getRoutesByName();
         $data = [
             'lists' => $lists,

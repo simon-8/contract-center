@@ -50,6 +50,10 @@ class ArticleController extends BaseController
         return admin_view('article.index', $data);
     }
 
+    /**
+     * @param CategoryRepository $categoryRepository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create(CategoryRepository $categoryRepository)
     {
         $categorys = $categoryRepository->listByPID(self::$PID);
@@ -79,14 +83,13 @@ class ArticleController extends BaseController
     }
 
     /**
-     * @param \Request $request
      * @param ArticleRepository $repository
      * @param CategoryRepository $categoryRepository
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(\Request $request, ArticleRepository $repository, CategoryRepository $categoryRepository)
+    public function edit(ArticleRepository $repository, CategoryRepository $categoryRepository, $id)
     {
-        $data = $repository->find($request::input('id'), true);
+        $data = $repository->find($id, true);
         $categorys = $categoryRepository->listByPID(self::$PID);
         $data['categorys'] = $categorys;
         return admin_view('article.create', $data);

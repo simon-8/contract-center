@@ -17,9 +17,11 @@ class MenuRepository extends BaseRepository
 
     /**
      * 获取所有菜单
-     * @return array
+     * @param array $where
+     * @param bool $page
+     * @return array|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
      */
-    public function lists()
+    public function lists($where = [], $page = true)
     {
         $all = $this->model->orderBy('listorder', 'desc')->get()->toArray();
         $data = [];

@@ -15,9 +15,4 @@ class ManagerRepository extends BaseRepository
     {
         parent::__construct(new Manager());
     }
-
-    public function setAccess()
-    {
-
-    }
 }

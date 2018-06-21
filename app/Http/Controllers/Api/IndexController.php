@@ -38,7 +38,7 @@ class IndexController extends Controller
         $where = [
             'pid' => self::$articlePID
         ];
-        return $categoryRepository->listBy($where, false);
+        return $categoryRepository->lists($where, false);
     }
 
     /**

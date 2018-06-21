@@ -22,7 +22,7 @@ class CategoryController extends Controller
         $pid = $request::input('pid', 0);
         $parent = $repository->find($pid);
 
-        $lists = $repository->listBy([
+        $lists = $repository->lists([
             'pid' => $pid
         ]);
 

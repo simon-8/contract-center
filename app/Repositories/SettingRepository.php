@@ -16,14 +16,6 @@ class SettingRepository extends BaseRepository
     }
 
     /**
-     * @return array
-     */
-    public function lists()
-    {
-        return $this->model->all()->toArray();
-    }
-
-    /**
      * 创建
      * @param $data
      * @return $this|\Illuminate\Database\Eloquent\Model

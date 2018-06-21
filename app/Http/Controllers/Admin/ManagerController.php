@@ -21,7 +21,7 @@ class ManagerController extends Controller
      */
     public function index(ManagerRepository $repository)
     {
-        $lists = $repository->list();
+        $lists = $repository->lists();
         $data = [
             'lists' => $lists,
         ];
@@ -36,7 +36,7 @@ class ManagerController extends Controller
     public function create(RolesRepository $rolesRepository)
     {
         $data = [
-            'roles' => $rolesRepository->listBy(['status' => 1], false)
+            'roles' => $rolesRepository->lists(['status' => 1], false)
         ];
         return admin_view('manager.create', $data);
     }
@@ -71,7 +71,7 @@ class ManagerController extends Controller
     public function edit(\Request $request, ManagerRepository $repository, RolesRepository $rolesRepository, $id)
     {
         $data = $repository->find($request::input('id'));
-        $data['roles'] = $rolesRepository->listBy(['status' => 1], false);
+        $data['roles'] = $rolesRepository->lists(['status' => 1], false);
         return admin_view('manager.create', $data);
     }
 

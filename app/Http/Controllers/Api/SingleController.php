@@ -21,7 +21,7 @@ class SingleController extends Controller
      */
     public function index(\Request $request, SinglePageRepository $singlePageRepository)
     {
-        return $singlePageRepository->listBy(['status' => 1]);
+        return $singlePageRepository->lists(['status' => 1]);
     }
 
     /**

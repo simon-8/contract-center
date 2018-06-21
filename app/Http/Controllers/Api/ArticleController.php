@@ -27,7 +27,7 @@ class ArticleController extends Controller
         if ($request::has('pagesize')) {
             $articleRepository::$pageSize = $request::input('pagesize');
         }
-        return $articleRepository->listBy($where);
+        return $articleRepository->lists($where);
     }
 
     /**

@@ -6,12 +6,12 @@
  * Time: 19:00
  */
 namespace App\Repositories;
-use App\Models\Roles as Model;
+use App\Models\Roles as Roles;
 
 class RolesRepository extends BaseRepository
 {
     public function __construct()
     {
-        parent::__construct(new Model());
+        parent::__construct(new Roles());
     }
 }

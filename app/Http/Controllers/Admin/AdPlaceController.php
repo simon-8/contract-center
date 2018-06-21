@@ -21,7 +21,7 @@ class AdPlaceController extends Controller
      */
     public function index(AdPlaceRepository $adPlaceRepository)
     {
-        $lists = $adPlaceRepository->list();
+        $lists = $adPlaceRepository->lists();
         $data = [
             'lists' => $lists
         ];

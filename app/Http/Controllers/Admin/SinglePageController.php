@@ -30,7 +30,7 @@ class SinglePageController extends Controller
         if ($status) $where['status'] = $status;
         if ($keyword) $where['keyword'] = $keyword;
 
-        $lists = $repository->listBy($where);
+        $lists = $repository->lists($where);
 
         $status_num = $repository->get_status_num();
 
