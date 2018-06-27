@@ -67,7 +67,7 @@ class SinglePageController extends Controller
         if (!$repository->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.single.index')->with('Message' , __('web.success'));
+        return redirect()->route('single.index')->with('Message' , __('web.success'));
     }
 
     /**
@@ -97,7 +97,7 @@ class SinglePageController extends Controller
         if (!$repository->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.single.index')->with('Message', __('web.success'));
+        return redirect()->route('single.index')->with('Message', __('web.success'));
     }
 
     /**
@@ -110,6 +110,6 @@ class SinglePageController extends Controller
         if (!$repository->delete($id)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.single.index')->with('Message' , __('web.success'));
+        return redirect()->route('single.index')->with('Message' , __('web.success'));
     }
 }

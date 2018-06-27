@@ -79,7 +79,7 @@ class ArticleController extends BaseController
         if (!$repository->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.article.index')->with('Message' , __('web.success'));
+        return redirect()->route('article.index')->with('Message' , __('web.success'));
     }
 
     /**
@@ -112,7 +112,7 @@ class ArticleController extends BaseController
         if (!$repository->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.article.index')->with('Message', __('web.success'));
+        return redirect()->route('article.index')->with('Message', __('web.success'));
     }
 
     /**
@@ -126,6 +126,6 @@ class ArticleController extends BaseController
         if (!$repository->delete($id)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.article.index')->with('Message' , __('web.success'));
+        return redirect()->route('article.index')->with('Message' , __('web.success'));
     }
 }

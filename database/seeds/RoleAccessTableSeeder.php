@@ -21,97 +21,97 @@ class RoleAccessTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'name' => '所有权限',
-                'route' => 'admin',
+                'route' => '*',
             ),
             1 => 
             array (
                 'id' => 2,
                 'name' => '文章发布',
-                'route' => 'admin.article.create',
+                'route' => 'article.create',
             ),
             2 => 
             array (
                 'id' => 3,
                 'name' => '文章编辑',
-                'route' => 'admin.article.update',
+                'route' => 'article.update',
             ),
             3 => 
             array (
                 'id' => 4,
                 'name' => '文章删除',
-                'route' => 'admin.article.delete',
+                'route' => 'article.delete',
             ),
             4 => 
             array (
                 'id' => 5,
                 'name' => '文章列表',
-                'route' => 'admin.article.index',
+                'route' => 'article.index',
             ),
             5 => 
             array (
                 'id' => 8,
                 'name' => '权限管理',
-                'route' => 'admin.roleaccess',
+                'route' => 'roleaccess',
             ),
             6 => 
             array (
                 'id' => 9,
                 'name' => '会员组管理',
-                'route' => 'admin.rolegroup',
+                'route' => 'rolegroup',
             ),
             7 => 
             array (
                 'id' => 10,
                 'name' => '单页列表',
-                'route' => 'admin.single.index',
+                'route' => 'single.index',
             ),
             8 => 
             array (
                 'id' => 11,
                 'name' => '单页发布',
-                'route' => 'admin.single.create',
+                'route' => 'single.create',
             ),
             9 => 
             array (
                 'id' => 12,
                 'name' => '单页编辑',
-                'route' => 'admin.single.update',
+                'route' => 'single.update',
             ),
             10 => 
             array (
                 'id' => 13,
                 'name' => '单页删除',
-                'route' => 'admin.single.delete',
+                'route' => 'single.delete',
             ),
             11 => 
             array (
                 'id' => 14,
                 'name' => '管理员管理',
-                'route' => 'admin.manager',
+                'route' => 'manager',
             ),
             12 => 
             array (
                 'id' => 15,
                 'name' => '基本设置',
-                'route' => 'admin.setting.index',
+                'route' => 'setting.index',
             ),
             13 => 
             array (
                 'id' => 16,
                 'name' => '数据管理',
-                'route' => 'admin.database',
+                'route' => 'database',
             ),
             14 => 
             array (
                 'id' => 17,
                 'name' => '广告管理',
-                'route' => 'admin.ad',
+                'route' => 'ad',
             ),
             15 => 
             array (
                 'id' => 18,
                 'name' => '分类管理',
-                'route' => 'admin.category',
+                'route' => 'category',
             ),
             16 => 
             array (
@@ -123,7 +123,7 @@ class RoleAccessTableSeeder extends Seeder
             array (
                 'id' => 20,
                 'name' => '后台首页',
-                'route' => 'admin.index',
+                'route' => 'index',
             ),
         ));
         
