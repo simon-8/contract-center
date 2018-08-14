@@ -1,8 +1,8 @@
 <div class="col-sm-12 animated fadeInRight">
-@if(session('Message'))
+@if(session('message'))
     <div class="alert alert-success alert-dismissable" id="MessageBox">
         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-        {{ session('Message') }}
+        {{ session('message') }}
     </div>
     <script>
         if($('#MessageBox').length){

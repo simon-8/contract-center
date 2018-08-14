@@ -35,7 +35,7 @@ class RoleGroup extends Model
         return $this->hasMany('App\Models\Manager', 'groupid', 'id');
     }
 
-    public function getAccess()
+    public function roleAccess()
     {
         return $this->hasMany('App\Models\RoleAccess', 'id', 'access');
     }

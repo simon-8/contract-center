@@ -119,7 +119,7 @@
                                 <select name="route" class="form-control">
                                     <option value="">请选择</option>
                                         @foreach($routeNames as $k => $v)
-                                            <option value="{{ $k }}">{{ $k }}</option>
+                                            <option value="{{ $v }}">{{ $v }}</option>
                                         @endforeach
                                 </select>
                                 <span class="help-block m-b-none">若是URL地址请留空</span>
@@ -198,7 +198,7 @@
                                 <select name="route" class="form-control">
                                     <option value="">请选择</option>
                                     @foreach($routeNames as $k => $v)
-                                        <option value="{{ $k }}">{{ $k }}</option>
+                                        <option value="{{ $v }}">{{ $v }}</option>
                                     @endforeach
                                 </select>
                                 <span class="help-block m-b-none">若是URL地址请留空</span>

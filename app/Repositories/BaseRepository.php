@@ -24,11 +24,12 @@ class BaseRepository
 
     /**
      * 查询所有
+     * @param array $columns
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function all()
+    public function all($columns = ['*'])
     {
-        return $this->model->all();
+        return $this->model->all($columns);
     }
 
     /**
@@ -58,7 +59,7 @@ class BaseRepository
      * @param $where
      * @return mixed
      */
-    public function first($where)
+    public function first($where = [])
     {
         return $this->model->where($where)->first();
     }

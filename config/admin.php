@@ -5,5 +5,5 @@
  * Date: 2018/6/8
  */
 return [
-    'basePath' => 'admin',// 后台地址
+    'basePath' => 'pc',// 后台地址
 ];

@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('admin')->namespace('Admin')->group(function() {
+Route::prefix(config('admin.basePath'))->namespace('Admin')->group(function() {
 
     Route::get('login', 'LoginController@showLoginForm')->name('login.get');
     Route::post('login', 'LoginController@login')->name('login.post');

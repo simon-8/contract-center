@@ -17,18 +17,16 @@ class MenuRepository extends BaseRepository
 
     /**
      * 获取所有菜单
-     * @param array $where
-     * @param bool $page
-     * @return array|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
+     * @return array
      */
-    public function lists($where = [], $page = true)
+    public function getMenus()
     {
         $all = $this->model->orderBy('listorder', 'desc')->get()->toArray();
         $data = [];
         foreach ($all as $k => $v) {
             if ($v['pid'] == 0) {
                 if ($v['route']) {
-                    $v['url'] = route($v['route']);
+                    $v['url'] = routeNoCatch($v['route']);
                 } else {
                     $v['url'] = $v['link'];
                 }
@@ -38,7 +36,7 @@ class MenuRepository extends BaseRepository
         }
         foreach ($all as $k => $v) {
             if ($v['route']) {
-                $v['url'] = route($v['route']);
+                $v['url'] = routeNoCatch($v['route']);
             } else {
                 $v['url'] = $v['link'];
             }
@@ -55,8 +53,8 @@ class MenuRepository extends BaseRepository
     public function delete($id)
     {
         $menu = $this->model->find($id);
-        $child = $this->model->where('pid', $menu->id)->get()->toArray();
-        if (count($child)) {
+        $child = $this->model->where('pid', $menu->id)->count();
+        if ($child) {
             return false;
         }
         return $this->model->destroy($id);

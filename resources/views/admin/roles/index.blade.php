@@ -22,8 +22,8 @@
                             <td>{{ $v->id }}</td>
                             <td>{{ $v->name }}</td>
                             <td>
-                                @if (count($v->getAccess))
-                                    @foreach ($v->getAccess as $vm)
+                                @if (count($v->roleAccess))
+                                    @foreach ($v->roleAccess as $vm)
                                         <span class="label label-primary">
                                         {{ $vm['name'] }}
                                     </span>&nbsp;

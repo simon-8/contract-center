@@ -42,7 +42,7 @@ class AdController extends Controller
         if (!$repository->create($data)) {
             return back()->withInput()->withErrors(__('web.failed'));
         }
-        return redirect()->route('ad.index', ['pid' => $data['pid']])->with('Message', __('web.success'));
+        return redirect()->route('ad.index', ['pid' => $data['pid']])->with('message', __('web.success'));
     }
 
     /**
@@ -58,7 +58,7 @@ class AdController extends Controller
         if (!$repository->update($data)) {
             return back()->withInput()->withErrors(__('web.failed'));
         }
-        return redirect()->route('ad.index', ['pid' => $data['pid']])->with('Message', __('web.success'));
+        return redirect()->route('ad.index', ['pid' => $data['pid']])->with('message', __('web.success'));
     }
 
     /**
@@ -73,6 +73,6 @@ class AdController extends Controller
         if (!$data->delete()) {
             return back()->withErrors(__('web.failed'));
         }
-        return redirect()->route('ad.index', ['pid' => $data['pid']])->with('Message', __('web.success'));
+        return redirect()->route('ad.index', ['pid' => $data['pid']])->with('message', __('web.success'));
     }
 }

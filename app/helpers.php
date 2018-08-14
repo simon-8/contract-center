@@ -260,3 +260,10 @@ function response_exception($message, $data = [], $status = 422) {
 function editURL($route, $id, $name = 'id') {
     return route($route, [$name => $id]);
 }
+
+/**
+ * @return bool
+ */
+function is_testing_env() {
+    return env('APP_ENV') === 'testing';
+}

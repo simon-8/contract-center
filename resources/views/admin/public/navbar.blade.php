@@ -1,5 +1,5 @@
 @inject('authPresenter', 'App\Presenters\AuthPresenter')
-
+@inject('authService', 'App\Services\AuthService')
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="nav-close"><i class="fa fa-times-circle"></i>
     </div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="logo-element">SCMS</div>
             </li>
-            @foreach ($menus as $menu)
+            @foreach ($authService->getMenus() as $menu)
             <li>
                 <a class="J_menuItem" href="{{ empty($menu['child']) ? $menu['url'] : '' }}">
                     <i class="{{ $menu['ico'] }}"></i>

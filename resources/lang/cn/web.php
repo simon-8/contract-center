@@ -9,5 +9,6 @@ return [
     'failed'  => '操作失败',
     'no_allow_delete' => '不允许删除',
     'request_type_error' => '请求方式错误',
-    'no_permission' => '没有权限'
+    'no_permission' => '没有权限',
+    'no_allow_ip' => 'IP禁止访问'
 ];

@@ -46,7 +46,7 @@ class CategoryController extends Controller
         if (!$repository->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('category.index', ['pid' => $data['pid']])->with('Message', __('web.success'));
+        return redirect()->route('category.index', ['pid' => $data['pid']])->with('message', __('web.success'));
     }
 
     /**
@@ -61,7 +61,7 @@ class CategoryController extends Controller
         if (!$repository->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('category.index', ['pid' => $data['pid']])->with('Message', __('web.success'));
+        return redirect()->route('category.index', ['pid' => $data['pid']])->with('message', __('web.success'));
     }
 
     /**
@@ -76,6 +76,6 @@ class CategoryController extends Controller
         if (!$item->delete()) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('category.index', ['pid' => $item['pid']])->with('Message', __('web.success'));
+        return redirect()->route('category.index', ['pid' => $item['pid']])->with('message', __('web.success'));
     }
 }

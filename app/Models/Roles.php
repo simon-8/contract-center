@@ -2,7 +2,7 @@
 /**
  * Note: 角色
  * User: Liu
- * Date: 2018/4/20
+ * Date: 2018/6/14
  */
 namespace App\Models;
 
@@ -34,7 +34,7 @@ class Roles extends Model
      * 权限关联
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function getAccess()
+    public function roleAccess()
     {
         return $this->belongsToMany('App\Models\RoleAccess', 'role_permission', 'role_id', 'access_id');
     }

@@ -42,7 +42,7 @@ class SettingController extends Controller
         if (!$repository->updateOrCreate($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('setting.index')->with('Message', __('web.success'));
+        return redirect()->route('setting.index')->with('message', __('web.success'));
     }
 
     /**
@@ -59,7 +59,7 @@ class SettingController extends Controller
         if (!$repository->updateAll($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('setting.index')->with('Message', __('web.success'));
+        return redirect()->route('setting.index')->with('message', __('web.success'));
     }
 
     /**
@@ -73,6 +73,6 @@ class SettingController extends Controller
         if (!$repository->delete($id)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('setting.index')->with('Message', __('web.success'));
+        return redirect()->route('setting.index')->with('message', __('web.success'));
     }
 }

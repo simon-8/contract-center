@@ -18,12 +18,7 @@ class IndexController extends Controller
 {
     public function getMain(\Request $request, AuthService $authService)
     {
-        $myMenus = $authService->getRoleMenus($request::user('admin')->id);
-
-        $data = [
-            'menus' => $myMenus
-        ];
-        return admin_view('index.main', $data);
+        return admin_view('index.main');
     }
 
     public function getIndex(ArticleRepository $articleRepository, SinglePageRepository $singlePageRepository, HitRecordRepository $hitRecordRepository)

@@ -43,7 +43,7 @@ class Manager extends Authenticatable
         $this->attributes['avatar'] = imgurl($value);
     }
 
-    public function getRoles()
+    public function roles()
     {
         return $this->belongsToMany('App\Models\Roles', 'role_user', 'user_id', 'role_id');
     }

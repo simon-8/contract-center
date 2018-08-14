@@ -20,8 +20,9 @@ class MenuController extends Controller
      */
     public function index(MenuRepository $repository)
     {
-        $lists = $repository->lists();
-        $routeNames = \Route::getRoutes()->getRoutesByName();
+        $lists = $repository->getMenus();
+        $routeNames = array_keys(\Route::getRoutes()->getRoutesByName());
+        sort($routeNames);
         $data = [
             'lists' => $lists,
             'routeNames' => $routeNames
@@ -43,7 +44,7 @@ class MenuController extends Controller
         if (!$repository->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('menu.index')->with('Message' , __('web.success'));
+        return redirect()->route('menu.index')->with('message' , __('web.success'));
     }
 
     /**
@@ -60,7 +61,7 @@ class MenuController extends Controller
         if (!$repository->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('menu.index')->with('Message' , __('web.success'));
+        return redirect()->route('menu.index')->with('message' , __('web.success'));
     }
 
     /**
@@ -74,6 +75,6 @@ class MenuController extends Controller
         if (!$repository->delete($id)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('menu.index')->with('Message' , __('web.success'));
+        return redirect()->route('menu.index')->with('message' , __('web.success'));
     }
 }

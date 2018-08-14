@@ -17,7 +17,7 @@ class ManagerObserver
     public function created(Manager $data)
     {
         if ($data['role']) {
-            $data->getRoles()->attach($data['role']);
+            $data->roles()->attach($data['role']);
         }
     }
 
@@ -27,8 +27,8 @@ class ManagerObserver
     public function updated(Manager $data)
     {
         if ($data['role']) {
-            $data->getRoles()->detach();
-            $data->getRoles()->attach($data['role']);
+            $data->roles()->detach();
+            $data->roles()->attach($data['role']);
         }
     }
 
@@ -38,7 +38,7 @@ class ManagerObserver
     public function deleted(Manager $data)
     {
         if ($data['role']) {
-            $data->getRoles()->detach();
+            $data->roles()->detach();
         }
     }
 }

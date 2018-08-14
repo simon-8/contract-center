@@ -15,8 +15,8 @@ class AdminGuest
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->guard('admin')->check()) {
-            return redirect('/admin');
+        if ($request->user('admin')) {
+            return redirect('/' . config('admin.basePath'));
         }
         return $next($request);
     }

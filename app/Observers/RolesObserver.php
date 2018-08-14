@@ -17,7 +17,7 @@ class RolesObserver
     public function created(Roles $data)
     {
         if ($data['access']) {
-            $data->getAccess()->attach($data['access']);
+            $data->roleAccess()->attach($data['access']);
         }
     }
 
@@ -27,8 +27,8 @@ class RolesObserver
     public function updated(Roles $data)
     {
         if ($data['access']) {
-            $data->getAccess()->detach();
-            $data->getAccess()->attach($data['access']);
+            $data->roleAccess()->detach();
+            $data->roleAccess()->attach($data['access']);
         }
     }
 
@@ -38,7 +38,7 @@ class RolesObserver
     public function deleted(Roles $data)
     {
         if ($data['access']) {
-            $data->getAccess()->detach();
+            $data->roleAccess()->detach();
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\AuthService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -97,6 +98,8 @@ class LoginController extends Controller
         $user->lasttime = date('Y-m-d H:i:s');
         $user->lastip = $request->ip();
         $user->save();
+
+        AuthService::setLogs('登录', $request->ip());
     }
 
     /**

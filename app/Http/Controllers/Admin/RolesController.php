@@ -57,7 +57,7 @@ class RolesController extends Controller
         if (!$repository->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('roles.index')->with('Message', __('web.success'));
+        return redirect()->route('roles.index')->with('message', __('web.success'));
     }
 
     /**
@@ -89,7 +89,7 @@ class RolesController extends Controller
         if (!$repository->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('roles.index')->with('Message', __('web.success'));
+        return redirect()->route('roles.index')->with('message', __('web.success'));
     }
 
     /**
@@ -103,6 +103,6 @@ class RolesController extends Controller
         if (!$repository->delete($id)) {
             return back()->withErrors('web.failed')->withInput();
         }
-        return redirect()->route('roles.index')->with('Message', __('web.success'));
+        return redirect()->route('roles.index')->with('message', __('web.success'));
     }
 }
