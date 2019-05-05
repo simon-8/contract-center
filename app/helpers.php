@@ -267,3 +267,93 @@ function editURL($route, $id, $name = 'id') {
 function is_testing_env() {
     return env('APP_ENV') === 'testing';
 }
+
+/**
+ * id加密
+ * @param $id
+ * @return mixed
+ */
+function id_encode($id) {
+    return app(\Delight\Ids\Id::class)->obfuscate($id);
+}
+
+/**
+ * id解密
+ * @param $id
+ * @return mixed
+ */
+function id_decode($id) {
+    return app(\Delight\Ids\Id::class)->deobfuscate($id);
+}
+
+
+/**
+ * 跳转URL
+ * @param $url
+ * @return string
+ */
+function get_redirect_url($url) {
+    return config('app.url') . '/redirect?url=' . urlencode($url);
+}
+
+/**
+ * @return array|string
+ */
+function smart_get_client_ip() {
+    $request = request();
+    $clientIp = $request->ip();
+    //七牛CDN获取源IP
+    if ($request->server('HTTP_X_FROM_CDN') && $request->server('HTTP_X_FORWARDED_FOR')) {
+        $clientIp = $request->server('HTTP_X_FORWARDED_FOR');
+    }
+
+    return $clientIp;
+}
+
+
+function ConverTimeToDHMS($seconds)
+{
+    $seconds=(int)$seconds;
+    if($seconds<=0){
+        return '0秒';
+    }
+    $day = floor($seconds / 0x15180);
+    $hour = floor(($seconds % 0x15180 ) / 0xe10);
+    $minute = floor( ( $seconds % 0xe10 ) / 60 );
+    $second = $seconds % 60;
+    $str='';
+    if($day>0){
+        $str.=sprintf("%d天", $day);
+    }
+    if($hour>0){
+        $str.=sprintf("%d小时", $hour);
+    }
+    if($minute>0){
+        $str.=sprintf("%d分钟", $minute);
+    }
+    if($second>0){
+        $str.=sprintf("%d秒", $second);
+    }
+    if($str==''){
+        $str='0秒';
+    }
+    return $str;
+}
+
+
+/**
+ * 是否是超级管理员
+ * @return bool
+ */
+function is_superadmin()
+{
+    $is_superadmin = false;
+    $roles = auth('admin')->user()->role;
+    foreach ($roles as $role) {
+        if ($role == 1) {
+            $is_superadmin = true;
+            continue;
+        }
+    }
+    return $is_superadmin;
+}

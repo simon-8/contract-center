@@ -34,6 +34,7 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->group(function() {
         Route::resource('roles', 'RolesController');
         Route::resource('role-access', 'RoleAccessController');
         Route::resource('single', 'SinglePageController');
+        Route::get('setting/admin-logs', 'SettingController@adminLogs')->name('setting.adminLogs');
         Route::resource('setting', 'SettingController');
 
         // database

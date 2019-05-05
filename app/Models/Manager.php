@@ -43,6 +43,9 @@ class Manager extends Authenticatable
         $this->attributes['avatar'] = imgurl($value);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function roles()
     {
         return $this->belongsToMany('App\Models\Roles', 'role_user', 'user_id', 'role_id');

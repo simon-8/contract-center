@@ -14,9 +14,4 @@ class CategoryRepository extends BaseRepository
     {
         parent::__construct($category);
     }
-
-    public function listByPID($pid)
-    {
-        return $this->lists(['pid' => $pid], false)->toArray();
-    }
 }

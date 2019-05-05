@@ -14,6 +14,7 @@
                     <td>用户名</td>
                     <td>昵称</td>
                     <td>邮箱</td>
+                    <td>角色</td>
                     <td width="80">管理员</td>
                     <td>创建时间</td>
                     <td>最后一次登录时间</td>
@@ -29,6 +30,15 @@
                             <td>{{ $v->username }}</td>
                             <td>{{ $v->truename }}</td>
                             <td>{{ $v->email }}</td>
+                            <td>
+                                @if (count($v->role))
+                                    @foreach ($v->roles as $vm)
+                                        <span class="label label-primary">
+                                        {{ $vm['name'] }}
+                                    </span>&nbsp;
+                                    @endforeach
+                                @endif
+                            </td>
                             <td>{{ $v->is_admin ? '是' : '否' }}</td>
                             <td>{{ $v->created_at }}</td>
                             <td>{{ $v->lasttime ? $v->lasttime : '从未登录' }}</td>
@@ -41,7 +51,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="9">
+                        <td colspan="10">
                             暂无数据
                         </td>
                     </tr>

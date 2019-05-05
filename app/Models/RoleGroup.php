@@ -29,12 +29,18 @@ class RoleGroup extends Model
     {
         $this->attributes['access'] = $value ? implode(',', $value) : '';
     }
-    
-    public function getUsers()
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function manager()
     {
         return $this->hasMany('App\Models\Manager', 'groupid', 'id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function roleAccess()
     {
         return $this->hasMany('App\Models\RoleAccess', 'id', 'access');

@@ -19,7 +19,6 @@ class AdminLogs extends Model
     ];
 
     /**
-     * 关联管理员
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function manager()

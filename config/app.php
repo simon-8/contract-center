@@ -171,6 +171,9 @@ return [
         /*
          * Application Service Providers...
          */
+
+        // 模板服务
+        //App\Providers\BladeServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -178,14 +181,15 @@ return [
         App\Providers\RouteServiceProvider::class,
         // 模型服务
         App\Providers\ModelObserverProvider::class,
-        // 模板服务
-        //App\Providers\BladeServiceProvider::class,
         // phpstorm 提示
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         // 数据迁移
         Orangehill\Iseed\IseedServiceProvider::class,
         // markdown 编辑器
         Chenhua\MarkdownEditor\MarkdownEditorServiceProvider::class,
+
+        Toplan\PhpSms\PhpSmsServiceProvider::class,
+        Toplan\Sms\SmsManagerServiceProvider::class,
     ],
 
     /*
@@ -236,6 +240,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'MarkdownEditor' => Chenhua\MarkdownEditor\Facades\MarkdownEditor::class,
+        'PhpSms' => Toplan\PhpSms\Facades\Sms::class,
+        'SmsManager' => Toplan\Sms\Facades\SmsManager::class,
+        'GeoIP' => 'Torann\GeoIP\GeoIPFacade',
     ],
 
 ];

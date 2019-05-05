@@ -19,6 +19,9 @@ class SinglePageContent extends Model
         'content'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function singlePage()
     {
         return $this->belongsTo('App\Models\SinglePage', 'id', 'id');

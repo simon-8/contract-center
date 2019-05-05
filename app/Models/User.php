@@ -21,14 +21,4 @@ class User extends Model
         'unionid',
         'subscribed_at',
     ];
-
-    public function Lottery()
-    {
-        return $this->hasMany('App\Models\Lottery', 'userid', 'id');
-    }
-
-    public function LotteryApply()
-    {
-        return $this->hasMany('App\Models\LotteryApply', 'userid', 'id');
-    }
 }

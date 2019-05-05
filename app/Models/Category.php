@@ -17,6 +17,9 @@ class Category extends Model
         'listorder'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function child()
     {
         return $this->hasMany('App\Models\Category', 'pid', 'id');
@@ -27,6 +30,9 @@ class Category extends Model
     //    return $this->childCategory()->with('allChildrenCategorys');
     //}
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function parent()
     {
         return $this->belongsTo('App\Models\Category', 'pid', 'id');

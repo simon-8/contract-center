@@ -15,5 +15,4 @@ class AdPlaceRepository extends BaseRepository
     {
         parent::__construct(new AdPlace());
     }
-
 }

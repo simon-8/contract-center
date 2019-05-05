@@ -36,7 +36,7 @@ class ArticleController extends BaseController
 
         $lists = $repository->listBy($where);
 
-        $categorys = $categoryRepository->listByPID(self::$PID);
+        $categorys = $categoryRepository->lists(['pid' => self::$PID]);
         $status_num = $repository->get_status_num();
 
         $data = [
@@ -56,7 +56,7 @@ class ArticleController extends BaseController
      */
     public function create(CategoryRepository $categoryRepository)
     {
-        $categorys = $categoryRepository->listByPID(self::$PID);
+        $categorys = $categoryRepository->lists(['pid' => self::$PID]);
         return admin_view('article.create', [
             'categorys' => $categorys
         ]);
@@ -90,7 +90,7 @@ class ArticleController extends BaseController
     public function edit(ArticleRepository $repository, CategoryRepository $categoryRepository, $id)
     {
         $data = $repository->find($id, true);
-        $categorys = $categoryRepository->listByPID(self::$PID);
+        $categorys = $categoryRepository->lists(['pid' => self::$PID]);
         $data['categorys'] = $categorys;
         return admin_view('article.create', $data);
     }

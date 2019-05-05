@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\SettingRequest;
+use App\Repositories\AdminLogsRepository;
 use App\Repositories\SettingRepository;
 
 class SettingController extends Controller
@@ -74,5 +75,18 @@ class SettingController extends Controller
             return back()->withErrors(__('web.failed'))->withInput();
         }
         return redirect()->route('setting.index')->with('message', __('web.success'));
+    }
+
+    /**
+     * 管理员操作日志
+     * @param \Request $request
+     * @param AdminLogsRepository $adminLogsRepository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function adminLogs(\Request $request, AdminLogsRepository $adminLogsRepository)
+    {
+        $lists = $adminLogsRepository->lists();
+        //$lists->appends($data);
+        return admin_view('setting.adminlogs', compact('lists'));
     }
 }

@@ -8,17 +8,19 @@
         </div>
         <div class="ibox-content">
             <table class="table table-bordered table-hover bg-white text-center">
-                <tr>
-                    <td>表名</td>
-                    <td>引擎</td>
-                    <td>编码格式</td>
-                    <td>总记录数</td>
-                    <td>已用空间</td>
-                    <td> 总空间 </td>
-                    <td>空间使用</td>
-                    <td>创建时间</td>
-                    <td>操 作</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <td>表名</td>
+                        <td>引擎</td>
+                        <td>编码格式</td>
+                        <td>总记录数</td>
+                        <td>已用空间</td>
+                        <td> 总空间 </td>
+                        <td>空间使用</td>
+                        <td>创建时间</td>
+                        <td>操 作</td>
+                    </tr>
+                </thead>
                 @if(count($lists) > 0)
                     @foreach($lists as $v)
                         <tr>

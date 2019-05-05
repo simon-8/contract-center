@@ -5666,7 +5666,7 @@ del {
 .sk-spinner-cube-grid .sk-cube {
     width: 33%;
     height: 33%;
-    background-color: #39aef5;
+    background-color: #1ab394;
     float: left;
     -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
     animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out
@@ -6449,6 +6449,16 @@ body.skin-1 {
     color: #fff
 }
 
+.skin-2 .nav-header {
+    padding: 35px 25px 15px;
+}
+.skin-2 .profile-element {
+    text-align: center;
+}
+.skin-2 .img-circle {
+    border-radius: 5px;
+}
+
 .skin-3 .minimalize-styl-2 {
     margin: 14px 5px 5px 30px
 }
@@ -6543,7 +6553,7 @@ body.skin-3 {
 }
 
 .skin-3 .nav-header {
-    padding: 35px 25px 25px
+    padding: 35px 25px 15px
 }
 
 .skin-3 .nav-header a.dropdown-toggle {

@@ -14,7 +14,10 @@ class Tag extends Model
         'name'
     ];
 
-    public function articles()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function article()
     {
         return $this->belongsToMany('App\Models\Article');
     }

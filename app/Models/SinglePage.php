@@ -24,13 +24,20 @@ class SinglePage extends Model
         'status'
     ];
 
-    public function content()
-    {
-        return $this->hasOne('App\Models\SinglePageContent', 'id', 'id');
-    }
-
+    /**
+     * @param $value
+     * @return string
+     */
     public function getThumbAttribute($value)
     {
         return imgurl($value);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function content()
+    {
+        return $this->hasOne('App\Models\SinglePageContent', 'id', 'id');
     }
 }

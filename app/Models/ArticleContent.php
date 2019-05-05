@@ -19,6 +19,9 @@ class ArticleContent extends Model
         'content'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function article()
     {
         return $this->belongsTo('App\Models\Article', 'id', 'id');

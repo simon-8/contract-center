@@ -22,17 +22,17 @@ class Ad extends Model
         'listorder'
     ];
 
+    public function getThumbAttribute($value)
+    {
+        return $value ? imgurl($value) : '';
+    }
+
     /**
      * 广告对应广告位
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function AdPlace()
+    public function adPlace()
     {
         return $this->belongsTo('App\Models\AdPlace', 'pid', 'id');
-    }
-
-    public function getThumbAttribute($value)
-    {
-        return $value ? imgurl($value) : '';
     }
 }
