@@ -6,7 +6,8 @@
             <h5>广告位管理</h5>
         </div>
         <div class="ibox-content">
-            <table class="table table-bordered table-hover bg-white text-center">
+            <div class="table-responsive">
+            <table class="table table-bordered table-hover text-nowrap bg-white text-center">
                 <tr>
                     <th width="50">编号</th>
                     <th width="150">名称</th>
@@ -38,6 +39,7 @@
                     </tr>
                 @endif
             </table>
+            </div>
             <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告位</button>
         </div>
     </div>
@@ -67,7 +69,7 @@
     {{--create--}}
     <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content animated flipInX">
+            <div class="modal-content animated bounceInDown">
                 <form action="{{ route('ad-place.store') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <div class="modal-header">
@@ -123,7 +125,7 @@
     {{--update--}}
     <div class="modal inmodal" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content animated flipInX">
+            <div class="modal-content animated bounceInDown">
                 <form action="" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     {!! method_field('PUT') !!}
@@ -178,4 +180,4 @@
         </div>
     </div>
 </div>
-@endsection('content')
+@endsection

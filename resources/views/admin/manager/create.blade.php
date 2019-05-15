@@ -66,11 +66,13 @@
                     <label class="col-sm-2 control-label">角色管理</label>
                     <div class="col-sm-10">
                         <div class="checkbox">
+                            @if (!empty($roles))
                             @foreach($roles as $r)
                                 <label>
                                     <input type="checkbox" class="i-checks" name="role[]" value="{{ $r['id'] }}" {{ !empty($role) && in_array($r['id'], $role) ? 'checked' : '' }}>{{ $r['name'] }}
                                 </label>
                             @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>

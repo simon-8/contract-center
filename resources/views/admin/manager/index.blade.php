@@ -6,7 +6,8 @@
             <h5>管理员管理</h5>
         </div>
         <div class="ibox-content">
-            <table class="table table-bordered table-striped table-hover bg-white text-center">
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-nowrap bg-white text-center">
                 <tr>
                     {{--<td width="30"><input type="checkbox" name="" id="" class="i-checks"></td>--}}
                     <td width="50">编号</td>
@@ -21,23 +22,29 @@
                     <td>最后一次登录IP</td>
                     <td width="120">操作</td>
                 </tr>
-                @if(count($lists))
+                @empty(!$lists)
                     @foreach($lists as $k=>$v)
                         <tr>
                             {{--<td width="30"><input type="checkbox" name="" id="" class="i-checks"></td>--}}
                             <td>{{ $v->id }}</td>
-                            <td><img src="{{ $v->avatar }}" alt="" width="30"></td>
+                            <td>
+                                @empty(!$v->avatar)
+                                <img src="{{ $v->avatar }}" alt="" width="30">
+                                @else
+                                    无
+                                @endempty
+                            </td>
                             <td>{{ $v->username }}</td>
                             <td>{{ $v->truename }}</td>
-                            <td>{{ $v->email }}</td>
+                            <td>{{ $v->email ?: '无' }}</td>
                             <td>
-                                @if (count($v->role))
-                                    @foreach ($v->roles as $vm)
-                                        <span class="label label-primary">
-                                        {{ $vm['name'] }}
-                                    </span>&nbsp;
-                                    @endforeach
-                                @endif
+                                {{--@if (count($v->role))--}}
+                                    {{--@foreach ($v->roles as $vm)--}}
+                                        {{--<span class="label label-primary">--}}
+                                        {{--{{ $vm['name'] }}--}}
+                                    {{--</span>&nbsp;--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
                             </td>
                             <td>{{ $v->is_admin ? '是' : '否' }}</td>
                             <td>{{ $v->created_at }}</td>
@@ -55,8 +62,9 @@
                             暂无数据
                         </td>
                     </tr>
-                @endif
+                @endempty
             </table>
+            </div>
             <a href="{{ route('manager.create') }}" class="btn btn-info">添加管理员</a>
             <div class="text-center">
                 @if(count($lists))

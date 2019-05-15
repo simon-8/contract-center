@@ -1,3 +1,5 @@
+@inject('authService', 'App\Services\AuthService')
+
 @extends('layout.admin')
 @section('content')
 <div class="col-sm-12 animated fadeInRight">
@@ -6,11 +8,11 @@
             <h5>菜单管理</h5>
         </div>
         <div class="ibox-content">
-            <table class="table table-bordered table-striped table-hover bg-white text-center">
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-nowrap bg-white text-center">
                 <tr>
                     <td width="50">排序</td>
                     <td width="50">编号</td>
-                    {{--<td>上级菜单</td>--}}
                     <td width="150" align="left">菜单名称</td>
                     <td>路由名称</td>
                     <td>链接地址</td>
@@ -23,11 +25,10 @@
                         <tr>
                             <td>{{ $v['listorder'] }}</td>
                             <td>{{ $v['id'] }}</td>
-                            {{--<td>{{ isset($lists[$v['pid']]['name']) ? $lists[$v['pid']]['name'] : '顶级菜单' }}</td>--}}
                             <td align="left">{{ $v['name'] }}</td>
                             <td>{{ $v['route']?:'无' }}</td>
                             <td>{{ $v['link']?:'无' }}</td>
-                            <td>{{ $v['ico'] }}</td>
+                            <td>{{ $v['icon'] }}</td>
                             <td>{{ $v['items'] }}</td>
                             <td>
                                 <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加</button>
@@ -44,7 +45,7 @@
                                     <td align="left">&nbsp;&nbsp;┗ {{ $vv['name'] }}</td>
                                     <td>{{ $vv['route']?:'无' }}</td>
                                     <td>{{ $vv['link']?:'无' }}</td>
-                                    <td>{{ $vv['ico'] }}</td>
+                                    <td>{{ $vv['icon'] }}</td>
                                     <td>{{ $vv['items'] }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data="{{ json_encode($vv) }}" onclick="Edit({{ $vv['id'] }}, '{{ editURL('menu.update', $vv['id']) }}')">编辑</button>
@@ -56,12 +57,13 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7">
+                        <td colspan="8">
                             未找到数据
                         </td>
                     </tr>
                 @endif
             </table>
+            </div>
             <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加菜单</button>
         </div>
     </div>
@@ -72,9 +74,14 @@
             var json = $('#edit_' + id).attr('data');
             json = JSON.parse(json);
             $(createModal).find('select[name=pid]').val(json.id);
-            //$(createModal).find('input[name=prefix]').val(json.prefix);
             $(createModal).modal('show');
         }
+        $(function() {
+            $("form [name='route']").change(function() {
+                let txt = $(this).find("option:selected").attr('data');
+                $(this).closest('form').find("[name='name']").val(txt);
+            });
+        });
     </script>
 
     {{--delete--}}
@@ -83,7 +90,7 @@
     {{--create--}}
     <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content animated flipInX">
+            <div class="modal-content animated bounceInDown">
                 <form action="{{ route('menu.store') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <div class="modal-header">
@@ -118,8 +125,8 @@
                             <div class="col-sm-10">
                                 <select name="route" class="form-control">
                                     <option value="">请选择</option>
-                                        @foreach($routeNames as $k => $v)
-                                            <option value="{{ $v }}">{{ $v }}</option>
+                                        @foreach($authService->getRoutes() as $k => $v)
+                                        <option value="{{ $k }}" data="{{ $v }}">{{ $v }} - {{ $k }}</option>
                                         @endforeach
                                 </select>
                                 <span class="help-block m-b-none">若是URL地址请留空</span>
@@ -135,7 +142,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">图标</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="ico" value="{{ old('ico') }}" placeholder="fa-setting">
+                                <input type="text" class="form-control" name="icon" value="{{ old('icon') }}" placeholder="fa-setting">
                                 <span class="help-block m-b-none">图标</span>
                             </div>
                         </div>
@@ -156,11 +163,10 @@
         </div>
     </div>
 
-
     {{--update--}}
     <div class="modal inmodal" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content animated flipInX">
+            <div class="modal-content animated bounceInDown">
                 <form action="" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     {!! method_field('PUT') !!}
@@ -197,8 +203,8 @@
                             <div class="col-sm-10">
                                 <select name="route" class="form-control">
                                     <option value="">请选择</option>
-                                    @foreach($routeNames as $k => $v)
-                                        <option value="{{ $v }}">{{ $v }}</option>
+                                    @foreach($authService->getRoutes() as $k => $v)
+                                        <option value="{{ $k }}" data="{{ $v }}">{{ $v }} - {{ $k }}</option>
                                     @endforeach
                                 </select>
                                 <span class="help-block m-b-none">若是URL地址请留空</span>
@@ -214,7 +220,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">图标</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="ico" value="" placeholder="fa-setting">
+                                <input type="text" class="form-control" name="icon" value="" placeholder="fa-setting">
                                 <span class="help-block m-b-none">图标</span>
                             </div>
                         </div>

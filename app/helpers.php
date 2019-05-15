@@ -80,14 +80,15 @@ function upload_base64_thumb($thumb)
  * @param $url
  * @return string
  */
-function imgurl($url)
+function imgurl($url = '')
 {
     if(empty($url)) {
-        return '/manage/images/nopic.png';
+        //return skinPath() .'images/nopic.png';
+        return skinPath() .'images/debug.jpg';
     }
-    return substr($url, 0, 4) === 'http' ? $url : config('app.url') . $url;
+    $basePath = config('admin.cdnResourcePath') ?: config('app.url');
+    return substr($url, 0, 4) === 'http' ? $url : $basePath . $url;
 }
-
 
 /**
  * validate.js

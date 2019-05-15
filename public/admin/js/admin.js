@@ -18,7 +18,7 @@ function localStorageSupport() {
 * 加载层
 * */
 function loading(close) {
-    Boolean(close) ? $('#loadding_box').fadeOut(800) : $('#loadding_box').fadeIn(800);
+    Boolean(close) ? $('#loadding_box').fadeOut(400) : $('#loadding_box').fadeIn(400);
 }
 
 //layer.config({

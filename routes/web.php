@@ -14,12 +14,12 @@
 Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->group(function() {
     Route::match(['get', 'post'], 'login', 'LoginController@index')->name('login');
     Route::get('logout', 'LoginController@logout')->name('logout');
-    //Route::any('ajax' , 'AjaxController@index')->name('ajax.index');
+    Route::any('ajax' , 'AjaxController@index')->name('ajax.index');
 
-    Route::group(['middleware' => 'auth:admin'], function() {
+    //Route::group(['middleware' => 'auth:admin'], function() {
         // 首页
-        Route::get('/', 'IndexController@getMain')->name('index.main');
-        Route::get('index', 'IndexController@getIndex')->name('index.index');
+        Route::get('/', 'IndexController@index')->name('index.index');
+        Route::get('main', 'IndexController@main')->name('index.main');
 
         // database
         Route::prefix('database')->group(function() {
@@ -29,5 +29,5 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
             Route::get('/optimize', 'DatabaseController@getOptimize')->name('database.optimize');
         });
 
-    });
+    //});
 });

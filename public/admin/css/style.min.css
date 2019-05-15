@@ -170,7 +170,8 @@ h3, h4, h5 {
 }
 
 .nav-header {
-    padding: 33px 25px;
+    padding: 25px 25px;
+    /*padding: 33px 25px;*/
     background: url(patterns/header-profile.png) no-repeat
 }
 
@@ -415,7 +416,8 @@ body.canvas-menu .navbar-static-side, body.fixed-sidebar .navbar-static-side {
     position: fixed;
     width: 220px;
     z-index: 2001;
-    height: 100%
+    height: 100%;
+    overflow-y: auto;
 }
 
 body.fixed-sidebar.mini-navbar .navbar-static-side {
@@ -6659,7 +6661,7 @@ body.skin-3 {
     }
 
     #content-main {
-        height: calc(100% - 100px)
+        height: calc(100% - 86px)
     }
 
     .fixed-nav #content-main {

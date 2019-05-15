@@ -7,7 +7,8 @@
             <h5>广告管理 (当前广告位: {{ $adPlace['name'] }})</h5>
         </div>
         <div class="ibox-content">
-            <table class="table table-bordered table-hover bg-white text-center">
+            <div class="table-responsive">
+            <table class="table table-bordered table-hover text-nowrap bg-white text-center">
                 <tr>
                     <th width="50">编号</th>
                     <th width="150">所属广告位</th>
@@ -48,6 +49,7 @@
                     </tr>
                 @endif
             </table>
+            </div>
             <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告</button>
             <a class="btn btn-info" href="{{ route('ad-place.index') }}">返回广告位</a>
         </div>
@@ -90,7 +92,7 @@
     {{--create--}}
     <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content animated flipInX">
+            <div class="modal-content animated bounceInDown">
                 <form action="{{ route('ad.store') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <input type="hidden" name="pid" value="{{ $adPlace['id'] }}">
@@ -149,7 +151,7 @@
     {{--update--}}
     <div class="modal inmodal" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content animated flipInX">
+            <div class="modal-content animated bounceInDown">
                 <form action="" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     {!! method_field('PUT') !!}
