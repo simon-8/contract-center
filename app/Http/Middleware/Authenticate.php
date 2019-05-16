@@ -21,6 +21,7 @@ class Authenticate extends Middleware
             $guards = [null];
         }
 
+        // 设置guards
         $this->guards = $guards;
 
         foreach ($guards as $guard) {
