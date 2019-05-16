@@ -32,8 +32,8 @@
                             <td>{{ $v['items'] }}</td>
                             <td>
                                 <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加</button>
-                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit({{ $v['id'] }}, '{{ editURL('menu.update', $v['id']) }}')">编辑</button>
-                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('menu.destroy', $v['id']) }}')">删除</button>
+                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit({{ $v['id'] }}, '{{ editURL('admin.menu.update', $v['id']) }}')">编辑</button>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.menu.destroy', $v['id']) }}')">删除</button>
                             </td>
                         </tr>
                         @if(isset($v['child']) && count($v['child']))
@@ -48,8 +48,8 @@
                                     <td>{{ $vv['icon'] }}</td>
                                     <td>{{ $vv['items'] }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data="{{ json_encode($vv) }}" onclick="Edit({{ $vv['id'] }}, '{{ editURL('menu.update', $vv['id']) }}')">编辑</button>
-                                        <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('menu.destroy', $vv['id']) }}')">删除</button>
+                                        <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data='@json($v)' onclick="Edit({{ $vv['id'] }}, '{{ editURL('admin.menu.update', $vv['id']) }}')">编辑</button>
+                                        <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.menu.destroy', $vv['id']) }}')">删除</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -91,7 +91,7 @@
     <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInDown">
-                <form action="{{ route('menu.store') }}" method="POST" class="form-horizontal">
+                <form action="{{ route('admin.menu.store') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -241,4 +241,4 @@
         </div>
     </div>
 </div>
-@endsection('content')
+@endsection

@@ -26,8 +26,7 @@
                         <li><a href="{{ route('admin.logout') }}">安全退出</a></li>
                     </ul>
                 </div>
-                <div class="logo-element">LS
-                </div>
+                <div class="logo-element">SCMS</div>
             </li>
             @endauth
             @foreach ($menus as $menu)

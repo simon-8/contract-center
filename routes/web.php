@@ -21,6 +21,8 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
         Route::get('/', 'IndexController@index')->name('index.index');
         Route::get('main', 'IndexController@main')->name('index.main');
 
+    Route::resource('menu', 'MenuController');
+
         // database
         Route::prefix('database')->group(function() {
             Route::get('/', 'DatabaseController@getIndex')->name('database.index');

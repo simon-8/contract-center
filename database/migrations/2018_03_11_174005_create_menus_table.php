@@ -19,7 +19,7 @@ class CreateMenusTable extends Migration
             $table->string('name')->comment('菜单名称');
             $table->string('route')->comment('路由名称')->default('');
             $table->string('link')->comment('目标链接')->default('');
-            $table->string('ico')->comment('图标名称')->default('');
+            $table->string('icon')->comment('图标名称')->default('');
             $table->unsignedSmallInteger('listorder')->comment('排序')->default(0);
             $table->unsignedTinyInteger('items')->comment('子分类数量')->default(0);
         });

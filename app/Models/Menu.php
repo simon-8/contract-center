@@ -24,10 +24,20 @@ class Menu extends Model
         'name',
         'route',
         'link',
-        'ico',
+        'icon',
         'listorder',
         'items',
     ];
+
+    public function parent()
+    {
+        return $this->hasOne('App\Models\Menu', 'id', 'pid');
+    }
+
+    public function children()
+    {
+        return $this->hasMany('App\Models\Menu', 'pid', 'id');
+    }
 
     public function getMenus()
     {

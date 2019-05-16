@@ -1,80 +1,67 @@
 <?php
-/**
- * Note: 后台管理菜单
- * User: Liu
- * Date: 2018/3/11
- * Time: 19:43
- */
+
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
 use App\Http\Requests\MenuRequest;
-use App\Repositories\MenuRepository;
+use App\Models\Menu;
 
-class MenuController extends Controller
+class MenuController extends BaseController
 {
     /**
      * 列表
-     * @param MenuRepository $repository
+     * @param Menu $menu
      * @return mixed
      */
-    public function index(MenuRepository $repository)
+    public function index(Menu $menu)
     {
-        $lists = $repository->getMenus();
-        $routeNames = array_keys(\Route::getRoutes()->getRoutesByName());
-        sort($routeNames);
-        $data = [
-            'lists' => $lists,
-            'routeNames' => $routeNames
-        ];
-        return admin_view('menu.index', $data);
+        $lists = $menu->getMenus();
+        return view('admin.menu.index', compact('lists'));
     }
 
     /**
      * 添加
      * @param MenuRequest $request
-     * @param MenuRepository $repository
+     * @param Menu $menu
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function store(MenuRequest $request, MenuRepository $repository)
+    public function store(MenuRequest $request, Menu $menu)
     {
         $data = $request->all();
-        $request->validateCreate($data);
-
-        if (!$repository->create($data)) {
+        if (!$menu->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('menu.index')->with('message' , __('web.success'));
+        return redirect()->route('admin.menu.index')->with('message' , __('web.success'));
     }
 
     /**
      * 更新
      * @param MenuRequest $request
-     * @param MenuRepository $repository
+     * @param Menu $menu
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function update(MenuRequest $request, MenuRepository $repository)
+    public function update(MenuRequest $request, Menu $menu)
     {
         $data = $request->all();
-        $request->validateUpdate($data);
-
-        if (!$repository->update($data)) {
+        if (!$menu->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('menu.index')->with('message' , __('web.success'));
+        return redirect()->route('admin.menu.index')->with('message' , __('web.success'));
     }
 
     /**
      * 删除
-     * @param MenuRepository $repository
-     * @param $id
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @param Menu $menu
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
-    public function destroy(MenuRepository $repository, $id)
+    public function destroy(Menu $menu)
     {
-        if (!$repository->delete($id)) {
-            return back()->withErrors(__('web.failed'))->withInput();
+        if ($menu->children()->count()) {
+            return back()->withErrors('删除失败, 请检查是否有子菜单')->withInput();
         }
-        return redirect()->route('menu.index')->with('message' , __('web.success'));
+        if (!$menu->delete()) {
+            return back()->withErrors('删除失败')->withInput();
+        }
+        return redirect()->route('admin.menu.index')->with('message' , __('web.success'));
     }
 }
