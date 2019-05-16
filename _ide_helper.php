@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.16 on 2019-05-10 10:26:53.
+ * Generated for Laravel 5.8.17 on 2019-05-16 15:38:44.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -15261,6 +15261,185 @@ namespace Arcanedev\LogViewer\Facades {
  
 }
 
+namespace Orangehill\Iseed\Facades { 
+
+    /**
+     * 
+     *
+     */ 
+    class Iseed {
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function readStubFile($file)
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->readStubFile($file);
+        }
+        
+        /**
+         * Generates a seed file.
+         *
+         * @param string $table
+         * @param string $prefix
+         * @param string $suffix
+         * @param string $database
+         * @param int $max
+         * @param string $prerunEvent
+         * @param string $postunEvent
+         * @return bool 
+         * @throws Orangehill\Iseed\TableNotFoundException
+         * @static 
+         */ 
+        public static function generateSeed($table, $prefix = null, $suffix = null, $database = null, $max = 0, $chunkSize = 0, $exclude = null, $prerunEvent = null, $postrunEvent = null, $dumpAuto = true, $indexed = true, $orderBy = null, $direction = 'ASC')
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->generateSeed($table, $prefix, $suffix, $database, $max, $chunkSize, $exclude, $prerunEvent, $postrunEvent, $dumpAuto, $indexed, $orderBy, $direction);
+        }
+        
+        /**
+         * Get a seed folder path
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getSeedPath()
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->getSeedPath();
+        }
+        
+        /**
+         * Get the Data
+         *
+         * @param string $table
+         * @return Array 
+         * @static 
+         */ 
+        public static function getData($table, $max, $exclude = null, $orderBy = null, $direction = 'ASC')
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->getData($table, $max, $exclude, $orderBy, $direction);
+        }
+        
+        /**
+         * Repacks data read from the database
+         *
+         * @param array|object $data
+         * @return array 
+         * @static 
+         */ 
+        public static function repackSeedData($data)
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->repackSeedData($data);
+        }
+        
+        /**
+         * Checks if a database table exists
+         *
+         * @param string $table
+         * @return boolean 
+         * @static 
+         */ 
+        public static function hasTable($table)
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->hasTable($table);
+        }
+        
+        /**
+         * Generates a seed class name (also used as a filename)
+         *
+         * @param string $table
+         * @param string $prefix
+         * @param string $suffix
+         * @return string 
+         * @static 
+         */ 
+        public static function generateClassName($table, $prefix = null, $suffix = null)
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->generateClassName($table, $prefix, $suffix);
+        }
+        
+        /**
+         * Get the path to the stub file.
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getStubPath()
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->getStubPath();
+        }
+        
+        /**
+         * Populate the place-holders in the seed stub.
+         *
+         * @param string $class
+         * @param string $stub
+         * @param string $table
+         * @param string $data
+         * @param int $chunkSize
+         * @param string $prerunEvent
+         * @param string $postunEvent
+         * @return string 
+         * @static 
+         */ 
+        public static function populateStub($class, $stub, $table, $data, $chunkSize = null, $prerunEvent = null, $postrunEvent = null, $indexed = true)
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->populateStub($class, $stub, $table, $data, $chunkSize, $prerunEvent, $postrunEvent, $indexed);
+        }
+        
+        /**
+         * Create the full path name to the seed file.
+         *
+         * @param string $name
+         * @param string $path
+         * @return string 
+         * @static 
+         */ 
+        public static function getPath($name, $path)
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->getPath($name, $path);
+        }
+        
+        /**
+         * Cleans the iSeed section
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function cleanSection()
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->cleanSection();
+        }
+        
+        /**
+         * Updates the DatabaseSeeder file's run method (kudoz to: https://github.com/JeffreyWay/Laravel-4-Generators)
+         *
+         * @param string $className
+         * @return bool 
+         * @static 
+         */ 
+        public static function updateDatabaseSeederRunMethod($className)
+        {
+                        /** @var \Orangehill\Iseed\Iseed $instance */
+                        return $instance->updateDatabaseSeederRunMethod($className);
+        }
+         
+    }
+ 
+}
+
 
 namespace  { 
 
@@ -17923,6 +18102,8 @@ namespace  {
     class Captcha extends \Mews\Captcha\Facades\Captcha {}
 
     class LogViewer extends \Arcanedev\LogViewer\Facades\LogViewer {}
+
+    class Iseed extends \Orangehill\Iseed\Facades\Iseed {}
  
 }
 
