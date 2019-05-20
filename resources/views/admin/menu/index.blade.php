@@ -48,7 +48,7 @@
                                     <td>{{ $vv['icon'] }}</td>
                                     <td>{{ $vv['items'] }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data='@json($v)' onclick="Edit({{ $vv['id'] }}, '{{ editURL('admin.menu.update', $vv['id']) }}')">编辑</button>
+                                        <button class="btn btn-sm btn-info" id="edit_{{ $vv['id'] }}" data='@json($vv)' onclick="Edit({{ $vv['id'] }}, '{{ editURL('admin.menu.update', $vv['id']) }}')">编辑</button>
                                         <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.menu.destroy', $vv['id']) }}')">删除</button>
                                     </td>
                                 </tr>
@@ -125,7 +125,7 @@
                             <div class="col-sm-10">
                                 <select name="route" class="form-control">
                                     <option value="">请选择</option>
-                                        @foreach($authService->getRoutes() as $k => $v)
+                                        @foreach($authService->getRoutes(0) as $k => $v)
                                         <option value="{{ $k }}" data="{{ $v }}">{{ $v }} - {{ $k }}</option>
                                         @endforeach
                                 </select>
@@ -203,7 +203,7 @@
                             <div class="col-sm-10">
                                 <select name="route" class="form-control">
                                     <option value="">请选择</option>
-                                    @foreach($authService->getRoutes() as $k => $v)
+                                    @foreach($authService->getRoutes(0) as $k => $v)
                                         <option value="{{ $k }}" data="{{ $v }}">{{ $v }} - {{ $k }}</option>
                                     @endforeach
                                 </select>

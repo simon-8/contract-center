@@ -45,16 +45,11 @@
                 offColor : "danger",
                 size : "small",
             });
-
-            //模态框中的表单提交时开始loading动画
-            //$('.modal form [type=submit], #sform [type=submit]').click(function(){
-            //    loading();
-            //});
         });
     </script>
 </head>
 
-<body class="gray-bg">
+<body class="gray-bg" data1="1">
 <div class="wrapper wrapper-content">
     <div class="row">
         @include('admin.public.message')

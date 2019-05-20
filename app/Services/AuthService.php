@@ -48,13 +48,14 @@ class AuthService
 
     /**
      * 获取路由
-     * @return array
+     * @param bool $ignore
+     * @return \Illuminate\Config\Repository|mixed
      */
-    public function getRoutes()
+    public function getRoutes($ignore = true)
     {
         $routes = config('menus');
         //$routes = \Route::getRoutes()->getRoutesByName();
-        $ingnoreGroups = $this->getIgnorePermissionGroups();
+        $ingnoreGroups = $ignore ? $this->getIgnorePermissionGroups() : [];
         foreach ($routes as $route => $name) {
             foreach ($ingnoreGroups as $group) {
                 if (\Str::startsWith($route, $group)) {
