@@ -16,7 +16,19 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username',
+        'password',
+        'nickname',
+        'mobile',
+        'email',
+        'money',
+        'city',
+        'province',
+        'country',
+        'avatar',
+        'gender',
+        'client_id',
+        'last_login_time',
     ];
 
     /**
@@ -36,4 +48,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeOfCreatedAt($query, $data = '')
+    {
+        if ($data === '') return $query;
+        if (is_array($data)) {
+            $start = $data[0];
+            $end = $data[1];
+        } else if (strpos($data, ' - ') !== false) {
+            list($start, $end) = explode(' - ', $data);
+        } else {
+            $start = date('Y-m-d 00:00:00', strtotime($data));
+            $end = date('Y-m-d 00:00:00', strtotime($start) + 86400);
+        }
+        return $query->where('created_at', '>=', $start)->where('created_at', '<', $end);
+    }
+
+    public function scopeOfType($query, $type = '')
+    {
+        if ($type === '') {
+            return $query;
+        }
+        return $query->where('type', $type);
+    }
 }

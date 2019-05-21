@@ -10,5 +10,5 @@ namespace App\Services;
 
 trait ModelService
 {
-    public $pagesize = 10;
+    public static $pagesize = 10;
 }

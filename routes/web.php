@@ -22,7 +22,7 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
         Route::get('main', 'IndexController@main')->name('index.main');
 
     Route::resource('menu', 'MenuController');
-
+    Route::resource('user', 'UserController');
         // database
         Route::prefix('database')->group(function() {
             Route::get('/', 'DatabaseController@getIndex')->name('database.index');
