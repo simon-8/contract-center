@@ -64,11 +64,27 @@ class User extends Authenticatable
         return $query->where('created_at', '>=', $start)->where('created_at', '<', $end);
     }
 
-    public function scopeOfType($query, $type = '')
+    public function scopeOfUsername($query, $data = '')
     {
-        if ($type === '') {
+        if ($data === '') {
             return $query;
         }
-        return $query->where('type', $type);
+        return $query->where('username', $data);
+    }
+
+    public function scopeOfMobile($query, $data = '')
+    {
+        if ($data === '') {
+            return $query;
+        }
+        return $query->where('mobile', $data);
+    }
+
+    public function scopeOfNickname($query, $data = '')
+    {
+        if ($data === '') {
+            return $query;
+        }
+        return $query->where('nickname', 'like', '%'.$data.'%');
     }
 }

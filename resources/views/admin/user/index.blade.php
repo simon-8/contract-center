@@ -17,11 +17,14 @@
 
                     <div class="input-group1 m-b">
                         <select name="type" class="form-control inline">
+                            <option value="username"
+                                    @if (isset($data['type']) && $data['type'] === 'username') selected @endif>用户名
+                            </option>
                             <option value="nickname"
-                                    @if (isset($data['type']) && $data['type'] === 'nickname') selected @endif>昵称
+                                @if (isset($data['type']) && $data['type'] === 'nickname') selected @endif>昵称
                             </option>
                             <option value="mobile"
-                                    @if (isset($data['type']) && $data['type'] === 'mobile') selected @endif>手机号
+                                @if (isset($data['type']) && $data['type'] === 'mobile') selected @endif>手机号
                             </option>
                         </select>
                         <input type="text" name="keyword" id="keyword" class="form-control" autocomplete="off"
