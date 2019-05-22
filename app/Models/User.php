@@ -55,12 +55,15 @@ class User extends Authenticatable
         if (is_array($data)) {
             $start = $data[0];
             $end = $data[1];
+            $end = date('Y-m-d', strtotime($end) + 86400);
         } else if (strpos($data, ' - ') !== false) {
             list($start, $end) = explode(' - ', $data);
+            $end = date('Y-m-d', strtotime($end) + 86400);
         } else {
-            $start = date('Y-m-d 00:00:00', strtotime($data));
-            $end = date('Y-m-d 00:00:00', strtotime($start) + 86400);
+            $start = date('Y-m-d', strtotime($data));
+            $end = date('Y-m-d', strtotime($start) + 86400);
         }
+        imagecopyresampled();
         return $query->where('created_at', '>=', $start)->where('created_at', '<', $end);
     }
 

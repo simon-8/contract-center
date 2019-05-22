@@ -15,8 +15,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        //Registered::class => [
+        //    SendEmailVerificationNotification::class,
+        //],
+        \Illuminate\Database\Events\QueryExecuted::class => [
+            \App\Listeners\DBQueryListener::class
         ],
     ];
 

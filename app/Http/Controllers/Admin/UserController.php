@@ -14,8 +14,8 @@ class UserController extends BaseController
 
     public function index(\Request $request, User $user)
     {
-        $data = $request::only(['rangeDate', 'type', 'keyword']);
-        $lists = $user->ofCreatedAt($data['rangeDate'] ?? '');
+        $data = $request::only(['created_at', 'type', 'keyword']);
+        $lists = $user->ofCreatedAt($data['created_at'] ?? '');
         if (!empty($data['type']) && !empty($data['keyword'])) {
             $func = "of{$data['type']}";
             $lists->$func($data['keyword']);

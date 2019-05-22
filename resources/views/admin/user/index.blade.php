@@ -18,7 +18,7 @@
                     <div class="input-group1 m-b">
                         <select name="type" class="form-control inline">
                             <option value="username"
-                                    @if (isset($data['type']) && $data['type'] === 'username') selected @endif>用户名
+                                @if (isset($data['type']) && $data['type'] === 'username') selected @endif>用户名
                             </option>
                             <option value="nickname"
                                 @if (isset($data['type']) && $data['type'] === 'nickname') selected @endif>昵称
@@ -47,6 +47,7 @@
                         <th>头像</th>
                         <th>性别</th>
                         {{--<th>关注时间</th>--}}
+                        <th>冻结</th>
                         <th>创建时间</th>
                         <th>更新时间</th>
                         <th width="180">操作</th>
@@ -66,6 +67,7 @@
                                 <td><img src="{{ $v['avatar'] }}" alt="" width="30"></td>
                                 <td>{{ $v['gender'] ? ($v['gender'] == 1 ? '男' : '女') : '未知' }}</td>
                                 {{--<td>{{ $v['subscribe_at'] }}</td>--}}
+                                <td>{{ $v['is_block'] ? '是' : '否' }}</td>
                                 <td>{{ $v['created_at'] }}</td>
                                 <td>{{ $v['updated_at'] }}</td>
                                 <td>
@@ -75,7 +77,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="12" rowspan="4">
+                            <td colspan="13" rowspan="4">
                                 未找到数据
                             </td>
                         </tr>
