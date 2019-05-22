@@ -34,7 +34,7 @@ class AdPlaceController extends Controller
     {
         $data = $request->all();
         if ($repository->create($data)) {
-            return redirect()->route('ad-place.index')->with('message', __('web.success'));
+            return redirect()->route('admin.ad-place.index')->with('message', __('web.success'));
         } else {
             return back()->withInput()->withErrors(__('web.failed'));
         }
@@ -51,7 +51,7 @@ class AdPlaceController extends Controller
         if (!$repository->update($data)) {
             return back()->withInput()->withErrors(__('web.failed'));
         }
-        return redirect()->route('ad-place.index')->with('message', __('web.success'));
+        return redirect()->route('admin.ad-place.index')->with('message', __('web.success'));
     }
 
     /**
@@ -64,7 +64,7 @@ class AdPlaceController extends Controller
         if (!$repository->delete($id)) {
             return back()->withErrors(__('web.failed'));
         }
-        return redirect()->route('ad-place.index')->with('message', __('web.success'));
+        return redirect()->route('admin.ad-place.index')->with('message', __('web.success'));
     }
 
 }

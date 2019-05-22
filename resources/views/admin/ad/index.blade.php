@@ -36,8 +36,8 @@
                                 @endempty
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit1({{ $v['id'] }}, '{{ editURL('ad.update', $v['id']) }}')">编辑</button>
-                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('ad.destroy', $v['id']) }}')">删除</button>
+                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit1({{ $v['id'] }}, '{{ editURL('admin.ad.update', $v['id']) }}')">编辑</button>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.ad.destroy', $v['id']) }}')">删除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -51,7 +51,7 @@
             </table>
             </div>
             <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加广告</button>
-            <a class="btn btn-info" href="{{ route('ad-place.index') }}">返回广告位</a>
+            <a class="btn btn-info" href="{{ route('admin.ad-place.index') }}">返回广告位</a>
         </div>
     </div>
 
@@ -93,7 +93,7 @@
     <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInDown">
-                <form action="{{ route('ad.store') }}" method="POST" class="form-horizontal">
+                <form action="{{ route('admin.ad.store') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <input type="hidden" name="pid" value="{{ $adPlace['id'] }}">
                     <div class="modal-header">

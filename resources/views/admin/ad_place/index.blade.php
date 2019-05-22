@@ -23,11 +23,11 @@
                             <td>{{ $v['name'] }}</td>
                             <td>{{ $v['width'] }}</td>
                             <td>{{ $v['height'] }}</td>
-                            <td>{{ $v['status'] ? '正常' : '关闭' }}</td>
+                            <td>{!! colorText($v['status'], '正常', '关闭') !!}</td>
                             <td>
-                                <a class="btn btn-sm btn-success" href="{{ route('ad.index', ['pid' => $v['id']]) }}">添加广告</a>
-                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data="{{ json_encode($v) }}" onclick="Edit1({{ $v['id'] }}, '{{ editURL('ad-place.update', $v['id']) }}')">编辑</button>
-                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('ad-place.destroy', $v['id']) }}')">删除</button>
+                                <a class="btn btn-sm btn-success" href="{{ route('admin.ad.index', ['pid' => $v['id']]) }}">添加广告</a>
+                                <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit1({{ $v['id'] }}, '{{ editURL('admin.ad-place.update', $v['id']) }}')">编辑</button>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.ad-place.destroy', $v['id']) }}')">删除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -70,7 +70,7 @@
     <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInDown">
-                <form action="{{ route('ad-place.store') }}" method="POST" class="form-horizontal">
+                <form action="{{ route('admin.ad-place.store') }}" method="POST" class="form-horizontal">
                     {!! csrf_field() !!}
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
