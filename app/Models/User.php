@@ -29,6 +29,7 @@ class User extends Authenticatable
         'gender',
         'client_id',
         'last_login_time',
+        'is_block',
     ];
 
     /**

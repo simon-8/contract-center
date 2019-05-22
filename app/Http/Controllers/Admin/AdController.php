@@ -2,7 +2,7 @@
 /**
  * Note: 广告管理
  * User: Liu
- * Date: 2018/3/12
+ * Date: 2018/11/12
  * Time: 21:50
  */
 namespace App\Http\Controllers\Admin;
@@ -23,10 +23,7 @@ class AdController extends Controller
     public function index(\Request $request, AdPlaceRepository $adPlaceRepository)
     {
         $adPlace = $adPlaceRepository->find($request::input('pid'));
-        $data = [
-            'adPlace' => $adPlace
-        ];
-        return admin_view('ad.index', $data);
+        return view('admin.ad.index', compact('adPlace'));
     }
 
     /**

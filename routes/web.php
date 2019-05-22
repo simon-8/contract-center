@@ -21,7 +21,10 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
         Route::get('/', 'IndexController@index')->name('index.index');
         Route::get('main', 'IndexController@main')->name('index.main');
 
+    Route::resource('ad', 'AdController');
+    Route::resource('ad-place', 'AdPlaceController');
     Route::resource('menu', 'MenuController');
+    Route::post('user/freeze/{user}', 'UserController@freeze')->name('user.freeze');
     Route::resource('user', 'UserController');
         // database
         Route::prefix('database')->group(function() {

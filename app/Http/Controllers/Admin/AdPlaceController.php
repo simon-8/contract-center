@@ -2,7 +2,7 @@
 /**
  * Note: 广告位
  * User: Liu
- * Date: 2018/6/19
+ * Date: 2018/11/19
  */
 namespace App\Http\Controllers\Admin;
 
@@ -22,10 +22,7 @@ class AdPlaceController extends Controller
     public function index(AdPlaceRepository $adPlaceRepository)
     {
         $lists = $adPlaceRepository->lists();
-        $data = [
-            'lists' => $lists
-        ];
-        return admin_view('ad_place.index', $data);
+        return view('admin.ad_place.index', compact('lists'));
     }
 
     /**

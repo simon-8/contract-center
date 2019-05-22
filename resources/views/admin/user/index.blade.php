@@ -48,7 +48,7 @@
                         <th>性别</th>
                         {{--<th>关注时间</th>--}}
                         <th>冻结</th>
-                        <th>创建时间</th>
+                        <th>注册时间</th>
                         <th>更新时间</th>
                         <th width="180">操作</th>
                     </tr>
@@ -61,17 +61,19 @@
                                 <td>{{ $v['username']?:'无' }}</td>
                                 <td>{{ $v['nickname'] }}</td>
                                 <td>{{ $v['mobile']?:'无' }}</td>
-                                <td>{{ $v['city'] }}</td>
-                                <td>{{ $v['province'] }}</td>
                                 <td>{{ $v['country'] }}</td>
+                                <td>{{ $v['province'] }}</td>
+                                <td>{{ $v['city'] }}</td>
                                 <td><img src="{{ $v['avatar'] }}" alt="" width="30"></td>
-                                <td>{{ $v['gender'] ? ($v['gender'] == 1 ? '男' : '女') : '未知' }}</td>
+                                <td>{!! $v['gender'] ? colorText($v['gender'] == 1, '男', '女') : '未知' !!}</td>
                                 {{--<td>{{ $v['subscribe_at'] }}</td>--}}
-                                <td>{{ $v['is_block'] ? '是' : '否' }}</td>
+                                <td>{!! colorText($v['is_block'], '是', '否') !!}</td>
                                 <td>{{ $v['created_at'] }}</td>
                                 <td>{{ $v['updated_at'] }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning freeze-user">冻结</button>
+                                    <button class="btn btn-sm {{ $v->is_block ? 'btn-primary' : 'btn-danger' }} freeze-user" onclick="freeze('{{ route('admin.user.freeze', ['id' => $v->id]) }}')">
+                                        {{ $v->is_block ? '解冻' : '冻结' }}
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
@@ -96,9 +98,31 @@
     {{--delete--}}
     @include('admin.modal.delete')
 
+    <div class="modal inmodal radius" id="freezeModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInDown">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">确认操作</h4>
+                    <small class="font-bold text-danger">删除的数据无法恢复。</small>
+                </div>
+                {{--<div class="modal-body">--}}
+                {{--<p>你开心就好。</p>--}}
+                {{--</div>--}}
+                <div class="modal-footer">
+                    <form action="" method="POST" onsubmit="return freezeSubmit();">
+                        {!! csrf_field() !!}
+                        <button type="button" class="btn btn-white radius" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary radius">确定</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
-    var created_at = laydate.render({
+
+    let created_at = laydate.render({
         elem: '#created_at',
         max: '{{ date('Y-m-d') }}',
         range: true,
@@ -118,6 +142,29 @@
         //    }
         //}
     });
-
+    let freezeModal = '#freezeModal';
+    function freeze(url, obj)
+    {
+        $(freezeModal).find('form').attr('action', url);
+        $(freezeModal).modal('show');
+        $(freezeModal).find('.text-danger').text($(obj).text());
+    }
+    function freezeSubmit()
+    {
+        let url = $(freezeModal).find('form').attr('action');
+        loading();
+        $.post(url, (res) => {
+            loading(true);
+            if (res.code) {
+                layer.alert(res.message);
+                return false;
+            }
+            $(freezeModal).modal('hide');
+            layer.msg(res.message, (res) => {
+                location.reload();
+            })
+        });
+        return false;
+    }
 </script>
 @endsection

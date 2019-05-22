@@ -83,8 +83,8 @@ function upload_base64_thumb($thumb)
 function imgurl($url = '')
 {
     if(empty($url)) {
-        //return skinPath() .'images/nopic.png';
-        return skinPath() .'images/debug.jpg';
+        return skinPath() .'images/nopic.png';
+        //return skinPath() .'images/debug.jpg';
     }
     $basePath = config('admin.cdnResourcePath') ?: config('app.url');
     return substr($url, 0, 4) === 'http' ? $url : $basePath . $url;
@@ -200,14 +200,13 @@ function array_search_value($val, $arr) {
 }
 
 /**
- * @param $message
+ * @param string $message
  * @param array $data
- * @param int $status
  * @return \Illuminate\Http\JsonResponse
  */
-function response_message($message, $data = [], $status = 0) {
+function response_message($message = '', $data = []) {
     return response()->json([
-        'status' => $status,
+        'code' => 0,
         'message' => $message,
         'data' => $data
     ], 200);
@@ -216,15 +215,14 @@ function response_message($message, $data = [], $status = 0) {
 /**
  * @param $message
  * @param array $data
- * @param int $status
  * @return \Illuminate\Http\JsonResponse
  */
-function response_exception($message, $data = [], $status = 422) {
+function response_exception($message, $data = []) {
     return response()->json([
-        'status' => 0,
+        'code' => 422,
         'message' => $message,
         'data' => $data
-    ], $status);
+    ], 200);
 }
 
 function editURL($route, $id, $name = 'id') {
@@ -326,4 +324,16 @@ function is_superadmin()
         }
     }
     return $is_superadmin;
+}
+
+/**
+ * 输出标签
+ * @param $condition
+ * @param $trueText
+ * @param $falseText
+ * @return string
+ */
+function colorText($condition, $trueText, $falseText = '')
+{
+    return '<span class="label lable-xs label-'. ($condition ? 'success' : 'danger') .' radius">'.($condition ? $trueText : $falseText).'</span>';
 }

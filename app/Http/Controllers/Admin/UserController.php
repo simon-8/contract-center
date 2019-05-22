@@ -25,4 +25,20 @@ class UserController extends BaseController
         $lists->appends($data);
         return view('admin.user.index', compact('lists', 'data'));
     }
+
+    /**
+     * 冻结/解冻用户
+     * @param \Request $request
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function freeze(\Request $request, User $user)
+    {
+        if (empty($user)) {
+            return response_exception(__('web.not_found'));
+        }
+        $user->is_block = intval(!$user->is_block);
+        $user->save();
+        return response_message(__('web.success'));
+    }
 }
