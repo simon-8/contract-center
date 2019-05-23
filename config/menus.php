@@ -19,7 +19,7 @@ return [
     'admin.ad.show' => '广告详情',
 
     'admin.database.index' => '数据管理',
-    'admin.log-viewer::dashboard' => '系统日志',
+    'log-viewer::dashboard' => '系统日志',
     //'database.fields' => '广告列表',
     //'database.repair' => '添加广告',
     //'database.optimize' => '新建广告',

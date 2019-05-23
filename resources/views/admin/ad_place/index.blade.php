@@ -1,6 +1,6 @@
 @extends('layout.admin')
 @section('content')
-<div class="col-sm-8 animated fadeInRight">
+<div class="col-sm-12 animated fadeInRight">
     <div class="ibox">
         <div class="ibox-title">
             <h5>广告位管理</h5>
