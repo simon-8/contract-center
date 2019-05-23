@@ -16,7 +16,7 @@
                     <td>状态</td>
                     <td width="120">操作</td>
                 </tr>
-                @if(count($lists))
+                @if($lists->count())
                     @foreach($lists as $k=>$v)
                         <tr>
                             {{--<td width="30"><input type="checkbox" name="" id="" class="i-checks"></td>--}}
@@ -33,8 +33,8 @@
                             {{--</td>--}}
                             <td>{!! colorText($v->status, '正常', '关闭') !!}</td>
                             <td>
-                                <a class="btn btn-sm btn-info" href="{{ editURL('roles.edit', $v->id) }}">编辑</a>
-                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('roles.destroy', $v->id) }}')">删除</button>
+                                <a class="btn btn-sm btn-info" href="{{ editURL('admin.roles.edit', $v->id) }}">编辑</a>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.roles.destroy', $v->id) }}')">删除</button>
                             </td>
                         </tr>
                     @endforeach
@@ -47,9 +47,9 @@
                 @endif
             </table>
             </div>
-            <a href="{{ route('roles.create') }}" class="btn btn-info">添加角色</a>
+            <a href="{{ route('admin.roles.create') }}" class="btn btn-info">添加角色</a>
             <div class="text-center">
-                @if(count($lists))
+                @if($lists->count())
                     {!! $lists->render() !!}
                 @endif
             </div>
@@ -70,4 +70,4 @@
 
 @include('admin.modal.delete')
 
-@endsection('content')
+@endsection

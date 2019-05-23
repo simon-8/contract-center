@@ -22,7 +22,7 @@
                     <td>最后一次登录IP</td>
                     <td width="120">操作</td>
                 </tr>
-                @empty(!$lists)
+                @if($lists->count())
                     @foreach($lists as $k=>$v)
                         <tr>
                             {{--<td width="30"><input type="checkbox" name="" id="" class="i-checks"></td>--}}
@@ -51,23 +51,23 @@
                             <td>{{ $v->lasttime ? $v->lasttime : '从未登录' }}</td>
                             <td>{{ $v->lastip ? $v->lastip : '从未登录' }}</td>
                             <td>
-                                <a class="btn btn-sm btn-info" href="{{ route('manager.edit', ['id' => $v->id]) }}">编辑</a>
-                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('manager.destroy', $v->id) }}')">删除</button>
+                                <a class="btn btn-sm btn-info" href="{{ route('admin.manager.edit', ['id' => $v->id]) }}">编辑</a>
+                                <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.manager.destroy', $v->id) }}')">删除</button>
                             </td>
                         </tr>
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="10">
+                        <td colspan="11">
                             暂无数据
                         </td>
                     </tr>
-                @endempty
+                @endif
             </table>
             </div>
-            <a href="{{ route('manager.create') }}" class="btn btn-info">添加管理员</a>
+            <a href="{{ route('admin.manager.create') }}" class="btn btn-info">添加管理员</a>
             <div class="text-center">
-                @if(count($lists))
+                @if($lists->count())
                     {!! $lists->render() !!}
                 @endif
             </div>
@@ -80,4 +80,4 @@
 
 @include('admin.modal.delete')
 
-@endsection('content')
+@endsection

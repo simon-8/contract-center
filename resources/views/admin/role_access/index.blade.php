@@ -51,8 +51,8 @@
                 @endif
             </table>
             </div>
-        <a class="btn btn-success" href="{{ route('role-access.create') }}">添加权限</a>
-            @if(count($lists))
+        <a class="btn btn-success" href="{{ route('admin.role-access.create') }}">添加权限</a>
+            @if($lists->count())
                 <div class="text-center">
                     {!! $lists->render() !!}
                 </div>
@@ -64,4 +64,4 @@
 {{--delete--}}
 @include('admin.modal.delete')
 
-@endsection('content')
+@endsection

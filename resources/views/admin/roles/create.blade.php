@@ -8,7 +8,7 @@
 </style>
 <div class="ibox float-e-margins">
 
-    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('roles.update', $id) : route('roles.store') }}" id="sform">
+    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('admin.roles.update', $id) : route('admin.roles.store') }}" id="sform">
         {!! csrf_field() !!}
         {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
         <div class="col-sm-12 col-md-6">
@@ -43,6 +43,7 @@
                                     </a>
                                 </h5>
                             </div>
+                            @if(!empty($name['child']))
                             <div id="" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <div class="checkbox">
@@ -56,6 +57,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </div>
                         @endforeach
                         {{--<div class="checkbox">--}}
@@ -104,4 +106,4 @@
     </form>
 </div>
 
-@endsection('content')
+@endsection

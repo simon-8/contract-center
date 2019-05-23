@@ -4,7 +4,7 @@
 
 <div class="ibox float-e-margins">
 
-    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('manager.update', $id) : route('manager.store') }}" id="sform">
+    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('admin.manager.update', $id) : route('admin.manager.store') }}" id="sform">
         {!! csrf_field() !!}
         {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
         <div class="col-sm-12 col-md-6">
@@ -107,58 +107,4 @@
 
 <!-- jQuery Validation plugin javascript-->
 {{--{!! jquery_validate_js() !!}--}}
-<script>
-
-    $(function(){
-{{--        {!! jquery_validate_default() !!}--}}
-        @if(isset($id))
-        //$("#sform").validate({
-        //    debug:false,
-        //    rules:{
-        //        username:{
-        //            required:true,
-        //            minlength:4,
-        //        },
-        //        email:{
-        //            required:true,
-        //            email:true,
-        //        },
-        //        truename:{
-        //            required:true,
-        //            minlength:2,
-        //        },
-        //    }
-        //});
-        @else
-        //$("#sform").validate({
-        //    debug:false,
-        //    rules:{
-        //        username:{
-        //            required:true,
-        //            minlength:4,
-        //        },
-        //        password:{
-        //            required:true,
-        //            minlength:4,
-        //        },
-        //        email:{
-        //            required:true,
-        //            email:true,
-        //        },
-        //        truename:{
-        //            required:true,
-        //            minlength:2,
-        //        },
-        //    }
-        //});
-        @endif
-
-        //$('[name=is_admin]').on('ifChecked', function(event) {
-        //    $(".role-div").hide(300);
-        //})
-        //$('[name=is_admin]').on('ifUnchecked', function(event) {
-        //    $(".role-div").show(300);
-        //})
-    });
-</script>
-@endsection('content')
+@endsection

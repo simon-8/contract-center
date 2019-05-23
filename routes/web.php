@@ -24,8 +24,13 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
     Route::resource('ad', 'AdController');
     Route::resource('ad-place', 'AdPlaceController');
     Route::resource('menu', 'MenuController');
+    Route::resource('manager', 'ManagerController');
+    Route::resource('roles', 'RolesController');
+    Route::resource('role-access', 'RoleAccessController');
+
     Route::post('user/freeze/{user}', 'UserController@freeze')->name('user.freeze');
     Route::resource('user', 'UserController');
+
         // database
         Route::prefix('database')->group(function() {
             Route::get('/', 'DatabaseController@getIndex')->name('database.index');

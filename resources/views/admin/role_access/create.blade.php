@@ -5,7 +5,7 @@
 
 <div class="ibox float-e-margins">
 
-    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('role-access.update', $id) : route('role-access.store') }}" id="sform">
+    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('admin.role-access.update', $id) : route('admin.role-access.store') }}" id="sform">
         {!! csrf_field() !!}
         {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
         <div class="col-sm-12 col-md-6">
@@ -33,8 +33,9 @@
                         <label class="col-sm-2 control-label">路由名称</label>
                         <div class="col-sm-10">
                             <select name="route" class="form-control">
+                                <option value="">请选择</option>
                                 @foreach($authService->getRoutes() as $route => $name)
-                                <option value="{{ $route }}">{{ $name }}</option>
+                                <option value="{{ $route }}" data="{{ $name }}">{{ $name }} - {{ $route }}</option>
                                 @endforeach
                             </select>
                             {{--<input name="route" list="routelist" type="text" class="form-control" value="{{ $route ?? old('route') }}">--}}
@@ -60,4 +61,12 @@
         </div>
     </form>
 </div>
-@endsection('content')
+<script>
+    $(function() {
+        $("form [name='route']").change(function() {
+            let txt = $(this).find("option:selected").attr('data');
+            $(this).closest('form').find("[name='name']").val(txt);
+        });
+    });
+</script>
+@endsection
