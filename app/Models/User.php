@@ -64,7 +64,6 @@ class User extends Authenticatable
             $start = date('Y-m-d', strtotime($data));
             $end = date('Y-m-d', strtotime($start) + 86400);
         }
-        imagecopyresampled();
         return $query->where('created_at', '>=', $start)->where('created_at', '<', $end);
     }
 

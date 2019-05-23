@@ -63,7 +63,7 @@ class RolesController extends Controller
      * @param RoleAccess $roleAccess
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Roles $roles, RoleAccess $roleAccess)
+    public function edit(RoleAccess $roleAccess, Roles $roles)
     {
         $accessLists = $roleAccess->accessLists();
         $roles['accessLists'] = $accessLists;
