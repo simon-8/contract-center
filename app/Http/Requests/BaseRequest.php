@@ -2,7 +2,7 @@
 /**
  * Note: 验证基类
  * User: Liu
- * Date: 2018/6/18
+ * Date: 2018/11/02
  * Time: 21:01
  */
 namespace App\Http\Requests;
@@ -15,16 +15,17 @@ class BaseRequest extends FormRequest
      * 校验数据
      * @param array $data
      * @param array $rules
-     * @return $this|bool|\Illuminate\Http\JsonResponse
+     * @return array|bool|\Illuminate\Http\JsonResponse
      */
     protected function check(array $data, array $rules)
     {
         $validator = \Validator::make($data, $rules);
-        if ($validator->failed()) {
-            if (\Request::ajax()) {
-                return response_exception($validator->errors()->first());
+        if ($validator->fails()) {
+            if (\Request::ajax() || substr(\Request::path(), 0, 3) === 'api') {
+                response_exception($validator->errors()->first());
+                exit();
             } else {
-                return back()->withErrors($validator->errors())->withInput();
+                return $validator->validate();
             }
         }
         return true;

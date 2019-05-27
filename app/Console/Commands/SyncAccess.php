@@ -23,7 +23,7 @@ class SyncAccess extends Command
      *
      * @var string
      */
-    protected $description = 'sync cn/routes.php to role_access table';
+    protected $description = 'sync config/menus.php to role_access table';
 
     /**
      * Create a new command instance.
@@ -50,14 +50,19 @@ class SyncAccess extends Command
                 }
             }
         }
-
+        if ($routes) {
+            $roleAccess->truncate();
+            $this->line('Access表已清空');
+        }
+        $data = [];
         foreach ($routes as $route => $name) {
-            $data = [
+            $data[] = [
                 'name' => $name,
                 'route' => $route
             ];
-            $roleAccess->create($data);
+
         }
+        $roleAccess->insert($data);
         $this->line('Access表更新成功');
     }
 }

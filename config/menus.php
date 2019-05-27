@@ -45,12 +45,12 @@ return [
     'admin.manager.destroy' => '删除管理员',
     'admin.manager.show' => '管理员详情',
 
-    'admin.roles.*' => '角色管理',
-    'admin.roles.index' => '角色列表',
-    'admin.roles.create' => '添加角色',
-    'admin.roles.edit' => '编辑角色',
-    'admin.roles.destroy' => '删除角色',
-    'admin.roles.show' => '角色详情',
+    'admin.role.*' => '角色管理',
+    'admin.role.index' => '角色列表',
+    'admin.role.create' => '添加角色',
+    'admin.role.edit' => '编辑角色',
+    'admin.role.destroy' => '删除角色',
+    'admin.role.show' => '角色详情',
 
     'admin.role-access.*' => '权限管理',
     'admin.role-access.index' => '权限列表',

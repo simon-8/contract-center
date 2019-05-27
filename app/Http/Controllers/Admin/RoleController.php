@@ -8,24 +8,22 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\RolesRequest;
+use App\Http\Requests\RoleRequest;
 use App\Models\RoleAccess;
-use App\Models\Roles;
-use App\Repositories\RolesRepository;
-use App\Repositories\RoleAccessRepository;
+use App\Models\Role;
 use App\Services\ModelService;
 
-class RolesController extends Controller
+class RoleController extends Controller
 {
     /**
      * 列表
-     * @param Roles $roles
+     * @param Role $role
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Roles $roles)
+    public function index(Role $role)
     {
-        $lists = $roles->paginate(ModelService::$pagesize);
-        return view('admin.roles.index' , compact('lists'));
+        $lists = $role->paginate(ModelService::$pagesize);
+        return view('admin.role.index' , compact('lists'));
     }
 
     /**
@@ -36,69 +34,69 @@ class RolesController extends Controller
     public function create(RoleAccess $roleAccess)
     {
         $accessLists = $roleAccess->accessLists();
-        return view('admin.roles.create', compact('accessLists'));
+        return view('admin.role.create', compact('accessLists'));
     }
 
     /**
      * 新增
-     * @param RolesRequest $request
-     * @param Roles $roles
+     * @param RoleRequest $request
+     * @param Role $role
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function store(RolesRequest $request, Roles $roles)
+    public function store(RoleRequest $request, Role $role)
     {
         $data = $request->all();
         $request->validateCreate($data);
 
-        if (!$roles->create($data)) {
+        if (!$role->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.roles.index')->with('message' , __('web.success'));
+        return redirect()->route('admin.role.index')->with('message' , __('web.success'));
     }
 
     /**
      * 编辑
-     * @param Roles $roles
+     * @param Role $role
      * @param RoleAccess $roleAccess
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(RoleAccess $roleAccess, Roles $roles)
+    public function edit(RoleAccess $roleAccess, Role $role)
     {
         $accessLists = $roleAccess->accessLists();
-        $roles['accessLists'] = $accessLists;
-        return view('admin.roles.create', $roles);
+        $role['accessLists'] = $accessLists;
+        return view('admin.role.create', $role);
     }
 
     /**
      * 更新
-     * @param RolesRequest $request
-     * @param Roles $roles
+     * @param RoleRequest $request
+     * @param Role $role
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function update(RolesRequest $request, Roles $roles)
+    public function update(RoleRequest $request, Role $role)
     {
         $data = $request->all();
         $request->validateUpdate($data);
 
-        if (!$roles->update($data)) {
+        if (!$role->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.roles.index')->with('message' , __('web.success'));
+        return redirect()->route('admin.role.index')->with('message' , __('web.success'));
     }
 
     /**
      * 删除
-     * @param Roles $roles
+     * @param Role $role
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy(Roles $roles)
+    public function destroy(Role $role)
     {
-        if (!$roles->delete()) {
+        if (!$role->delete()) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.roles.index')->with('message' , __('web.success'));
+        return redirect()->route('admin.role.index')->with('message' , __('web.success'));
     }
 }

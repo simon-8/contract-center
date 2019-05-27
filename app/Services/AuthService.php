@@ -20,13 +20,13 @@ class AuthService
     public function getIgnorePermissionGroups()
     {
         return [
-            'login',
-            'logout',
-            'index',
-            'log-viewer',
-            'horizon',
-            'database',
-            'ajax',
+            'admin.login',
+            'admin.logout',
+            'admin.index',
+            //'log-viewer',
+            //'horizon',
+            //'database',
+            'admin.ajax',
         ];
     }
 

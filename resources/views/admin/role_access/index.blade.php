@@ -10,36 +10,15 @@
             <table class="table table-bordered table-striped table-hover text-nowrap bg-white text-center">
                 <tr>
                     <td width="50">编号</td>
-                    {{--<td>上级权限</td>--}}
                     <td width="150">权限名称</td>
-                    {{--<td>请求类型</td>--}}
                     <td>路由地址</td>
-                    {{--<td width="180">操作</td>--}}
                 </tr>
-                @if(isset($lists) && count($lists) > 0)
+                @if($lists->count())
                     @foreach($lists as $v)
                         <tr>
                             <td>{{ $v['id'] }}</td>
-                            {{--<td></td>--}}
                             <td>{{ $v['name'] }}</td>
-                            {{--<td>--}}
-                                {{--@if ($v['method'])--}}
-                                    {{--@foreach ($v['method'] as $vm)--}}
-                                    {{--<span class="label label-primary">--}}
-                                        {{--{{ $vm }}--}}
-                                    {{--</span>&nbsp;--}}
-                                    {{--@endforeach--}}
-                                {{--@else--}}
-                                    {{--<span class="label label-primary">--}}
-                                        {{--ALL--}}
-                                    {{--</span>--}}
-                                {{--@endif--}}
-                            {{--</td>--}}
                             <td>{{ $v['route'] }}</td>
-                            {{--<td>--}}
-                                {{--<a class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" href="{{ editURL('role-access.edit', $v['id']) }}">编辑</a>--}}
-                                {{--<button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('role-access.destroy', $v['id']) }}')">删除</button>--}}
-                            {{--</td>--}}
                         </tr>
                     @endforeach
                 @else
@@ -51,7 +30,7 @@
                 @endif
             </table>
             </div>
-        <a class="btn btn-success" href="{{ route('admin.role-access.create') }}">添加权限</a>
+{{--        <a class="btn btn-success" href="{{ route('admin.role-access.create') }}">添加权限</a>--}}
             @if($lists->count())
                 <div class="text-center">
                     {!! $lists->render() !!}

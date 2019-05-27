@@ -25,7 +25,7 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
     Route::resource('ad-place', 'AdPlaceController');
     Route::resource('menu', 'MenuController');
     Route::resource('manager', 'ManagerController');
-    Route::resource('roles', 'RolesController');
+    Route::resource('role', 'RoleController');
     Route::resource('role-access', 'RoleAccessController');
 
     Route::post('user/freeze/{user}', 'UserController@freeze')->name('user.freeze');
