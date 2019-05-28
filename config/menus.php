@@ -76,4 +76,11 @@ return [
     'admin.contract.edit' => '编辑合同',
     'admin.contract.destroy' => '删除合同',
     'admin.contract.show' => '合同详情',
+
+    'admin.contract-template.*' => '合同模板管理',
+    'admin.contract-template.index' => '合同模板列表',
+    'admin.contract-template.create' => '添加合同模板',
+    'admin.contract-template.edit' => '编辑合同模板',
+    'admin.contract-template.destroy' => '删除合同模板',
+    'admin.contract-template.show' => '合同模板详情',
 ];

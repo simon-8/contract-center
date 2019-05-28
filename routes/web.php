@@ -30,6 +30,8 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
 
     Route::post('user/freeze/{user}', 'UserController@freeze')->name('user.freeze');
     Route::resource('user', 'UserController');
+    Route::resource('contract', 'ContractController');
+    Route::resource('contract-template', 'ContractTemplateController');
 
         // database
         Route::prefix('database')->group(function() {
