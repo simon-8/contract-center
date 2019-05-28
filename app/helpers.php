@@ -315,15 +315,10 @@ function ConverTimeToDHMS($seconds)
  */
 function is_superadmin()
 {
-    $is_superadmin = false;
+    // todo 账号体系完成后改掉
+    return true;
     $roles = auth('admin')->user()->role;
-    foreach ($roles as $role) {
-        if ($role == 1) {
-            $is_superadmin = true;
-            continue;
-        }
-    }
-    return $is_superadmin;
+    return array_search($roles, 1) !== false;
 }
 
 /**

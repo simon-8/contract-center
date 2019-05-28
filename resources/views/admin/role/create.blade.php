@@ -8,7 +8,7 @@
 </style>
 <div class="ibox float-e-margins">
 
-    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('admin.roles.update', $id) : route('admin.roles.store') }}" id="sform">
+    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('admin.role.update', $id) : route('admin.role.store') }}" id="sform">
         {!! csrf_field() !!}
         {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
         <div class="col-sm-12 col-md-6">
@@ -35,30 +35,30 @@
                     <label class="col-sm-2 control-label">拥有权限</label>
                     <div class="col-sm-10">
                         @foreach($accessLists as $route => $name)
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h5 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="">
-                                        {{ $name['name'] }}
-                                    </a>
-                                </h5>
-                            </div>
-                            @if(!empty($name['child']))
-                            <div id="" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    <div class="checkbox">
-                                    @foreach($name['child'] as $child)
-                                        <div class="col-sm-3">
-                                            <label>
-                                                <input type="checkbox" class="i-checks" name="access[]" value="{{ $child['id'] }}" {{ (isset($access) && in_array($child['id'], $access)) ? 'checked' : '' }}>{{ $child['name'] }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                    </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="">
+                                            {{ $name['name'] }}
+                                        </a>
+                                    </h5>
                                 </div>
+                                @if (!empty($name['child']))
+                                    <div id="" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div class="checkbox">
+                                                @foreach($name['child'] as $child)
+                                                    <div class="col-sm-3">
+                                                        <label>
+                                                            <input type="checkbox" class="i-checks" name="access[]" value="{{ $child['id'] }}" {{ (isset($access) && in_array($child['id'], $access)) ? 'checked' : '' }}>{{ $child['name'] }}
+                                                        </label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
-                            @endif
-                        </div>
                         @endforeach
                         {{--<div class="checkbox">--}}
                         {{--@foreach($accessLists as $route => $name)--}}

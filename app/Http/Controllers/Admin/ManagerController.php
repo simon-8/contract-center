@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
 use App\Http\Requests\ManagerRequest;
+use App\Services\AuthService;
 use App\Services\ModelService;
 
 class ManagerController extends BaseController
@@ -26,11 +27,13 @@ class ManagerController extends BaseController
 
     /**
      * 创建
+     * @param AuthService $authService
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(AuthService $authService)
     {
-        return view('admin.manager.create');
+        $roles = $authService->getRoles();
+        return view('admin.manager.create', compact('roles'));
     }
 
     /**
@@ -54,12 +57,14 @@ class ManagerController extends BaseController
 
     /**
      * 编辑
+     * @param AuthService $authService
      * @param Manager $manager
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Manager $manager)
+    public function edit(AuthService $authService, Manager $manager)
     {
-        return view('admin.manager.create', $manager);
+        $roles = $authService->getRoles();
+        return view('admin.manager.create', compact('manager', 'roles'));
     }
 
     /**

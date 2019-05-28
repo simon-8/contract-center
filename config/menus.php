@@ -69,4 +69,11 @@ return [
     'admin.single-page.edit' => '编辑单页',
     'admin.single-page.destroy' => '删除单页',
     'admin.single-page.show' => '单页详情',
+
+    'admin.contract.*' => '合同管理',
+    'admin.contract.index' => '合同列表',
+    'admin.contract.create' => '添加合同',
+    'admin.contract.edit' => '编辑合同',
+    'admin.contract.destroy' => '删除合同',
+    'admin.contract.show' => '合同详情',
 ];

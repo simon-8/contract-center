@@ -4,14 +4,14 @@
 
 <div class="ibox float-e-margins">
 
-    <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('admin.manager.update', $id) : route('admin.manager.store') }}" id="sform">
+    <form method="post" class="form-horizontal" action="{{ isset($manager->id) ? editURL('admin.manager.update', $manager->id) : route('admin.manager.store') }}" id="sform">
         {!! csrf_field() !!}
-        {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
+        {!! method_field(isset($manager->id) ? 'PUT' : 'POST') !!}
         <div class="col-sm-12 col-md-6">
             <div class="ibox-title">
-                @if(isset($id))
+                @if(isset($manager->id))
                     <h5>编辑用户</h5>
-                    <input type="hidden" name="id" value="{{ $id }}">
+                    <input type="hidden" name="id" value="{{ $manager->id }}">
                 @else
                     <h5>添加用户</h5>
                 @endif
@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">用户名</label>
                     <div class="col-sm-10">
-                        <input id="username" type="text" class="form-control" name="username" value="{{ $username ?? old('username') }}">
+                        <input id="username" type="text" class="form-control" name="username" value="{{ $manager->username ?? old('username') }}">
                         <span class="help-block m-b-none">用户用来登录的账户名称</span>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">真实姓名</label>
                     <div class="col-sm-10">
-                        <input id="truename" type="text" class="form-control" name="truename" value="{{ $truename ?? old('truename') }}">
+                        <input id="truename" type="text" class="form-control" name="truename" value="{{ $manager->truename ?? old('truename') }}">
                         <span class="help-block m-b-none">用于登录后显示的昵称</span>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">邮箱</label>
                     <div class="col-sm-10">
-                        <input id="email" type="text" class="form-control" name="email" value="{{ $email ?? old('email') }}">
+                        <input id="email" type="text" class="form-control" name="email" value="{{ $manager->email ?? old('email') }}">
                         <span class="help-block m-b-none">便于邮件推送系统消息</span>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                             @if (!empty($roles))
                             @foreach($roles as $r)
                                 <label>
-                                    <input type="checkbox" class="i-checks" name="role[]" value="{{ $r['id'] }}" {{ !empty($role) && in_array($r['id'], $role) ? 'checked' : '' }}>{{ $r['name'] }}
+                                    <input type="checkbox" class="i-checks" name="role[]" value="{{ $r['id'] }}" {{ !empty($manager->role) && in_array($r['id'], $manager->role) ? 'checked' : '' }}>{{ $r['name'] }}
                                 </label>
                             @endforeach
                             @endif
@@ -94,8 +94,8 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">头像设置</label>
                     <div class="col-sm-10">
-                        <img src="{{ imgurl($avatar ?? old('avatar')) }}" id="pavatar" class="bg-warning" style="width: 100px; height: 100px;">
-                        <input type="hidden" id="avatar" name="avatar" value="{{ $avatar ?? old('avatar') }}">
+                        <img src="{{ imgurl($manager->avatar ?? old('avatar')) }}" id="pavatar" class="bg-warning" style="width: 100px; height: 100px;">
+                        <input type="hidden" id="avatar" name="avatar" value="{{ $manager->avatar ?? old('avatar') }}">
                         <button class="btn btn-lg" type="button" onclick="Sthumb('avatar', 100, 100);" style="height: 100px; margin-bottom: 0;">上传</button>
                     </div>
                 </div>

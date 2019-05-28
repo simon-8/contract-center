@@ -38,15 +38,15 @@
                             <td>{{ $v->truename }}</td>
                             <td>{{ $v->email ?: '无' }}</td>
                             <td>
-                                {{--@if (count($v->role))--}}
-                                    {{--@foreach ($v->roles as $vm)--}}
-                                        {{--<span class="label label-primary">--}}
-                                        {{--{{ $vm['name'] }}--}}
-                                    {{--</span>&nbsp;--}}
-                                    {{--@endforeach--}}
-                                {{--@endif--}}
+                                @if (count($v->role))
+                                    @foreach ($v->roles as $vm)
+                                        <span class="label label-primary">
+                                        {{ $vm['name'] }}
+                                    </span>&nbsp;
+                                    @endforeach
+                                @endif
                             </td>
-                            <td>{{ $v->is_admin ? '是' : '否' }}</td>
+                            <td>{!! colorText(is_superadmin(), '是', '否') !!}</td>
                             <td>{{ $v->created_at }}</td>
                             <td>{{ $v->lasttime ? $v->lasttime : '从未登录' }}</td>
                             <td>{{ $v->lastip ? $v->lastip : '从未登录' }}</td>

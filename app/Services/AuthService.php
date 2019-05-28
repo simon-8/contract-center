@@ -7,6 +7,7 @@
  */
 namespace App\Services;
 //use App\Models\RoleAccess;
+use App\Models\Role;
 use App\Models\User;
 
 class AuthService
@@ -45,6 +46,11 @@ class AuthService
     //        'admin.merchant.index'
     //    ];
     //}
+
+    public function getRoles()
+    {
+        return Role::where('status', 1)->get()->all();
+    }
 
     /**
      * 获取路由

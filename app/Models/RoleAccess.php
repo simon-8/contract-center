@@ -27,15 +27,26 @@ class RoleAccess extends Model
         $accessLists = $this->all()->toArray();
         $data = [];
         foreach ($accessLists as $k => $access) {
+            if ($access['route'] === '*') {
+                $data['god']['name'] = $access['name'];
+                //unset($accessLists[$k]);
+                continue;
+            }
             if (\Str::contains($access['route'], '*')) {
-                $prefix = substr($access['route'], 0, strpos($access['route'], '.')+1);
+                $route = str_replace('admin.', '', $access['route']);
+                $prefix = substr($route, 0, strpos($route, '.')+1);
                 $data[$prefix]['name'] = $access['name'];
                 unset($accessLists[$k]);
             }
         }
         foreach ($data as $prefix => $name) {
             foreach ($accessLists as $access) {
-                if (\Str::startsWith($access['route'], $prefix)) {
+                if ($access['route'] === '*' && $prefix === 'god') {
+                    $data[$prefix]['child'][$access['id']] = $access;
+                    continue;
+                }
+                $route = str_replace('admin.', '', $access['route']);
+                if (\Str::startsWith($route, $prefix)) {
                     $data[$prefix]['child'][$access['id']] = $access;
                 }
             }

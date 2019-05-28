@@ -55,6 +55,10 @@ class SyncAccess extends Command
             $this->line('Access表已清空');
         }
         $data = [];
+        $data[] = [
+            'name' => '所有权限',
+            'route' => '*'
+        ];
         foreach ($routes as $route => $name) {
             $data[] = [
                 'name' => $name,

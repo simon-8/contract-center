@@ -31,6 +31,16 @@ class Manager extends Authenticatable
         'remember_token',
     ];
 
+    public function getRoleAttribute($value)
+    {
+        return $value ? explode(',', $value) : [];
+    }
+
+    public function setRoleAttribute($value)
+    {
+        $this->attributes['role'] = $value ? implode(',', $value) : '';
+    }
+
     /**
      * @param $value
      */
@@ -53,7 +63,7 @@ class Manager extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany('App\Models\Roles', 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany('App\Models\Role', 'role_user', 'user_id', 'role_id');
     }
 
 }

@@ -175,6 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // 模型服务
+        App\Providers\ModelObserverProvider::class,
     ],
 
     /*
