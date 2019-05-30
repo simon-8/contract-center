@@ -154,8 +154,8 @@ function seditor($content = '' , $name = 'content', $extends = '')
         return $str;
     } else if ($editor == 'ueditor') {
         $str .= "<script id='content' type='text/plain' style='width:100%;height:500px;' name='{$name}' {$extends}>" . $content . "</script>";
-        $str .= "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.config.js'></script>";
-        $str .= "<script type='text/javascript' src='/manage/plugins/editor/ueditor/ueditor.all.js'></script>";
+        $str .= "<script type='text/javascript' src='".skinPath()."js/plugins/editor/ueditor/ueditor.config.js'></script>";
+        $str .= "<script type='text/javascript' src='".skinPath()."js/plugins/editor/ueditor/ueditor.all.js'></script>";
         $str .= "<script type='text/javascript'> var ue = UE.getEditor('{$name}',{elementPathEnabled:false,contextMenu:[],enableAutoSave: false,saveInterval:500000});</script>";
         return $str;
 

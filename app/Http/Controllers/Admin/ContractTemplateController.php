@@ -2,84 +2,89 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ContractTemplate;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ContractTemplateController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param \Request $request
+     * @param ContractTemplate $contractTemplate
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(\Request $request, ContractTemplate $contractTemplate)
     {
-        //
+        $data = $request::only(['created_at', 'content', 'catid', 'typeid']);
+        $lists = $contractTemplate->ofCatid($data['catid'] ?? 0)
+            ->ofTypeid($data['typeid'] ?? 0)
+            ->ofCreatedAt($data['created_at'] ?? '')
+            ->ofContent($data['content'] ?? '')
+            ->paginate();
+        return view('admin.contract_template.index', compact('lists', 'data'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
-        //
+        return view('admin.contract_template.create');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Request $request
+     * @param ContractTemplate $contractTemplate
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(\Request $request, ContractTemplate $contractTemplate)
     {
-        //
+        $data = $request::all();
+        //$data['avatar'] = upload_base64_thumb($data['avatar']);
+        //$request->validateCreate($data);
+
+        if (!$contractTemplate->create($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
+        }
+
+        return redirect()->route('admin.contract-template.index')->with('message', __('web.success'));
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ContractTemplate $contractTemplate
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($id)
+    public function edit(ContractTemplate $contractTemplate)
     {
-        //
+        return view('admin.contract_template.create', compact('contractTemplate'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param ContractTemplate $contractTemplate
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function edit($id)
+    public function update(\Request $request, ContractTemplate $contractTemplate)
     {
-        //
+        $data = $request::all();
+
+        if (!$contractTemplate->update($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
+        }
+
+        return redirect()->route('admin.contract-template.index')->with('message', __('web.success'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ContractTemplate $contractTemplate
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
-    public function update(Request $request, $id)
+    public function destroy(ContractTemplate $contractTemplate)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if (!$contractTemplate->delete()) {
+            return back()->withErrors(__('web.failed'));
+        }
+        return redirect()->route('admin.contract-template.index')->with('message', __('web.success'));
     }
 }

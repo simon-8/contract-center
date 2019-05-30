@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContractTplFirstTable extends Migration
+class CreateContractTemplateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateContractTplFirstTable extends Migration
      */
     public function up()
     {
-        Schema::create('contract_tpl_first', function (Blueprint $table) {
+        Schema::create('contract_template', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedTinyInteger('catid')->default(0)->comment('分类ID');
+            $table->unsignedSmallInteger('catid')->default(0)->comment('分类ID');
+            $table->unsignedTinyInteger('typeid')->default(0)->comment('类型');
             $table->string('content')->default('')->comment('内容');
             $table->unsignedTinyInteger('listorder')->default(0)->comment('排序');
             $table->timestamps();
@@ -29,6 +30,6 @@ class CreateContractTplFirstTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contract_tpl_first');
+        Schema::dropIfExists('contract_template');
     }
 }
