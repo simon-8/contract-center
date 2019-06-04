@@ -16,9 +16,10 @@ class CreateSinglePageTable extends Migration
         Schema::create('single_page', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('catid')->comment('分类ID')->default(0);
-            $table->string('title')->comment('标题');
-            $table->string('thumb')->comment('标题图片');
-            $table->string('username')->comment('发布人');
+            $table->string('title')->default('')->comment('标题');
+            $table->string('thumb')->default('')->comment('标题图片');
+            $table->longText('content')->comment('内容');
+            $table->unsignedInteger('adminid')->default(0)->comment('发布人');
             $table->unsignedInteger('comment')->comment('评论数量')->default(0);
             $table->unsignedInteger('zan')->comment('赞数量')->default(0);
             $table->unsignedBigInteger('hits')->comment('点击量')->default(0);

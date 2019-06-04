@@ -20,6 +20,7 @@ class RoleAccess extends Model
     ];
 
     /**
+     *
      * @return array
      */
     public function accessLists()
@@ -28,13 +29,14 @@ class RoleAccess extends Model
         $data = [];
         foreach ($accessLists as $k => $access) {
             if ($access['route'] === '*') {
+                $data['god']['id'] = $access['id'];
                 $data['god']['name'] = $access['name'];
-                //unset($accessLists[$k]);
                 continue;
             }
             if (\Str::contains($access['route'], '*')) {
                 $route = str_replace('admin.', '', $access['route']);
                 $prefix = substr($route, 0, strpos($route, '.')+1);
+                $data[$prefix]['id'] = $access['id'];
                 $data[$prefix]['name'] = $access['name'];
                 unset($accessLists[$k]);
             }
@@ -49,6 +51,51 @@ class RoleAccess extends Model
                 if (\Str::startsWith($route, $prefix)) {
                     $data[$prefix]['child'][$access['id']] = $access;
                 }
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * 移除无用子元素
+     * 前台传递时可能将父权限+子权限一起传递过来, 需要移除
+     * @param $data
+     * @return array
+     */
+    public function makeAccess($data)
+    {
+        $parents = $childs = [];
+        $accessLists = $this->all();
+        foreach ($accessLists as $k => $access) {
+            if ($access['route'] === '*') {
+                $parents['god'] = $access['id'];
+                continue;
+            }
+            // 拆分路由前缀
+            $prefix = substr($access['route'], 0, strpos($access['route'], '.'));
+            if (strpos($access['route'], '*') !== false) {
+                $parents[$prefix] = $access['id'];
+            } else {
+                if ($prefix) {
+                    $parentid = $parents[$prefix] ?? $access['id'];
+                    $childs[$parentid][] = $access['id'];
+                } else {
+                    $childs[$access['id']][] = $access['id'];
+                }
+            }
+        }
+        // 超级权限
+        if (in_array($parents['god'], $data)) {
+            $data = [1];
+            return $data;
+        }
+
+        // 查找无用子元素
+        $myParents = array_intersect(array_values($parents), $data);
+        foreach ($myParents as $parentRoute => $parentId) {
+            if (!empty($childs[$parentId])) {
+                // 移除已有父元素的子元素
+                $data = array_diff($data, array_values($childs[$parentId]));
             }
         }
         return $data;

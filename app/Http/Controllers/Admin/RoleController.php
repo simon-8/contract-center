@@ -40,14 +40,19 @@ class RoleController extends Controller
     /**
      * 新增
      * @param RoleRequest $request
+     * @param RoleAccess $roleAccess
      * @param Role $role
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function store(RoleRequest $request, Role $role)
+    public function store(RoleRequest $request, RoleAccess $roleAccess, Role $role)
     {
         $data = $request->all();
         $request->validateCreate($data);
+        $data['status'] = $data['status'] ?? 0;
+
+        // 处理无用access
+        $data['access'] = $roleAccess->makeAccess($data['access']);
 
         if (!$role->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
@@ -71,14 +76,19 @@ class RoleController extends Controller
     /**
      * 更新
      * @param RoleRequest $request
+     * @param RoleAccess $roleAccess
      * @param Role $role
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function update(RoleRequest $request, Role $role)
+    public function update(RoleRequest $request, RoleAccess $roleAccess, Role $role)
     {
         $data = $request->all();
         $request->validateUpdate($data);
+        $data['status'] = $data['status'] ?? 0;
+
+        // 处理无用access
+        $data['access'] = $roleAccess->makeAccess($data['access']);
 
         if (!$role->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();

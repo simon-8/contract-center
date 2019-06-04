@@ -87,7 +87,7 @@ class MenusTableSeeder extends Seeder
             array (
                 'id' => 9,
                 'pid' => 6,
-                'name' => '广告管理',
+                'name' => '广告位管理',
                 'route' => 'admin.ad-place.index',
                 'link' => '',
                 'icon' => '',
@@ -132,7 +132,7 @@ class MenusTableSeeder extends Seeder
                 'id' => 17,
                 'pid' => 0,
                 'name' => '单页管理',
-                'route' => 'admin.single.index',
+                'route' => 'admin.single-page.*',
                 'link' => '',
                 'icon' => 'fa fa-newspaper-o',
                 'listorder' => 93,

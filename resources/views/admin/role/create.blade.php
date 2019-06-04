@@ -38,9 +38,14 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h5 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="">
-                                            {{ $name['name'] }}
-                                        </a>
+                                        <div class="check-box">
+                                            <label>
+                                                <input type="checkbox" class="i-checks selectAll" name="access[]" value="{{ $name['id'] }}"{{ (isset($access) && in_array($name['id'], $access)) ? 'checked' : '' }}>{{ $name['name'] }}
+                                            </label>
+                                        </div>
+{{--                                        <a data-toggle="collapse" data-parent="#accordion" href="">--}}
+{{--                                            {{ $name['name'] }}--}}
+{{--                                        </a>--}}
                                     </h5>
                                 </div>
                                 @if (!empty($name['child']))
@@ -60,22 +65,6 @@
                                 @endif
                             </div>
                         @endforeach
-                        {{--<div class="checkbox">--}}
-                        {{--@foreach($accessLists as $route => $name)--}}
-                            {{--<div class="col-sm-12">--}}
-                                {{--<label>--}}
-                                    {{--{{ $name['name'] }}--}}
-                                {{--</label>--}}
-                            {{--</div>--}}
-                            {{--@foreach($name['child'] as $child)--}}
-                            {{--<div class="col-sm-3">--}}
-                                {{--<label>--}}
-                                    {{--<input type="checkbox" class="i-checks" name="access[]" value="{{ $child['id'] }}" {{ (isset($access) && in_array($child['id'], $access)) ? 'checked' : '' }}>{{ $child['name'] }}--}}
-                                {{--</label>--}}
-                            {{--</div>--}}
-                            {{--@endforeach--}}
-                        {{--@endforeach--}}
-                        {{--</div>--}}
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
@@ -106,4 +95,22 @@
     </form>
 </div>
 
+<script>
+    $(function() {
+        // 进入后默认选中
+        $(".selectAll").each(function() {
+            if ($(this).attr('checked')) {
+                $(this).closest('.panel').find('.panel-body').hide();
+            }
+        });
+        $(".selectAll").on('ifChecked', function(event){
+            $(this).closest('.panel').find('.panel-body').slideToggle();
+            $(this).closest('.panel').find('.panel-body [type=checkbox]').iCheck('uncheck');
+        });
+        $(".selectAll").on('ifUnchecked', function(event){
+            //$(this).closest('.panel').find('.panel-body [type=checkbox]').iCheck('uncheck');
+            $(this).closest('.panel').find('.panel-body').slideToggle();
+        });
+    })
+</script>
 @endsection

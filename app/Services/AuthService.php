@@ -7,6 +7,8 @@
  */
 namespace App\Services;
 //use App\Models\RoleAccess;
+use App\Models\Manager;
+use App\Models\Menu;
 use App\Models\Role;
 use App\Models\User;
 
@@ -70,6 +72,106 @@ class AuthService
             }
         }
         return $routes;
+    }
+
+    /**
+     * 权限检查
+     * @param $user
+     * @return bool
+     */
+    public function checkPermission(Manager $user)
+    {
+        $routes = [];
+        foreach ($user->roles as $role) {
+            $routes = array_merge($routes, $role->roleAccess->pluck('route')->all());
+        }
+
+        if (array_search('*', $routes) !== false) {
+            return true;
+        }
+        $currentRoute = \Route::currentRouteName();
+
+        $continue = false;
+        foreach ($routes as $route) {
+            // 精确路由
+            if (strpos($route, '.') !== false) {
+                if (\Str::startsWith($currentRoute, $route)) {
+                    $continue = true;
+                    break;
+                }
+            } else {
+                if (\Str::startsWith($currentRoute, $route .'.')) {
+                    $continue = true;
+                    break;
+                }
+            }
+        }
+        return $continue;
+    }
+
+    /**
+     * 获取菜单
+     * @return array
+     */
+    public function getMenus()
+    {
+        $user = \Request::user('admin');
+        $menus = (new Menu())->getMenus();
+
+        $routes = $myMenus = [];
+        foreach ($user->roles as $role) {
+            $routes = array_merge($routes, $role->roleAccess->pluck('route')->all());
+        }
+        if (array_search('*', $routes) !== false) {
+            return $menus;
+        }
+//dd($menus, $routes);
+        foreach ($menus as $k => $menu) {
+            // 路由权限判断
+            if (empty($menu['child'])) {
+                if ($menu['route']) {
+                    // 拥有*权限
+                    $prefix = substr($menu['route'], 0, strrpos($menu['route'], '.'));
+                    if ($prefix && array_search_value($prefix.'.*', $routes)) {
+                        $myMenus[$k] = $menu;
+                        continue;
+                    }
+                    if (array_search_value($menu['route'], $routes)) {
+                        $myMenus[$k] = $menu;
+                    }
+                } else {
+                    $myMenus[$k] = $menu;
+                }
+                continue;
+            }
+            if (strpos($menu['route'], '*') !== false && array_search_value($menu['route'], $routes)) {
+                $myMenus[$k] = $menu;
+                continue;
+            }
+            foreach ($menu['child'] as $ck => $cmenu) {
+                // 路由权限判断
+                if ($cmenu['route']) {
+                    // 拥有*权限
+                    $prefix = substr($cmenu['route'], 0, strrpos($cmenu['route'], '.'));
+                    if ($prefix && array_search_value($prefix.'.*', $routes)) {
+                        $menu['child'][$ck] = $cmenu;
+                        continue;
+                    }
+                    if (array_search_value($cmenu['route'], $routes)) {
+                        $menu['child'][$ck] = $cmenu;
+                        continue;
+                    }
+                } else {
+                    $menu['child'][$ck] = $cmenu;
+                    continue;
+                }
+                unset($menu['child'][$ck]);
+            }
+            if (!empty($menu['child'])) {
+                $myMenus[$k] = $menu;
+            }
+        }
+        return $myMenus;
     }
 
     /**

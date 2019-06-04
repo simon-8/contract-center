@@ -39,6 +39,9 @@ class Menu extends Model
         return $this->hasMany('App\Models\Menu', 'pid', 'id');
     }
 
+    /**
+     * @return array
+     */
     public function getMenus()
     {
         $all = $this->orderBy('listorder', 'desc')->get()->toArray();

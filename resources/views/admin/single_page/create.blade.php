@@ -3,14 +3,14 @@
 @section('content')
 
     <div class="ibox float-e-margins">
-        <form method="post" class="form-horizontal" action="{{ isset($id) ? editURL('single-page.update', $id) : route('single-page.store') }}" id="sform">
+        <form method="post" class="form-horizontal" action="{{ isset($singlePage->id) ? editURL('admin.single-page.update', $singlePage->id) : route('admin.single-page.store') }}" id="sform">
             {!! csrf_field() !!}
-            {!! method_field(isset($id) ? 'PUT' : 'POST') !!}
+            {!! method_field(isset($singlePage->id) ? 'PUT' : 'POST') !!}
             <div class="col-sm-12 col-md-8">
                 <div class="ibox-title">
-                    @if(isset($id))
+                    @if(isset($singlePage->id))
                         <h5>编辑单页</h5>
-                        <input type="hidden" name="id" value="{{ $id }}">
+                        <input type="hidden" name="id" value="{{ $singlePage->id }}">
                     @else
                         <h5>添加单页</h5>
                     @endif
@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">单页标题</label>
                         <div class="col-sm-11">
-                            <input id="name" type="text" class="form-control" name="title" value="{{ $title ?? old('title') }}">
+                            <input id="name" type="text" class="form-control" name="title" value="{{ $singlePage->title ?? old('title') }}">
                             <span class="help-block m-b-none"></span>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">内容</label>
                         <div class="col-sm-11">
-                            {!! seditor($content ?? old('content')) !!}
+                            {!! seditor($singlePage->content ?? old('content')) !!}
                             <span class="help-block m-b-none">单页内容</span>
                         </div>
                     </div>
@@ -66,8 +66,8 @@
                     <div class="form-group hidden">
                         <label class="col-sm-2 control-label">缩略图</label>
                         <div class="col-sm-10">
-                            <img src="{{ imgurl($thumb ?? old('thumb')) }}" id="pthumb" class="bg-warning" style="width: 250px; height: {{ calcHeight(640, 250, 340) }}px;">
-                            <input type="hidden" id="thumb" name="thumb" value="{{ $thumb ?? old('thumb') }}">
+                            <img src="{{ imgurl($singlePage->thumb ?? old('thumb')) }}" id="pthumb" class="bg-warning" style="width: 250px; height: {{ calcHeight(640, 250, 340) }}px;">
+                            <input type="hidden" id="thumb" name="thumb" value="{{ $singlePage->thumb ?? old('thumb') }}">
                             <button class="btn btn-primary btn-lg" type="button" onclick="Sthumb('thumb', 640, 340);" style="height: {{ calcHeight(640, 250, 340) }}px; margin-bottom: 0;">上传</button>
                             <button class="btn btn-danger btn-lg" type="button" onclick="document.getElementById('thumb').value = '';document.getElementById('pthumb').setAttribute('src','');" style="height: {{ calcHeight(640, 250, 340) }}px; margin-bottom: 0;">删除</button>
                         </div>
@@ -90,7 +90,7 @@
 
     <script>
         $(function(){
-            $('[name="status"]').bootstrapSwitch('state', {{ $status??'true' }}); // true || false
+            $('[name="status"]').bootstrapSwitch('state', {{ $singlePage->status??'true' }}); // true || false
         });
     </script>
-@endsection('content')
+@endsection

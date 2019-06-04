@@ -7,13 +7,13 @@
  */
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-use App\Models\Menu;
+use App\Services\AuthService;
 
 class IndexController extends Controller
 {
-    public function index(Menu $menu)
+    public function index(AuthService $authService)
     {
-        $menus = $menu->getMenus();
+        $menus = $authService->getMenus();
         return view('admin.index.index', compact('menus'));
     }
 
