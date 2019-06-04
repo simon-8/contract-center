@@ -9,7 +9,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserOauth;
-use App\Repositories\HotelRepository;
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Messages\Transfer;
 use Log;

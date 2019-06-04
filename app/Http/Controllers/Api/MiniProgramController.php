@@ -7,14 +7,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\LogCredit;
 use App\Models\User;
 use App\Models\UserOauth;
 use App\Redis\UserRedis;
-use App\Repositories\UserOauthRepository;
-use App\Repositories\UserRepository;
 use App\Services\AuthService;
-use App\Services\UserService;
 use EasyWeChat\Factory;
 use Illuminate\Support\Facades\DB;
 //use Illuminate\Support\Facades\Crypt;
