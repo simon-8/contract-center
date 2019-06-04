@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.17 on 2019-05-16 15:38:44.
+ * Generated for Laravel 5.8.17 on 2019-06-04 17:14:00.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -14965,6 +14965,575 @@ namespace Mews\Captcha\Facades {
  
 }
 
+namespace Overtrue\LaravelPinyin\Facades { 
+
+    /**
+     * 
+     *
+     */ 
+    class Pinyin {
+        
+        /**
+         * Convert string to pinyin.
+         *
+         * @param string $string
+         * @param int $option
+         * @return array 
+         * @static 
+         */ 
+        public static function convert($string, $option = 4096)
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->convert($string, $option);
+        }
+        
+        /**
+         * Convert string (person name) to pinyin.
+         *
+         * @param string $stringName
+         * @param int $option
+         * @return array 
+         * @static 
+         */ 
+        public static function name($stringName, $option = 16)
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->name($stringName, $option);
+        }
+        
+        /**
+         * Return a pinyin permalink from string.
+         *
+         * @param string $string
+         * @param string $delimiter
+         * @param int $option
+         * @return string 
+         * @static 
+         */ 
+        public static function permalink($string, $delimiter = '-', $option = 4096)
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->permalink($string, $delimiter, $option);
+        }
+        
+        /**
+         * Return first letters.
+         *
+         * @param string $string
+         * @param string $delimiter
+         * @param int $option
+         * @return string 
+         * @static 
+         */ 
+        public static function abbr($string, $delimiter = '', $option = 4096)
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->abbr($string, $delimiter, $option);
+        }
+        
+        /**
+         * Chinese phrase to pinyin.
+         *
+         * @param string $string
+         * @param string $delimiter
+         * @param int $option
+         * @return string 
+         * @static 
+         */ 
+        public static function phrase($string, $delimiter = '', $option = 4096)
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->phrase($string, $delimiter, $option);
+        }
+        
+        /**
+         * Chinese to pinyin sentence.
+         *
+         * @param string $string
+         * @param string $delimiter
+         * @param int $option
+         * @return string 
+         * @static 
+         */ 
+        public static function sentence($string, $delimiter = '', $option = 4)
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->sentence($string, $delimiter, $option);
+        }
+        
+        /**
+         * Loader setter.
+         *
+         * @param \Overtrue\Pinyin\DictLoaderInterface $loader
+         * @return \Overtrue\Pinyin\Pinyin 
+         * @static 
+         */ 
+        public static function setLoader($loader)
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->setLoader($loader);
+        }
+        
+        /**
+         * Return dict loader,.
+         *
+         * @return \Overtrue\Pinyin\DictLoaderInterface 
+         * @static 
+         */ 
+        public static function getLoader()
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->getLoader();
+        }
+        
+        /**
+         * 
+         *
+         * @param int $option
+         * @param int $check
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasOption($option, $check)
+        {
+                        /** @var \Overtrue\Pinyin\Pinyin $instance */
+                        return $instance->hasOption($option, $check);
+        }
+         
+    }
+ 
+}
+
+namespace Overtrue\LaravelWeChat { 
+
+    /**
+     * Class Facade.
+     *
+     * @author overtrue <i@overtrue.me>
+     */ 
+    class Facade {
+        
+        /**
+         * 
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getId()
+        {
+            //Method inherited from \EasyWeChat\Kernel\ServiceContainer            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->getId();
+        }
+        
+        /**
+         * 
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getConfig()
+        {
+            //Method inherited from \EasyWeChat\Kernel\ServiceContainer            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->getConfig();
+        }
+        
+        /**
+         * Return all providers.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getProviders()
+        {
+            //Method inherited from \EasyWeChat\Kernel\ServiceContainer            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->getProviders();
+        }
+        
+        /**
+         * 
+         *
+         * @param string $id
+         * @param mixed $value
+         * @static 
+         */ 
+        public static function rebind($id, $value)
+        {
+            //Method inherited from \EasyWeChat\Kernel\ServiceContainer            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->rebind($id, $value);
+        }
+        
+        /**
+         * 
+         *
+         * @param array $providers
+         * @static 
+         */ 
+        public static function registerProviders($providers)
+        {
+            //Method inherited from \EasyWeChat\Kernel\ServiceContainer            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->registerProviders($providers);
+        }
+        
+        /**
+         * Sets a parameter or an object.
+         * 
+         * Objects must be defined as Closures.
+         * 
+         * Allowing any PHP callable leads to difficult to debug problems
+         * as function names (strings) are callable (creating a function with
+         * the same name as an existing parameter would break your container).
+         *
+         * @param string $id The unique identifier for the parameter or object
+         * @param mixed $value The value of the parameter or a closure to define an object
+         * @throws FrozenServiceException Prevent override of a frozen service
+         * @static 
+         */ 
+        public static function offsetSet($id, $value)
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->offsetSet($id, $value);
+        }
+        
+        /**
+         * Gets a parameter or an object.
+         *
+         * @param string $id The unique identifier for the parameter or object
+         * @return mixed The value of the parameter or an object
+         * @throws UnknownIdentifierException If the identifier is not defined
+         * @static 
+         */ 
+        public static function offsetGet($id)
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->offsetGet($id);
+        }
+        
+        /**
+         * Checks if a parameter or an object is set.
+         *
+         * @param string $id The unique identifier for the parameter or object
+         * @return bool 
+         * @static 
+         */ 
+        public static function offsetExists($id)
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->offsetExists($id);
+        }
+        
+        /**
+         * Unsets a parameter or an object.
+         *
+         * @param string $id The unique identifier for the parameter or object
+         * @static 
+         */ 
+        public static function offsetUnset($id)
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->offsetUnset($id);
+        }
+        
+        /**
+         * Marks a callable as being a factory service.
+         *
+         * @param callable $callable A service definition to be used as a factory
+         * @return callable The passed callable
+         * @throws ExpectedInvokableException Service definition has to be a closure or an invokable object
+         * @static 
+         */ 
+        public static function factory($callable)
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->factory($callable);
+        }
+        
+        /**
+         * Protects a callable from being interpreted as a service.
+         * 
+         * This is useful when you want to store a callable as a parameter.
+         *
+         * @param callable $callable A callable to protect from being evaluated
+         * @return callable The passed callable
+         * @throws ExpectedInvokableException Service definition has to be a closure or an invokable object
+         * @static 
+         */ 
+        public static function protect($callable)
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->protect($callable);
+        }
+        
+        /**
+         * Gets a parameter or the closure defining an object.
+         *
+         * @param string $id The unique identifier for the parameter or object
+         * @return mixed The value of the parameter or the closure defining an object
+         * @throws UnknownIdentifierException If the identifier is not defined
+         * @static 
+         */ 
+        public static function raw($id)
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->raw($id);
+        }
+        
+        /**
+         * Extends an object definition.
+         * 
+         * Useful when you want to extend an existing object definition,
+         * without necessarily loading that object.
+         *
+         * @param string $id The unique identifier for the object
+         * @param callable $callable A service definition to extend the original
+         * @return callable The wrapped callable
+         * @throws UnknownIdentifierException        If the identifier is not defined
+         * @throws FrozenServiceException            If the service is frozen
+         * @throws InvalidServiceIdentifierException If the identifier belongs to a parameter
+         * @throws ExpectedInvokableException        If the extension callable is not a closure or an invokable object
+         * @static 
+         */ 
+        public static function extend($id, $callable)
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->extend($id, $callable);
+        }
+        
+        /**
+         * Returns all defined value names.
+         *
+         * @return array An array of value names
+         * @static 
+         */ 
+        public static function keys()
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->keys();
+        }
+        
+        /**
+         * Registers a service provider.
+         *
+         * @param \Pimple\ServiceProviderInterface $provider A ServiceProviderInterface instance
+         * @param array $values An array of values that customizes the provider
+         * @return static 
+         * @static 
+         */ 
+        public static function register($provider, $values = array())
+        {
+            //Method inherited from \Pimple\Container            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->register($provider, $values);
+        }
+        
+        /**
+         * 
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function shouldDelegate($id)
+        {
+            //Method inherited from \EasyWeChat\Kernel\ServiceContainer            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->shouldDelegate($id);
+        }
+        
+        /**
+         * 
+         *
+         * @return \EasyWeChat\OfficialAccount\Application 
+         * @static 
+         */ 
+        public static function shouldntDelegate()
+        {
+            //Method inherited from \EasyWeChat\Kernel\ServiceContainer            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->shouldntDelegate();
+        }
+        
+        /**
+         * 
+         *
+         * @param string $id
+         * @return \EasyWeChatComposer\Delegation 
+         * @static 
+         */ 
+        public static function delegateTo($id)
+        {
+            //Method inherited from \EasyWeChat\Kernel\ServiceContainer            
+                        /** @var \EasyWeChat\OfficialAccount\Application $instance */
+                        return $instance->delegateTo($id);
+        }
+         
+    }
+ 
+}
+
+namespace SimpleSoftwareIO\QrCode\Facades { 
+
+    /**
+     * 
+     *
+     */ 
+    class QrCode {
+        
+        /**
+         * Generates a QrCode.
+         *
+         * @param string $text The text to be converted into a QrCode
+         * @param null|string $filename The filename and path to save the QrCode file
+         * @return string|void Returns a QrCode string depending on the format, or saves to a file.
+         * @static 
+         */ 
+        public static function generate($text, $filename = null)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->generate($text, $filename);
+        }
+        
+        /**
+         * Merges an image with the center of the QrCode.
+         *
+         * @param $filepath string The filepath to an image
+         * @param $percentage float The amount that the merged image should be placed over the qrcode.
+         * @param $absolute boolean Whether to use an absolute filepath or not.
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function merge($filepath, $percentage = '0.2', $absolute = false)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->merge($filepath, $percentage, $absolute);
+        }
+        
+        /**
+         * Merges an image string with the center of the QrCode, does not check for correct format.
+         *
+         * @param $content string The string contents of an image.
+         * @param $percentage float The amount that the merged image should be placed over the qrcode.
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function mergeString($content, $percentage = '0.2')
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->mergeString($content, $percentage);
+        }
+        
+        /**
+         * Switches the format of the outputted QrCode or defaults to SVG.
+         *
+         * @param string $format The desired format.
+         * @throws \InvalidArgumentException
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function format($format)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->format($format);
+        }
+        
+        /**
+         * Changes the size of the QrCode.
+         *
+         * @param int $pixels The size of the QrCode in pixels
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function size($pixels)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->size($pixels);
+        }
+        
+        /**
+         * Changes the foreground color of a QrCode.
+         *
+         * @param int $red
+         * @param int $green
+         * @param int $blue
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function color($red, $green, $blue)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->color($red, $green, $blue);
+        }
+        
+        /**
+         * Changes the background color of a QrCode.
+         *
+         * @param int $red
+         * @param int $green
+         * @param int $blue
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function backgroundColor($red, $green, $blue)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->backgroundColor($red, $green, $blue);
+        }
+        
+        /**
+         * Changes the error correction level of a QrCode.
+         *
+         * @param string $level Desired error correction level.  L = 7% M = 15% Q = 25% H = 30%
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function errorCorrection($level)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->errorCorrection($level);
+        }
+        
+        /**
+         * Creates a margin around the QrCode.
+         *
+         * @param int $margin The desired margin in pixels around the QrCode
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function margin($margin)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->margin($margin);
+        }
+        
+        /**
+         * Sets the Encoding mode.
+         *
+         * @param string $encoding
+         * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
+         * @static 
+         */ 
+        public static function encoding($encoding)
+        {
+                        /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
+                        return $instance->encoding($encoding);
+        }
+         
+    }
+ 
+}
+
 namespace Arcanedev\LogViewer\Facades { 
 
     /**
@@ -18100,6 +18669,12 @@ namespace  {
     class Excel extends \Maatwebsite\Excel\Facades\Excel {}
 
     class Captcha extends \Mews\Captcha\Facades\Captcha {}
+
+    class Pinyin extends \Overtrue\LaravelPinyin\Facades\Pinyin {}
+
+    class EasyWeChat extends \Overtrue\LaravelWeChat\Facade {}
+
+    class QrCode extends \SimpleSoftwareIO\QrCode\Facades\QrCode {}
 
     class LogViewer extends \Arcanedev\LogViewer\Facades\LogViewer {}
 

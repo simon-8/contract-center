@@ -25,7 +25,7 @@
                             <option value="">请选择分类</option>
                             @foreach((new \App\Models\ContractTemplate())->getCats(true) as $catid => $catname)
                                 <option value="{{ $catid }}"
-                                        @if (isset($data['catid']) && $data['catid'] === $catid) selected @endif>{{ $catname }}
+                                        @if (isset($contractTemplate->catid) && $contractTemplate->catid === $catid) selected @endif>{{ $catname }}
                                 </option>
                             @endforeach
                         </select>

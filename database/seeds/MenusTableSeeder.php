@@ -136,7 +136,7 @@ class MenusTableSeeder extends Seeder
                 'link' => '',
                 'icon' => 'fa fa-newspaper-o',
                 'listorder' => 93,
-                'items' => 0,
+                'items' => 1,
             ),
             11 => 
             array (
@@ -188,6 +188,61 @@ class MenusTableSeeder extends Seeder
                 'pid' => 21,
                 'name' => '用户列表',
                 'route' => 'admin.user.index',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            16 => 
+            array (
+                'id' => 23,
+                'pid' => 17,
+                'name' => '单页列表',
+                'route' => 'admin.single-page.index',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            17 => 
+            array (
+                'id' => 24,
+                'pid' => 0,
+                'name' => '合同管理',
+                'route' => 'admin.contract.*',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 1,
+            ),
+            18 => 
+            array (
+                'id' => 25,
+                'pid' => 24,
+                'name' => '合同列表',
+                'route' => 'admin.contract.index',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            19 => 
+            array (
+                'id' => 26,
+                'pid' => 0,
+                'name' => '合同模板管理',
+                'route' => 'admin.contract-template.*',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 1,
+            ),
+            20 => 
+            array (
+                'id' => 27,
+                'pid' => 26,
+                'name' => '合同模板列表',
+                'route' => 'admin.contract-template.index',
                 'link' => '',
                 'icon' => '',
                 'listorder' => 0,

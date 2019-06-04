@@ -6,6 +6,8 @@
  * Time: 16:52
  */
 
+use Laravel\Passport\Client;
+
 /**
  * 获取资源路径
  * @param string $module
@@ -331,4 +333,26 @@ function is_superadmin()
 function colorText($condition, $trueText, $falseText = '')
 {
     return '<span class="label lable-xs label-'. ($condition ? 'success' : 'danger') .' radius">'.($condition ? $trueText : $falseText).'</span>';
+}
+
+
+/**
+ * 校验passport
+ * @param $id
+ * @param $secret
+ * @return mixed
+ */
+function verifyPassportClient($id, $secret) {
+    return \Cache::remember("verify_passport_client_{$id}_{$secret}", 1440, function () use ($id, $secret) {
+        try {
+            $client = Laravel\Passport\Client::findOrFail($id);
+            if ($client->secret != $secret) {
+                return false;
+            }
+        } catch (Exception $exception) {
+            return false;
+        }
+
+        return true;
+    });
 }

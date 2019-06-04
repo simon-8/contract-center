@@ -5,7 +5,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2019-05-16 15:38:45.
+    * Generated on 2019-06-04 17:14:01.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -43,6 +43,9 @@ namespace PHPSTORM_META {
         'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
         'NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener' => \NunoMaduro\Collision\Adapters\Phpunit\Listener::class,
         'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
+        'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
+        'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
+        'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -148,6 +151,7 @@ namespace PHPSTORM_META {
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
+        'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
         'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -168,6 +172,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
@@ -202,6 +207,9 @@ namespace PHPSTORM_META {
         'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
         'NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener' => \NunoMaduro\Collision\Adapters\Phpunit\Listener::class,
         'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
+        'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
+        'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
+        'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -307,6 +315,7 @@ namespace PHPSTORM_META {
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
+        'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
         'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -327,6 +336,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
@@ -361,6 +371,9 @@ namespace PHPSTORM_META {
         'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
         'NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener' => \NunoMaduro\Collision\Adapters\Phpunit\Listener::class,
         'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
+        'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
+        'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
+        'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -466,6 +479,7 @@ namespace PHPSTORM_META {
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
+        'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
         'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -486,6 +500,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
     ]));
     override(\App::make(0), map([
         '' => '@',
@@ -520,6 +535,9 @@ namespace PHPSTORM_META {
         'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
         'NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener' => \NunoMaduro\Collision\Adapters\Phpunit\Listener::class,
         'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
+        'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
+        'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
+        'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -625,6 +643,7 @@ namespace PHPSTORM_META {
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
+        'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
         'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -645,6 +664,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
     ]));
     override(\App::makeWith(0), map([
         '' => '@',
@@ -679,6 +699,9 @@ namespace PHPSTORM_META {
         'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
         'NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener' => \NunoMaduro\Collision\Adapters\Phpunit\Listener::class,
         'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
+        'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
+        'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
+        'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -784,6 +807,7 @@ namespace PHPSTORM_META {
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
+        'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
         'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -804,6 +828,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
     ]));
     override(\app(0), map([
         '' => '@',
@@ -838,6 +863,9 @@ namespace PHPSTORM_META {
         'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
         'NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener' => \NunoMaduro\Collision\Adapters\Phpunit\Listener::class,
         'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
+        'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
+        'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
+        'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -943,6 +971,7 @@ namespace PHPSTORM_META {
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
+        'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
         'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -963,6 +992,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
     ]));
     override(\resolve(0), map([
         '' => '@',
@@ -997,6 +1027,9 @@ namespace PHPSTORM_META {
         'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
         'NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener' => \NunoMaduro\Collision\Adapters\Phpunit\Listener::class,
         'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
+        'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
+        'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
+        'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -1102,6 +1135,7 @@ namespace PHPSTORM_META {
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
+        'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
         'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -1122,6 +1156,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
     ]));
 
     override(\Illuminate\Support\Arr::add(0), type(0));
