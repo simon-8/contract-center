@@ -16,7 +16,7 @@
                     <td>昵称</td>
                     <td>邮箱</td>
                     <td>角色</td>
-                    <td width="80">管理员</td>
+{{--                    <td width="80">管理员</td>--}}
                     <td>创建时间</td>
                     <td>最后一次登录时间</td>
                     <td>最后一次登录IP</td>
@@ -46,7 +46,7 @@
                                     @endforeach
                                 @endif
                             </td>
-                            <td>{!! colorText(is_superadmin(), '是', '否') !!}</td>
+{{--                            <td>{!! colorText(is_superadmin(), '是', '否') !!}</td>--}}
                             <td>{{ $v->created_at }}</td>
                             <td>{{ $v->lasttime ? $v->lasttime : '从未登录' }}</td>
                             <td>{{ $v->lastip ? $v->lastip : '从未登录' }}</td>
@@ -58,7 +58,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="11">
+                        <td colspan="10">
                             暂无数据
                         </td>
                     </tr>
