@@ -27,4 +27,5 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     });
 
     Route::apiResource('banner', 'BannerController');
+    Route::apiResource('contract', 'ContractController');
 });
