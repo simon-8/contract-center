@@ -35,4 +35,15 @@ class Ad extends Model
     {
         return $this->belongsTo('App\Models\AdPlace', 'pid', 'id');
     }
+
+    /**
+     * @param $query
+     * @param int $data
+     * @return int
+     */
+    public function scopeOfPid($query, $data = 0)
+    {
+        if (empty($data)) return $data;
+        return $query->where('pid', $data);
+    }
 }

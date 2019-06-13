@@ -13,6 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
+    Route::prefix('mini-program')->group(function () {
+        Route::any('login', 'MiniProgramController@login');
+        Route::any('debug-login/{userid}', 'MiniProgramController@debugLogin');
+        //Route::get('unlimit-qrcode', 'MiniProgramController@getUnlimitQrCode');
+        //Route::get('config', 'MiniProgramController@config');
+        //Route::post('decrypt-data', 'MiniProgramController@decryptData')->middleware('auth:api');
+    });
+
+    Route::apiResource('banner', 'BannerController');
 });
