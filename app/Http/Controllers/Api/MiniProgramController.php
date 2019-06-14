@@ -115,14 +115,14 @@ class MiniProgramController extends Controller
             if (!$userData) {
                 return response_exception(__('auth.create_user_failed'), []);
             }
-            $oauthData->userid = $user->id;
+            $oauthData->userid = $userData->id;
             $oauthData->save();
 
             // 更新同unionid无userid的用户
             if ($unionid) {
                 $userOauth->where('unionid', $unionid)
                     ->whereIn('channel', [self::CHANNEL, WechatController::CHANNEL])
-                    ->where('userid', 0)->update(['userid' => $user->id]);
+                    ->where('userid', 0)->update(['userid' => $userData->id]);
             }
 
         } else {
