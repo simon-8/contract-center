@@ -72,14 +72,17 @@ class MiniProgramController extends Controller
 
         // 没有unionid时尝试根据iv + encryptedData 解出unionid
         if (!$unionid) {
-            $iv = $request::input('iv');
-            $encryptedData = $request::input('encryptedData');
-            $decryptedData = $this->app->encryptor->decryptData($sessionKey, $iv, $encryptedData);
-            $unionid = $decryptedData['unionId'];
+            $iv = $request::input('iv', '');
+            $encryptedData = $request::input('encryptedData', '');
+            if ($iv && $encryptedData) {
+                $decryptedData = $this->app->encryptor->decryptData($sessionKey, $iv, $encryptedData);
+                $unionid = $decryptedData['unionId'];
+                if (!$unionid) {
+                    return response_exception(__('api.mini_program_no_join_open_platform'));
+                }
+            }
         }
-        if (!$unionid) {
-            return response_exception(__('api.mini_program_no_join_open_platform'));
-        }
+
         // 记录openid信息
         $oauthData = $userOauth->where('openid', $openid)->where('channel', self::CHANNEL)->first();
         if (!$oauthData) {
@@ -93,7 +96,7 @@ class MiniProgramController extends Controller
             $oauthData = $userOauth->create($insertData);
         }
         // 根据同unionid已关联微信账号userid进行绑定
-        if (!$oauthData->userid) {
+        if (!$oauthData->userid && $unionid) {
             $relationOauth = $userOauth
                 ->where('unionid', $unionid)
                 ->whereIn('channel', [self::CHANNEL, WechatController::CHANNEL])
@@ -116,10 +119,12 @@ class MiniProgramController extends Controller
             $oauthData->save();
 
             // 更新同unionid无userid的用户
-            $userOauth
-                ->where('unionid', $unionid)
-                ->whereIn('channel', [self::CHANNEL, WechatController::CHANNEL])
-                ->where('userid', 0)->update(['userid' => $user->id]);
+            if ($unionid) {
+                $userOauth->where('unionid', $unionid)
+                    ->whereIn('channel', [self::CHANNEL, WechatController::CHANNEL])
+                    ->where('userid', 0)->update(['userid' => $user->id]);
+            }
+
         } else {
             $userData = $user->find($oauthData->userid);
             // 有userid但无user数据 异常数据
