@@ -40,7 +40,9 @@ class MiniProgramController extends Controller
         $data['client_secret'] = $request::input('client_secret');
         $data['avatar'] = $request::input('avatarUrl', '');
         $data['nickname'] = $request::input('nickName', '');
-        $data['gender'] = $request::input('gender', 0);
+        $data['city'] = $request::input('city', '');
+        $data['province'] = $request::input('province', '');
+        $data['country'] = $request::input('country', 0);
         $data['last_login_time'] = date('Y-m-d H:i:s');
 
         \Log::info(var_export($data, true));
@@ -139,6 +141,7 @@ class MiniProgramController extends Controller
         $data['username'] = $userData->id;
         $data['password'] = md5($openid);
         try {
+            //$token = $userData->createToken('')->accessToken;
             $token = $authService->passwordToToken($data);
         } catch (\Exception $e) {
             return response_exception($e->getMessage());

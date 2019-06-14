@@ -51,6 +51,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * 匹配小程序  PassPort使用id做用户名
+     * 其他应用同上
+     * @param $username
+     * @return mixed
+     */
+    public function findForPassport($username)
+    {
+        return $this->find($username);
+    }
+
     public function scopeOfCreatedAt($query, $data = '')
     {
         if ($data === '') return $query;

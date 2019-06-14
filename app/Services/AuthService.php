@@ -213,10 +213,6 @@ class AuthService
      */
     public function removeToken(User $user, $clientId)
     {
-        $user->tokens->each(function ($token) use ($clientId) {
-            if ($token->client_id == $clientId) {
-                $token->delete();
-            }
-        });
+        $user->tokens()->where('client_id', $clientId)->delete();
     }
 }
