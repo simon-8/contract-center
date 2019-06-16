@@ -22,7 +22,7 @@ class BaseRequest extends FormRequest
         $validator = \Validator::make($data, $rules);
         if ($validator->fails()) {
             if (\Request::ajax() || substr(\Request::path(), 0, 3) === 'api') {
-                response_exception($validator->errors()->first());
+                responseException($validator->errors()->first());
                 exit();
             } else {
                 return $validator->validate();

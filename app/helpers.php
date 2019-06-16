@@ -206,7 +206,7 @@ function array_search_value($val, $arr) {
  * @param array $data
  * @return \Illuminate\Http\JsonResponse
  */
-function response_message($message = '', $data = []) {
+function responseMessage($message = '', $data = []) {
     return response()->json([
         'code' => 0,
         'message' => $message,
@@ -219,7 +219,7 @@ function response_message($message = '', $data = []) {
  * @param array $data
  * @return \Illuminate\Http\JsonResponse
  */
-function response_exception($message, $data = []) {
+function responseException($message, $data = []) {
     return response()->json([
         'code' => 422,
         'message' => $message,

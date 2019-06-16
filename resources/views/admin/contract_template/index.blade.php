@@ -19,7 +19,7 @@
                     <div class="input-group m-b">
                         <select name="catid" class="form-control inline">
                             <option value="">请选择分类</option>
-                            @foreach((new \App\Models\ContractTemplate())->getCats(true) as $catid => $catname)
+                            @foreach((new \App\Models\ContractTemplate())->getCats() as $catid => $catname)
                             <option value="{{ $catid }}"
                                 @if (isset($data['catid']) && $data['catid'] === $catid) selected @endif>{{ $catname }}
                             </option>
@@ -29,7 +29,7 @@
                     <div class="input-group m-b">
                         <select name="typeid" class="form-control inline">
                             <option value="">请选择类型</option>
-                            @foreach((new \App\Models\ContractTemplate())->getTypes(true) as $typeid => $typename)
+                            @foreach((new \App\Models\ContractTemplate())->getTypes() as $typeid => $typename)
                                 <option value="{{ $typeid }}"
                                         @if (isset($data['typeid']) && $data['typeid'] === $typeid) selected @endif>{{ $typename }}
                                 </option>

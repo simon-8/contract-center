@@ -35,10 +35,10 @@ class UserController extends BaseController
     public function freeze(\Request $request, User $user)
     {
         if (empty($user)) {
-            return response_exception(__('web.not_found'));
+            return responseException(__('web.not_found'));
         }
         $user->is_block = intval(!$user->is_block);
         $user->save();
-        return response_message(__('web.success'));
+        return responseMessage(__('web.success'));
     }
 }

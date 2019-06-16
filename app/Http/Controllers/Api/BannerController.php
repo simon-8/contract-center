@@ -24,6 +24,6 @@ class BannerController
             'url',
             'title'
         ])->get()->toArray();
-        return response_message('', $lists);
+        return responseMessage('', $lists);
     }
 }

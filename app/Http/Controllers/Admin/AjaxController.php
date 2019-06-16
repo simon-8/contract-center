@@ -27,17 +27,17 @@ class AjaxController extends Controller
             case 'uploadImages':
                 $name = 'file';
                 if (!$request::hasFile($name)) {
-                    return response_exception('请选择文件');
+                    return responseException('请选择文件');
                 }
                 if (!$request::file($name)->isValid()) {
-                    return response_exception('文件无效');
+                    return responseException('文件无效');
                 }
                 $result = $request::file($name)->store('images/'.date('Ym/d'), 'uploads');
                 $basePath = str_replace(public_path(), '', config('filesystems.disks.uploads.root'));
                 $url = $basePath.'/'.$result;
                 // todo 保存到session中
                 //$imageService->pushSessionImages($url);
-                return response_message($url);
+                return responseMessage($url);
                 break;
         }
         abort(404);

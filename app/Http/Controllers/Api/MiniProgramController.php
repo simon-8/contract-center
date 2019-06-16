@@ -47,19 +47,19 @@ class MiniProgramController extends Controller
 
         \Log::info(var_export($data, true));
         if (empty($code)) {
-            return response_exception('code is missing');
+            return responseException('code is missing');
         }
         //Validate client
         if (!verifyPassportClient($data['client_id'], $data['client_secret'])) {
-            return response_exception(__('auth.client_secret_failed'));
+            return responseException(__('auth.client_secret_failed'));
         }
 
         $response = $this->app->auth->session($code);
         if (!$response) {
-            return response_exception(__('auth.get_userinfo_failed'), []);
+            return responseException(__('auth.get_userinfo_failed'), []);
         }
         if (isset($response['errcode']) && $response['errcode'] != 0) {
-            return response_exception(__('auth.get_userinfo_failed2'). $response['errmsg'], []);
+            return responseException(__('auth.get_userinfo_failed2'). $response['errmsg'], []);
         }
         // debug
         //$response = [
@@ -80,7 +80,7 @@ class MiniProgramController extends Controller
                 $decryptedData = $this->app->encryptor->decryptData($sessionKey, $iv, $encryptedData);
                 $unionid = $decryptedData['unionId'];
                 if (!$unionid) {
-                    return response_exception(__('api.mini_program_no_join_open_platform'));
+                    return responseException(__('api.mini_program_no_join_open_platform'));
                 }
             }
         }
@@ -115,7 +115,7 @@ class MiniProgramController extends Controller
 
             $userData = $user->create($data);
             if (!$userData) {
-                return response_exception(__('auth.create_user_failed'), []);
+                return responseException(__('auth.create_user_failed'), []);
             }
             $oauthData->userid = $userData->id;
             $oauthData->save();
@@ -131,7 +131,7 @@ class MiniProgramController extends Controller
             $userData = $user->find($oauthData->userid);
             // 有userid但无user数据 异常数据
             if (!$userData) {
-                return response_exception(__('auth.get_userinfo_exception'), []);
+                return responseException(__('auth.get_userinfo_exception'), []);
             }
             $userData->last_login_time = $data['last_login_time'];
             $userData->save();
@@ -144,7 +144,7 @@ class MiniProgramController extends Controller
             //$token = $userData->createToken('')->accessToken;
             $token = $authService->passwordToToken($data);
         } catch (\Exception $e) {
-            return response_exception($e->getMessage());
+            return responseException($e->getMessage());
         }
 
         // 保存session_key到redis
@@ -154,7 +154,7 @@ class MiniProgramController extends Controller
         ];
         UserRedis::update($redisInsertData);
 
-        return response_message('', $token);
+        return responseMessage('', $token);
     }
 
     /**
@@ -170,7 +170,7 @@ class MiniProgramController extends Controller
     {
         $userData = $user->find($userid);
         if (!$userData) {
-            return response_exception(__('api.no_result'));
+            return responseException(__('api.no_result'));
         }
         $oauthData = $userOauth->where('channel', self::CHANNEL)->where('userid', $userData->id)->first();
         //$authService->removeToken($user, $userOauth->client_id);
@@ -183,11 +183,11 @@ class MiniProgramController extends Controller
         try {
             $token = $authService->passwordToToken($data);
         } catch (\Exception $e) {
-            return response_exception($e->getMessage());
+            return responseException($e->getMessage());
         }
 
         //UserService::addCredit($user, 'login');
-        return response_message('', $token);
+        return responseMessage('', $token);
     }
 
     /**
@@ -217,7 +217,7 @@ class MiniProgramController extends Controller
      */
     public function config()
     {
-        return response_message('', [
+        return responseMessage('', [
             'service_phone' => '123456'
         ]);
     }

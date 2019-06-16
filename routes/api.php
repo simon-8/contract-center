@@ -27,5 +27,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     });
 
     Route::apiResource('banner', 'BannerController');
+    Route::get('contract/status', 'ContractController@getStatus');
+    Route::get('contract/status-count', 'ContractController@getCountByStatus');
     Route::apiResource('contract', 'ContractController');
 });

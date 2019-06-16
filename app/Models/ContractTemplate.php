@@ -64,35 +64,66 @@ class ContractTemplate extends Model
     }
 
     /**
-     * @param bool $all
-     * @return array|mixed
+     * 获取分类数组
+     * @return array
      */
-    public function getCats($all = false)
+    public function getCats()
     {
         $cats = [
             0 => '两方合同',
             1 => '三方合同',
         ];
-        if ($all) {
-            return $cats;
-        }
-        return $cats[$this->catid];
+        return $cats;
+    }
+
+    /**
+     * 获取类型数组
+     * @return array
+     */
+    public function getTypes()
+    {
+        $types = [
+            0 => '通用条款',
+            1 => '合同条款',
+        ];
+        return $types;
+    }
+
+    /**
+     * 获取分类名
+     * @param $catid
+     * @return mixed|string
+     */
+    public function getCatText($catid = null)
+    {
+        if ($catid === null) $catid = $this->catid;
+        return $this->getCats()[$catid] ?? 'not found';
+    }
+
+    /**
+     * 获取分类名
+     * @param $typeid
+     * @return mixed|string
+     */
+    public function getTypeText($typeid = null)
+    {
+        if ($typeid === null) $typeid = $this->typeid;
+        return $this->getTypes()[$typeid] ?? 'not found';
     }
 
     /**
      * @param bool $all
      * @return array|mixed
      */
-    public function getTypes($all = false)
-    {
-        $types = [
-            0 => '通用条款',
-            1 => '合同条款',
-        ];
-        if ($all) {
-            return $types;
-        }
-        return $types[$this->typeid];
-    }
-
+    //public function getCats($all = false)
+    //{
+    //    $cats = [
+    //        0 => '两方合同',
+    //        1 => '三方合同',
+    //    ];
+    //    if ($all) {
+    //        return $cats;
+    //    }
+    //    return $cats[$this->catid];
+    //}
 }
