@@ -30,4 +30,6 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::get('contract/status', 'ContractController@getStatus');
     Route::get('contract/status-count', 'ContractController@getStatusCount');
     Route::apiResource('contract', 'ContractController');
+    Route::apiResource('contract-folder', 'ContractFolderController');
+    Route::apiResource('contract-data', 'ContractDataController');
 });
