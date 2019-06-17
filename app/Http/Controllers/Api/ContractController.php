@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\Contract AS ContractResource;
 use App\Models\Contract;
 use \DB;
 
@@ -43,9 +44,18 @@ class ContractController extends BaseController
      * @param Contract $contract
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCountByStatus(\Request $request, Contract $contract)
+    public function getStatusCount(\Request $request, Contract $contract)
     {
         $status = $request::input('status', [0, 1, 2]);
+
+        if (!$this->user) {
+            $lists = [];
+            foreach ($status as $s) {
+                $lists[$s] = 0;
+            }
+            return responseMessage('', $lists);
+        }
+
         $tmp = $contract->selectRaw('status,COUNT(id) as count')
             ->ofUserid($this->user->id)
             ->ofStatus($status ?? '')
@@ -70,14 +80,14 @@ class ContractController extends BaseController
      * 列表
      * @param \Request $request
      * @param Contract $contract
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(\Request $request, Contract $contract)
     {
         if ($this->user === null) {
             return responseMessage('');
         }
-        //$data = $request::only(['status', 'lawyerid', 'mycatid', 'jiafang', 'yifang', 'jujianren']);
+
         $data = $request::all();
         $lists = $contract->ofStatus($data['status'] ?? '')
             ->ofUserid($this->user->id)
@@ -86,21 +96,23 @@ class ContractController extends BaseController
             ->ofJiafang($data['jiafang'] ?? '')
             ->ofYifang($data['yifang'] ?? '')
             ->ofJujianren($data['jujianren'] ?? '')
-            ->paginate();
-        return $lists;
+            ->paginate(5);
+        return ContractResource::collection($lists);
     }
 
     /**
      * 详情
      * @param Contract $contract
-     * @return \Illuminate\Http\JsonResponse
+     * @return ContractResource
      */
     public function show(Contract $contract)
     {
         $this->checkAuth($contract);
 
-        $contract->loadMissing('content');
-        return responseMessage('', $contract);
+        $content = $contract->content->getAttribute('content');
+        unset($contract->content);
+        $contract->content = $content;
+        return responseMessage('', new ContractResource($contract));
     }
 
     /**
@@ -118,9 +130,9 @@ class ContractController extends BaseController
         try {
             $contractData = $contract->create([
                 'userid' => $this->user->id,
-                'jiafang' => $data['fills']['jiafang'],
-                'yifang' =>  $data['fills']['yifang'],
-                'jujianren' =>  $data['fills']['jujianren'],
+                'jiafang' => $data['fills']['jiafang'] ?? '/',
+                'yifang' =>  $data['fills']['yifang'] ?? '/',
+                'jujianren' =>  $data['fills']['jujianren'] ?? '/',
                 'status' => $contract::STATUS_APPLY
             ]);
 
@@ -182,7 +194,7 @@ class ContractController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function destory(Contract $contract)
+    public function destroy(Contract $contract)
     {
         $this->checkAuth($contract);
 

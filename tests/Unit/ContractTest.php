@@ -23,7 +23,7 @@ class ContractTest extends TestCase
         $this->assertIsArray($data);
     }
 
-    public function testCountByStatus()
+    public function testStatusCount()
     {
         $url = '/api/contract/status-count';
         $response = $this->get($url, [
