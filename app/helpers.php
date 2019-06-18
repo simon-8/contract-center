@@ -82,13 +82,17 @@ function upload_base64_thumb($thumb)
  * @param $url
  * @return string
  */
-function imgurl($url = '')
+function imgurl($url = '', $disk = '')
 {
     if(empty($url)) {
         return skinPath() .'images/nopic.png';
         //return skinPath() .'images/debug.jpg';
     }
     $basePath = config('admin.cdnResourcePath') ?: config('app.url');
+    if ($disk) {
+        $prefix = config("filesystems.disks.{$disk}.prefix");
+        $url = $prefix.$url;
+    }
     return substr($url, 0, 4) === 'http' ? $url : $basePath . $url;
 }
 

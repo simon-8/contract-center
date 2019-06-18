@@ -57,7 +57,7 @@ return [
         'uploads' => [
             'driver' => 'local',
             'root' => public_path('uploads'),
-            'url' => env('CDN_RESOURCE_PATH').'/uploads'
+            'prefix' => '/uploads'
         ],
         's3' => [
             'driver' => 's3',

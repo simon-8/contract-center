@@ -15,7 +15,7 @@ class ContractFile extends JsonResource
     public function toArray($request)
     {
         $data = parent::toArray($request);
-        $data['linkurl'] = config('filesystems.disks.uploads.url') . $data['linkurl'];
+        $data['linkurl'] = imgurl($data['linkurl'], 'uploads');
         unset($data['created_at'], $data['updated_at']);
         return $data;
     }
