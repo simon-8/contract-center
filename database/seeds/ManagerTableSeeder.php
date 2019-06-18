@@ -20,7 +20,7 @@ class ManagerTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'username' => 'simon',
+                'username' => 'admin',
                 'password' => '$2y$10$W.uMt1NhYA3v4YnbNkYhiO9sl4zhUh.6FM4Ry7S1tFhPbtk7EOXOW',
                 'truename' => 'liushifu',
                 'email' => 'liu@simon8.com',

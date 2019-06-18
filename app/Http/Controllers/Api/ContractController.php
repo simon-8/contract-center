@@ -96,7 +96,7 @@ class ContractController extends BaseController
             ->ofJiafang($data['jiafang'] ?? '')
             ->ofYifang($data['yifang'] ?? '')
             ->ofJujianren($data['jujianren'] ?? '')
-            ->paginate();
+            ->paginate(4);
         return ContractResource::collection($lists);
     }
 

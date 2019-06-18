@@ -22,7 +22,8 @@ class Contract extends Model
 
     const STATUS_APPLY = 0;
     const STATUS_CONFIRM = 1;
-    const STATUS_SIGN = 2;
+    const STATUS_PAYED = 2;
+    const STATUS_SIGN = 3;
 
     /**
      * 关联内容
@@ -31,6 +32,15 @@ class Contract extends Model
     public function content()
     {
         return $this->hasOne('App\Models\ContractContent', 'id', 'id');
+    }
+
+    /**
+     * 关联资源
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function file()
+    {
+        return $this->hasMany('App\Models\ContractFile', 'contract_id', 'id');
     }
 
     /**
@@ -131,6 +141,7 @@ class Contract extends Model
         $statusArr = [
             self::STATUS_APPLY => '已申请',
             self::STATUS_CONFIRM => '已确认',
+            self::STATUS_PAYED => '已支付',
             self::STATUS_SIGN => '已签名'
         ];
         return $statusArr;

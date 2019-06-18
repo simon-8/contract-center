@@ -217,11 +217,12 @@ function responseMessage($message = '', $data = []) {
 /**
  * @param $message
  * @param array $data
+ * @param int $code
  * @return \Illuminate\Http\JsonResponse
  */
-function responseException($message, $data = []) {
+function responseException($message, $data = [], $code = 422) {
     return response()->json([
-        'code' => 422,
+        'code' => $code,
         'message' => $message,
         'data' => $data
     ], 200);

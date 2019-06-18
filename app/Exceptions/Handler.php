@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +49,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $routeName = \Route::current()->getName();
+        if (Str::startsWith($routeName, 'api.')) {
+            if ($exception instanceof AuthenticationException) {
+                return responseException(__('api.no_auth'), [], 401);
+            }
+            if ($exception instanceof ModelNotFoundException) {
+                return responseException('404 Not Found', [], 404);
+            }
+        }
         return parent::render($request, $exception);
     }
 }

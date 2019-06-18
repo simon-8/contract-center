@@ -69,14 +69,9 @@ class ContractFolderController extends BaseController
     {
         $data = $request::all();
 
-        // 保存文件 返回地址
-        $contractData = $contractFolder->create([
-            'userid' => $this->user->id,
-            'jiafang' => $data['fills']['jiafang'] ?? '/',
-            'yifang' =>  $data['fills']['yifang'] ?? '/',
-            'jujianren' =>  $data['fills']['jujianren'] ?? '/',
-            'status' => $contractFolder::STATUS_APPLY
-        ]);
+        if (!$contractFolder->create($data)) {
+            return responseException(__('api.failed'));
+        }
 
         return responseMessage();
     }
@@ -92,14 +87,11 @@ class ContractFolderController extends BaseController
     {
         $this->checkAuth($contractFolder);
 
-        $data = $request::only(['fills', 'normals', 'agree']);
+        $data = $request::all();
 
-        $contractData = $contractFolder->update([
-            'jiafang' => $data['fills']['jiafang'],
-            'yifang' =>  $data['fills']['yifang'],
-            'jujianren' =>  $data['fills']['jujianren'],
-        ]);
-
+        if (!$contractFolder->update($data)) {
+            return responseException(__('api.failed'));
+        }
 
         return responseMessage();
     }
