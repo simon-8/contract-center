@@ -12,11 +12,6 @@ use App\Services\LeanCloudService;
 
 class UserController extends BaseController
 {
-    public function index()
-    {
-        return responseMessage(1);
-    }
-
     /**
      * 发送短信
      * @param UserRequest $request
