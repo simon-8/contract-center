@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.17 on 2019-06-04 17:14:00.
+ * Generated for Laravel 5.8.17 on 2019-06-19 14:27:06.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -8185,8 +8185,6 @@ namespace Illuminate\Support\Facades {
     /**
      * 
      *
-     * @see \Illuminate\Redis\RedisManager
-     * @see \Illuminate\Contracts\Redis\Factory
      */ 
     class Redis {
         
@@ -14603,6 +14601,581 @@ namespace Illuminate\Support {
  
 }
 
+namespace Toplan\PhpSms\Facades { 
+
+    /**
+     * 
+     *
+     */ 
+    class Sms {
+        
+        /**
+         * Bootstrap the task.
+         *
+         * @static 
+         */ 
+        public static function bootTask()
+        {
+                        return \Toplan\PhpSms\Sms::bootTask();
+        }
+        
+        /**
+         * Get the task instance.
+         *
+         * @return \Toplan\PhpSms\Task 
+         * @static 
+         */ 
+        public static function getTask()
+        {
+                        return \Toplan\PhpSms\Sms::getTask();
+        }
+        
+        /**
+         * Get the agent instance by name.
+         *
+         * @param string $name
+         * @param array $options
+         * @throws PhpSmsException
+         * @return \Toplan\PhpSms\Agent 
+         * @static 
+         */ 
+        public static function getAgent($name, $options = array())
+        {
+                        return \Toplan\PhpSms\Sms::getAgent($name, $options);
+        }
+        
+        /**
+         * Whether has the specified agent.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasAgent($name)
+        {
+                        return \Toplan\PhpSms\Sms::hasAgent($name);
+        }
+        
+        /**
+         * Set or get the dispatch scheme.
+         *
+         * @param string|array|null $name
+         * @param string|array|bool|null $scheme
+         * @param bool $override
+         * @return mixed 
+         * @static 
+         */ 
+        public static function scheme($name = null, $scheme = null, $override = false)
+        {
+                        return \Toplan\PhpSms\Sms::scheme($name, $scheme, $override);
+        }
+        
+        /**
+         * Set or get the configuration information.
+         *
+         * @param string|array|null $name
+         * @param array|bool|null $config
+         * @param bool $override
+         * @throws PhpSmsException
+         * @return array 
+         * @static 
+         */ 
+        public static function config($name = null, $config = null, $override = false)
+        {
+                        return \Toplan\PhpSms\Sms::config($name, $config, $override);
+        }
+        
+        /**
+         * Tear down scheme.
+         *
+         * @static 
+         */ 
+        public static function cleanScheme()
+        {
+                        return \Toplan\PhpSms\Sms::cleanScheme();
+        }
+        
+        /**
+         * Tear down config information.
+         *
+         * @static 
+         */ 
+        public static function cleanConfig()
+        {
+                        return \Toplan\PhpSms\Sms::cleanConfig();
+        }
+        
+        /**
+         * Create a instance for send sms.
+         *
+         * @param mixed $agentName
+         * @param mixed $tempId
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function make($agentName = null, $tempId = null)
+        {
+                        return \Toplan\PhpSms\Sms::make($agentName, $tempId);
+        }
+        
+        /**
+         * Create a instance for send voice.
+         *
+         * @param int|string|null $code
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function voice($code = null)
+        {
+                        return \Toplan\PhpSms\Sms::voice($code);
+        }
+        
+        /**
+         * Set whether to use the queue system,
+         * and define how to use it.
+         *
+         * @param bool|\Closure|null $enable
+         * @param \Closure|null $handler
+         * @return bool 
+         * @static 
+         */ 
+        public static function queue($enable = null, $handler = null)
+        {
+                        return \Toplan\PhpSms\Sms::queue($enable, $handler);
+        }
+        
+        /**
+         * Set the type of Sms instance.
+         *
+         * @param $type
+         * @throws PhpSmsException
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function type($type)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->type($type);
+        }
+        
+        /**
+         * Set the recipient`s mobile number.
+         *
+         * @param string|array $mobile
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function to($mobile)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->to($mobile);
+        }
+        
+        /**
+         * Set the sms content.
+         *
+         * @param string $content
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function content($content)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->content($content);
+        }
+        
+        /**
+         * Set the template ids.
+         *
+         * @param mixed $name
+         * @param mixed $tempId
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function template($name, $tempId = null)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->template($name, $tempId);
+        }
+        
+        /**
+         * Set the template data.
+         *
+         * @param mixed $key
+         * @param mixed $value
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function data($key, $value = null)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->data($key, $value);
+        }
+        
+        /**
+         * Set the voice code.
+         *
+         * @param string|int $code
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function code($code)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->code($code);
+        }
+        
+        /**
+         * Set voice file.
+         *
+         * @param string|array $name
+         * @param string|int $id
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function file($name, $id = null)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->file($name, $id);
+        }
+        
+        /**
+         * Set params of agent.
+         *
+         * @param string|array $name
+         * @param array|bool|null $params
+         * @param bool $override
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function params($name, $params = null, $override = false)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->params($name, $params, $override);
+        }
+        
+        /**
+         * Set the first agent.
+         *
+         * @param string $name
+         * @throws PhpSmsException
+         * @return \Toplan\PhpSms\Sms 
+         * @static 
+         */ 
+        public static function agent($name)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->agent($name);
+        }
+        
+        /**
+         * Start send.
+         * 
+         * If call with a `true` parameter, this system will immediately start request to send sms whatever whether to use the queue.
+         * if the current instance has pushed to the queue, you can recall this method in queue system without any parameter,
+         * so this mechanism in order to make you convenient to use this method in queue system.
+         *
+         * @param bool $immediately
+         * @return mixed 
+         * @static 
+         */ 
+        public static function send($immediately = false)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->send($immediately);
+        }
+        
+        /**
+         * Push to the queue system.
+         *
+         * @throws \Exception | PhpSmsException
+         * @return mixed 
+         * @static 
+         */ 
+        public static function push()
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->push();
+        }
+        
+        /**
+         * Get all of the data.
+         *
+         * @param null|string $key
+         * @return mixed 
+         * @static 
+         */ 
+        public static function all($key = null)
+        {
+                        /** @var \Toplan\PhpSms\Sms $instance */
+                        return $instance->all($key);
+        }
+         
+    }
+ 
+}
+
+namespace Toplan\Sms\Facades { 
+
+    /**
+     * 
+     *
+     */ 
+    class SmsManager {
+        
+        /**
+         * 验证是否可发送
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function validateSendable()
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->validateSendable();
+        }
+        
+        /**
+         * 验证数据
+         *
+         * @param mixed $input
+         * @param \Closure|null $validation
+         * @return array 
+         * @static 
+         */ 
+        public static function validateFields($input = null, $validation = null)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->validateFields($input, $validation);
+        }
+        
+        /**
+         * 请求验证码短信
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function requestVerifySms()
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->requestVerifySms();
+        }
+        
+        /**
+         * 请求语音验证码
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function requestVoiceVerify()
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->requestVoiceVerify();
+        }
+        
+        /**
+         * 获取当前的发送状态(非持久化的)
+         *
+         * @param string|int|null $key
+         * @param mixed $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function state($key = null, $default = null)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->state($key, $default);
+        }
+        
+        /**
+         * 获取客户端数据
+         *
+         * @param string|int|null $key
+         * @param mixed $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function input($key = null, $default = null)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->input($key, $default);
+        }
+        
+        /**
+         * 更新发送状态
+         *
+         * @param string|array $name
+         * @param mixed $value
+         * @static 
+         */ 
+        public static function updateState($name, $value = null)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->updateState($name, $value);
+        }
+        
+        /**
+         * 从存储器中获取发送状态
+         *
+         * @param string|null $name
+         * @return array 
+         * @static 
+         */ 
+        public static function retrieveState($name = null)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->retrieveState($name);
+        }
+        
+        /**
+         * 从存储器中删除发送状态
+         *
+         * @static 
+         */ 
+        public static function forgetState()
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->forgetState();
+        }
+        
+        /**
+         * 设置多少秒后才能再次请求
+         *
+         * @param int $interval
+         * @return int 
+         * @static 
+         */ 
+        public static function setCanResendAfter($interval)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->setCanResendAfter($interval);
+        }
+        
+        /**
+         * 从存储器中获取可再次发送的截止时间
+         *
+         * @return int 
+         * @static 
+         */ 
+        public static function getCanResendTime()
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->getCanResendTime();
+        }
+        
+        /**
+         * 存储指定字段的指定名称的动态验证规则
+         *
+         * @param string $field
+         * @param string $name
+         * @param string|null $rule
+         * @throws LaravelSmsException
+         * @static 
+         */ 
+        public static function storeRule($field, $name, $rule = null)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->storeRule($field, $name, $rule);
+        }
+        
+        /**
+         * 从存储器中获取指定字段的指定名称的动态验证规则
+         *
+         * @param string $field
+         * @param string|null $name
+         * @return string|null 
+         * @static 
+         */ 
+        public static function retrieveRule($field, $name = null)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->retrieveRule($field, $name);
+        }
+        
+        /**
+         * 从存储中获取指定字段的所有验证规则
+         *
+         * @param string $field
+         * @return array 
+         * @static 
+         */ 
+        public static function retrieveRules($field)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->retrieveRules($field);
+        }
+        
+        /**
+         * 从存储器中删除指定字段的指定名称的动态验证规则
+         *
+         * @param string $field
+         * @param string|null $name
+         * @static 
+         */ 
+        public static function forgetRule($field, $name = null)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->forgetRule($field, $name);
+        }
+        
+        /**
+         * 从存储中获取指定字段的所有验证规则
+         *
+         * @param string $field
+         * @return array 
+         * @static 
+         */ 
+        public static function forgetRules($field)
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->forgetRules($field);
+        }
+        
+        /**
+         * 从存储器中获取用户的所有数据
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function retrieveAllData()
+        {
+                        /** @var \Toplan\Sms\SmsManager $instance */
+                        return $instance->retrieveAllData();
+        }
+        
+        /**
+         * 合成结果数组
+         * 
+         * todo 改为抛出异常,然后在控制器中catch
+         *
+         * @param bool $pass
+         * @param string $type
+         * @param string $message
+         * @param array $data
+         * @return array 
+         * @static 
+         */ 
+        public static function generateResult($pass, $type, $message = '', $data = array())
+        {
+                        return \Toplan\Sms\SmsManager::generateResult($pass, $type, $message, $data);
+        }
+        
+        /**
+         * 序列化闭包
+         *
+         * @param \Closure $closure
+         * @return string 
+         * @static 
+         */ 
+        public static function closure($closure)
+        {
+                        return \Toplan\Sms\SmsManager::closure($closure);
+        }
+         
+    }
+ 
+}
+
 namespace Intervention\Image\Facades { 
 
     /**
@@ -18663,6 +19236,10 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class PhpSms extends \Toplan\PhpSms\Facades\Sms {}
+
+    class SmsManager extends \Toplan\Sms\Facades\SmsManager {}
 
     class Image extends \Intervention\Image\Facades\Image {}
 

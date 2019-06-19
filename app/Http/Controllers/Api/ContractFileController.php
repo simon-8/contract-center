@@ -98,7 +98,7 @@ class ContractFileController extends BaseController
     }
 
     /**
-     * 更新
+     * 更新 todo 暂时无用
      * @param \Request $request
      * @param ContractFile $contractFile
      * @return \Illuminate\Http\JsonResponse
@@ -131,8 +131,8 @@ class ContractFileController extends BaseController
         if (!$contractFile->delete()) {
             return responseException(__('web.failed'));
         }
-        $filePath = str_replace(config('filesystems.disks.uploads.root'), '', public_path($contractFile->linkurl));
-        Storage::disk('uploads')->delete($filePath);
+
+        Storage::disk('uploads')->delete($contractFile->linkurl);
         return responseMessage();
     }
 }

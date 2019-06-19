@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Str;
 
 class Handler extends ExceptionHandler
@@ -49,14 +50,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        $routeName = \Route::current()->getName();
-        if (Str::startsWith($routeName, 'api.')) {
+        $routeCurrent = \Route::current();
+        if ($routeCurrent && Str::startsWith($routeCurrent->getName(), 'api.')) {
             if ($exception instanceof AuthenticationException) {
                 return responseException(__('api.no_auth'), [], 401);
             }
             if ($exception instanceof ModelNotFoundException) {
                 return responseException('404 Not Found', [], 404);
             }
+            //if ($exception instanceof NotFoundHttpException) {
+            //    return responseException('404 Not Found', [], 404);
+            //}
         }
         return parent::render($request, $exception);
     }

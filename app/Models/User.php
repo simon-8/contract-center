@@ -51,6 +51,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @param $value
+     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
@@ -67,6 +70,11 @@ class User extends Authenticatable
         return $this->find($username);
     }
 
+    /**
+     * @param $query
+     * @param string $data
+     * @return mixed
+     */
     public function scopeOfCreatedAt($query, $data = '')
     {
         if ($data === '') return $query;
@@ -84,6 +92,11 @@ class User extends Authenticatable
         return $query->where('created_at', '>=', $start)->where('created_at', '<', $end);
     }
 
+    /**
+     * @param $query
+     * @param string $data
+     * @return mixed
+     */
     public function scopeOfUsername($query, $data = '')
     {
         if ($data === '') {
@@ -92,6 +105,11 @@ class User extends Authenticatable
         return $query->where('username', $data);
     }
 
+    /**
+     * @param $query
+     * @param string $data
+     * @return mixed
+     */
     public function scopeOfMobile($query, $data = '')
     {
         if ($data === '') {
@@ -100,6 +118,11 @@ class User extends Authenticatable
         return $query->where('mobile', $data);
     }
 
+    /**
+     * @param $query
+     * @param string $data
+     * @return mixed
+     */
     public function scopeOfNickname($query, $data = '')
     {
         if ($data === '') {

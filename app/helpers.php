@@ -6,8 +6,6 @@
  * Time: 16:52
  */
 
-use Laravel\Passport\Client;
-
 /**
  * 获取资源路径
  * @param string $module
@@ -215,7 +213,7 @@ function responseMessage($message = '', $data = []) {
         'code' => 0,
         'message' => $message,
         'data' => $data
-    ], 200);
+    ], 200)->send();
 }
 
 /**
@@ -229,7 +227,7 @@ function responseException($message, $data = [], $code = 422) {
         'code' => $code,
         'message' => $message,
         'data' => $data
-    ], 200);
+    ], 200)->send();
 }
 
 function editURL($route, $id, $name = 'id') {
@@ -360,4 +358,45 @@ function verifyPassportClient($id, $secret) {
 
         return true;
     });
+}
+
+/**
+ * 发送验证码
+ * @param $mobile
+ * @return array
+ */
+function sendVerifyCode($mobile) {
+    $res = SmsManager::validateSendable();
+    if (!$res['success']) {
+        return $res;
+    }
+    $data = [
+        'mobile' => $mobile
+    ];
+    $res = SmsManager::validateFields($data);
+    if (!$res['success']) {
+        return $res;
+    }
+
+    return SmsManager::requestVerifySms();
+}
+
+
+/**
+ * 隐藏字符串
+ * @param $string
+ * @param int $start
+ * @param int $length
+ * @return mixed
+ */
+function stringHide($string, $start = 0, $length = 0)
+{
+    if (empty($start)) {
+        $start = floor(strlen($string) / 3);
+    }
+    if (empty($length)) {
+        $length = ceil(strlen($string) / 3);
+    }
+
+    return substr_replace($string, str_repeat('*', $length), $start, $length);
 }

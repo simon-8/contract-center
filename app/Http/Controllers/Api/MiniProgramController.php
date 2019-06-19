@@ -14,6 +14,7 @@ use App\Services\AuthService;
 use EasyWeChat\Factory;
 use Illuminate\Support\Facades\DB;
 //use Illuminate\Support\Facades\Crypt;
+use App\Http\Resources\User AS UserResource;
 
 class MiniProgramController extends Controller
 {
@@ -142,7 +143,7 @@ class MiniProgramController extends Controller
         $data['password'] = md5($openid);
         try {
             //$token = $userData->createToken('')->accessToken;
-            $token = $authService->passwordToToken($data);
+            $userData->token = $authService->passwordToToken($data);
         } catch (\Exception $e) {
             return responseException($e->getMessage());
         }
@@ -154,7 +155,7 @@ class MiniProgramController extends Controller
         ];
         UserRedis::update($redisInsertData);
 
-        return responseMessage('', $token);
+        return responseMessage('', $userData);
     }
 
     /**

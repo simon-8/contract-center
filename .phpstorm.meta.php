@@ -5,7 +5,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2019-06-04 17:14:01.
+    * Generated on 2019-06-19 14:27:09.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -37,6 +37,8 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'League\OAuth2\Server\AuthorizationServer' => \League\OAuth2\Server\AuthorizationServer::class,
+        'League\OAuth2\Server\ResourceServer' => \League\OAuth2\Server\ResourceServer::class,
         'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
         'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
         'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
@@ -46,6 +48,8 @@ namespace PHPSTORM_META {
         'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
         'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
         'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
+        'Toplan\PhpSms\Sms' => \Toplan\PhpSms\Sms::class,
+        'Toplan\Sms\SmsManager' => \Toplan\Sms\SmsManager::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -172,7 +176,9 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.mini_program.default' => \EasyWeChat\MiniProgram\Application::class,
         'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
+        'wechat.payment.default' => \EasyWeChat\Payment\Application::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
@@ -201,6 +207,8 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'League\OAuth2\Server\AuthorizationServer' => \League\OAuth2\Server\AuthorizationServer::class,
+        'League\OAuth2\Server\ResourceServer' => \League\OAuth2\Server\ResourceServer::class,
         'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
         'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
         'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
@@ -210,6 +218,8 @@ namespace PHPSTORM_META {
         'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
         'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
         'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
+        'Toplan\PhpSms\Sms' => \Toplan\PhpSms\Sms::class,
+        'Toplan\Sms\SmsManager' => \Toplan\Sms\SmsManager::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -336,7 +346,9 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.mini_program.default' => \EasyWeChat\MiniProgram\Application::class,
         'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
+        'wechat.payment.default' => \EasyWeChat\Payment\Application::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
@@ -365,6 +377,8 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'League\OAuth2\Server\AuthorizationServer' => \League\OAuth2\Server\AuthorizationServer::class,
+        'League\OAuth2\Server\ResourceServer' => \League\OAuth2\Server\ResourceServer::class,
         'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
         'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
         'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
@@ -374,6 +388,8 @@ namespace PHPSTORM_META {
         'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
         'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
         'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
+        'Toplan\PhpSms\Sms' => \Toplan\PhpSms\Sms::class,
+        'Toplan\Sms\SmsManager' => \Toplan\Sms\SmsManager::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -500,7 +516,9 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.mini_program.default' => \EasyWeChat\MiniProgram\Application::class,
         'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
+        'wechat.payment.default' => \EasyWeChat\Payment\Application::class,
     ]));
     override(\App::make(0), map([
         '' => '@',
@@ -529,6 +547,8 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'League\OAuth2\Server\AuthorizationServer' => \League\OAuth2\Server\AuthorizationServer::class,
+        'League\OAuth2\Server\ResourceServer' => \League\OAuth2\Server\ResourceServer::class,
         'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
         'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
         'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
@@ -538,6 +558,8 @@ namespace PHPSTORM_META {
         'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
         'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
         'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
+        'Toplan\PhpSms\Sms' => \Toplan\PhpSms\Sms::class,
+        'Toplan\Sms\SmsManager' => \Toplan\Sms\SmsManager::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -664,7 +686,9 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.mini_program.default' => \EasyWeChat\MiniProgram\Application::class,
         'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
+        'wechat.payment.default' => \EasyWeChat\Payment\Application::class,
     ]));
     override(\App::makeWith(0), map([
         '' => '@',
@@ -693,6 +717,8 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'League\OAuth2\Server\AuthorizationServer' => \League\OAuth2\Server\AuthorizationServer::class,
+        'League\OAuth2\Server\ResourceServer' => \League\OAuth2\Server\ResourceServer::class,
         'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
         'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
         'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
@@ -702,6 +728,8 @@ namespace PHPSTORM_META {
         'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
         'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
         'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
+        'Toplan\PhpSms\Sms' => \Toplan\PhpSms\Sms::class,
+        'Toplan\Sms\SmsManager' => \Toplan\Sms\SmsManager::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -828,7 +856,9 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.mini_program.default' => \EasyWeChat\MiniProgram\Application::class,
         'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
+        'wechat.payment.default' => \EasyWeChat\Payment\Application::class,
     ]));
     override(\app(0), map([
         '' => '@',
@@ -857,6 +887,8 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'League\OAuth2\Server\AuthorizationServer' => \League\OAuth2\Server\AuthorizationServer::class,
+        'League\OAuth2\Server\ResourceServer' => \League\OAuth2\Server\ResourceServer::class,
         'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
         'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
         'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
@@ -866,6 +898,8 @@ namespace PHPSTORM_META {
         'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
         'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
         'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
+        'Toplan\PhpSms\Sms' => \Toplan\PhpSms\Sms::class,
+        'Toplan\Sms\SmsManager' => \Toplan\Sms\SmsManager::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -992,7 +1026,9 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.mini_program.default' => \EasyWeChat\MiniProgram\Application::class,
         'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
+        'wechat.payment.default' => \EasyWeChat\Payment\Application::class,
     ]));
     override(\resolve(0), map([
         '' => '@',
@@ -1021,6 +1057,8 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'League\OAuth2\Server\AuthorizationServer' => \League\OAuth2\Server\AuthorizationServer::class,
+        'League\OAuth2\Server\ResourceServer' => \League\OAuth2\Server\ResourceServer::class,
         'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
         'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
         'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
@@ -1030,6 +1068,8 @@ namespace PHPSTORM_META {
         'Overtrue\Pinyin\Pinyin' => \Overtrue\Pinyin\Pinyin::class,
         'Psr\Http\Message\ResponseInterface' => \Zend\Diactoros\Response::class,
         'Psr\Http\Message\ServerRequestInterface' => \Zend\Diactoros\ServerRequest::class,
+        'Toplan\PhpSms\Sms' => \Toplan\PhpSms\Sms::class,
+        'Toplan\Sms\SmsManager' => \Toplan\Sms\SmsManager::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -1156,7 +1196,9 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat.mini_program.default' => \EasyWeChat\MiniProgram\Application::class,
         'wechat.official_account.default' => \EasyWeChat\OfficialAccount\Application::class,
+        'wechat.payment.default' => \EasyWeChat\Payment\Application::class,
     ]));
 
     override(\Illuminate\Support\Arr::add(0), type(0));

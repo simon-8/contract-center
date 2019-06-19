@@ -9,6 +9,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use Illuminate\Support\Str;
+
 class BaseRequest extends FormRequest
 {
     /**
@@ -21,9 +23,8 @@ class BaseRequest extends FormRequest
     {
         $validator = \Validator::make($data, $rules);
         if ($validator->fails()) {
-            if (\Request::ajax() || substr(\Request::path(), 0, 3) === 'api') {
-                responseException($validator->errors()->first());
-                exit();
+            if (\Request::ajax() || Str::startsWith(\Request::path(), 'api')) {
+                return responseException($validator->errors()->first());
             } else {
                 return $validator->validate();
             }

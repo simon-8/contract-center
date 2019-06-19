@@ -30,7 +30,12 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::get('contract/status', 'ContractController@getStatus');
     Route::get('contract/status-count', 'ContractController@getStatusCount');
     Route::apiResource('contract', 'ContractController');
-    Route::apiResource('contract-folder', 'ContractFolderController');
-    //Route::post('contract-data/store-file', 'ContractDataController@storeFile');
+    //Route::apiResource('contract-folder', 'ContractFolderController');
     Route::apiResource('contract-file', 'ContractFileController');
+
+    Route::prefix('user')->group(function () {
+        Route::post('send-code', 'UserController@sendCode');
+        Route::post('bind-mobile', 'UserController@bindMobile');
+        Route::get('/{user}', 'UserController@show');
+    });
 });
