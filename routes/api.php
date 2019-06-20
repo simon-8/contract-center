@@ -34,8 +34,11 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::apiResource('contract-file', 'ContractFileController');
 
     Route::prefix('user')->group(function () {
-        Route::post('send-code', 'UserController@sendCode');
-        Route::post('bind-mobile', 'UserController@bindMobile');
-        Route::get('/{user}', 'UserController@show');
+        Route::group(['middleware' => 'auth:api'], function() {
+            Route::post('send-code', 'UserController@sendCode');
+            Route::post('bind-mobile', 'UserController@bindMobile');
+            //Route::get('/{user}', 'UserController@show');
+            Route::get('info', 'UserController@info');
+        });
     });
 });

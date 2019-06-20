@@ -12,6 +12,26 @@ use App\Services\LeanCloudService;
 
 class UserController extends BaseController
 {
+
+    /**
+     * todo 暂时无用
+     * @param User $user
+     * @return User
+     */
+    public function show(User $user)
+    {
+        return $user;
+    }
+
+    /**
+     * 用户信息
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function info()
+    {
+        return responseMessage('', $this->user);
+    }
+
     /**
      * 发送短信
      * @param UserRequest $request
@@ -60,8 +80,4 @@ class UserController extends BaseController
         return responseMessage(__('api.success'));
     }
 
-    public function show(User $user)
-    {
-        return $user;
-    }
 }
