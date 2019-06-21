@@ -66,8 +66,8 @@
                             <tr>
                                 <td>{{ $v->id }}</td>
                                 <td>{{ $v->listorder }}</td>
-                                <td>{{ $v->getCats() }}</td>
-                                <td>{{ $v->getTypes() }}</td>
+                                <td>{{ $v->getCatText() }}</td>
+                                <td>{{ $v->getTypeText() }}</td>
                                 <td>{{ \Str::limit($v->content, 30) }}</td>
                                 <td>{{ $v->created_at }}</td>
                                 <td>{{ $v->updated_at }}</td>

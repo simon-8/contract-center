@@ -107,7 +107,7 @@ class ContractController extends BaseController
      */
     public function show(Contract $contract)
     {
-        $this->checkAuth($contract);
+        //$this->checkAuth($contract);
 
         $content = $contract->content->getAttribute('content');
         unset($contract->content);
