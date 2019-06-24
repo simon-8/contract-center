@@ -7,8 +7,8 @@
  */
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\ContractTemplate AS ContractTemplateResource;
-use App\Models\ContractTemplate;
+use App\Models\ContractTplFill;
+use App\Models\ContractTplRule;
 use \DB;
 
 class ContractTemplateController extends BaseController
@@ -16,12 +16,21 @@ class ContractTemplateController extends BaseController
     /**
      * 列表
      * @param \Request $request
-     * @param ContractTemplate $contractTemplate
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @param ContractTplFill $contractTplFill
+     * @param ContractTplRule $contractTplRule
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(\Request $request, ContractTemplate $contractTemplate)
+    public function index(\Request $request, ContractTplFill $contractTplFill, ContractTplRule $contractTplRule)
     {
-        $lists = $contractTemplate->get();
-        return responseMessage('', ContractTemplateResource::collection($lists));
+        $fills = $contractTplFill->get()->map(function ($fill) {
+            unset($fill['listorder'], $fill['created_at'], $fill['updated_at']);
+            return $fill;
+        });
+        $rules = $contractTplRule->get()->map(function ($rule) {
+            unset($rule['listorder'], $rule['created_at'], $rule['updated_at']);
+            return $rule;
+        });
+        
+        return responseMessage('', compact('fills', 'rules'));
     }
 }

@@ -19,20 +19,10 @@
                     <div class="input-group m-b">
                         <select name="catid" class="form-control inline">
                             <option value="">请选择分类</option>
-                            @foreach((new \App\Models\ContractTemplate())->getCats() as $catid => $catname)
+                            @foreach(\App\Services\ContractService::getCats() as $catid => $catname)
                             <option value="{{ $catid }}"
                                 @if (isset($data['catid']) && $data['catid'] === $catid) selected @endif>{{ $catname }}
                             </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="input-group m-b">
-                        <select name="typeid" class="form-control inline">
-                            <option value="">请选择类型</option>
-                            @foreach((new \App\Models\ContractTemplate())->getTypes() as $typeid => $typename)
-                                <option value="{{ $typeid }}"
-                                        @if (isset($data['typeid']) && $data['typeid'] === $typeid) selected @endif>{{ $typename }}
-                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -42,7 +32,7 @@
                         <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> 搜索</button>
                     </div>
                 </form>
-                <a href="{{ route('admin.contract-template.create') }}" class="btn btn-primary">
+                <a href="{{ route('admin.contract-tpl-fill.create') }}" class="btn btn-primary">
                     <i class="fa fa-plus"></i>&nbsp;新增
                 </a>
             </div>
@@ -50,14 +40,14 @@
                 <table class="table table-bordered table-striped table-hover bg-white text-center text-nowrap">
                     <thead>
                     <tr class="text-center">
-                        <th style="width: 50px;">编号</th>
-                        <th style="width: 50px;">排序</th>
-                        <th style="width: 60px;">分类</th>
-                        <th style="width: 60px;">类型</th>
-                        <th style="width: 200px;">内容</th>
-                        <th style="width: 100px;">创建时间</th>
-                        <th style="width: 100px;">更新时间</th>
-                        <th style="width: 180px;">操作</th>
+                        <td style="width: 50px;">编号</td>
+                        <td style="width: 50px;">排序</td>
+                        <td style="width: 60px;">分类</td>
+                        <td style="width: 60px;">表单名称</td>
+                        <td style="width: 200px;">内容</td>
+                        <td style="width: 100px;">创建时间</td>
+                        <td style="width: 100px;">更新时间</td>
+                        <td style="width: 180px;">操作</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -66,14 +56,16 @@
                             <tr>
                                 <td>{{ $v->id }}</td>
                                 <td>{{ $v->listorder }}</td>
-                                <td>{{ $v->getCatText() }}</td>
-                                <td>{{ $v->getTypeText() }}</td>
+                                <td>{{ \App\Services\ContractService::getCatText($v->catid) }}</td>
+                                <td>{{ $v->formname }}</td>
                                 <td>{{ \Str::limit($v->content, 30) }}</td>
                                 <td>{{ $v->created_at }}</td>
                                 <td>{{ $v->updated_at }}</td>
                                 <td>
-                                    <a class="btn btn-sm btn-info" href="{{ route('admin.contract-template.edit', ['id' => $v->id]) }}">编辑</a>
-                                    <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract-template.destroy', $v->id) }}')">删除</button>
+                                    @if ($v->id > 5)
+                                    <a class="btn btn-sm btn-info" href="{{ route('admin.contract-tpl-fill.edit', ['id' => $v->id]) }}">编辑</a>
+                                    <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract-tpl-fill.destroy', $v->id) }}')">删除</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

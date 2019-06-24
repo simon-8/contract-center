@@ -31,7 +31,8 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
         Route::post('user/freeze/{user}', 'UserController@freeze')->name('user.freeze');
         Route::resource('user', 'UserController');
         Route::resource('contract', 'ContractController');
-        Route::resource('contract-template', 'ContractTemplateController');
+        Route::resource('contract-tpl-fill', 'ContractTplFillController');
+        Route::resource('contract-tpl-rule', 'ContractTplRuleController');
         Route::resource('single-page', 'SinglePageController');
 
         // database

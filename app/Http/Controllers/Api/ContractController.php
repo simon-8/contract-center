@@ -91,12 +91,14 @@ class ContractController extends BaseController
         $data = $request::all();
         $lists = $contract->ofStatus($data['status'] ?? '')
             ->ofUserid($this->user->id)
+            ->ofCatid($data['catid'] ?? 0)
             ->ofMycatid($data['mycatid'] ?? 0)
             ->ofLawyerid($data['lawyerid'] ?? 0)
             ->ofJiafang($data['jiafang'] ?? '')
             ->ofYifang($data['yifang'] ?? '')
             ->ofJujianren($data['jujianren'] ?? '')
-            ->paginate(4);
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
         return ContractResource::collection($lists);
     }
 
@@ -124,12 +126,14 @@ class ContractController extends BaseController
      */
     public function store(\Request $request, Contract $contract)
     {
-        $data = $request::only(['fills', 'normals', 'agree']);
+        //$this->checkAuth($contract);
+        $data = $request::only(['catid', 'fills', 'rules', 'agree']);
 
         DB::beginTransaction();
         try {
             $contractData = $contract->create([
                 'userid' => $this->user->id,
+                'catid' => $data['catid'],
                 'jiafang' => $data['fills']['jiafang'] ?? '/',
                 'yifang' =>  $data['fills']['yifang'] ?? '/',
                 'jujianren' =>  $data['fills']['jujianren'] ?? '/',
@@ -164,7 +168,7 @@ class ContractController extends BaseController
     {
         $this->checkAuth($contract);
 
-        $data = $request::only(['fills', 'normals', 'agree']);
+        $data = $request::only(['fills', 'rules', 'agree']);
 
         DB::beginTransaction();
         try {

@@ -77,10 +77,17 @@ return [
     'admin.contract.destroy' => '删除合同',
     'admin.contract.show' => '合同详情',
 
-    'admin.contract-template.*' => '合同模板管理',
-    'admin.contract-template.index' => '合同模板列表',
-    'admin.contract-template.create' => '添加合同模板',
-    'admin.contract-template.edit' => '编辑合同模板',
-    'admin.contract-template.destroy' => '删除合同模板',
-    'admin.contract-template.show' => '合同模板详情',
+    'admin.contract-tpl-fill.*' => ' 填空模板管理',
+    'admin.contract-tpl-fill.index' => ' 填空模板列表',
+    'admin.contract-tpl-fill.create' => ' 填空模板添加',
+    'admin.contract-tpl-fill.edit' => ' 填空模板编辑',
+    'admin.contract-tpl-fill.destroy' => ' 填空模板删除',
+    'admin.contract-tpl-fill.show' => ' 填空模板详情',
+
+    'admin.contract-tpl-rule.*' => '通用模板管理',
+    'admin.contract-tpl-rule.index' => '通用模板列表',
+    'admin.contract-tpl-rule.create' => '添加通用模板',
+    'admin.contract-tpl-rule.edit' => '编辑通用模板',
+    'admin.contract-tpl-rule.destroy' => '删除通用模板',
+    'admin.contract-tpl-rule.show' => '通用模板详情',
 ];

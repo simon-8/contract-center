@@ -10,6 +10,7 @@ class Contract extends Model
 
     protected $fillable = [
         'name',
+        'catid',
         'userid',
         'lawyerid',
         'mycatid',
@@ -57,6 +58,18 @@ class Contract extends Model
         } else {
             return $query->where('status', $data);
         }
+    }
+
+    /**
+     * 分类ID
+     * @param $query
+     * @param int $data
+     * @return mixed
+     */
+    public function scopeOfCatid($query, $data = 0)
+    {
+        if (!$data) return $query;
+        return $query->where('catid', $data);
     }
 
     /**
@@ -129,6 +142,20 @@ class Contract extends Model
     {
         if (!$data) return $query;
         return $query->where('yifang', $data);
+    }
+
+    /**
+     * 获取分类数组
+     * @return array
+     */
+    public function getCats()
+    {
+        $cats = [
+            0 => '通用',
+            1 => '两方',
+            2 => '三方',
+        ];
+        return $cats;
     }
 
     /**

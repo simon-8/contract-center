@@ -29,7 +29,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::apiResource('banner', 'BannerController');
     Route::get('contract/status', 'ContractController@getStatus');
     Route::get('contract/status-count', 'ContractController@getStatusCount');
-    Route::apiResource('contract', 'ContractController');
+    Route::apiResource('contract', 'ContractController')->middleware('auth:api');
     Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
 
