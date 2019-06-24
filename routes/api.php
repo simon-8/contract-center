@@ -29,7 +29,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::apiResource('banner', 'BannerController');
     Route::get('contract/status', 'ContractController@getStatus');
     Route::get('contract/status-count', 'ContractController@getStatusCount');
-    Route::apiResource('contract', 'ContractController')->middleware('auth:api');
+    Route::apiResource('contract', 'ContractController');// 中间件移至控制器
     Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
 

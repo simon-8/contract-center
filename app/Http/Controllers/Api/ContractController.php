@@ -13,6 +13,12 @@ use \DB;
 
 class ContractController extends BaseController
 {
+    public function __construct(\Request $request)
+    {
+        parent::__construct($request);
+        $this->middleware('auth:api')->except('getStatus', 'getStatusCount');
+    }
+
     /**
      * 权限检查
      * @param $contract
@@ -126,8 +132,8 @@ class ContractController extends BaseController
      */
     public function store(\Request $request, Contract $contract)
     {
-        //$this->checkAuth($contract);
-        $data = $request::only(['catid', 'fills', 'rules', 'agree']);
+        $data = $request::json()->all();
+        $data = collect($data)->only(['catid', 'fills', 'rules', 'agree']);
 
         DB::beginTransaction();
         try {
