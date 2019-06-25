@@ -133,16 +133,16 @@ class ContractController extends BaseController
     public function store(\Request $request, Contract $contract)
     {
         $data = $request::json()->all();
-        $data = collect($data)->only(['catid', 'fills', 'rules', 'agree']);
+        $data = collect($data)->only(['catid', 'fills', 'rules', 'agree'])->toArray();
 
         DB::beginTransaction();
         try {
             $contractData = $contract->create([
                 'userid' => $this->user->id,
                 'catid' => $data['catid'],
-                'jiafang' => $data['fills']['jiafang'] ?? '/',
-                'yifang' =>  $data['fills']['yifang'] ?? '/',
-                'jujianren' =>  $data['fills']['jujianren'] ?? '/',
+                'jiafang' => $data['fills']['jiafang'] ?? '',
+                'yifang' =>  $data['fills']['yifang'] ?? '',
+                'jujianren' =>  $data['fills']['jujianren'] ?? '',
                 'status' => $contract::STATUS_APPLY
             ]);
 
@@ -172,19 +172,19 @@ class ContractController extends BaseController
      */
     public function update(\Request $request, Contract $contract)
     {
-        $this->checkAuth($contract);
-
-        $data = $request::only(['fills', 'rules', 'agree']);
+        //$this->checkAuth($contract);
+        $data = $request::json()->all();
+        $data = collect($data)->only(['fills', 'rules', 'agree'])->toArray();
 
         DB::beginTransaction();
         try {
             $contractData = $contract->update([
-                'jiafang' => $data['fills']['jiafang'],
-                'yifang' =>  $data['fills']['yifang'],
-                'jujianren' =>  $data['fills']['jujianren'],
+                'jiafang' => $data['fills']['jiafang'] ?? '',
+                'yifang' =>  $data['fills']['yifang'] ?? '',
+                'jujianren' =>  $data['fills']['jujianren'] ?? '',
             ]);
 
-            $contractData->content()->update([
+            $contract->content->update([
                 'content' => $data
             ]);
 
