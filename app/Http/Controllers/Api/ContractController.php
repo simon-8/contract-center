@@ -178,11 +178,20 @@ class ContractController extends BaseController
 
         DB::beginTransaction();
         try {
-            $contractData = $contract->update([
+            $updateData = [
                 'jiafang' => $data['fills']['jiafang'] ?? '',
                 'yifang' =>  $data['fills']['yifang'] ?? '',
                 'jujianren' =>  $data['fills']['jujianren'] ?? '',
-            ]);
+            ];
+            // 设置targetid 重置confirm
+            if ($this->user->id != $contract->userid) {
+                $updateData['targetid'] = $this->user->id;
+                $updateData['target_confirm'] = 0;
+            } else {
+                $updateData['user_confirm'] = 0;
+            }
+
+            $contractData = $contract->update($updateData);
 
             $contract->content->update([
                 'content' => $data
@@ -209,6 +218,24 @@ class ContractController extends BaseController
         $this->checkAuth($contract);
 
         if (!$contract->delete()) {
+            return responseException(__('web.failed'));
+        }
+        return responseMessage();
+    }
+
+    /**
+     * @param Contract $contract
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function confirm(Contract $contract)
+    {
+        // 判断当前用户类型
+        if ($this->user->id != $contract->userid) {
+            $contract->target_confirm = 1;
+        } else {
+            $contract->user_confirm = 1;
+        }
+        if (!$contract->save()) {
             return responseException(__('web.failed'));
         }
         return responseMessage();

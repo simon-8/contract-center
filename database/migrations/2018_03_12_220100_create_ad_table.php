@@ -22,6 +22,8 @@ class CreateAdTable extends Migration
             $table->string('content')->comment('文字介绍')->default('');
             $table->unsignedInteger('listorder')->comment('排序')->default(0);
             $table->timestamps();
+
+            //$table->index('pid');
         });
     }
 
