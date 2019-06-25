@@ -13,11 +13,11 @@ use \DB;
 
 class ContractController extends BaseController
 {
-    public function __construct(\Request $request)
-    {
-        parent::__construct($request);
-        $this->middleware('auth:api')->except('getStatus', 'getStatusCount');
-    }
+    //public function __construct(\Request $request)
+    //{
+    //    parent::__construct($request);
+    //    $this->middleware('auth:api')->except('getStatus', 'getStatusCount');
+    //}
 
     /**
      * 权限检查
@@ -182,15 +182,14 @@ class ContractController extends BaseController
                 'jiafang' => $data['fills']['jiafang'] ?? '',
                 'yifang' =>  $data['fills']['yifang'] ?? '',
                 'jujianren' =>  $data['fills']['jujianren'] ?? '',
+                'user_confirm' => 0,// 任一一方修改后 清除确认状态
+                'target_confirm' => 0,// 任一一方修改后 清除确认状态
             ];
-            // 设置targetid 重置confirm
+            // 设置targetid
             if ($this->user->id != $contract->userid) {
                 $updateData['targetid'] = $this->user->id;
-                $updateData['target_confirm'] = 0;
-            } else {
-                $updateData['user_confirm'] = 0;
             }
-
+            $updateData['target_confirm'] = 0;
             $contractData = $contract->update($updateData);
 
             $contract->content->update([
@@ -224,20 +223,27 @@ class ContractController extends BaseController
     }
 
     /**
+     * 用户确认
      * @param Contract $contract
      * @return \Illuminate\Http\JsonResponse
      */
     public function confirm(Contract $contract)
     {
         // 判断当前用户类型
-        if ($this->user->id != $contract->userid) {
-            $contract->target_confirm = 1;
-        } else {
+        if ($this->user->id == $contract->userid) {
             $contract->user_confirm = 1;
+        } else {
+            $contract->targetid = $this->user->id;
+            $contract->target_confirm = 1;
         }
+        if ($contract->target_confirm && $contract->user_confirm) {
+            $contract->status = $contract::STATUS_CONFIRM;
+        }
+        $contract->confirm_at = date('Y-m-d H:i:s');
         if (!$contract->save()) {
             return responseException(__('web.failed'));
         }
-        return responseMessage();
+        // todo 通知另一方
+        return responseMessage('', $contract->status);
     }
 }
