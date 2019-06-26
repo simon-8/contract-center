@@ -60,6 +60,15 @@ class User extends Authenticatable
     }
 
     /**
+     * oauth关系
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userOauth()
+    {
+        return $this->hasMany('App\Models\UserOauth', 'userid', 'id');
+    }
+
+    /**
      * 匹配小程序  PassPort使用id做用户名
      * 其他应用同上
      * @param $username
@@ -69,6 +78,27 @@ class User extends Authenticatable
     {
         return $this->find($username);
     }
+
+    /**
+     * 小程序openid
+     * @return mixed
+     */
+    public function miniGameOpenid()
+    {
+        $userOauth = $this->userOauth()->where('channel', 'miniprogram')->first();
+        return $userOauth ? $userOauth->openid : null;
+    }
+
+    /**
+     * 微信公众号openid
+     * @return mixed|null
+     */
+    public function wechatOpenid()
+    {
+        $userOauth = $this->userOauth()->where('channel', 'wechat')->first();
+        return $userOauth ? $userOauth->openid : null;
+    }
+
 
     /**
      * @param $query

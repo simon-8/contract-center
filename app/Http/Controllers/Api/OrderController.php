@@ -7,11 +7,38 @@
  */
 namespace App\Http\Controllers\Api;
 
+use App\Models\Order;
 use EasyWeChat\Factory;
 use function EasyWeChat\Kernel\Support\generate_sign;
 
 class OrderController extends BaseController
 {
+    public function store(\Request $request, Order $order)
+    {
+        logger('order.store', $request::all());
+        $data = $request::only([
+            'contract_id',
+            'channel',
+            'gateway',
+        ]);
+
+        $gateway = $data['gateway'] ?? '';
+        $channel = $data['channel'] ?? '';
+
+        if (empty($gateway)) {
+            return responseException('支付方式缺失');
+        }
+        if (empty($channel) || !method_exists($this, $channel)) {
+            return responseException('支付通道不存在, 请检查channel值');
+        }
+
+        $data['userid'] = $this->user->id;
+        $data['amount'] = 1;
+        $data['orderid'] = Order::createOrderNo($channel);
+        $orderData = $order->create($data);
+
+    }
+
     public function wechat($order = [], $gateway = '')
     {
         $config = [

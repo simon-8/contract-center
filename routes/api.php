@@ -35,7 +35,13 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         ->except('getStatus', 'getStatusCount');
     Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
-
+    Route::prefix('order')->group(function () {
+        Route::middleware('auth:api')->group(function () {
+            Route::post('', 'OrderController@store');
+            Route::post('repay/{orderid}', 'OrderController@reStore');
+            Route::post('cancel/{orderid}', 'OrderController@cancel');
+        });
+    });
     Route::prefix('user')->group(function () {
         Route::group(['middleware' => 'auth:api'], function() {
             Route::post('send-code', 'UserController@sendCode');
