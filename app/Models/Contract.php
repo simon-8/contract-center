@@ -4,6 +4,56 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Contract
+ *
+ * @property int $id
+ * @property string $name 合同名称
+ * @property int $catid 合同分类
+ * @property int $userid 关联用户ID
+ * @property int $targetid 目标用户ID
+ * @property int $lawyerid 关联律师ID
+ * @property int $mycatid 我的分类(文件夹)
+ * @property string $jiafang 甲方
+ * @property string $yifang 乙方
+ * @property string $jujianren 居间人
+ * @property int $user_confirm
+ * @property int $target_confirm
+ * @property int $status 状态
+ * @property string $confirm_at 确认时间
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\ContractContent $content
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ContractFile[] $file
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofCatid($data = 0)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofJiafang($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofJujianren($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofLawyerid($data = 0)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofMycatid($data = 0)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofStatus($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofUserid($data = 0)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofYifang($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereCatid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereConfirmAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereJiafang($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereJujianren($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereLawyerid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereMycatid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereTargetConfirm($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereTargetid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUserConfirm($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUserid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereYifang($value)
+ * @mixin \Eloquent
+ */
 class Contract extends Model
 {
     protected $table = 'contract';

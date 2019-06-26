@@ -8,6 +8,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\RoleAccess
+ *
+ * @property int $id
+ * @property string $name 权限名称
+ * @property string $route 权限路由
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RoleAccess newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RoleAccess newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RoleAccess query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RoleAccess whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RoleAccess whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RoleAccess whereRoute($value)
+ * @mixin \Eloquent
+ */
 class RoleAccess extends Model
 {
     public $table = 'role_access';

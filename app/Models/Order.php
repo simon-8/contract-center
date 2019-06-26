@@ -8,6 +8,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Order
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order query()
+ * @mixin \Eloquent
+ * @property-read \App\Models\Contract $contract
+ * @property-read \App\Models\User $user
+ */
 class Order extends Model
 {
     const STATUS_WAIT_PAY = 0;// 待付款
@@ -22,7 +32,7 @@ class Order extends Model
 
     public $table = 'orders';
 
-    public $timestamps = false;
+    //public $timestamps = false;
 
     public $fillable = [
         'contract_id',
@@ -39,6 +49,28 @@ class Order extends Model
         'payed_at',
     ];
 
+    /**
+     * 关联用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'userid', 'id');
+    }
+
+    /**
+     * 关联合同
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function contract()
+    {
+        return $this->belongsTo('App\Models\Contract', 'contract_id', 'id');
+    }
+
+    /**
+     * 所有状态
+     * @return array
+     */
     public function getStatus() {
         $statusArr = [
             self::STATUS_WAIT_PAY => '待支付',

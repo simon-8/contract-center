@@ -8,6 +8,25 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\AdPlace
+ *
+ * @property int $id
+ * @property string $name 广告位名称
+ * @property int $width 广告位宽度
+ * @property int $height 广告位高度
+ * @property int $status 广告位状态
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ad
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdPlace newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdPlace newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdPlace query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdPlace whereHeight($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdPlace whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdPlace whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdPlace whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdPlace whereWidth($value)
+ * @mixin \Eloquent
+ */
 class AdPlace extends Model
 {
     public $table = 'ad_place';

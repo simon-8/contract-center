@@ -13,6 +13,7 @@
         "aliyuncs/oss-sdk-php": "^2.3",
         "arcanedev/log-viewer": "^4.6",
         "delight-im/ids": "^1.0",
+        "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/passport": "^7.3",

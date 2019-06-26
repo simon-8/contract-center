@@ -7,9 +7,62 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $username 用户名
+ * @property string $password 密码
+ * @property string $nickname 昵称
+ * @property string $mobile 手机号码
+ * @property string $email email
+ * @property float $money 余额
+ * @property string $city 国家
+ * @property string $province 省份
+ * @property string $country 城市
+ * @property string $avatar 头像
+ * @property int $gender 1男2女0未知
+ * @property int $client_id 所属客户端 ID
+ * @property string $last_login_time 最后登录时间
+ * @property int $is_block 是否冻结
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserOauth[] $userOauth
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User ofCreatedAt($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User ofMobile($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User ofNickname($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User ofUsername($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereClientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIsBlock($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLastLoginTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereMobile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereMoney($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNickname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereProvince($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUsername($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
+
+    const CLIENT_ID_MINI_PROGRAM = 2;// 微信小程序
+    const CLIENT_ID_WECHAT = 3;// 微信公众号
 
     /**
      * The attributes that are mass assignable.

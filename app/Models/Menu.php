@@ -9,6 +9,32 @@ namespace App\Models;
 use App\Services\ModelService;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Menu
+ *
+ * @property int $id
+ * @property int $pid 父ID
+ * @property string $name 菜单名称
+ * @property string $route 路由名称
+ * @property string $link 目标链接
+ * @property string $icon 图标名称
+ * @property int $listorder 排序
+ * @property int $items 子分类数量
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $children
+ * @property-read \App\Models\Menu $parent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu whereItems($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu whereLink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu whereListorder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu wherePid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Menu whereRoute($value)
+ * @mixin \Eloquent
+ */
 class Menu extends Model
 {
     use ModelService;

@@ -5,7 +5,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2019-06-19 14:27:09.
+    * Generated on 2019-06-26 10:49:00.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -145,6 +145,7 @@ namespace PHPSTORM_META {
         'files' => \Illuminate\Filesystem\Filesystem::class,
         'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
         'filesystem.disk' => \Illuminate\Filesystem\FilesystemAdapter::class,
+        'geoip' => \Torann\GeoIP\GeoIP::class,
         'hash' => \Illuminate\Hashing\HashManager::class,
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
@@ -315,6 +316,7 @@ namespace PHPSTORM_META {
         'files' => \Illuminate\Filesystem\Filesystem::class,
         'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
         'filesystem.disk' => \Illuminate\Filesystem\FilesystemAdapter::class,
+        'geoip' => \Torann\GeoIP\GeoIP::class,
         'hash' => \Illuminate\Hashing\HashManager::class,
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
@@ -485,6 +487,7 @@ namespace PHPSTORM_META {
         'files' => \Illuminate\Filesystem\Filesystem::class,
         'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
         'filesystem.disk' => \Illuminate\Filesystem\FilesystemAdapter::class,
+        'geoip' => \Torann\GeoIP\GeoIP::class,
         'hash' => \Illuminate\Hashing\HashManager::class,
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
@@ -655,6 +658,7 @@ namespace PHPSTORM_META {
         'files' => \Illuminate\Filesystem\Filesystem::class,
         'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
         'filesystem.disk' => \Illuminate\Filesystem\FilesystemAdapter::class,
+        'geoip' => \Torann\GeoIP\GeoIP::class,
         'hash' => \Illuminate\Hashing\HashManager::class,
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
@@ -825,6 +829,7 @@ namespace PHPSTORM_META {
         'files' => \Illuminate\Filesystem\Filesystem::class,
         'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
         'filesystem.disk' => \Illuminate\Filesystem\FilesystemAdapter::class,
+        'geoip' => \Torann\GeoIP\GeoIP::class,
         'hash' => \Illuminate\Hashing\HashManager::class,
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
@@ -995,6 +1000,7 @@ namespace PHPSTORM_META {
         'files' => \Illuminate\Filesystem\Filesystem::class,
         'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
         'filesystem.disk' => \Illuminate\Filesystem\FilesystemAdapter::class,
+        'geoip' => \Torann\GeoIP\GeoIP::class,
         'hash' => \Illuminate\Hashing\HashManager::class,
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
@@ -1165,6 +1171,7 @@ namespace PHPSTORM_META {
         'files' => \Illuminate\Filesystem\Filesystem::class,
         'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
         'filesystem.disk' => \Illuminate\Filesystem\FilesystemAdapter::class,
+        'geoip' => \Torann\GeoIP\GeoIP::class,
         'hash' => \Illuminate\Hashing\HashManager::class,
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
