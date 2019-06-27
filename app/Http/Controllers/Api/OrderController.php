@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\OrderRequest;
 use App\Models\Contract;
 use App\Models\Order;
 use App\Models\OrderRefund;
@@ -18,18 +19,19 @@ class OrderController extends BaseController
 {
     /**
      * 下单
-     * @param \Request $request
+     * @param OrderRequest $request
      * @param Order $order
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(\Request $request, Order $order)
+    public function store(OrderRequest $request, Order $order)
     {
-        logger('order.store', $request::all());
+        logger('order.store', $request->all());
         $data = $request::only([
             'contract_id',
             'channel',
             'gateway',
         ]);
+        $request->validateStore($data);
 
         $gateway = $data['gateway'] ?? '';
         $channel = $data['channel'] ?? '';
@@ -41,6 +43,10 @@ class OrderController extends BaseController
             return responseException('支付通道不存在, 请检查channel值');
         }
 
+        $contract = Contract::find($data['contract_id']);
+        if ($contract->status >= Contract::STATUS_PAYED) {
+            return responseException('该合同已支付, 无法重复付款');
+        }
         $data['userid'] = $this->user->id;
         $data['amount'] = 1;
         $data['openid'] = $this->getOpenid();
@@ -81,6 +87,9 @@ class OrderController extends BaseController
         }
         if ($orderData->status != Order::STATUS_WAIT_PAY) {
             return responseException('该订单'.$orderData->getStatusText(). ', 无法继续付款');
+        }
+        if ($orderData->contract->status >= Contract::STATUS_PAYED) {
+            return responseException('该合同'.$orderData->contract->getStatusText(). ', 无法继续付款');
         }
         $channel = $orderData->channel;
         $gateway = $orderData->gateway;

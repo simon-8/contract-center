@@ -118,6 +118,15 @@ class Contract extends Base
     }
 
     /**
+     * 关联订单
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function order()
+    {
+        return $this->belongsTo('App\Models\Order', 'contract_id', 'id');
+    }
+
+    /**
      * 对方用户ID
      * @param $query
      * @param int $data
