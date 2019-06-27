@@ -97,7 +97,7 @@ class ContractController extends BaseController
         $data = $request::all();
         $lists = $contract->ofStatus($data['status'] ?? '')
             ->ofUserid($this->user->id)
-            ->ofCatid($data['catid'] ?? 0)
+            ->ofCatid($data['catid'] ?? '')
             ->ofMycatid($data['mycatid'] ?? 0)
             ->ofLawyerid($data['lawyerid'] ?? 0)
             ->ofJiafang($data['jiafang'] ?? '')

@@ -21,9 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('mobile', 15)->default('')->comment('手机号码');
             $table->string('email')->default('')->comment('email');
             $table->unsignedDecimal('money')->default(0)->comment('余额');
-            $table->string('city')->default('')->comment('国家');
+            $table->string('country')->default('')->comment('国家');
             $table->string('province')->default('')->comment('省份');
-            $table->string('country')->default('')->comment('城市');
+            $table->string('city')->default('')->comment('城市');
             $table->string('avatar')->default('')->comment('头像');
             $table->unsignedTinyInteger('gender')->default(0)->comment('1男2女0未知');
             $table->unsignedInteger('client_id')->default(0)->comment('所属客户端 ID');

@@ -49,6 +49,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('send-code', 'UserController@sendCode');
             Route::post('bind-mobile', 'UserController@bindMobile');
             Route::get('info', 'UserController@info');
+
+            Route::apiResource('address', 'UserAddressController');
         });
     });
 });

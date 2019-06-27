@@ -116,9 +116,18 @@ class User extends Authenticatable
      * oauth关系
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function userOauth()
+    public function oauth()
     {
         return $this->hasMany('App\Models\UserOauth', 'userid', 'id');
+    }
+
+    /**
+     * 收货地址
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function address()
+    {
+        return $this->hasMany('App\Models\UserAddress', 'userid', 'id');
     }
 
     /**
@@ -138,7 +147,7 @@ class User extends Authenticatable
      */
     public function miniGameOpenid()
     {
-        $userOauth = $this->userOauth()->where('channel', 'miniprogram')->first();
+        $userOauth = $this->oauth()->where('channel', 'miniprogram')->first();
         return $userOauth ? $userOauth->openid : null;
     }
 
@@ -148,7 +157,7 @@ class User extends Authenticatable
      */
     public function wechatOpenid()
     {
-        $userOauth = $this->userOauth()->where('channel', 'wechat')->first();
+        $userOauth = $this->oauth()->where('channel', 'wechat')->first();
         return $userOauth ? $userOauth->openid : null;
     }
 
