@@ -19,9 +19,9 @@
                     <div class="input-group m-b">
                         <select name="catid" class="form-control inline">
                             <option value="">请选择分类</option>
-                            @foreach(\App\Services\ContractService::getCats() as $catid => $catname)
+                            @foreach((new \App\Models\Contract())->getCats() as $catid => $catname)
                             <option value="{{ $catid }}"
-                                @if (isset($data['catid']) && $data['catid'] === $catid) selected @endif>{{ $catname }}
+                                @if (isset($data['catid']) && $data['catid'] === (string) $catid) selected @endif>{{ $catname }}
                             </option>
                             @endforeach
                         </select>
@@ -56,7 +56,7 @@
                             <tr>
                                 <td>{{ $v->id }}</td>
                                 <td>{{ $v->listorder }}</td>
-                                <td>{{ \App\Services\ContractService::getCatText($v->catid) }}</td>
+                                <td>{{ (new \App\Models\Contract())->getCatText($v->catid) }}</td>
                                 <td>{{ $v->formname }}</td>
                                 <td>{{ \Str::limit($v->content, 30) }}</td>
                                 <td>{{ $v->created_at }}</td>

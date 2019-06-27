@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\SinglePage;
 use App\Http\Requests\SinglePageRequest;
+use App\Services\ModelService;
 
 class SinglePageController extends Controller
 {
@@ -27,7 +28,7 @@ class SinglePageController extends Controller
 
         $lists = $singlePage->ofStatus($data['status'] ?? '')
             ->ofTitle($data['keyword'] ?? '')
-            ->paginate();
+            ->paginate(ModelService::$pagesize);
         $lists->appends($data);
 
         $status_num = $singlePage->get_status_num();

@@ -53,8 +53,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUserid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereYifang($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofTargetid($data = 0)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofCreatedAt($data = '')
  */
-class Contract extends Model
+class Contract extends Base
 {
     protected $table = 'contract';
 
@@ -98,43 +100,33 @@ class Contract extends Model
     }
 
     /**
-     * 状态
-     * @param $query
-     * @param null $data
-     * @return mixed
+     * 关联用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function scopeOfStatus($query, $data = '')
+    public function user()
     {
-        if ($data === '') return $query;
-        if (is_array($data)) {
-            return $query->whereIn('status', $data);
-        } else {
-            return $query->where('status', $data);
-        }
+        return $this->belongsTo('App\Models\User', 'userid', 'id');
     }
 
     /**
-     * 分类ID
+     * 关联目标用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function target()
+    {
+        return $this->belongsTo('App\Models\User', 'targetid', 'id');
+    }
+
+    /**
+     * 对方用户ID
      * @param $query
      * @param int $data
      * @return mixed
      */
-    public function scopeOfCatid($query, $data = 0)
+    public function scopeOfTargetid($query, $data = 0)
     {
         if (!$data) return $query;
-        return $query->where('catid', $data);
-    }
-
-    /**
-     * 用户id
-     * @param $query
-     * @param int $data
-     * @return mixed
-     */
-    public function scopeOfUserid($query, $data = 0)
-    {
-        if (!$data) return $query;
-        return $query->where('userid', $data);
+        return $query->where('targetid', $data);
     }
 
     /**
@@ -198,7 +190,7 @@ class Contract extends Model
     }
 
     /**
-     * 获取分类数组
+     * 获取分类
      * @return array
      */
     public function getCats()
@@ -209,6 +201,17 @@ class Contract extends Model
             2 => '三方',
         ];
         return $cats;
+    }
+
+    /**
+     * 获取分类名
+     * @param $catid
+     * @return mixed|string
+     */
+    public function getCatText($catid = null)
+    {
+        if ($catid === null) $catid = $this->catid;
+        return $this->getCats()[$catid] ?? 'not found';
     }
 
     /**

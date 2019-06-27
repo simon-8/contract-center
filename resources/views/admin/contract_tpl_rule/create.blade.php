@@ -23,7 +23,7 @@
                     <div class="col-sm-10">
                         <select name="catid" class="form-control inline" style="width: 180px;">
 {{--                            <option value="">请选择合同类型</option>--}}
-                            @foreach(\App\Services\ContractService::getCats() as $catid => $catname)
+                            @foreach((new \App\Models\Contract())->getCats() as $catid => $catname)
                                 <option value="{{ $catid }}"
                                         @if (isset($contractTplRule->catid) && $contractTplRule->catid === $catid) selected @endif>{{ $catname }}
                                 </option>

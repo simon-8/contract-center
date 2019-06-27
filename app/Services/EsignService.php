@@ -11,18 +11,62 @@ use Illuminate\Support\Facades\Cache;
 class EsignService
 {
     protected $config;
-
-    protected $baseUrl = 'https://openapi.esign.cn';
-
-    protected $baseUrlDev = 'https://smlopenapi.esign.cn';
-
     protected $accessToken;
 
-    const API_OAUTH2_ACCESS_TOKEN = '/v1/oauth2/access_token';
+    // API接口调用地址
+    protected $baseUrl = 'https://evislb.tsign.cn:443';
+    protected $baseUrlDev = 'https://smlcunzheng.tsign.cn:9443';
+
+    // 存证证明查看页面Url
+    protected $baseViewPageUrl = 'https://smlcunzheng.tsign.cn';
+    protected $baseViewPageUrlDev = 'https://eviweb.tsign.cn';
+
+    // API接口列表
+    // 定义所属行业类型
+    const API_BUS_ADD = '/evi-service/evidence/v1/sp/temp/bus/add';
+
+    // 定义业务凭证（名称）
+    const API_SCENE_ADD = '/evi-service/evidence/v1/sp/temp/scene/add';
+
+    // 定义业务凭证中某一证据点名称
+    const API_SEG_ADD = '/evi-service/evidence/v1/sp/temp/seg/add';
+
+    // 定义业务凭证中某一证据点的字段属性
+    const API_SEGPROP_ADD = '/evi-service/evidence/v1/sp/temp/seg-prop/add';
+
+    // 构建证据链
+    const API_VOUCHER = '/evi-service/evidence/v1/sp/scene/voucher';
+
+    //创建原文存证（基础版）证据点
+    const API_ORIGINAL_STANDARD = '/evi-service/evidence/v1/sp/segment/original-std/url';
+
+    // 创建原文存证（高级版）证据点
+    const API_ORIGINAL_ADVANCED = '/evi-service/evidence/v1/sp/segment/original-adv/url';
+
+    // 创建摘要存证证据点
+    const API_ORIGINAL_DIGEST = '/evi-service/evidence/v1/sp/segment/abstract/url';
+
+    // 关联证据点到证据链上
+    const API_VOUCHER_APPEND = '/evi-service/evidence/v1/sp/scene/append';
+
+    // 场景式存证编号(证据链编号)关联到指定用户
+    const API_RELATE = '/evi-service/evidence/v1/sp/scene/relate';
+
+    // 存证证明查看页面Url
+    const API_VIEWPAGE_URL = '/evi-web/static/certificate-info.html';
 
     public function __construct()
     {
         $this->config = config('esign');
+    }
+
+    /**
+     * @param $data
+     * @return string
+     */
+    protected function makeRequestSign($data) {
+        $signature = hash_hmac('sha256', $data, $this->config['appSecret'], FALSE);
+        return $signature;
     }
 
     /**
@@ -35,17 +79,22 @@ class EsignService
     protected function requestPost($api, $data)
     {
         if (!empty($data) && is_array($data)) {
-            $data = http_build_query($data);
+            $data = json_encode($data);
         }
+        $sign = $this->makeRequestSign($data);
         $ch = curl_init($api);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        //curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "X-timevale-mode:package",
+            "X-timevale-project-id:" . $this->config['appid'],
+            "X-timevale-signature:" . $sign,
+            "X-timevale-signature-algorithm:hmac-sha256",
+            "Content-Type:application/json"
+        ]);
         $response = curl_exec($ch);
         $error = curl_error($ch);
         curl_close($ch);
@@ -135,28 +184,102 @@ class EsignService
      * @return mixed
      * @throws \Exception
      */
-    public function getAccessToken()
-    {
-        $cacheKey = __CLASS__.'.AccessToken';
-        $accessData = Cache::get($cacheKey);
-        if ($accessData) {
-            $this->accessToken = $accessData;
-            return $accessData;
-        }
-        $response = $this->queryFromServer(self::API_OAUTH2_ACCESS_TOKEN, [
-            'appId' => $this->config['appid'],
-            'secret' => $this->config['appSecret'],
-            'grantType' => 'client_credentials'
-        ]);
-        if ($response['code']) {
-            throw new \Exception($response['code'].': '.$response['message']);
-        }
-        $accessData = $response['data'];
-        Cache::put($cacheKey, $accessData, 120 * 60);
+    //public function getAccessToken()
+    //{
+    //    $cacheKey = __CLASS__.'.AccessToken';
+    //    $accessData = Cache::get($cacheKey);
+    //    if ($accessData) {
+    //        $this->accessToken = $accessData;
+    //        return $accessData;
+    //    }
+    //    $response = $this->queryFromServer(self::API_OAUTH2_ACCESS_TOKEN, [
+    //        'appId' => $this->config['appid'],
+    //        'secret' => $this->config['appSecret'],
+    //        'grantType' => 'client_credentials'
+    //    ]);
+    //    if ($response['code']) {
+    //        throw new \Exception($response['code'].': '.$response['message']);
+    //    }
+    //    $accessData = $response['data'];
+    //    Cache::put($cacheKey, $accessData, 120 * 60);
+    //
+    //    $this->accessToken = $accessData;
+    //    return $accessData;
+    //}
 
-        $this->accessToken = $accessData;
-        return $accessData;
+    /**
+     * 定义所属行业类型
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function busAdd($data = [])
+    {
+        $param = [];
+        $param['name'] = $data;
+        $response = $this->notifyToServer(self::API_BUS_ADD, $param);
+        return $response;
     }
 
+    /**
+     * 定义业务凭证
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function sceneAdd($data = [])
+    {
+        $param = [];
+        $param['businessTempletId'] = $data['businessTempletId'];
+        $param['name'] = $data['name'];
+        $response = $this->notifyToServer(self::API_SCENE_ADD, $param);
+        return $response;
+    }
+
+    /**
+     * 定义业务凭证中某一证据点名称
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function segAdd($data = [])
+    {
+        $param = [];
+        $param['sceneTempletId'] = $data['sceneTempletId'];
+        $param['name'] = $data['name'];
+        $response = $this->notifyToServer(self::API_SEG_ADD, $param);
+        return $response;
+    }
+
+    /**
+     * 定义业务凭证中某一证据点的字段属性
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function segpropAdd($data = [])
+    {
+        $param = [];
+        $param['segmentTempletId'] = $data['segmentTempletId'];
+        $param['properties'] = $data['properties'];
+        $response = $this->notifyToServer(self::API_SEGPROP_ADD, $param);
+        return $response;
+    }
+
+    /**
+     * 构建证据链
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function voucher($data = [])
+    {
+        $param = [];
+        $param['sceneName'] = $data['sceneName'];
+        $param['sceneTemplateId'] = $data['sceneTemplateId'];
+        $param['linkIds'] = [];
+        $response = $this->notifyToServer(self::API_VOUCHER, $param);
+        return $response;
+    }
 
 }
