@@ -44,13 +44,12 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         Route::any('notify/{channel}', 'OrderController@notify')->name('order.notify');
         Route::any('refund/{channel}', 'OrderController@refund')->name('order.refund');
     });
+    Route::apiResource('user-address', 'UserAddressController');
     Route::prefix('user')->group(function () {
         Route::group(['middleware' => 'auth:api'], function() {
             Route::post('send-code', 'UserController@sendCode');
             Route::post('bind-mobile', 'UserController@bindMobile');
             Route::get('info', 'UserController@info');
-
-            Route::apiResource('address', 'UserAddressController');
         });
     });
 });

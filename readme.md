@@ -59,3 +59,7 @@ php artisan esign:init
     - 在配置文件内(.env):
         - 增加所属行业ID
         - 增加业务凭证ID
+        
+### 客户端注意
+
+- HTTP请求Header需要增加client-id字段, 以供服务端识别所属客户端

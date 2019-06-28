@@ -13,18 +13,20 @@ use Illuminate\Support\Str;
 
 class BaseRequest extends FormRequest
 {
+
     /**
      * 校验数据
      * @param array $data
      * @param array $rules
-     * @return array|bool|\Illuminate\Http\JsonResponse
+     * @return array|bool
+     * @throws \Illuminate\Validation\ValidationException
      */
     protected function check(array $data, array $rules)
     {
         $validator = \Validator::make($data, $rules);
         if ($validator->fails()) {
             if (\Request::ajax() || Str::startsWith(\Request::path(), 'api')) {
-                return responseException($validator->errors()->first());
+                exit(responseException($validator->errors()->first()));
             } else {
                 return $validator->validate();
             }

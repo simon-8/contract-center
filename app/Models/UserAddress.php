@@ -18,11 +18,31 @@ class UserAddress extends Base
         'country',
         'province',
         'city',
+        'area',
+        'areaid',
         'address',
         'postcode',
     ];
 
     /**
+     * @param $value
+     * @return mixed
+     */
+    public function getAreaidAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
+    /**
+     * @param $value
+     */
+    public function setAreaidAttribute($value)
+    {
+        $this->attributes['areaid'] = json_encode($value);
+    }
+
+    /**
+     * 关联用户
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
