@@ -79,7 +79,6 @@ class UserAddressController extends BaseController
      */
     public function destroy(UserAddress $userAddress)
     {
-        dd($userAddress);
         $this->checkAuth($userAddress);
 
         if (!$userAddress->delete()) {
@@ -95,7 +94,6 @@ class UserAddressController extends BaseController
      */
     public function checkAuth($userAddress)
     {
-        dd($userAddress, $this->user->id);
         if ($userAddress->userid != $this->user->id) {
             return responseException(__('api.no_auth'));
         }
