@@ -7,6 +7,43 @@
  */
 namespace App\Models;
 
+/**
+ * App\Models\UserAddress
+ *
+ * @property int $id
+ * @property int $userid 用户ID
+ * @property string $linkman 联系人
+ * @property string $mobile 联系电话
+ * @property string $country 国家
+ * @property string $province 省
+ * @property string $city 城市
+ * @property string $address 地址
+ * @property string $postcode 邮编
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property mixed $areaid
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofCatid($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofCreatedAt($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress ofLinkman($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofStatus($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofUserid($data = 0)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereLinkman($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereMobile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress wherePostcode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereProvince($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUserid($value)
+ * @mixin \Eloquent
+ */
 class UserAddress extends Base
 {
     protected $table = 'user_address';

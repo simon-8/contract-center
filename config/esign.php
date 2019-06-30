@@ -5,7 +5,6 @@
  * Date: 2019/6/26
  */
 return [
-    'appid' => '',
-    'appSecret' => '',
-
+    'appid' => env('ESIGN_APPID'),
+    'appSecret' => env('ESIGN_SECRET'),
 ];

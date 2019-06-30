@@ -8,6 +8,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Base
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofCatid($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofCreatedAt($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofStatus($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofUserid($data = 0)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base query()
+ * @mixin \Eloquent
+ */
 class Base extends Model
 {
 

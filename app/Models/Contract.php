@@ -55,6 +55,9 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofTargetid($data = 0)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofCreatedAt($data = '')
+ * @property-read \App\Models\Order $order
+ * @property-read \App\Models\User $target
+ * @property-read \App\Models\User $user
  */
 class Contract extends Base
 {

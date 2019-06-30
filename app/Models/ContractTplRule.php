@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ContractTplRule whereListorder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ContractTplRule whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofStatus($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofUserid($data = 0)
  */
 class ContractTplRule extends Base
 {

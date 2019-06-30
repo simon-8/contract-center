@@ -1,0 +1,6 @@
+2019-06-30 20:58:16 > 
+【请求地址】：http://127.0.0.1:8080/tech-sdkwrapper/timevale/init
+【请求参数】：{"projectConfig":{"projectId":"1111563517","projectSecret":"95439b0863c241c63a861b87d1e647b7","itsmApiUrl":"http://121.40.164.61:8080/tgmonitor/rest/app!getAPIInfo2"},"httpConfig":{"proxyIp":"","proxyPort":"","retry":3,"httpType":"HTTPS"},"signConfig":{"algorithm":"HMACSHA256","privateKey":"","esignPublicKey":""}}
+【请求头】：["X-timevale-mode: package","X-timevale-project-id:1111563517","X-timevale-signature-algorithm:hmacsha256","Content-Type:application\/json;charset=UTF-8","Expect:"]
+【返回】 : Failed to connect to 127.0.0.1 port 8080: Connection refused
+

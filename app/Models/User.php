@@ -56,6 +56,8 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUsername($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserOauth[] $oauth
  */
 class User extends Authenticatable
 {

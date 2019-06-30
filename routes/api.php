@@ -27,14 +27,21 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     });
 
     Route::apiResource('banner', 'BannerController');
-    Route::get('contract/status', 'ContractController@getStatus');
-    Route::get('contract/status-count', 'ContractController@getStatusCount');
-    Route::post('contract/confirm/{contract}', 'ContractController@confirm');
+
+    Route::prefix('contract')->group(function () {
+        Route::get('status', 'ContractController@getStatus');
+        Route::get('status-count', 'ContractController@getStatusCount');
+        Route::post('confirm/{contract}', 'ContractController@confirm');
+        Route::post('sign', 'ContractController@sign');
+    });
+
     Route::apiResource('contract', 'ContractController')
         ->middleware('auth:api')
         ->except('getStatus', 'getStatusCount');
+
     Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
+
     Route::prefix('order')->group(function () {
         Route::middleware('auth:api')->group(function () {
             Route::post('', 'OrderController@store');
@@ -54,6 +61,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     });
     Route::middleware('auth:api')->group(function () {
         Route::apiResource('user-address', 'UserAddressController');
+        Route::apiResource('user-sign', 'UserSignController');
     });
 
 });

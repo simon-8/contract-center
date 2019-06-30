@@ -49,13 +49,15 @@ function calcHeight($width, $newWidth, $height)
 /**
  * 上传base64编码的缩略图
  * @param $thumb
- * @return string
+ * @param string $disk
+ * @param string $dir
+ * @return mixed|string
  */
-function upload_base64_thumb($thumb)
+function upload_base64_thumb($thumb, $disk = 'uploads', $dir = 'thumbs')
 {
     if (strpos($thumb, 'data:image') === false) return $thumb;
 
-    $filepath = public_path() . '/uploads/thumbs/' . date('Ym') . '/';//缩略图按月划分
+    $filepath = config("filesystems.disks.{$disk}.root")."/{$dir}/". date('Ym/');//缩略图按月划分
     $filename = time() . rand(100, 999);
     $fileext = str_replace('data:image/', '', strstr($thumb, ';', true));
     in_array($fileext, ['jpg', 'png', 'gif', 'bmp']) or $fileext = 'jpg';//jpeg->jpg
