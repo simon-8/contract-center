@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 use App\Services\EsignService;
 use Illuminate\Console\Command;
 
-class Esign extends Command
+class EsignInit extends Command
 {
     /**
      * The name and signature of the console command.
@@ -76,7 +76,7 @@ class Esign extends Command
             return false;
         }
 
-        if (!$resCode) {
+        if ($resCode) {
             $this->error('初始化失败');
             return false;
         }

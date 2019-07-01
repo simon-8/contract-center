@@ -43,6 +43,9 @@ namespace App\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUserid($value)
  * @mixin \Eloquent
+ * @property string $area 区县
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereAreaid($value)
  */
 class UserAddress extends Base
 {

@@ -62,6 +62,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::apiResource('user-address', 'UserAddressController');
         Route::apiResource('user-sign', 'UserSignController');
+        Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
 });

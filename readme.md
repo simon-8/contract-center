@@ -46,20 +46,33 @@ command=/usr/local/php/bin/php /data/wwwroot/contract-center/artisan horizon
 ```ini
 php artisan horizon:terminate
 ```
+        
+# 客户端注意
+- HTTP请求Header需要增加`client-id`字段, 以供服务端识别所属客户端
 
-### E签名
-- 首次使用e签名时, 需要初始化行业 && 场景值
+
+# E签名
+
+### JAVA 环境部署
+1. [安装JDK, 设置环境变量](https://www.cnblogs.com/BokzBCheung/p/7912625.html?tdsourcetag=s_pctim_aiomsg)
+2. 安装Tomcat, 解压即可
+3. [Tomcat服务器部署war包](https://blog.csdn.net/cx15733896285/article/details/80996924)
+4. 运行 `Tomcat/bin/startup.sh` 启动Tomcat
+5. 确定 http://127.0.0.1:8080/tech-sdkwrapper/ 连接可访问
+6. 配置E签名PHP部分
+
+
+### PHP环境部署
+- 配置文件
+```
+extends/tech/comm/initConfig.php
+```
+- 首次使用e签名时, 需要初始化
 ```
 php artisan esign:init
 ```
-- 此命令执行如下操作
-    - 在e签名账户内: 
-         - 定义所属行业类型: 房屋租赁行业
-         - 定义业务凭证(证据发生场景): 房屋租赁合同签署
-    - 在配置文件内(.env):
-        - 增加所属行业ID
-        - 增加业务凭证ID
-        
-### 客户端注意
 
-- HTTP请求Header需要增加client-id字段, 以供服务端识别所属客户端
+# OCR身份证识别
+- 实名认证
+    - 使用阿里云OCR接口识别图片中的身份证信息
+[文档地址](https://market.aliyun.com/products/57124001/cmapi010401.html)
