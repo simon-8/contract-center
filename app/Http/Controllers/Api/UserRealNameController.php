@@ -10,6 +10,9 @@ namespace App\Http\Controllers\Api;
 //use App\Models\Contract;
 use App\Http\Requests\UserRealNameRequest;
 use App\Models\UserRealName;
+
+use App\Http\Resources\UserRealName as UserRealNameResource;
+use App\Services\Ocr\IdCardService;
 use \DB;
 
 class UserRealNameController extends BaseController
@@ -20,7 +23,7 @@ class UserRealNameController extends BaseController
     }
 
     /**
-     * 保存
+     * 保存 兼并 更新
      * @param UserRealNameRequest $request
      * @param UserRealName $userRealName
      * @return \Illuminate\Http\JsonResponse
@@ -31,49 +34,71 @@ class UserRealNameController extends BaseController
         $data = $request->all();
         $request->validateStore($data);
 
-        // todo 增加判断
-        $faceUrl = $request->file('face_img');
-        $result = $faceUrl->store('idcards/' . date('Ym/d'), 'uploads');
-        $data['face_img'] = '/' . $result;
+        \Log::debug(__METHOD__, $data);
 
-        $backUrl = $request->file('back_img');
-        $result = $backUrl->store('idcards/' . date('Ym/d'), 'uploads');
-        $data['back_img'] = '/' . $result;
+        if ($request->hasFile('face_img')) {
+            $faceUrl = $request->file('face_img');
+            $result = $faceUrl->store('idcards/' . date('Ym/d'), 'uploads');
+            $data['face_img'] = '/' . $result;
+        }
 
-        $data['userid'] = $this->user->id;
+        if ($request->hasFile('back_img')) {
+            $backUrl = $request->file('back_img');
+            $result = $backUrl->store('idcards/' . date('Ym/d'), 'uploads');
+            $data['back_img'] = '/' . $result;
+        }
 
-        if (!$userRealName->create($data)) {
+        $userRealNameData = $userRealName::ofUserid($this->user->id)->first();
+        dd($userRealNameData);
+        if ($userRealNameData) {
+            $userRealNameData = $userRealNameData->update($data);
+        } else {
+            $data['userid'] = $this->user->id;
+            $userRealNameData = $userRealName->create($data);
+        }
+
+        if (!$userRealNameData) {
             return responseException(__('api.failed'));
         }
-        return responseMessage(__('api.success'));
+        return responseMessage('', new UserRealNameResource($userRealNameData));
     }
 
     /**
      * 更新
-     * @param UserRealNameRequest $request
      * @param UserRealName $userRealName
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @param IdCardService $idCardService
+     * @throws \Exception
      */
-    public function update(UserRealNameRequest $request, UserRealName $userRealName)
+    public function update(UserRealName $userRealName, IdCardService $idCardService)
     {
-        $data = $request->all();
-        $request->validateUpdate($data);
-
         $userRealNameData = $userRealName::ofUserid($this->user->id);
-        // todo 删除原图片
-        $faceUrl = $request->file('face_img');
-        $result = $faceUrl->store('idcards/' . date('Ym/d'), 'uploads');
-        $data['face_img'] = '/' . $result;
 
-        $backUrl = $request->file('back_img');
-        $result = $backUrl->store('idcards/' . date('Ym/d'), 'uploads');
-        $data['back_img'] = '/' . $result;
+        $faceImgPath = config('filesystems.disks.uploads.root'). $userRealNameData->face_img;
+        $idInfo = $idCardService->getData($faceImgPath, 'face');
 
-        if (!$userRealNameData->update($data)) {
+        $backImgPath = config('filesystems.disks.uploads.root'). $userRealNameData->back_img;
+        $idBackInfo = $idCardService->getData($backImgPath, 'back');
+
+        if ($idInfo['success']) {
+            $userRealNameData->truename  = $idInfo['name'];
+            $userRealNameData->nationality  = $idInfo['nationality'];
+            $userRealNameData->idcard  = $idInfo['num'];
+            $userRealNameData->sex  = $idInfo['sex'];
+            $userRealNameData->birth  = $idInfo['birth'];
+            $userRealNameData->address  = $idInfo['address'];
+        }
+
+        if ($idBackInfo['success']) {
+            $userRealNameData->start_date  = $idBackInfo['start_date'];
+            $userRealNameData->end_date  = $idBackInfo['end_date'];
+            $userRealNameData->issue  = $idBackInfo['issue'];
+        }
+
+        if (!$userRealNameData->save()) {
             return responseException(__('api.failed'));
         }
-        return responseMessage(__('api.success'));
+
+        return responseMessage();
     }
 
     /**
@@ -84,7 +109,7 @@ class UserRealNameController extends BaseController
      */
     public function destroy(UserRealName $userRealName)
     {
-        $userRealNameData = $userRealName::ofUserid($this->user->id);
+        $userRealNameData = $userRealName::ofUserid($this->user->id)->first();
 
         if (!$userRealNameData->delete()) {
             return responseException(__('web.failed'));

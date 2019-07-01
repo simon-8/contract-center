@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserRealnameTable extends Migration
+class CreateUserRealNameTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUserRealnameTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_realname', function (Blueprint $table) {
+        Schema::create('user_real_name', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('userid');
             $table->string('truename')->default('')->comment('姓名');
@@ -40,6 +40,6 @@ class CreateUserRealnameTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_realname');
+        Schema::dropIfExists('user_real_name');
     }
 }

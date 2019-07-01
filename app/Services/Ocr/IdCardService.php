@@ -25,6 +25,7 @@ class IdCardService
      */
     public function getData($file, $side = 'face')
     {
+        \Log::debug(__METHOD__ . ' args', func_get_args());
         // 身份证正反面类型:face/back
         $config = [
             "side" => $side
@@ -61,6 +62,7 @@ class IdCardService
             $data = json_encode($request);
         //}
         $response = $this->requestPost($this->baseUrl, $data, $headers);
+        \Log::debug(__METHOD__ . ' response', $response);
         if (!$response) {
             throw new \Exception('API接口未响应');
         }
