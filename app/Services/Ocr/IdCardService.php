@@ -62,7 +62,7 @@ class IdCardService
             $data = json_encode($request);
         //}
         $response = $this->requestPost($this->baseUrl, $data, $headers);
-        \Log::debug(__METHOD__ . ' response', $response);
+        \Log::debug(__METHOD__ . ' response', [$response]);
         if (!$response) {
             throw new \Exception('API接口未响应');
         }

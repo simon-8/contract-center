@@ -62,7 +62,15 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::apiResource('user-address', 'UserAddressController');
         Route::apiResource('user-sign', 'UserSignController');
-        Route::apiResource('user-real-name', 'UserRealNameController');
+
+        Route::prefix('user-real-name')->group(function () {
+            Route::get('', 'UserRealNameController@show');
+            Route::post('', 'UserRealNameController@store');
+            Route::put('', 'UserRealNameController@update');
+            Route::delete('', 'UserRealNameController@destroy');
+            Route::post('confirm', 'UserRealNameController@confirm');
+        });
+        //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
 });
