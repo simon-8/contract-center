@@ -52,6 +52,7 @@ class EsignService
      * 创建个人账户
      * @param $data
      * @return mixed
+     * @throws \Exception
      */
     public function addPerson($data)
     {
@@ -59,12 +60,15 @@ class EsignService
         $name = $data['name'];
         $idNo = $data['idcard'];
         $personarea = PersonArea::MAINLAND;// 地区类型 0大陆 1香港 2澳门 3台湾 4外籍
-        $email = $data['email'] ?? "";
-        $organ = $data['organ'] ?? "";
-        $title = $data['title'] ?? "";
-        $address = $data['address'] ?? "";
+        $email = $data['email'] ?? '';
+        $organ = $data['organ'] ?? '';
+        $title = $data['title'] ?? '';
+        $address = $data['address'] ?? '';
 
         $ret = self::$eSign->addPersonAccount($mobile, $name, $idNo, $personarea, $email, $organ, $title, $address);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
         $accountid = end($ret);
         return $accountid;
     }

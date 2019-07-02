@@ -69,6 +69,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::put('', 'UserRealNameController@update');
             Route::delete('', 'UserRealNameController@destroy');
             Route::post('confirm', 'UserRealNameController@confirm');
+            Route::get('cancel', 'UserRealNameController@cancel');
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });

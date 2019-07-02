@@ -11,4 +11,5 @@ return [
     'failed'  => '操作失败',
     'empty_param' => '参数缺失',
     'mini_program_no_join_open_platform' => '当前小程序未加入开放平台',
+    'expired' => '已过期',
 ];
