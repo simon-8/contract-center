@@ -73,5 +73,4 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
-
 });

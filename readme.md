@@ -76,3 +76,6 @@ php artisan esign:init
 - 实名认证
     - 使用阿里云OCR接口识别图片中的身份证信息
 [文档地址](https://market.aliyun.com/products/57124001/cmapi010401.html)
+
+# 生成PDF扩展
+- laravel-snappy [文档](https://github.com/barryvdh/laravel-snappy)
