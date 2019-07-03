@@ -231,6 +231,7 @@ class UserRealNameController extends BaseController
                 throw new \Exception('保存失败');
             }
 
+            // 创建esign用户
             $accountid = $esignService->addPerson([
                 'mobile' => $this->user->mobile,
                 'name' => $truename,

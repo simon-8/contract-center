@@ -91,6 +91,7 @@ class EsignService
     /**
      * 平台自身签署
      * @return mixed
+     * @throws \Exception
      */
     public function selfSignPDF11()
     {
@@ -114,6 +115,9 @@ class EsignService
             'ownerPassword' => ''
         );
         $ret = self::$eSign->selfSignPDF($signFile, $signPos, $sealId, $signType, $stream = true);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
         $signServiceId = end($ret);
         return $signServiceId;
     }
