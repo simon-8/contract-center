@@ -21,6 +21,18 @@ class EventServiceProvider extends ServiceProvider
         \Illuminate\Database\Events\QueryExecuted::class => [
             \App\Listeners\DBQueryListener::class
         ],
+        // 用户确认
+        'App\Events\UserConfirm' => [
+            'App\Listeners\UserConfirmListener'
+        ],
+        // 用户签名
+        'App\Events\UserSign' => [
+            'App\Listeners\UserSignListener'
+        ],
+        // 系统签名
+        'App\Events\PlatformSign' => [
+            'App\Listeners\PlatformSignListener'
+        ],
     ];
 
     /**
