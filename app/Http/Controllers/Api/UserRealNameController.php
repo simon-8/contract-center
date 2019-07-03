@@ -31,7 +31,7 @@ class UserRealNameController extends BaseController
 {
     protected $cacheKeyPrefix = 'idcardInfo';
 
-    /**1
+    /**
      * @return string
      */
     protected function makeCacheKey()
@@ -131,7 +131,7 @@ class UserRealNameController extends BaseController
     }
 
     /**
-     * 通过接口查询身份证信息并更新
+     * 通过接口查询身份证信息并缓存查询到的信息
      * @param UserRealName $userRealName
      * @param IdCardService $idCardService
      * @return \Illuminate\Http\JsonResponse
@@ -196,7 +196,7 @@ class UserRealNameController extends BaseController
     }
 
     /**
-     * 身份确认
+     * 身份确认, 确认后读取缓存数据, 整合后保存身份信息
      * @param UserRealNameRequest $request
      * @param UserRealName $userRealName
      * @param EsignService $esignService
@@ -231,6 +231,7 @@ class UserRealNameController extends BaseController
                 throw new \Exception('保存失败');
             }
 
+            // 创建esign用户
             $accountid = $esignService->addPerson([
                 'mobile' => $this->user->mobile,
                 'name' => $truename,
@@ -254,7 +255,7 @@ class UserRealNameController extends BaseController
     }
 
     /**
-     * 取消确认 (删除)
+     * 取消确认 (删除除id/userid之外的所有字段)
      * @param UserRealNameRequest $request
      * @param UserRealName $userRealName
      * @return \Illuminate\Http\JsonResponse

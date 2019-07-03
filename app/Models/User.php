@@ -133,6 +133,15 @@ class User extends Authenticatable
     }
 
     /**
+     * E签名关联用户
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function esignUser()
+    {
+        return $this->hasOne('App\Models\EsignUser', 'userid', 'id');
+    }
+
+    /**
      * 匹配小程序  PassPort使用id做用户名
      * 其他应用同上
      * @param $username

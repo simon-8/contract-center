@@ -244,6 +244,10 @@ class ContractController extends BaseController
             return responseException(__('web.failed'));
         }
         // todo 通知另一方
+        // todo 合同已确认 触发event 生成pdf文档
+        if ($contract->status === $contract::STATUS_CONFIRM) {
+
+        }
         return responseMessage('', $contract->status);
     }
 }
