@@ -31,7 +31,7 @@ class UserRealNameController extends BaseController
 {
     protected $cacheKeyPrefix = 'idcardInfo';
 
-    /**1
+    /**
      * @return string
      */
     protected function makeCacheKey()
