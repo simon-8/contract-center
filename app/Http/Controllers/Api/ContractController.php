@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Api;
 
+use App\Events\UserConfirm;
 use App\Http\Resources\Contract AS ContractResource;
 use App\Models\Contract;
 use \DB;
@@ -243,10 +244,10 @@ class ContractController extends BaseController
         if (!$contract->save()) {
             return responseException(__('web.failed'));
         }
-        // todo 通知另一方
-        // todo 合同已确认 触发event 生成pdf文档
-        if ($contract->status === $contract::STATUS_CONFIRM) {
 
+        // 合同已确认 生成pdf文档
+        if ($contract->status === $contract::STATUS_CONFIRM) {
+            event(new UserConfirm($contract));
         }
         return responseMessage('', $contract->status);
     }

@@ -79,3 +79,5 @@ php artisan esign:init
 
 # 生成PDF扩展
 - laravel-snappy [文档](https://github.com/barryvdh/laravel-snappy)
+    - 中文乱码
+        - 复制`simsun.ttc` 到服务器 `/usr/share/fonts/truetype`

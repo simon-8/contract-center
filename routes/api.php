@@ -73,4 +73,18 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
+
+    Route::get('test', function(\App\Services\ContractService $contractService) {
+        $contract = \App\Models\Contract::find(4);
+        $contractService = $contractService->makePdf($contract);
+        //$contract = \App\Models\Contract::find(4);
+        //$content = $contract->content->getAttribute('content');
+        //unset($contract->content);
+        //$contract->content = $content;
+        //
+        ////return PDF::loadView('api.contract.show', compact('contract'))->setPaper('a4')->setOption('margin-bottom', 0)->download('1.pdf');
+        //$pdf = PDF::loadView('api.contract.show', compact('contract'));
+        //return $pdf->download('1.pdf');
+        //return view('api.contract.show', compact('contract'));
+    });
 });
