@@ -57,11 +57,12 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('send-code', 'UserController@sendCode');
             Route::post('bind-mobile', 'UserController@bindMobile');
             Route::get('info', 'UserController@info');
+
+            Route::apiResource('sign', 'SignController');
         });
     });
     Route::middleware('auth:api')->group(function () {
         Route::apiResource('user-address', 'UserAddressController');
-        Route::apiResource('user-sign', 'UserSignController');
 
         Route::prefix('user-real-name')->group(function () {
             Route::get('', 'UserRealNameController@show');
@@ -74,9 +75,48 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
-    Route::get('test', function(\App\Services\ContractService $contractService) {
+    Route::get('test', function(\App\Services\EsignService $service) {
+        $user = \App\Models\User::find(1);
         $contract = \App\Models\Contract::find(4);
-        $contractService = $contractService->makePdf($contract);
+        $sign = $contract->sign()->where('userid', $user->id)->first();
+        $signImageData = base64_encode(Storage::disk('uploads')->get($sign->thumb));
+        //$signImageData = substr($signImageData, strpos($signImageData, ',') + 1);
+        $data = [
+            'accountid' => $user->esignUser->accountid,
+            'signFile' => [
+                'srcPdfFile' => base_path('public/uploads/pdf/source/4.pdf'),
+                'dstPdfFile' => base_path('public/uploads/pdf/output/4.pdf'),
+                //'fileName' => '',
+                //'ownerPassword' => '',
+            ],
+            'signPos' => [
+                //'posPage' => '',
+
+                // 甲
+                //'posX' => '80',
+                //'posY' => '10',
+                //'key' => '甲方签章',
+                //'width' => '100',
+                // 乙
+                'posX' => '80',
+                'posY' => '10',
+                'key' => '乙方签章',
+                'width' => '100',
+
+                //'cacellingSign' => '',
+                //'isQrcodeSign' => '',
+                //'addSignTime' => '',
+            ],
+            'signType' => 'Key',
+            'sealData' => $signImageData,
+            'stream' => true,
+        ];
+        info(__METHOD__, $data);
+        $serviceid = $service->userSign($data);
+        info(__METHOD__, ['serviceid' => $serviceid]);
+        return $serviceid;
+        //$contract = \App\Models\Contract::find(4);
+        //$contractService = $contractService->makePdf($contract);
         //$contract = \App\Models\Contract::find(4);
         //$content = $contract->content->getAttribute('content');
         //unset($contract->content);

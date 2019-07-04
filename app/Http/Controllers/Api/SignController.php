@@ -6,33 +6,44 @@
  */
 namespace App\Http\Controllers\Api;
 
-use App\Models\UserSign;
-use App\Http\Resources\UserSign as UserSignResource;
-
+use App\Models\Contract;
+use App\Models\Sign;
+use App\Http\Resources\Sign as SignResource;
+use App\Events\UserSign;
 use App\Services\EsignService;
 
-class UserSignController extends BaseController
+class SignController extends BaseController
 {
     /**
+     * @param $id
+     * @return string
+     */
+    protected function makeStorePath($id)
+    {
+        return 'signs/'. $id;
+    }
+
+    /**
      * 列表
-     * @param UserSign $userSign
+     * @param Sign $sign
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(UserSign $userSign)
+    public function index(Sign $sign)
     {
-        $lists = $userSign->where('userid', $this->user->id)
+        $lists = $sign->where('userid', $this->user->id)
             ->paginate();
-        return UserSignResource::collection($lists);
+        return SignResource::collection($lists);
     }
 
     /**
      * 保存
      * @param \Request $request
-     * @param UserSign $userSign
+     * @param Sign $sign
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(\Request $request, UserSign $userSign)
+    public function store(\Request $request, Sign $sign)
     {
+        // todo 权限检查
         $data = $request::only(['contract_id']);
         if (!$request::hasFile('file')) {
             return responseException('请选择文件上传');
@@ -41,22 +52,37 @@ class UserSignController extends BaseController
         if (!$file->isValid()) {
             return responseException('图片文件无效');
         }
-        $result = $file->store('signs/'.date('Ym/d'), 'uploads');
+        // 存储图片
+        $storePath = $this->makeStorePath($data['contract_id']);
+        $filename = $this->user->id .'.'. $file->extension();
+        $result = $file->storeAs($storePath, $filename, 'uploads');
+
         $data['thumb'] = '/'. $result;
         $data['userid'] = $this->user->id;
-        if (!$userSign->create($data)) {
+
+        $where = [
+            'contract_id' => $data['contract_id'],
+            'userid' => $data['userid']
+        ];
+
+        if (!$sign->updateOrCreate($where, $data)) {
             return responseException(__('api.failed'));
         }
+
+        // 触发usersign事件
+        $contract = Contract::find($data['contract_id']);
+        event(new UserSign($contract, $this->user));
+
         return responseMessage(__('api.success'));
     }
 
     /**
      * 更新
      * @param \Request $request
-     * @param UserSign $userSign
+     * @param Sign $sign
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(\Request $request, UserSign $userSign)
+    public function update(\Request $request, Sign $sign)
     {
         if (!$request::hasFile('file')) {
             return responseException('请选择文件上传');
@@ -65,10 +91,14 @@ class UserSignController extends BaseController
         if (!$file->isValid()) {
             return responseException('图片文件无效');
         }
-        $result = $file->store('signs/'.date('Ym/d'), 'uploads');
+        // 存储图片
+        $storePath = $this->makeStorePath($sign->contract_id);
+        $filename = $this->user->id .'.'. $file->extension();
+        $result = $file->storeAs($storePath, $filename, 'uploads');
+
         $data['thumb'] = '/'. $result;
 
-        if (!$userSign->update($data)) {
+        if (!$sign->update($data)) {
             return responseException(__('api.failed'));
         }
         return responseMessage(__('api.success'));
@@ -76,13 +106,13 @@ class UserSignController extends BaseController
 
     /**
      * 删除
-     * @param UserSign $userSign
+     * @param Sign $sign
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function destroy(UserSign $userSign)
+    public function destroy(Sign $sign)
     {
-        if (!$userSign->delete()) {
+        if (!$sign->delete()) {
             return responseException(__('web.failed'));
         }
         return responseMessage(__('api.failed'));

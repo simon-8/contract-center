@@ -231,7 +231,7 @@ class ContractController extends BaseController
     public function confirm(Contract $contract)
     {
         // 判断当前用户类型
-        if ($this->user->id == $contract->userid) {
+        if ($contract->isOwner($this->user->id)) {
             $contract->user_confirm = 1;
         } else {
             $contract->targetid = $this->user->id;

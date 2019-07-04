@@ -25,7 +25,7 @@ class ContractService
     /**
      * 生成存储路径
      * @param $id
-     * @param bool $output
+     * @param bool $output  为true时选择output目录
      * @return string
      */
     public function makeStorePath($id, $output = false)

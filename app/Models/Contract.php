@@ -58,6 +58,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Order $order
  * @property-read \App\Models\User $target
  * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sign[] $sign
+ * @property int $user_signed 用户已签名
+ * @property int $target_signed 对方已签名
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereTargetSigned($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUserSigned($value)
  */
 class Contract extends Base
 {
@@ -75,6 +80,8 @@ class Contract extends Base
         'jujianren',
         'user_confirm',
         'target_confirm',
+        'user_signed',
+        'target_signed',
         'status',
         'confirm_at',
     ];
@@ -127,6 +134,15 @@ class Contract extends Base
     public function order()
     {
         return $this->belongsTo('App\Models\Order', 'contract_id', 'id');
+    }
+
+    /**
+     * 关联签名
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sign()
+    {
+        return $this->hasMany('App\Models\Sign', 'contract_id', 'id');
     }
 
     /**
@@ -251,5 +267,14 @@ class Contract extends Base
     {
         if ($status === null) $status = $this->status;
         return $this->getStatus()[$status] ?? 'not found';
+    }
+
+    /**
+     * @param $userid
+     * @return bool
+     */
+    public function isOwner($userid)
+    {
+        return $this->userid == $userid;
     }
 }

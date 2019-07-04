@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Contract;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,14 +17,16 @@ class UserSign
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $contract;
-
+    public $user;
     /**
      * UserConfirm constructor.
      * @param Contract $contract
+     * @param User $user
      */
-    public function __construct(Contract $contract)
+    public function __construct(Contract $contract, User $user)
     {
         $this->contract = $contract;
+        $this->user = $user;
     }
 
     /**

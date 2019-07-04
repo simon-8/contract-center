@@ -58,6 +58,7 @@ use Laravel\Passport\HasApiTokens;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $address
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserOauth[] $oauth
+ * @property-read \App\Models\EsignUser $esignUser
  */
 class User extends Authenticatable
 {
