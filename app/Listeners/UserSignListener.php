@@ -15,6 +15,8 @@ use Storage;
 
 class UserSignListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     public $tries = 1;
 
     public $contractService;
@@ -23,14 +25,13 @@ class UserSignListener implements ShouldQueue
 
     /**
      * Create the event listener.
-     * @param ContractService $contractService
-     * @param EsignService $esignService
      * @return void
      */
-    public function __construct(ContractService $contractService, EsignService $esignService)
+    public function __construct()
     {
-        $this->contractService = $contractService;
-        $this->esignService = $esignService;
+        info(__METHOD__, [time()]);
+        $this->contractService = new ContractService();
+        $this->esignService = new EsignService();
     }
 
     /**
@@ -48,7 +49,7 @@ class UserSignListener implements ShouldQueue
 
         // 获取签名图片
         $sign = $contract->sign()->where('userid', $user->id)->first();
-        if ($sign) {
+        if (!$sign) {
             throw new \Exception('用户未上传签名');
         }
         if (!Storage::disk('uploads')->exists($sign->thumb)) {

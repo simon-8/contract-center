@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Contract;
+use App\Services\ContractService;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;

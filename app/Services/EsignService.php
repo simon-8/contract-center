@@ -38,9 +38,9 @@ class EsignService
     protected function init()
     {
         logger(__METHOD__, []);
-        //if (defined('ESIGN_ROOT')) {
-        //    return;
-        //}
+        if (defined('ESIGN_ROOT')) {
+            return;
+        }
         define("ESIGN_ROOT", base_path('extends/tech'));
         define("ESIGN_CLASS_PATH", ESIGN_ROOT . "/core/");
 

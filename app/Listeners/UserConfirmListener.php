@@ -14,6 +14,8 @@ class UserConfirmListener implements ShouldQueue
 {
     public $tries = 1;
 
+    public $contractService;
+
     /**
      * Create the event listener.
      *
@@ -21,15 +23,16 @@ class UserConfirmListener implements ShouldQueue
      */
     public function __construct()
     {
-        //
+        info(__METHOD__, [time()]);
+        $this->contractService = new ContractService();
     }
 
     /**
      * Handle the event
      * @param UserConfirm $event
-     * @param ContractService $contractService
+     *
      */
-    public function handle(UserConfirm $event, ContractService $contractService)
+    public function handle(UserConfirm $event)
     {
         \Log::info(__METHOD__);
 
@@ -38,7 +41,7 @@ class UserConfirmListener implements ShouldQueue
             return;
         }
 
-        $contractService->makePdf($event->contract);
+        $this->contractService->makePdf($event->contract);
     }
 
     /**
