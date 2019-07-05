@@ -57,13 +57,13 @@
                     <tr>
                         <td class="col-sm-4">甲方确认</td>
                         <td class="col-sm-8">
-                            {!! colorText($contract->user_confirm, '是', '否') !!}
+                            {!! colorText($contract->confirm_first, '是', '否') !!}
                         </td>
                     </tr>
                     <tr>
                         <td class="col-sm-4">乙方确认</td>
                         <td class="col-sm-8">
-                            {!! colorText($contract->target_confirm, '是', '否') !!}
+                            {!! colorText($contract->confirm_second, '是', '否') !!}
                         </td>
                     </tr>
                     <tr>

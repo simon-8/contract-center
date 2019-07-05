@@ -76,55 +76,6 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     });
 
     Route::get('test', function(\App\Services\EsignService $service) {
-        $user = \App\Models\User::find(1);
-        $contract = \App\Models\Contract::find(4);
-        $sign = $contract->sign()->where('userid', $user->id)->first();
-        $signImageData = base64_encode(Storage::disk('uploads')->get($sign->thumb));
-        //$signImageData = substr($signImageData, strpos($signImageData, ',') + 1);
-        $data = [
-            'accountid' => $user->esignUser->accountid,
-            'signFile' => [
-                'srcPdfFile' => base_path('public/uploads/pdf/source/4.pdf'),
-                'dstPdfFile' => base_path('public/uploads/pdf/output/4.pdf'),
-                //'fileName' => '',
-                //'ownerPassword' => '',
-            ],
-            'signPos' => [
-                //'posPage' => '',
 
-                // 甲
-                //'posX' => '80',
-                //'posY' => '10',
-                //'key' => '甲方签章',
-                //'width' => '100',
-                // 乙
-                'posX' => '80',
-                'posY' => '10',
-                'key' => '乙方签章',
-                'width' => '100',
-
-                //'cacellingSign' => '',
-                //'isQrcodeSign' => '',
-                //'addSignTime' => '',
-            ],
-            'signType' => 'Key',
-            'sealData' => $signImageData,
-            'stream' => true,
-        ];
-        info(__METHOD__, $data);
-        $serviceid = $service->userSign($data);
-        info(__METHOD__, ['serviceid' => $serviceid]);
-        return $serviceid;
-        //$contract = \App\Models\Contract::find(4);
-        //$contractService = $contractService->makePdf($contract);
-        //$contract = \App\Models\Contract::find(4);
-        //$content = $contract->content->getAttribute('content');
-        //unset($contract->content);
-        //$contract->content = $content;
-        //
-        ////return PDF::loadView('api.contract.show', compact('contract'))->setPaper('a4')->setOption('margin-bottom', 0)->download('1.pdf');
-        //$pdf = PDF::loadView('api.contract.show', compact('contract'));
-        //return $pdf->download('1.pdf');
-        //return view('api.contract.show', compact('contract'));
     });
 });

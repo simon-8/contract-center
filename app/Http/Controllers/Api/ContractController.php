@@ -1,6 +1,15 @@
 <?php
 /**
- * Note: *
+ * 1. A起草
+ * 2. A选择身份
+ * 3. A发给B
+ * 4. B编辑并确认, 确认身份
+ * 5. A确认(生成PDF), 支付, 然后签名 (生成签名后PDF)
+ * 6. B签名 (基于A签名)
+ * 7. 平台签名
+ * 8. 文档保全
+ *
+ * Note: Contract
  * User: Liu
  * Date: 2019/6/13
  * Time: 23:36
@@ -134,7 +143,10 @@ class ContractController extends BaseController
     public function store(\Request $request, Contract $contract)
     {
         $data = $request::json()->all();
-        $data = collect($data)->only(['catid', 'fills', 'rules', 'agree'])->toArray();
+        $data = collect($data)->only(['catid', 'fills', 'rules', 'agree', 'user_type'])->toArray();
+
+        $userType = $contract->getUserType($data['user_type']);
+        unset($data['user_type']);
 
         DB::beginTransaction();
         try {
@@ -144,6 +156,7 @@ class ContractController extends BaseController
                 'jiafang' => $data['fills']['jiafang'] ?? '',
                 'yifang' =>  $data['fills']['yifang'] ?? '',
                 'jujianren' =>  $data['fills']['jujianren'] ?? '',
+                "userid_{$userType}" => $this->user->id,
                 'status' => $contract::STATUS_APPLY
             ]);
 
@@ -173,7 +186,6 @@ class ContractController extends BaseController
      */
     public function update(\Request $request, Contract $contract)
     {
-        //$this->checkAuth($contract);
         $data = $request::json()->all();
         $data = collect($data)->only(['fills', 'rules', 'agree'])->toArray();
 
@@ -183,14 +195,17 @@ class ContractController extends BaseController
                 'jiafang' => $data['fills']['jiafang'] ?? '',
                 'yifang' =>  $data['fills']['yifang'] ?? '',
                 'jujianren' =>  $data['fills']['jujianren'] ?? '',
-                'user_confirm' => 0,// 任一一方修改后 清除确认状态
-                'target_confirm' => 0,// 任一一方修改后 清除确认状态
+                'confirm_first' => 0,
+                'confirm_second' => 0,
             ];
-            // 设置targetid
-            if ($this->user->id != $contract->userid) {
-                $updateData['targetid'] = $this->user->id;
+            if ($contract::CAT_THREE) {
+                $updateData['confirm_three'] = 0;
             }
-            $updateData['target_confirm'] = 0;
+            // 设置targetid
+            //if ($this->user->id != $contract->userid) {
+            //    $updateData['targetid'] = $this->user->id;
+            //}
+            $updateData['confirm_second'] = 0;
             $contractData = $contract->update($updateData);
 
             $contract->content->update([
@@ -205,7 +220,6 @@ class ContractController extends BaseController
 
         return responseMessage();
     }
-
 
     /**
      * 删除
@@ -224,28 +238,36 @@ class ContractController extends BaseController
     }
 
     /**
-     * 用户确认
+     * 用户确认, 同时确认身份
+     * @param \Request $request
      * @param Contract $contract
      * @return \Illuminate\Http\JsonResponse
      */
-    public function confirm(Contract $contract)
+    public function confirm(\Request $request, Contract $contract)
     {
-        // 判断当前用户类型
-        if ($contract->isOwner($this->user->id)) {
-            $contract->user_confirm = 1;
+        $data = $request::only(['user_type']);
+        $userType = $contract->getUserType($data['user_type']);
+        unset($data['user_type']);
+
+        if ($contract->catid == $contract::CAT_THREE) {
+            if ($contract->confirm_first && $contract->confirm_second && $contract->confirm_three) {
+                $updateData['status'] = $contract::STATUS_CONFIRM;
+                $updateData['confirm_at'] = date('Y-m-d H:i:s');
+            }
         } else {
-            $contract->targetid = $this->user->id;
-            $contract->target_confirm = 1;
+            if ($contract->confirm_first && $contract->confirm_second) {
+                $updateData['status'] = $contract::STATUS_CONFIRM;
+                $updateData['confirm_at'] = date('Y-m-d H:i:s');
+            }
         }
-        if ($contract->target_confirm && $contract->user_confirm) {
-            $contract->status = $contract::STATUS_CONFIRM;
-        }
-        $contract->confirm_at = date('Y-m-d H:i:s');
+        $updateData["userid_{$userType}"] = $this->user->id;
+        $updateData["confirm_{$userType}"] = 1;
+        $contract->fill($updateData);
         if (!$contract->save()) {
             return responseException(__('web.failed'));
         }
 
-        // 合同已确认 生成pdf文档
+        // 已确认 生成pdf文档
         if ($contract->status === $contract::STATUS_CONFIRM) {
             event(new UserConfirm($contract));
         }

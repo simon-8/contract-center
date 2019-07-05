@@ -105,8 +105,8 @@
                                 <td>{{ $v->jiafang ?: '/' }}</td>
                                 <td>{{ $v->yifang ?: '/' }}</td>
                                 <td>{{ $v->jujianren ?: '/' }}</td>
-                                <td>{!! colorText($v->user_confirm, '是', '否') !!}</td>
-                                <td>{!! colorText($v->target_confirm, '是', '否') !!}</td>
+                                <td>{!! colorText($v->confirm_first, '是', '否') !!}</td>
+                                <td>{!! colorText($v->confirm_second, '是', '否') !!}</td>
                                 <td>
                                     <span class="label label-success">{{ $v->getStatusText()  }}</span>
                                 </td>

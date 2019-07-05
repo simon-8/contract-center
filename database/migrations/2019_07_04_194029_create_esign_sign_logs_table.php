@@ -18,7 +18,7 @@ class CreateEsignSignLogsTable extends Migration
             $table->unsignedInteger('contract_id')->default(0)->comment('合同ID');
             $table->string('name')->default('')->comment('文档名称');
             $table->unsignedInteger('userid')->default(0)->comment('用户ID');
-            $table->unsignedInteger('serviceid')->default(0)->comment('签署记录ID');
+            $table->string('serviceid')->default('')->comment('签署记录ID');
 
             $table->timestamps();
         });

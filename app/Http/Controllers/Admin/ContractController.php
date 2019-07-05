@@ -33,7 +33,7 @@ class ContractController extends Controller
         ]);
         $lists = $contract->ofCatid($data['catid'] ?? '')
             ->ofUserid($data['userid'] ?? 0)
-            ->ofTargetid($data['targetid'] ?? 0)
+            //->ofTargetid($data['targetid'] ?? 0)
             ->ofJiafang($data['jiafang'] ?? '')
             ->ofYifang($data['yifang'] ?? '')
             ->ofStatus($data['status'] ?? '')

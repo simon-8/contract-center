@@ -93,17 +93,17 @@ class UserSignListener implements ShouldQueue
         ];
         // 签章关键字定位
         if ($contract->isOwner($user->id)) {
-            $contract->user_signed = 1;
+            $contract->signed_first = 1;
             $signData['signPos']['key'] = '甲方签章';
         } else {
-            $contract->target_signed = 1;
+            $contract->signed_first = 1;
             $signData['signPos']['key'] = '乙方签章';
         }
 
         $serviceid = $this->esignService->userSign($signData);
 
         // 双方都签过名
-        if ($contract->user_signed && $contract->target_signed) {
+        if ($contract->signed_first && $contract->signed_second) {
             $contract->status = $contract::STATUS_SIGN;
         }
         $contract->save();

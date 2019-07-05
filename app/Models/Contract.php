@@ -17,8 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $jiafang 甲方
  * @property string $yifang 乙方
  * @property string $jujianren 居间人
- * @property int $user_confirm
- * @property int $target_confirm
+ * @property int $confirm_first
+ * @property int $confirm_second
  * @property int $status 状态
  * @property string $confirm_at 确认时间
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -59,10 +59,24 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\User $target
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sign[] $sign
- * @property int $user_signed 用户已签名
- * @property int $target_signed 对方已签名
+ * @property int $signed_first 用户已签名
+ * @property int $signed_second 对方已签名
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereTargetSigned($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUserSigned($value)
+ * @property int $userid_first 甲方用户ID
+ * @property int $userid_second 乙方用户ID
+ * @property int $userid_three 居间人用户ID
+ * @property int $confirm_three 居间人是否已确认
+ * @property int $signed_three 居间人是否已签名
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereConfirmFirst($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereConfirmSecond($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereConfirmThree($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignedFirst($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignedSecond($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignedThree($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridFirst($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridSecond($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridThree($value)
  */
 class Contract extends Base
 {
@@ -72,16 +86,24 @@ class Contract extends Base
         'name',
         'catid',
         'userid',
-        'targetid',
         'lawyerid',
         'mycatid',
         'jiafang',
         'yifang',
         'jujianren',
-        'user_confirm',
-        'target_confirm',
-        'user_signed',
-        'target_signed',
+
+        'userid_first',
+        'userid_second',
+        'userid_three',
+
+        'confirm_first',
+        'confirm_second',
+        'confirm_three',
+
+        'signed_first',
+        'signed_second',
+        'signed_three',
+
         'status',
         'confirm_at',
     ];
@@ -90,6 +112,15 @@ class Contract extends Base
     const STATUS_CONFIRM = 1;
     const STATUS_PAYED = 2;
     const STATUS_SIGN = 3;
+
+    // 用户类型 first甲 second乙 three居间
+    const USER_TYPE_FIRST = 'first';
+    const USER_TYPE_SECOND = 'second';
+    const USER_TYPE_THREE = 'three';
+
+    const CAT_NORMAL = 0;
+    const CAT_DOUBLE = 1;
+    const CAT_THREE = 2;
 
     /**
      * 关联内容
@@ -122,10 +153,10 @@ class Contract extends Base
      * 关联目标用户
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function target()
-    {
-        return $this->belongsTo('App\Models\User', 'targetid', 'id');
-    }
+    //public function target()
+    //{
+    //    return $this->belongsTo('App\Models\User', 'targetid', 'id');
+    //}
 
     /**
      * 关联订单
@@ -151,11 +182,11 @@ class Contract extends Base
      * @param int $data
      * @return mixed
      */
-    public function scopeOfTargetid($query, $data = 0)
-    {
-        if (!$data) return $query;
-        return $query->where('targetid', $data);
-    }
+    //public function scopeOfTargetid($query, $data = 0)
+    //{
+    //    if (!$data) return $query;
+    //    return $query->where('targetid', $data);
+    //}
 
     /**
      * 律师id
@@ -224,9 +255,9 @@ class Contract extends Base
     public function getCats()
     {
         $cats = [
-            0 => '通用',
-            1 => '两方',
-            2 => '三方',
+            self::CAT_NORMAL => '通用',
+            self::CAT_DOUBLE => '两方',
+            self::CAT_THREE => '三方',
         ];
         return $cats;
     }
@@ -270,11 +301,33 @@ class Contract extends Base
     }
 
     /**
+     * 是否是拥有者
      * @param $userid
      * @return bool
      */
     public function isOwner($userid)
     {
         return $this->userid == $userid;
+    }
+
+    /**
+     * 获取用户类型
+     * first 甲
+     * second 乙
+     * three 居间人
+     * @param $type
+     * @return string
+     */
+    public function getUserType($type)
+    {
+        $userType = 'first';
+        if ($type == self::USER_TYPE_FIRST) {
+            $userType = self::USER_TYPE_FIRST;
+        } else if ($type == self::USER_TYPE_SECOND) {
+            $userType = self::USER_TYPE_SECOND;
+        } else if ($type == self::USER_TYPE_THREE) {
+            $userType = self::USER_TYPE_THREE;
+        }
+        return $userType;
     }
 }
