@@ -143,10 +143,10 @@ class ContractController extends BaseController
     public function store(\Request $request, Contract $contract)
     {
         $data = $request::json()->all();
-        $data = collect($data)->only(['catid', 'fills', 'rules', 'agree', 'user_type'])->toArray();
+        $data = collect($data)->only(['catid', 'fills', 'rules', 'agree'])->toArray();
 
-        $userType = $contract->getUserType($data['user_type']);
-        unset($data['user_type']);
+        //$userType = $contract->getUserType($data['user_type']);
+        //unset($data['user_type']);
 
         DB::beginTransaction();
         try {
@@ -156,7 +156,7 @@ class ContractController extends BaseController
                 'jiafang' => $data['fills']['jiafang'] ?? '',
                 'yifang' =>  $data['fills']['yifang'] ?? '',
                 'jujianren' =>  $data['fills']['jujianren'] ?? '',
-                "userid_{$userType}" => $this->user->id,
+                //"userid_{$userType}" => $this->user->id,
                 'status' => $contract::STATUS_APPLY
             ]);
 
