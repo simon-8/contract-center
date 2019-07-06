@@ -152,6 +152,7 @@ return [
         'truename'    => '真实姓名',
         'url'         => '链接地址',
         'username'    => '用户名',
+        'user_type'   => '身份类型',
         'width'       => '宽度',
     ],
 

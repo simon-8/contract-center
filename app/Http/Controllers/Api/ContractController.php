@@ -17,6 +17,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Events\UserConfirm;
+use App\Http\Requests\ContractRequest;
 use App\Http\Resources\Contract AS ContractResource;
 use App\Models\Contract;
 use \DB;
@@ -239,13 +240,16 @@ class ContractController extends BaseController
 
     /**
      * 用户确认, 同时确认身份
-     * @param \Request $request
+     * @param ContractRequest $request
      * @param Contract $contract
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function confirm(\Request $request, Contract $contract)
+    public function confirm(ContractRequest $request, Contract $contract)
     {
-        $data = $request::only(['user_type']);
+        $data = $request->only(['user_type']);
+        $request->validateConfirm($data);
+
         $userType = $contract->getUserType($data['user_type']);
         unset($data['user_type']);
 
