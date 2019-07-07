@@ -141,12 +141,39 @@ class Contract extends Base
     }
 
     /**
-     * 关联用户
+     * 关联创建人
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function owner()
     {
         return $this->belongsTo('App\Models\User', 'userid', 'id');
+    }
+
+    /**
+     * 关联甲方
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userFirst()
+    {
+        return $this->belongsTo('App\Models\User', 'userid_first', 'id');
+    }
+
+    /**
+     * 关联乙方
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userSecond()
+    {
+        return $this->belongsTo('App\Models\User', 'userid_second', 'id');
+    }
+
+    /**
+     * 关联居间人
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userThree()
+    {
+        return $this->belongsTo('App\Models\User', 'userid_three', 'id');
     }
 
     /**

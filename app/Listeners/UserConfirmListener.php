@@ -40,7 +40,7 @@ class UserConfirmListener implements ShouldQueue
         if ($event->contract->status != Contract::STATUS_CONFIRM) {
             return;
         }
-
+        // 生成pdf文档
         $this->contractService->makePdf($event->contract);
     }
 

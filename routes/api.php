@@ -75,7 +75,11 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
-    Route::get('test', function(\App\Services\EsignService $service) {
-
+    Route::get('test', function() {
+        $contract = \App\Models\Contract::find(1);
+        $content = $contract->content->getAttribute('content');
+        unset($contract->content);
+        $contract->content = $content;
+        return view('api.contract.show', compact('contract'));
     });
 });

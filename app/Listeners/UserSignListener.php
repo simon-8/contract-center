@@ -92,20 +92,36 @@ class UserSignListener implements ShouldQueue
             'stream' => true,
         ];
         // 签章关键字定位
-        if ($contract->isOwner($user->id)) {
+        if ($contract->userid_first == $user->id) {
+
             $contract->signed_first = 1;
             $signData['signPos']['key'] = '甲方签章';
-        } else {
-            $contract->signed_first = 1;
+
+        } else if ($contract->userid_second == $user->id) {
+
+            $contract->signed_second = 1;
             $signData['signPos']['key'] = '乙方签章';
+
+        } else if ($contract->userid_three == $user->id) {
+
+            $contract->signed_three = 1;
+            $signData['signPos']['key'] = '居间人签章';
+
         }
 
         $serviceid = $this->esignService->userSign($signData);
 
-        // 双方都签过名
-        if ($contract->signed_first && $contract->signed_second) {
-            $contract->status = $contract::STATUS_SIGN;
+        // 参与方都签了名
+        if ($contract->catid == $contract::CAT_DOUBLE) {
+            if ($contract->signed_first && $contract->signed_second) {
+                $contract->status = $contract::STATUS_SIGN;
+            }
+        } else if ($contract->catid == $contract::CAT_THREE) {
+            if ($contract->signed_first && $contract->signed_second && $contract->signed_three) {
+                $contract->status = $contract::STATUS_SIGN;
+            }
         }
+
         $contract->save();
 
         // 签名记录

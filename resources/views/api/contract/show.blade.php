@@ -35,16 +35,25 @@
         }
         .footer {
             margin: 100px 0 0 0;
+            width: 100%;
+            display: flex;
+            flex-wrap: warp;
+            justify-content: center;
+            overflow: hidden;
         }
-        .footer .left, .footer .right {
-            float: left;
-            width:50%;
-        }
-        .footer .left p, .footer .right p {
+        .footer div p {
             text-indent: 2em;
             padding: 5px 0;
         }
-
+        .col-4 {
+            width: 33.33%;
+        }
+        .col-6 {
+            width: 50%;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -55,7 +64,7 @@
         <div class="fills">
             @foreach($contractTplFill->ofCatid([0, $contract->catid])->get() as $k => $v)
                 <p>
-                    {{ $v->content }}: <span class="fill-value">{{ $contract->content['fills'][$v->formname] ?: '/' }}</span>
+                    {{ $v->content }}: <span class="fill-value">{{ empty($contract->content['fills'][$v->formname]) ? '/' : $contract->content['fills'][$v->formname] }}</span>
                 </p>
             @endforeach
         </div>
@@ -75,18 +84,27 @@
     </div>
 
     <div class="footer">
-        <div class="left">
+        <div class="@if($contract->catid == $contract::CAT_DOUBLE) col-6 @else col-4 @endif">
             <p>甲方签章：</p>
-            <p>电话：<span class="fill-value">{{ $contract->user->mobile }}</span></p>
+            <p>电话：<span class="fill-value">{{ $contract->userFirst->mobile }}</span></p>
             <p>
                 {{ date('Y', strtotime($contract->confirm_at)) }} 年
                 {{ date('m', strtotime($contract->confirm_at)) }} 月
                 {{ date('d', strtotime($contract->confirm_at)) }} 日
             </p>
         </div>
-        <div class="right">
+        <div class="@if($contract->catid == $contract::CAT_DOUBLE) col-6 @else col-4 @endif">
             <p>乙方签章：</p>
-            <p>电话：<span class="fill-value">{{ $contract->target->mobile }}</span></p>
+            <p>电话：<span class="fill-value">{{ $contract->userSecond->mobile }}</span></p>
+            <p>
+                {{ date('Y', strtotime($contract->confirm_at)) }} 年
+                {{ date('m', strtotime($contract->confirm_at)) }} 月
+                {{ date('d', strtotime($contract->confirm_at)) }} 日
+            </p>
+        </div>
+        <div class="@if($contract->catid == $contract::CAT_DOUBLE) hidden @else col-4 @endif">
+            <p>居间人签章：</p>
+            <p>电话：<span class="fill-value">{{ $contract->userThree->mobile }}</span></p>
             <p>
                 {{ date('Y', strtotime($contract->confirm_at)) }} 年
                 {{ date('m', strtotime($contract->confirm_at)) }} 月
@@ -96,6 +114,5 @@
     </div>
     <div class="clearfix">&nbsp;</div>
 </div>
-</body>
 </body>
 </html>

@@ -275,6 +275,11 @@ class ContractController extends BaseController
         if ($contract->status === $contract::STATUS_CONFIRM) {
             event(new UserConfirm($contract));
         }
-        return responseMessage('', $contract->status);
+
+        $content = $contract->content->getAttribute('content');
+        unset($contract->content);
+        $contract->content = $content;
+        return responseMessage('', new ContractResource($contract));
+        //return responseMessage('', $contract->status);
     }
 }
