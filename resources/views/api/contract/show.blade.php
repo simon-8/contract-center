@@ -86,7 +86,7 @@
     <div class="footer">
         <div class="@if($contract->catid == $contract::CAT_DOUBLE) col-6 @else col-4 @endif">
             <p>甲方签章：</p>
-            <p>电话：<span class="fill-value">{{ $contract->userFirst->mobile }}</span></p>
+            <p>电话：<span class="fill-value">{{ $contract->userFirst->mobile ?? '/' }}</span></p>
             <p>
                 {{ date('Y', strtotime($contract->confirm_at)) }} 年
                 {{ date('m', strtotime($contract->confirm_at)) }} 月
@@ -95,7 +95,7 @@
         </div>
         <div class="@if($contract->catid == $contract::CAT_DOUBLE) col-6 @else col-4 @endif">
             <p>乙方签章：</p>
-            <p>电话：<span class="fill-value">{{ $contract->userSecond->mobile }}</span></p>
+            <p>电话：<span class="fill-value">{{ $contract->userSecond->mobile ?? '/' }}</span></p>
             <p>
                 {{ date('Y', strtotime($contract->confirm_at)) }} 年
                 {{ date('m', strtotime($contract->confirm_at)) }} 月
@@ -104,7 +104,7 @@
         </div>
         <div class="@if($contract->catid == $contract::CAT_DOUBLE) hidden @else col-4 @endif">
             <p>居间人签章：</p>
-            <p>电话：<span class="fill-value">{{ $contract->userThree->mobile }}</span></p>
+            <p>电话：<span class="fill-value">{{ $contract->userThree->mobile ?? '/' }}</span></p>
             <p>
                 {{ date('Y', strtotime($contract->confirm_at)) }} 年
                 {{ date('m', strtotime($contract->confirm_at)) }} 月
