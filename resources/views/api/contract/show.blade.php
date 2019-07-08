@@ -46,10 +46,12 @@
             padding: 5px 0;
         }
         .col-4 {
+            float: left;
             width: 33.33%;
         }
         .col-6 {
-            width: 49.9%;
+            float: left;
+            width: 50%;
         }
         .hidden {
             display: none;
