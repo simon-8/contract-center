@@ -82,6 +82,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\User $userSecond
  * @property-read \App\Models\User $userThree
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofMine($data = 0)
+ * @property string $path_pdf pdf文件地址
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract wherePathPdf($value)
  */
 class Contract extends Base
 {

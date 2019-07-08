@@ -43,6 +43,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SinglePage whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SinglePage whereZan($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofCatid($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofCreatedAt($data = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofUserid($data = 0)
  */
 class SinglePage extends Base
 {

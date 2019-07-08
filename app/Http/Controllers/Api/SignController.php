@@ -10,6 +10,7 @@ use App\Models\Contract;
 use App\Models\Sign;
 use App\Http\Resources\Sign as SignResource;
 use App\Events\UserSign;
+use App\Services\ContractService;
 use App\Services\EsignService;
 
 class SignController extends BaseController
@@ -73,8 +74,31 @@ class SignController extends BaseController
             return responseException(__('api.failed'));
         }
 
-        // 触发usersign事件
+        // 更新 contract
         $contract = Contract::find($data['contract_id']);
+
+        if ($contract->userid_first == $this->user->id) {
+            $contract->signed_first = 1;
+        } else if ($contract->userid_second == $this->user->id) {
+            $contract->signed_second = 1;
+        } else if ($contract->userid_three == $this->user->id) {
+            $contract->signed_three = 1;
+        }
+
+        // 参与方都签了名 直接修改状态
+        if ($contract->catid == $contract::CAT_DOUBLE) {
+            if ($contract->signed_first && $contract->signed_second) {
+                $contract->status = $contract::STATUS_SIGN;
+            }
+        } else if ($contract->catid == $contract::CAT_THREE) {
+            if ($contract->signed_first && $contract->signed_second && $contract->signed_three) {
+                $contract->status = $contract::STATUS_SIGN;
+            }
+        }
+
+        $contract->save();
+
+        // 触发usersign事件
         event(new UserSign($contract, $this->user));
 
         return responseMessage(__('api.success'));
