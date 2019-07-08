@@ -20,6 +20,7 @@ use App\Events\UserConfirm;
 use App\Http\Requests\ContractRequest;
 use App\Http\Resources\Contract AS ContractResource;
 use App\Models\Contract;
+use App\Services\ContractService;
 use \DB;
 
 class ContractController extends BaseController
@@ -107,10 +108,11 @@ class ContractController extends BaseController
 
         $data = $request::all();
         $lists = $contract->ofStatus($data['status'] ?? '')
-            ->ofUserid($this->user->id)
+            //->ofUserid($this->user->id)
+            ->ofMine($this->user->id)
             ->ofCatid($data['catid'] ?? '')
             ->ofMycatid($data['mycatid'] ?? 0)
-            ->ofLawyerid($data['lawyerid'] ?? 0)
+            //->ofLawyerid($da ta['lawyerid'] ?? 0)
             ->ofJiafang($data['jiafang'] ?? '')
             ->ofYifang($data['yifang'] ?? '')
             ->ofJujianren($data['jujianren'] ?? '')
@@ -253,6 +255,10 @@ class ContractController extends BaseController
         $userType = $contract->getUserType($data['user_type']);
         unset($data['user_type']);
 
+        $updateData["userid_{$userType}"] = $this->user->id;
+        $updateData["confirm_{$userType}"] = 1;
+        $contract->fill($updateData);
+
         if ($contract->catid == $contract::CAT_THREE) {
             if ($contract->confirm_first && $contract->confirm_second && $contract->confirm_three) {
                 $updateData['status'] = $contract::STATUS_CONFIRM;
@@ -264,9 +270,8 @@ class ContractController extends BaseController
                 $updateData['confirm_at'] = date('Y-m-d H:i:s');
             }
         }
-        $updateData["userid_{$userType}"] = $this->user->id;
-        $updateData["confirm_{$userType}"] = 1;
         $contract->fill($updateData);
+
         if (!$contract->save()) {
             return responseException(__('web.failed'));
         }

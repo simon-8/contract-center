@@ -122,6 +122,9 @@ class UserSignListener implements ShouldQueue
             }
         }
 
+        if (!$contract->path_pdf) {
+            $contract->path_pdf = str_replace(config('filesystems.disks.uploads.root'), '', $outputFile);
+        }
         $contract->save();
 
         // 签名记录

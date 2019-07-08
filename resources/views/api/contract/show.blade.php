@@ -49,7 +49,7 @@
             width: 33.33%;
         }
         .col-6 {
-            width: 50%;
+            width: 49.9%;
         }
         .hidden {
             display: none;
@@ -102,7 +102,8 @@
                 {{ date('d', strtotime($contract->confirm_at)) }} 日
             </p>
         </div>
-        <div class="@if($contract->catid == $contract::CAT_DOUBLE) hidden @else col-4 @endif">
+        @if($contract->catid == $contract::CAT_THREE)
+        <div class="col-4">
             <p>居间人签章：</p>
             <p>电话：<span class="fill-value">{{ $contract->userThree->mobile ?? '/' }}</span></p>
             <p>
@@ -111,6 +112,7 @@
                 {{ date('d', strtotime($contract->confirm_at)) }} 日
             </p>
         </div>
+        @endif
     </div>
     <div class="clearfix">&nbsp;</div>
 </div>

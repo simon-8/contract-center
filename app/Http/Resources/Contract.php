@@ -16,6 +16,7 @@ class Contract extends JsonResource
     {
         $data = parent::toArray($request);
         $data['statusText'] = (new \App\Models\Contract())->getStatusText($data['status']);
+        $data['path_pdf'] = $data['path_pdf'] ? imgurl($data['path_pdf'], 'uploads') : '';
         return $data;
     }
 }

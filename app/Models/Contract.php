@@ -77,6 +77,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridFirst($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridSecond($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridThree($value)
+ * @property-read \App\Models\User $owner
+ * @property-read \App\Models\User $userFirst
+ * @property-read \App\Models\User $userSecond
+ * @property-read \App\Models\User $userThree
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofMine($data = 0)
  */
 class Contract extends Base
 {
@@ -105,6 +110,7 @@ class Contract extends Base
         'signed_three',
 
         'status',
+        'path_pdf',
         'confirm_at',
     ];
 
@@ -214,6 +220,18 @@ class Contract extends Base
     //    if (!$data) return $query;
     //    return $query->where('targetid', $data);
     //}
+
+    /**
+     * 我的(我创建的 我参与的)
+     * @param $query
+     * @param int $data
+     * @return mixed
+     */
+    public function scopeOfMine($query, $data = 0)
+    {
+        if (!$data) return $query;
+        return $query->where('userid', $data)->orWhere('userid_first', $data)->orWhere('userid_second', $data)->orWhere('userid_three', $data);
+    }
 
     /**
      * 律师id

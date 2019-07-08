@@ -43,6 +43,10 @@ class SignController extends BaseController
      */
     public function store(\Request $request, Sign $sign)
     {
+        if (!$this->user->has('esignUser')->count()) {
+            return responseException('请先通过实名认证');
+        }
+
         // todo 权限检查
         $data = $request::only(['contract_id']);
         if (!$request::hasFile('file')) {

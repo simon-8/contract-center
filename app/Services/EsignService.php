@@ -29,7 +29,12 @@ class EsignService
     {
         logger(__METHOD__, []);
         $this->init();
-        self::$eSign = new eSign();
+        try {
+            self::$eSign = new eSign();
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$e->getMessage()]);
+            throw new \Exception('E签宝实例化失败');
+        }
     }
 
     /**
