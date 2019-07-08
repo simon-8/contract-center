@@ -9,6 +9,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 
+use tech\constants\UserType;
 use tech\core\eSign;
 use tech\core\Util;
 use tech\constants\SignType;
@@ -84,6 +85,58 @@ class EsignService
     }
 
     /**
+     * 创建企业账户
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    function addOrganize($data)
+    {
+        $mobile = $data['mobile'];
+        // 0	组织机构代码号   1 多证合一，传递社会信用代码   2 企业工商注册码 23 其他
+        $regType = $data['regType'] ?? OrganRegType::OTHER;
+        $organCode = $data['organCode'];
+        $email = $data['email'] ?? '';
+        //单位类型，0-普通企业，1-社会团体，2-事业单位，3-民办非企业单位，4-党政及国家机构，默认0
+        $organType = $data['organType'] ?? "0";
+
+        // 法定代表人归属地：0-大陆、1-香港、2-澳门、3—台湾、4-外籍
+        $legalArea = $data['legalArea'] ?? PersonArea::MAINLAND;
+
+        //企业注册类型 1-代理人注册、2-法人注册、0-不注册法人或代理人
+        $userType = $data['userType'] ?? UserType::USER_DEFAULT;
+        //代理人姓名
+        $agentName = $data['agentName'] ?? '';
+        //代理人证件号
+        $agentIdNo = $data['agentIdNo'] ?? '';
+        //法人姓名
+        $legalName = $data['legalName'] ?? '';
+        //法人证件号
+        $legalIdNo = $data['legalIdNo'] ?? '';
+        $ret = self::$eSign->addOrganizeAccount(
+            $mobile,
+            $data['name'],
+            $organCode,
+            $regType,
+            $email,
+            $organType,
+            $legalArea,
+            $userType,
+            $agentName,
+            $agentIdNo,
+            $legalName,
+            $legalIdNo,
+            $address = '',
+            $scope = '');
+        //echo Util::jsonEncode($ret);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        return end($ret);
+    }
+
+    /**
+     * 用户签名
      * @param $data
      * @return mixed
      * @throws \Exception
