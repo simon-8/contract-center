@@ -17,7 +17,7 @@ class ContractTplFillController extends Controller
     public function index(\Request $request, ContractTplFill $contractTplFill)
     {
         $data = $request::only(['created_at', 'content', 'catid', 'formname']);
-        $lists = $contractTplFill->ofCatid($data['catid'] ?? 0)
+        $lists = $contractTplFill->ofCatid($data['catid'] ?? '')
             ->ofCreatedAt($data['created_at'] ?? '')
             ->ofContent($data['content'] ?? '')
             ->orderByDesc('id')

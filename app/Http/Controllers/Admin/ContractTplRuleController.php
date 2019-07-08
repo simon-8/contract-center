@@ -17,7 +17,7 @@ class ContractTplRuleController extends Controller
     public function index(\Request $request, ContractTplRule $contractTplRule)
     {
         $data = $request::only(['created_at', 'content', 'catid']);
-        $lists = $contractTplRule->ofCatid($data['catid'] ?? 0)
+        $lists = $contractTplRule->ofCatid($data['catid'] ?? '')
             ->ofCreatedAt($data['created_at'] ?? '')
             ->ofContent($data['content'] ?? '')
             ->orderByDesc('id')
