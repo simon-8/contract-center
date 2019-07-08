@@ -41,6 +41,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
 
     Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
+    Route::apiResource('single-page', 'SinglePageController');
 
     Route::prefix('order')->group(function () {
         Route::middleware('auth:api')->group(function () {
@@ -76,12 +77,13 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     });
 
     Route::get('test', function(\App\Services\ContractService $contractService) {
-        $contract = \App\Models\Contract::find(1);
+        //$contract = \App\Models\Contract::find(1);
         //$content = $contract->content->getAttribute('content');
         //unset($contract->content);
         //$contract->content = $content;
 
-        $contractService->makePdf($contract);
+        //$contractService->makePdf($contract);
         //return view('api.contract.show', compact('contract'));
     });
+
 });

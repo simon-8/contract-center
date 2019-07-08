@@ -59,31 +59,20 @@ class MenusTableSeeder extends Seeder
                 'link' => '',
                 'icon' => 'fa fa-cog',
                 'listorder' => 0,
-                'items' => 6,
+                'items' => 7,
             ),
             4 => 
             array (
-                'id' => 7,
-                'pid' => 0,
-                'name' => '前台首页',
-                'route' => '',
-                'link' => '/',
-                'icon' => 'fa fa-home',
-                'listorder' => 99,
-                'items' => 0,
-            ),
-            5 => 
-            array (
                 'id' => 8,
                 'pid' => 0,
-                'name' => '后台首页',
-                'route' => 'admin.index.index',
+                'name' => '后台主页',
+                'route' => 'admin.index.main',
                 'link' => '',
                 'icon' => 'fa fa-desktop',
                 'listorder' => 98,
                 'items' => 0,
             ),
-            6 => 
+            5 => 
             array (
                 'id' => 9,
                 'pid' => 6,
@@ -94,7 +83,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            7 => 
+            6 => 
             array (
                 'id' => 12,
                 'pid' => 6,
@@ -105,7 +94,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 99,
                 'items' => 0,
             ),
-            8 => 
+            7 => 
             array (
                 'id' => 14,
                 'pid' => 0,
@@ -116,7 +105,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 94,
                 'items' => 0,
             ),
-            9 => 
+            8 => 
             array (
                 'id' => 16,
                 'pid' => 6,
@@ -127,7 +116,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            10 => 
+            9 => 
             array (
                 'id' => 17,
                 'pid' => 0,
@@ -138,7 +127,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 93,
                 'items' => 1,
             ),
-            11 => 
+            10 => 
             array (
                 'id' => 18,
                 'pid' => 2,
@@ -149,7 +138,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            12 => 
+            11 => 
             array (
                 'id' => 19,
                 'pid' => 2,
@@ -160,7 +149,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 3,
                 'items' => 0,
             ),
-            13 => 
+            12 => 
             array (
                 'id' => 20,
                 'pid' => 2,
@@ -171,7 +160,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            14 => 
+            13 => 
             array (
                 'id' => 21,
                 'pid' => 0,
@@ -182,7 +171,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            15 => 
+            14 => 
             array (
                 'id' => 22,
                 'pid' => 21,
@@ -193,7 +182,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            16 => 
+            15 => 
             array (
                 'id' => 23,
                 'pid' => 17,
@@ -204,7 +193,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            17 => 
+            16 => 
             array (
                 'id' => 24,
                 'pid' => 0,
@@ -215,7 +204,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 1,
             ),
-            18 => 
+            17 => 
             array (
                 'id' => 25,
                 'pid' => 24,
@@ -226,7 +215,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            19 => 
+            18 => 
             array (
                 'id' => 26,
                 'pid' => 0,
@@ -237,7 +226,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 2,
             ),
-            20 => 
+            19 => 
             array (
                 'id' => 27,
                 'pid' => 26,
@@ -248,13 +237,24 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            21 => 
+            20 => 
             array (
                 'id' => 28,
                 'pid' => 26,
                 'name' => '通用模板管理',
                 'route' => 'admin.contract-tpl-rule.index',
                 'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            21 => 
+            array (
+                'id' => 29,
+                'pid' => 6,
+                'name' => '队列管理',
+                'route' => '',
+                'link' => '/horizon',
                 'icon' => '',
                 'listorder' => 0,
                 'items' => 0,

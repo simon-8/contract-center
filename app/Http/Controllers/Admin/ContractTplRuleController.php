@@ -20,6 +20,7 @@ class ContractTplRuleController extends Controller
         $lists = $contractTplRule->ofCatid($data['catid'] ?? 0)
             ->ofCreatedAt($data['created_at'] ?? '')
             ->ofContent($data['content'] ?? '')
+            ->orderByDesc('id')
             ->paginate();
         return view('admin.contract_tpl_rule.index', compact('lists', 'data'));
     }

@@ -45,7 +45,7 @@ class ContractController extends Controller
                 $query->$func($data['keyword']);
             });
         }
-        $lists = $lists->paginate(ModelService::$pagesize);
+        $lists = $lists->orderByDesc('id')->paginate(ModelService::$pagesize);
         $lists->appends($data);
         return view('admin.contract.index', compact('lists', 'data'));
     }

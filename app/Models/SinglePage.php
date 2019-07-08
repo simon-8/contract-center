@@ -44,7 +44,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SinglePage whereZan($value)
  * @mixin \Eloquent
  */
-class SinglePage extends Model
+class SinglePage extends Base
 {
     public $table = 'single_page';
 
@@ -75,18 +75,6 @@ class SinglePage extends Model
     {
         return $query->where('title', 'like', '%'.$title.'%');
     }
-
-    /**
-     * @param $query
-     * @param string $data
-     * @return mixed
-     */
-    public function scopeOfStatus($query, $data = '')
-    {
-        if ($data === '') return $query;
-        return $query->where('status', $data);
-    }
-
 
     /**
      * 获取各个状态的文章数量
