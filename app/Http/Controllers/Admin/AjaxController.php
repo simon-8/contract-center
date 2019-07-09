@@ -32,9 +32,9 @@ class AjaxController extends Controller
                 if (!$request::file($name)->isValid()) {
                     return responseException('文件无效');
                 }
-                $result = $request::file($name)->store('images/'.date('Ym/d'), 'uploads');
+                $result = $request::file($name)->store('/images/'.date('Ym/d'), 'uploads');
                 $basePath = str_replace(public_path(), '', config('filesystems.disks.uploads.root'));
-                $url = $basePath.'/'.$result;
+                $url = $basePath.$result;
                 // todo 保存到session中
                 //$imageService->pushSessionImages($url);
                 return responseMessage($url);

@@ -48,7 +48,7 @@ return array(
     'retry' => 3,
 
     /* 本地java服务 */
-    'java_server' => config('esign.javaServer'),
+    'java_server' => config('esign.javaServer', 'http://127.0.0.1:8080'),
 );
 
 

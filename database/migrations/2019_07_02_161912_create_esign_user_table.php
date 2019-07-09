@@ -17,6 +17,7 @@ class CreateEsignUserTable extends Migration
             $table->bigIncrements('id');
             $table->string('accountid')->default('')->comment('E签宝用户ID');
             $table->unsignedInteger('userid')->default(0)->comment('用户ID');
+            $table->unsignedTinyInteger('type')->default(0)->comment('用户类型 0个人 1公司');
             //$table->timestamps();
 
             $table->index('accountid');

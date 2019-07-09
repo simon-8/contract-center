@@ -102,22 +102,6 @@ class UserSignListener implements ShouldQueue
 
         $serviceid = $this->esignService->userSign($signData);
 
-        // 参与方都签了名
-        //if ($contract->catid == $contract::CAT_DOUBLE) {
-        //    if ($contract->signed_first && $contract->signed_second) {
-        //        $contract->status = $contract::STATUS_SIGN;
-        //    }
-        //} else if ($contract->catid == $contract::CAT_THREE) {
-        //    if ($contract->signed_first && $contract->signed_second && $contract->signed_three) {
-        //        $contract->status = $contract::STATUS_SIGN;
-        //    }
-        //}
-
-        //if (!$contract->path_pdf) {
-        //    $contract->path_pdf = str_replace(config('filesystems.disks.uploads.root'), '', $outputFile);
-        //}
-        //$contract->save();
-
         // 签名记录
         EsignSignLog::create([
             'contract_id' => $contract->id,

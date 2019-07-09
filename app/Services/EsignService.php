@@ -92,10 +92,10 @@ class EsignService
      */
     function addOrganize($data)
     {
-        $mobile = $data['mobile'];
+        $mobile = $data['mobile'] ?? '';
         // 0	组织机构代码号   1 多证合一，传递社会信用代码   2 企业工商注册码 23 其他
-        $regType = $data['regType'] ?? OrganRegType::OTHER;
-        $organCode = $data['organCode'];
+        $regType = $data['reg_type'] ?? OrganRegType::OTHER;
+        $organCode = $data['organ_code'] ?? '';
         $email = $data['email'] ?? '';
         //单位类型，0-普通企业，1-社会团体，2-事业单位，3-民办非企业单位，4-党政及国家机构，默认0
         $organType = $data['organType'] ?? "0";
@@ -136,6 +136,53 @@ class EsignService
     }
 
     /**
+     * 更新个人账户
+     * @param $accountid
+     * @param $data
+     * @return bool
+     * @throws \Exception
+     */
+    public function updatePerson($accountid, $data)
+    {
+        $ret = self::$eSign->updatePersonAccount($accountid, $data);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        return true;
+    }
+
+    /**
+     * 更新企业账户
+     * @param $accountid
+     * @param $data
+     * @return bool
+     * @throws \Exception
+     */
+    public function updateOrganize($accountid, $data)
+    {
+        $ret = self::$eSign->updateOrganizeAccount($accountid, $data);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        return true;
+    }
+
+    /**
+     * 删除账户
+     * @param $accountid
+     * @return bool
+     * @throws \Exception
+     */
+    public function delAccount($accountid)
+    {
+        $ret = self::$eSign->delUserAccount($accountid);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        return true;
+    }
+
+    /**
      * 用户签名
      * @param $data
      * @return mixed
@@ -155,6 +202,26 @@ class EsignService
         }
         $signServiceId = end($ret);
         return $signServiceId;
+    }
+
+    /**
+     * 创建企业印章
+     * @param $organizeAccountId
+     * @return mixed
+     * @throws \Exception
+     */
+    public function addOrganizeTemplateSeal($organizeAccountId)
+    {
+        $templateType = OrganizeTemplateType::STAR;
+        $color = SealColor::RED;
+        $hText = "";
+        $qText = "";
+        $ret = self::$eSign->addTemplateSeal($organizeAccountId, $templateType, $color, $hText, $qText);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        $imageBase64 = end($ret);
+        return $imageBase64;
     }
 
     /**

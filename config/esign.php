@@ -7,5 +7,5 @@
 return [
     'appid' => env('ESIGN_APPID'),
     'appSecret' => env('ESIGN_SECRET'),
-    'javaServer' => env('ESIGN_JAVA_SERVER', 'http://127.0.0.1:8080')
+    'javaServer' => env('ESIGN_JAVA_SERVER') ?: 'http://127.0.0.1:8080'
 ];

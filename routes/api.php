@@ -73,10 +73,17 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('confirm', 'UserRealNameController@confirm');
             Route::get('cancel', 'UserRealNameController@cancel');
         });
+        Route::prefix('user-company')->group(function() {
+            Route::get('', 'UserCompanyController@show');
+            Route::post('', 'UserCompanyController@store');
+            Route::put('', 'UserCompanyController@update');
+            Route::delete('', 'UserCompanyController@destroy');
+        });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
-    Route::get('test', function(\App\Services\ContractService $contractService) {
+    Route::get('test', 'UserCompanyController@index');
+    //Route::get('test', function(\App\Services\ContractService $contractService) {
         //$contract = \App\Models\Contract::find(1);
         //$content = $contract->content->getAttribute('content');
         //unset($contract->content);
@@ -84,6 +91,6 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
 
         //$contractService->makePdf($contract);
         //return view('api.contract.show', compact('contract'));
-    });
+    //});
 
 });

@@ -87,7 +87,7 @@ class UserRealNameController extends BaseController
      */
     protected function makeStoreDir()
     {
-        return 'idcards/'. ($this->user->id%10);
+        return '/idcards/'. ($this->user->id%10);
     }
 
     /**
@@ -106,16 +106,14 @@ class UserRealNameController extends BaseController
         if ($request->hasFile('face_img')) {
             $faceUrl = $request->file('face_img');
             $filename = $this->user->id .'.'. $faceUrl->extension();
-            $result = $faceUrl->storeAs($this->makeStoreDir(), $filename, 'uploads');
-            $data['face_img'] = '/' . $result;
+            $data['face_img'] = $faceUrl->storeAs($this->makeStoreDir(), $filename, 'uploads');
         }
 
         // 使用userid作为文件名 更新时可直接覆盖
         if ($request->hasFile('back_img')) {
             $backUrl = $request->file('back_img');
             $filename = $this->user->id .'_1.'. $backUrl->extension();
-            $result = $backUrl->storeAs($this->makeStoreDir(), $filename, 'uploads');
-            $data['back_img'] = '/' . $result;
+            $data['back_img'] = $backUrl->storeAs($this->makeStoreDir(), $filename, 'uploads');
         }
         $data['userid'] = $this->user->id;
 

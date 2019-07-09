@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Contract;
+use App\Models\EsignUser;
 use App\Models\Sign;
 use App\Http\Resources\Sign as SignResource;
 use App\Events\UserSign;
@@ -21,7 +22,7 @@ class SignController extends BaseController
      */
     protected function makeStorePath($id)
     {
-        return 'signs/'. $id;
+        return '/signs/'. $id;
     }
 
     /**
@@ -44,7 +45,7 @@ class SignController extends BaseController
      */
     public function store(\Request $request, Sign $sign)
     {
-        if (!$this->user->has('esignUser')->count()) {
+        if (!$this->user->esignUser()->where('type', EsignUser::TYPE_PERSON)->count()) {
             return responseException('请先通过实名认证');
         }
 
@@ -60,9 +61,8 @@ class SignController extends BaseController
         // 存储图片
         $storePath = $this->makeStorePath($data['contract_id']);
         $filename = $this->user->id .'.'. $file->extension();
-        $result = $file->storeAs($storePath, $filename, 'uploads');
+        $data['thumb'] = $file->storeAs($storePath, $filename, 'uploads');
 
-        $data['thumb'] = '/'. $result;
         $data['userid'] = $this->user->id;
 
         $where = [
@@ -122,9 +122,7 @@ class SignController extends BaseController
         // 存储图片
         $storePath = $this->makeStorePath($sign->contract_id);
         $filename = $this->user->id .'.'. $file->extension();
-        $result = $file->storeAs($storePath, $filename, 'uploads');
-
-        $data['thumb'] = '/'. $result;
+        $data['thumb'] = $file->storeAs($storePath, $filename, 'uploads');
 
         if (!$sign->update($data)) {
             return responseException(__('api.failed'));
