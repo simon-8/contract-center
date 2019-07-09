@@ -19,7 +19,7 @@ class CreateUserCompanyTable extends Migration
             $table->string('name')->default('')->comment('组织名称');
             $table->string('organ_code')->default('')->comment('机构代码');
             $table->unsignedTinyInteger('reg_type')->default(0)->comment('机构类型');
-            $table->text('sign_data')->default('')->comment('签名图片base64数据')->nullable();
+            $table->string('sign_data')->default('')->comment('签名图片base64数据');
             $table->timestamps();
         });
     }
