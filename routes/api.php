@@ -59,6 +59,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('bind-mobile', 'UserController@bindMobile');
             Route::get('info', 'UserController@info');
 
+            Route::post('sign/confirm', 'SignController@confirm');
             Route::apiResource('sign', 'SignController');
         });
     });

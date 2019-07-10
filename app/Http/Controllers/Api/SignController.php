@@ -143,4 +143,64 @@ class SignController extends BaseController
         }
         return responseMessage(__('api.failed'));
     }
+
+    /**
+     * 确认签名
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function confirm(\Request $request)
+    {
+        $data = $request::only(['contract_id', 'sign_type']);
+
+        if ($data['sign_type'] == Contract::SIGN_TYPE_PERSON) {
+            if (!$this->user->esignUser()->where('type', EsignUser::TYPE_PERSON)->exists()) {
+                return responseException('请先通过实名认证');
+            }
+        }
+
+        if ($data['sign_type'] == Contract::SIGN_TYPE_COMPANY) {
+            if (!$this->user->esignUser()->where('type', EsignUser::TYPE_COMPANY)->exists()) {
+                return responseException('请先通过企业认证');
+            }
+        }
+
+        // 更新 contract signed_xxx  sign_type_xxx
+        $contract = Contract::find($data['contract_id']);
+
+        if ($contract->userid_first == $this->user->id) {
+
+            $contract->signed_first = 1;
+            $contract->sign_type_first = $data['sign_type'];
+
+        } else if ($contract->userid_second == $this->user->id) {
+
+            $contract->signed_second = 1;
+            $contract->sign_type_second = $data['sign_type'];
+
+        } else if ($contract->userid_three == $this->user->id) {
+
+            $contract->signed_three = 1;
+            $contract->sign_type_three = $data['sign_type'];
+
+        }
+
+        // 参与方都签了名 直接修改状态
+        if ($contract->catid == $contract::CAT_DOUBLE) {
+            if ($contract->signed_first && $contract->signed_second) {
+                $contract->status = $contract::STATUS_SIGN;
+            }
+        } else if ($contract->catid == $contract::CAT_THREE) {
+            if ($contract->signed_first && $contract->signed_second && $contract->signed_three) {
+                $contract->status = $contract::STATUS_SIGN;
+            }
+        }
+
+        $contract->save();
+
+        // 触发usersign事件
+        event(new UserSign($contract, $this->user));
+
+        return responseMessage(__('api.success'));
+    }
 }

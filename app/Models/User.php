@@ -59,6 +59,7 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $address
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserOauth[] $oauth
  * @property-read \App\Models\EsignUser $esignUser
+ * @property-read \App\Models\UserCompany $company
  */
 class User extends Authenticatable
 {
@@ -140,6 +141,15 @@ class User extends Authenticatable
     public function esignUser()
     {
         return $this->hasOne('App\Models\EsignUser', 'userid', 'id');
+    }
+
+    /**
+     * 公司信息
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function company()
+    {
+        return $this->hasOne('App\Models\UserCompany', 'userid', 'id');
     }
 
     /**

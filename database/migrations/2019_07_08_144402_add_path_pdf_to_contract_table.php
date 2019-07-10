@@ -14,7 +14,7 @@ class AddPathPdfToContractTable extends Migration
     public function up()
     {
         Schema::table('contract', function (Blueprint $table) {
-            $table->string('path_pdf')->default('')->comment('pdf文件地址');
+            $table->string('path_pdf')->default('')->comment('pdf文件地址')->after('status');
         });
     }
 

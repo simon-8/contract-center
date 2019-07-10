@@ -31,6 +31,8 @@ namespace App\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereRegType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereUserid($value)
+ * @property string|null $sign_data 签名图片地址
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereSignData($value)
  */
 class UserCompany extends Base
 {

@@ -84,6 +84,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofMine($data = 0)
  * @property string $path_pdf pdf文件地址
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract wherePathPdf($value)
+ * @property int $sign_type_first 甲方签名类型 0个人 1公司
+ * @property int $sign_type_second 乙方签名类型 0个人 1公司
+ * @property int $sign_type_three 居间人签名类型 0个人 1公司
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignTypeFirst($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignTypeSecond($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignTypeThree($value)
  */
 class Contract extends Base
 {
@@ -111,6 +117,10 @@ class Contract extends Base
         'signed_second',
         'signed_three',
 
+        'sign_type_first',
+        'sign_type_second',
+        'sign_type_three',
+
         'status',
         'path_pdf',
         'confirm_at',
@@ -126,9 +136,14 @@ class Contract extends Base
     const USER_TYPE_SECOND = 'second';
     const USER_TYPE_THREE = 'three';
 
+    // 分类
     const CAT_NORMAL = 0;
     const CAT_DOUBLE = 1;
     const CAT_THREE = 2;
+
+    // 签名类型 0个人 1公司
+    const SIGN_TYPE_PERSON = 0;
+    const SIGN_TYPE_COMPANY = 1;
 
     /**
      * 关联内容
