@@ -83,15 +83,15 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
-    Route::get('test', 'UserCompanyController@index');
-    //Route::get('test', function(\App\Services\ContractService $contractService) {
-        //$contract = \App\Models\Contract::find(1);
-        //$content = $contract->content->getAttribute('content');
-        //unset($contract->content);
-        //$contract->content = $content;
+    //Route::get('test', 'UserCompanyController@index');
+    Route::get('test', function(\App\Services\ContractService $contractService) {
+        $contract = \App\Models\Contract::find(5);
+        $content = $contract->content->getAttribute('content');
+        unset($contract->content);
+        $contract->content = $content;
 
         //$contractService->makePdf($contract);
-        //return view('api.contract.show', compact('contract'));
-    //});
+        return view('api.contract.show', compact('contract'));
+    });
 
 });

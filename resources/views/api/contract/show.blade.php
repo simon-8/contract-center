@@ -28,7 +28,10 @@
             padding: 5px 0;
         }
         .container .main .rules {
-            margin: 30px 0 0 0;
+            margin: 15px 0 0 0;
+        }
+        .container .main .agree {
+            margin: 15px 0 0 0;
         }
         .fill-value {
             text-decoration: underline;
@@ -82,6 +85,9 @@
                     </p>
                 @endif
             @endforeach
+        </div>
+        <div class="agree">
+            <p>{{ $contract->content['agree'] }}</p>
         </div>
     </div>
 
