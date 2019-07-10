@@ -60,7 +60,7 @@ class UserCompanyController extends BaseController
         $request->validateStore($data);
 
         $data['userid'] = $this->user->id;
-
+        unset($data['sign_data']);
         DB::beginTransaction();
         try {
             //$upSignData = false;
@@ -75,13 +75,14 @@ class UserCompanyController extends BaseController
 
                     $esignService->delAccount($esignUser->accountid);
                     $accountid = $esignService->addOrganize($data);
+                    $userCompanyData->update($data);
 
                 } else if ($userCompanyData->name != $data['name']) {
 
                     $esignService->updateOrganize($esignUser->accountid, $data);
+                    $userCompanyData->update($data);
 
                 }
-                $userCompanyData->update($data);
 
             } else {
                 // 添加数据 并创建用户

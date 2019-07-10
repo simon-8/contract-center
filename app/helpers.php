@@ -88,12 +88,16 @@ function imgurl($url = '', $disk = '')
         return skinPath() .'images/nopic.png';
         //return skinPath() .'images/debug.jpg';
     }
+    if (substr($url, 0, 4) === 'http') {
+        return $url;
+    }
+
     $basePath = config('admin.cdnResourcePath') ?: config('app.url');
     if ($disk) {
         $prefix = config("filesystems.disks.{$disk}.prefix");
         $url = $prefix.$url;
     }
-    return substr($url, 0, 4) === 'http' ? $url : $basePath . $url;
+    return $basePath . $url;
 }
 
 /**
