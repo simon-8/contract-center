@@ -155,7 +155,7 @@ class OrderLawyerConfirmController extends BaseController
     public function wechat(Order $order, $gateway = '')
     {
         $config = [
-            'sandbox' => true,
+            //'sandbox' => true,
             'app_id' => config('wechat.payment.default.app_id'),
             'mch_id' => config('wechat.payment.default.mch_id'),
             'key'    => config('wechat.payment.default.key'),
