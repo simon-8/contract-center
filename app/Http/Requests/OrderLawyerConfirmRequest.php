@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class OrderRequest extends BaseRequest
+class OrderLawyerConfirmRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

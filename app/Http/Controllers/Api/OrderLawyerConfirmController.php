@@ -7,16 +7,38 @@
  */
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderLawyerConfirmRequest as OrderRequest;
+use App\Http\Resources\OrderLawyerConfirm as OrderLawyerConfirmResource;
 use App\Models\Contract;
-use App\Models\Order;
+use App\Models\OrderLawyerConfirm as Order;
 use App\Models\OrderRefund;
 use App\Models\User;
+use App\Models\UserAddress;
 use EasyWeChat\Factory;
 use function EasyWeChat\Kernel\Support\generate_sign;
 
-class OrderController extends BaseController
+class OrderLawyerConfirmController extends BaseController
 {
+    /**
+     * 详情
+     * @param \Request $request
+     * @param Order $order
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(\Request $request, Order $order)
+    {
+        $data = $request::only(['contract_id']);
+        $orderData = $order->ofContractID($data['contract_id'])
+            ->ofUserid($this->user->id)
+            ->first();
+        if ($orderData) {
+            return responseMessage('', new OrderLawyerConfirmResource($orderData));
+        } else {
+            return responseMessage('', [
+                'amount' => config('admin.contractLawyerConfirmPrice')
+            ]);
+        }
+    }
 
     /**
      * 下单
@@ -30,6 +52,7 @@ class OrderController extends BaseController
         logger('order.store', $request->all());
         $data = $request->only([
             'contract_id',
+            'address_id',
             'channel',
             'gateway',
         ]);
@@ -41,19 +64,43 @@ class OrderController extends BaseController
         //if (empty($gateway)) {
         //    return responseException('支付方式缺失');
         //}
+        // channel检查
         if (empty($channel) || !method_exists($this, $channel)) {
             return responseException('支付通道不存在, 请检查channel值');
         }
 
-        $contract = Contract::find($data['contract_id']);
-        if ($contract->status >= Contract::STATUS_PAYED) {
-            return responseException('该合同已支付, 无法重复付款');
+        // 已有order状态检查
+        $orderData = $order->ofContractID($data['contract_id'])
+            ->ofUserid($this->user->id)
+            ->first();
+
+        if ($orderData && $orderData->status == Order::STATUS_ALREADY_PAY) {
+            return responseException('该订单已支付, 无法重复付款');
         }
+        // 对应contract状态检查
+        $contract = Contract::find($data['contract_id']);
+        if ($contract->status < Contract::STATUS_SIGN) {
+            return responseException('该合同尚未签名, 无法见证');
+        }
+        // 用户地址检查
+        $address = UserAddress::find($data['address_id']);
+        if (!$address) {
+            return responseException('收货地址不存在, 请稍候重试');
+        }
+
+        $data['address'] = $address->only(['linkman', 'mobile', 'province', 'city', 'area', 'address']);
         $data['userid'] = $this->user->id;
-        $data['amount'] = config('admin.contractPrice');
+        $data['amount'] = config('admin.contractLawyerConfirmPrice');
         $data['openid'] = $this->getOpenid();
         $data['orderid'] = Order::createOrderNo($channel);
-        $orderData = $order->create($data);
+
+        // 有则更新 无则创建
+        if ($orderData) {
+            $orderData->update($data);
+        } else {
+            $orderData = $order->create($data);
+        }
+
         if (!$orderData) {
             return responseException('订单创建失败, 请稍候重试');
         }
@@ -81,22 +128,22 @@ class OrderController extends BaseController
      * @param $orderid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function reStore(Order $order, $orderid)
-    {
-        $orderData = $order->where('orderid', $orderid)->first();
-        if (!$orderData) {
-            return responseException(__('api.no_result'));
-        }
-        if ($orderData->status != Order::STATUS_WAIT_PAY) {
-            return responseException('该订单'.$orderData->getStatusText(). ', 无法继续付款');
-        }
-        if ($orderData->contract->status >= Contract::STATUS_PAYED) {
-            return responseException('该合同'.$orderData->contract->getStatusText(). ', 无法继续付款');
-        }
-        $channel = $orderData->channel;
-        $gateway = $orderData->gateway;
-        return $this->$channel($orderData, $gateway);
-    }
+    //public function reStore(Order $order, $orderid)
+    //{
+    //    $orderData = $order->where('orderid', $orderid)->first();
+    //    if (!$orderData) {
+    //        return responseException(__('api.no_result'));
+    //    }
+    //    if ($orderData->status != Order::STATUS_WAIT_PAY) {
+    //        return responseException('该订单'.$orderData->getStatusText(). ', 无法继续付款');
+    //    }
+    //    if ($orderData->contract->status >= Contract::STATUS_PAYED) {
+    //        return responseException('该合同'.$orderData->contract->getStatusText(). ', 无法继续付款');
+    //    }
+    //    $channel = $orderData->channel;
+    //    $gateway = $orderData->gateway;
+    //    return $this->$channel($orderData, $gateway);
+    //}
 
     /**
      * 微信预下单
@@ -116,11 +163,11 @@ class OrderController extends BaseController
 
         $app = Factory::payment($config);
         $data = [
-            'body' => '用户充值',
+            'body' => '申请律师见证',
             'out_trade_no' => $order->orderid,
             'total_fee' => $order->amount,
             'spbill_create_ip' => \Request::ip(),
-            'notify_url' => route('api.order.notify', ['channel' => __FUNCTION__]),
+            'notify_url' => route('api.orderLawyerConfirm.notify', ['channel' => __FUNCTION__]),
             'trade_type' => $gateway ?: 'JSAPI',
             'openid' => $order->openid,
         ];
@@ -248,158 +295,5 @@ class OrderController extends BaseController
             return false;
         }
         return true;
-    }
-
-    /**
-     * 取消订单
-     * 未付款直接取消
-     * 已付款修改状态为申请退款 自动退款或等待后台客服审核
-     * @param \Request $request
-     * @param OrderRefund $orderRefund
-     * @param $orderid
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function cancel(\Request $request, OrderRefund $orderRefund, $orderid)
-    {
-        $user = $request::user();
-        $orderData = Order::where('orderid', $orderid)->first();
-        if (!$orderData) {
-            return responseException(__('api.no_result'));
-        }
-        if ($orderData->status > Order::STATUS_CONFIRM) {
-            return responseException('该订单当前状态: '.$orderData->getStatusText(). ', 无法继续退款');
-        }
-
-        if ($orderData->status == Order::STATUS_WAIT_PAY) {
-            $orderData->status = Order::STATUS_TRADE_CLOSE;
-            $orderData->save();
-
-            // 订单已处理通知
-            //OrderGateway::orderProcessed($order);
-
-            return responseMessage(__('api.success'));
-        }
-
-        if ($orderData->status == Order::STATUS_ALREADY_PAY || $orderData->status == Order::STATUS_CONFIRM) {
-            // todo 是否自动退款
-            if (true) {
-                $refundOrderid = Order::createOrderNo($orderData->channel);
-                $totalFee = $refundFee = $orderData->money*100;
-
-                $app = Factory::payment(config('wechat.payment.default'));
-                try {
-                    $response = $app->refund->byTransactionId($orderData->torderid, $refundOrderid, $totalFee, $refundFee, [
-                        'refund_desc' => '用户申请退款',
-                        'notify_url' => route('api.order.refund', ['channel' => $orderData->channel]),
-                    ]);
-                    logger('refund response', $response);
-                } catch (\Exception $e) {
-                    return responseException($e->getMessage());
-                }
-
-                if ($response['return_code'] !== 'SUCCESS') {
-                    return responseException($response['return_msg']);
-                }
-                if ($response['result_code'] !== 'SUCCESS') {
-                    return responseException($response['err_code_des']);
-                }
-                // 订单退款记录
-                $orderRefund->create([
-                    'pid' => $orderData->id,
-                    'refund_orderid' => $refundOrderid,
-                    'refund_torderid' => $response['refund_id'],
-                    'pay_orderid' => $orderData->orderid,
-                    'amount' => $totalFee/100,
-                    'userid' => $user->id,
-                    //'adminid' => 0,
-                    //'remark' => '',
-                    //'status' => 0,
-                ]);
-                $message = '退款申请提交成功';
-
-                // todo 通知
-                //event(new \App\Events\OrderCancel($order));
-
-            } else {
-                $message = '退款申请提交成功, 等待客服审核';
-            }
-            $orderData->status = Order::STATUS_APPLY_REFUND;
-            $orderData->save();
-
-            return responseMessage($message);
-        }
-    }
-
-    /**
-     * 退款
-     * @param $channel
-     * @return mixed
-     */
-    public function refund($channel)
-    {
-        $method = 'refund'.ucfirst($channel);
-        return $this->$method();
-    }
-
-    /**
-     * 退款
-     * @throws \EasyWeChat\Kernel\Exceptions\Exception
-     */
-    public function refundWechat()
-    {
-        $config = [
-            'app_id' => config('wechat.payment.default.app_id'),
-            'mch_id' => config('wechat.payment.default.mch_id'),
-            'key'    => config('wechat.payment.default.key'),
-        ];
-
-        $app = Factory::payment($config);
-        $response = $app->handleRefundedNotify(function ($message, $reqInfo, $fail) {
-            logger('refund notify', $message);
-            logger('refund notify', $reqInfo);
-            if ($message['return_code'] !== 'SUCCESS') {
-                return $fail('通信失败，请稍后再通知我');
-            }
-            $refundData = OrderRefund::where('refund_orderid', $reqInfo['out_refund_no'])->first();
-            if (!$refundData) {
-                \Log::info('refund notify ==> 订单不存在');
-                return true;
-            }
-            if ($refundData->status == OrderRefund::STATUS_REFUND_SUCCESS) {
-                \Log::info('refund notify ==> 订单状态已成功, 结束订单');
-                return true;
-            }
-            $orderData = Order::find($refundData->pid);
-
-            $refundData->refund_torderid = $reqInfo['refund_id'];
-            if ($reqInfo['refund_status'] !== 'SUCCESS') {
-                $statusArr = [
-                    'CHANGE' => '退款异常',
-                    'REFUNDCLOSE' => '退款关闭'
-                ];
-
-                $refundData->status = OrderRefund::STATUS_REFUND_FAIL;
-                $refundData->remark = $statusArr[$reqInfo['refund_status']];
-                $refundData->save();
-
-                $orderData->status = Order::STATUS_REFUND_FAILD;
-                $orderData->save();
-                \Log::info('notifyWechat result ==> 订单状态未成功, 结束订单');
-                return true;
-            }
-            $refundData->status = OrderRefund::STATUS_REFUND_SUCCESS;
-            $refundData->save();
-
-            $orderData->status = Order::STATUS_REFUND_SUCCESS;
-            $orderData->save();
-
-            // 修改合同状态为已确认
-            $orderData->contract->update([
-                'status' => Contract::STATUS_CONFIRM
-            ]);
-            return true;
-        });
-
-        $response->send();
     }
 }
