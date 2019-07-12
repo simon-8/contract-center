@@ -241,6 +241,8 @@ class UserRealNameController extends BaseController
                 'accountid' => $accountid
             ]);
 
+            // 用户已通过实名认证
+            $this->user->update(['vtruename' => 1]);
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();

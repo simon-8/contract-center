@@ -81,7 +81,8 @@ class ContractFileController extends BaseController
         if (!$file->isValid()) {
             return responseException('图片文件无效');
         }
-        $data['linkurl'] = $file->store('/images/'.date('Ym/d'), 'uploads');
+
+        $data['linkurl'] = '/'. $file->store('/images/'.date('Ym/d'), 'uploads');
         $data['filetype'] = $file->extension();
         $data['filesize'] = $file->getSize();
         $data['userid'] = $this->user->id;

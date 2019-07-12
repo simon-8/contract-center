@@ -165,7 +165,7 @@ class OrderLawyerConfirmController extends BaseController
         $data = [
             'body' => '申请律师见证',
             'out_trade_no' => $order->orderid,
-            'total_fee' => $order->amount,
+            'total_fee' => $order->amount * 100,
             'spbill_create_ip' => \Request::ip(),
             'notify_url' => route('api.orderLawyerConfirm.notify', ['channel' => __FUNCTION__]),
             'trade_type' => $gateway ?: 'JSAPI',

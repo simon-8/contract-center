@@ -80,14 +80,16 @@ class User extends Authenticatable
         'mobile',
         'email',
         'money',
-        'city',
-        'province',
         'country',
+        'province',
+        'city',
         'avatar',
         'gender',
         'client_id',
         'last_login_time',
-        //'is_block',
+        'is_block',
+        'vtruename',
+        'vcompany',
     ];
 
     /**

@@ -118,7 +118,7 @@ class OrderController extends BaseController
         $data = [
             'body' => '用户充值',
             'out_trade_no' => $order->orderid,
-            'total_fee' => $order->amount,
+            'total_fee' => $order->amount * 100,
             'spbill_create_ip' => \Request::ip(),
             'notify_url' => route('api.order.notify', ['channel' => __FUNCTION__]),
             'trade_type' => $gateway ?: 'JSAPI',
