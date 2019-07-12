@@ -61,7 +61,7 @@ class SignController extends BaseController
         // 存储图片
         $storePath = $this->makeStorePath($data['contract_id']);
         $filename = $this->user->id .'.'. $file->extension();
-        $data['thumb'] = $file->storeAs($storePath, $filename, 'uploads');
+        $data['thumb'] = '/'. $file->storeAs($storePath, $filename, 'uploads');
 
         $data['userid'] = $this->user->id;
 
@@ -122,7 +122,7 @@ class SignController extends BaseController
         // 存储图片
         $storePath = $this->makeStorePath($sign->contract_id);
         $filename = $this->user->id .'.'. $file->extension();
-        $data['thumb'] = $file->storeAs($storePath, $filename, 'uploads');
+        $data['thumb'] = '/'. $file->storeAs($storePath, $filename, 'uploads');
 
         if (!$sign->update($data)) {
             return responseException(__('api.failed'));

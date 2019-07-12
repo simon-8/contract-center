@@ -19,12 +19,24 @@
         .text-center {
             text-align: center;
         }
+        .text-left {
+            text-align: left;
+        }
+        .text-right {
+            text-align: right;
+        }
         .container {
             width: 794px;
             /*border: 1px solid red;*/
         }
         .container .main p {
             text-indent: 2em;
+            padding: 5px 0;
+        }
+        .container .main .head .title {
+            font-size: 22px;
+        }
+        .container .main .head div {
             padding: 5px 0;
         }
         .container .main .rules {
@@ -64,7 +76,14 @@
 <body>
 <div class="container">
     <div class="main">
-        <p class="text-center"><strong>{{ $contract->name }}</strong><br></p>
+        <div class="head">
+            <div class="title text-center">
+                租赁合同
+            </div>
+            <div class="name text-right">
+                {{ $contract->name }}
+            </div>
+        </div>
 
         <div class="fills">
             @foreach($contractTplFill->ofCatid([0, $contract->catid])->get() as $k => $v)

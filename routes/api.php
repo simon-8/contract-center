@@ -94,15 +94,20 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
-    //Route::get('test', 'UserCompanyController@index');
-    Route::get('test', function(\App\Services\ContractService $contractService) {
-        $contract = \App\Models\Contract::find(5);
-        $content = $contract->content->getAttribute('content');
-        unset($contract->content);
-        $contract->content = $content;
-
-        //$contractService->makePdf($contract);
-        return view('api.contract.show', compact('contract'));
-    });
+    //Route::get('test', function() {
+    //    (new \App\Services\SmsService())->sendTemplateSms('17788560708', [
+    //        'title' => '租房小合同',
+    //        'name' => '静哥哥'
+    //    ], \App\Services\SmsService::TEMPLATE_USER_SIGNED);
+    //});
+    //Route::get('test', function(\App\Services\ContractService $contractService) {
+    //    $contract = \App\Models\Contract::find(1);
+    //    $content = $contract->content->getAttribute('content');
+    //    unset($contract->content);
+    //    $contract->content = $content;
+    //
+    //    //$contractService->makePdf($contract);
+    //    return view('api.contract.show', compact('contract'));
+    //});
 
 });
