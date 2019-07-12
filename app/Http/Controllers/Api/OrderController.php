@@ -197,7 +197,7 @@ class OrderController extends BaseController
                 return $fail('订单状态校验失败');
             }
 
-            if ($message['total_fee'] != $order['money']*100) {
+            if ($message['total_fee'] != $order['amount']*100) {
                 \Log::info('notifyWechat result ==> 订单金额不匹配');
                 return $fail('订单金额不匹配');
             }
@@ -284,7 +284,7 @@ class OrderController extends BaseController
             // todo 是否自动退款
             if (true) {
                 $refundOrderid = Order::createOrderNo($orderData->channel);
-                $totalFee = $refundFee = $orderData->money*100;
+                $totalFee = $refundFee = $orderData->amount*100;
 
                 $app = Factory::payment(config('wechat.payment.default'));
                 try {

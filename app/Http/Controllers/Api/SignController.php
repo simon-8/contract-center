@@ -145,7 +145,7 @@ class SignController extends BaseController
     }
 
     /**
-     * 确认签名
+     * 确认签名 sign_type 签名类型 0个人 1公司
      * @param \Request $request
      * @return \Illuminate\Http\JsonResponse
      */

@@ -244,7 +244,7 @@ class OrderLawyerConfirmController extends BaseController
                 return $fail('订单状态校验失败');
             }
 
-            if ($message['total_fee'] != $order['money']*100) {
+            if ($message['total_fee'] != $order['amount']*100) {
                 \Log::info('notifyWechat result ==> 订单金额不匹配');
                 return $fail('订单金额不匹配');
             }

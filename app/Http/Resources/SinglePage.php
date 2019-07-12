@@ -16,18 +16,33 @@ class SinglePage extends JsonResource
     {
         $data = parent::toArray($request);
         if ($data['content']) {
+            // image
             preg_match_all('#<img.*?src="([^"]*)"[^>]*>#i', $data['content'], $match);
             $oldImgs = [];
             $newImgs = [];
-            foreach($match[1] as $imgurl) {
-                if (substr($imgurl, 0, 4) === 'http') {
+            foreach($match[1] as $url) {
+                if (substr($url, 0, 4) === 'http') {
                     continue;
                 }
-                $oldImgs[] = $imgurl;
-                $newImgs[] = imgurl($imgurl);
+                $oldImgs[] = $url;
+                $newImgs[] = imgurl($url);
             }
             if ($oldImgs && $newImgs) {
                 $data['content'] = str_replace($oldImgs, $newImgs, $data['content']);
+            }
+
+            preg_match_all('#<video.*?src="([^"]*)"[^>]*>#i', $data['content'], $match);
+            $oldVideos = [];
+            $newVideos = [];
+            foreach($match[1] as $url) {
+                if (substr($url, 0, 4) === 'http') {
+                    continue;
+                }
+                $oldVideos[] = $url;
+                $newVideos[] = imgurl($url);
+            }
+            if ($oldVideos && $newVideos) {
+                $data['content'] = str_replace($oldVideos, $newVideos, $data['content']);
             }
         }
 
