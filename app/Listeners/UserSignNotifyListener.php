@@ -68,6 +68,9 @@ class UserSignNotifyListener implements ShouldQueue
             'name' => $sourceUserName
         ];
         foreach ($targetUsers as $targetUser) {
+            if (!$targetUser) {
+                continue;
+            }
             if (!$targetUser->mobile) {
                 logger(__METHOD__, ["合同ID: {$contract->id} 用户未绑定手机! 用户ID: {$targetUser->id}"]);
                 return ;
