@@ -53,23 +53,19 @@ function calcHeight($width, $newWidth, $height)
  * @param string $dir
  * @return mixed|string
  */
-function upload_base64_thumb($thumb, $disk = 'uploads', $dir = 'thumbs')
+function upload_base64_thumb($thumb, $disk = 'uploads')
 {
     if (strpos($thumb, 'data:image') === false) return $thumb;
 
-    $filepath = config("filesystems.disks.{$disk}.root")."/{$dir}/". date('Ym/');//缩略图按月划分
-    $filename = time() . rand(100, 999);
+    $filename = 'thumbs/'. date('Ym/').time() . rand(100, 999);//缩略图按月划分
     $fileext = str_replace('data:image/', '', strstr($thumb, ';', true));
     in_array($fileext, ['jpg', 'png', 'gif', 'bmp']) or $fileext = 'jpg';//jpeg->jpg
     $filename .= '.' . $fileext;
 
-    if (!\File::isDirectory($filepath)) {
-        \File::makeDirectory($filepath, 0777, true);
-    }
     if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $thumb, $result)) {
-        \File::put($filepath . $filename, base64_decode(str_replace($result[1], '', $thumb)));
-        $thumb = \File::exists($filepath . $filename) ? $filepath . $filename : '';
-        $thumb = str_replace(public_path(), '', $thumb);//path => ''
+        $thumbData = base64_decode(str_replace($result[1], '', $thumb));
+        Storage::disk($disk)->put($filename, $thumbData);
+        $thumb = $filename;
     } else {
         $thumb = '';
     }

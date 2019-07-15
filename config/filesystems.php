@@ -58,7 +58,7 @@ return [
             'driver' => 'local',
             'root' => public_path('uploads'),
             'prefix' => '/uploads',
-            'url' => env('APP_URL').'/public/uploads/',
+            'url' => env('APP_URL').'/uploads/',
         ],
         's3' => [
             'driver' => 's3',
