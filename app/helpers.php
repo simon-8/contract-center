@@ -78,8 +78,8 @@ function upload_base64_thumb($thumb, $disk = 'uploads', $dir = 'thumbs')
 }
 
 /**
- *
- * @param $url
+ * @param string $url
+ * @param string $disk
  * @return string
  */
 function imgurl($url = '', $disk = '')
@@ -91,12 +91,10 @@ function imgurl($url = '', $disk = '')
     if (substr($url, 0, 4) === 'http') {
         return $url;
     }
-
-    $basePath = config('admin.cdnResourcePath') ?: config('app.url');
     if ($disk) {
-        $prefix = config("filesystems.disks.{$disk}.prefix");
-        $url = $prefix.$url;
+        return Storage::disk($disk)->url($url);
     }
+    $basePath = config('admin.cdnResourcePath') ?: config('app.url');
     return $basePath . $url;
 }
 
