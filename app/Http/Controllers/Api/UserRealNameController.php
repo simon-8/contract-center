@@ -257,12 +257,12 @@ class UserRealNameController extends BaseController
     /**
      * 取消确认 (删除除id/userid之外的所有字段)
      * @param UserRealNameRequest $request
-     * @param UserRealName $userRealName
      * @return \Illuminate\Http\JsonResponse
      */
-    public function cancel(UserRealNameRequest $request, UserRealName $userRealName)
+    public function cancel(UserRealNameRequest $request)
     {
-        $userRealNameData = $userRealName::ofUserid($this->user->id)->first();
+        // todo 删除图片
+        $userRealNameData = UserRealName::ofUserid($this->user->id)->first();
         if (!$userRealNameData) {
             return responseException(__('api.no_result'));
         }
