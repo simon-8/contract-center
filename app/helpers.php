@@ -242,6 +242,14 @@ function is_testing_env() {
 }
 
 /**
+ * 是否调试环境
+ * @return bool
+ */
+function is_debug_env() {
+    return env('APP_DEBUG') ? true : false;
+}
+
+/**
  * id加密
  * @param $id
  * @return mixed
