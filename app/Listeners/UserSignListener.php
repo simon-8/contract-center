@@ -52,7 +52,7 @@ class UserSignListener implements ShouldQueue
         $outputFile = $this->contractService->makeStorePath($contract->id, true);
 
         // 当output中存在文件时, 表示有一方已签署
-        $uploadPath = config('filesystems.disks.uploads.root');
+        $uploadPath = Storage::disk('uploads')->path('');
         if (Storage::disk('uploads')->exists(str_replace($uploadPath, '', $outputFile))) {
             $sourceFile = $outputFile;
         }

@@ -9,6 +9,7 @@ use App\Models\Contract;
 use App\Services\ContractService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Storage;
 
 class UserConfirmListener implements ShouldQueue
 {
@@ -46,7 +47,7 @@ class UserConfirmListener implements ShouldQueue
         // pdf 文档位置
         $outputFile = $this->contractService->makeStorePath($event->contract->id, true);
         if (!$event->contract->path_pdf) {
-            $event->contract->path_pdf = str_replace(config('filesystems.disks.uploads.root'), '', $outputFile);
+            $event->contract->path_pdf = str_replace(Storage::disk('uploads')->path(''), '', $outputFile);
             // 防止更新关联模型
             unset($event->contract->content, $event->contract->user_first, $event->contract->user_second, $event->contract->user_three);
             $event->contract->save();

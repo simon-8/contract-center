@@ -121,4 +121,24 @@ class UserCompanyController extends BaseController
         }
         return $storePath;
     }
+
+    /**
+     * 普通搜索
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(\Request $request)
+    {
+        $data = $request::only(['name']);
+        if (empty($data['name'])) {
+            return responseMessage();
+        }
+        $lists = UserCompany::ofName($data['name'] ?? '')
+            ->orderByDesc('id')
+            ->get();
+        foreach ($lists as $k => $v) {
+            $lists[$k] = new UserCompanyResource($v);
+        }
+        return responseMessage('', $lists);
+    }
 }

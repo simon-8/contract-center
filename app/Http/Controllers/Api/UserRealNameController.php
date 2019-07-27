@@ -23,9 +23,11 @@ use App\Models\UserRealName;
 use App\Http\Resources\UserRealName as UserRealNameResource;
 use App\Services\EsignService;
 use App\Services\Ocr\IdCardService;
+use App\Services\RealNameService;
 use \DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class UserRealNameController extends BaseController
 {
@@ -95,7 +97,7 @@ class UserRealNameController extends BaseController
      * @param UserRealNameRequest $request
      * @param UserRealName $userRealName
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Illuminate\Validation\ValidationException|\Exception
      */
     public function store(UserRealNameRequest $request, UserRealName $userRealName)
     {
@@ -106,25 +108,44 @@ class UserRealNameController extends BaseController
         if ($request->hasFile('face_img')) {
             $faceUrl = $request->file('face_img');
             $filename = $this->user->id .'.'. $faceUrl->extension();
-            $data['face_img'] = '/'. $faceUrl->storeAs($this->makeStoreDir(), $filename, 'uploads');
+            $data['face_img'] = $faceUrl->storeAs($this->makeStoreDir(), $filename, 'uploads');
         }
 
         // 使用userid作为文件名 更新时可直接覆盖
         if ($request->hasFile('back_img')) {
             $backUrl = $request->file('back_img');
             $filename = $this->user->id .'_1.'. $backUrl->extension();
-            $data['back_img'] = '/'. $backUrl->storeAs($this->makeStoreDir(), $filename, 'uploads');
+            $data['back_img'] = $backUrl->storeAs($this->makeStoreDir(), $filename, 'uploads');
         }
-        $data['userid'] = $this->user->id;
 
-        $w = [
-            'userid' => $this->user->id
-        ];
-        $userRealNameData = $userRealName::updateOrCreate($w, $data);
+        DB::beginTransaction();
+        try {
+            // 重置所有数据
+            $data['userid'] = $this->user->id;
+            $data['nationality'] = '';
+            $data['idcard'] = '';
+            $data['sex'] = '';
+            $data['birth'] = '';
+            $data['address'] = '';
+            $data['start_date'] = '';
+            $data['end_date'] = '';
+            $data['issue'] = '';
 
-        if (!$userRealNameData) {
+            // 查询条件
+            $w = [
+                'userid' => $this->user->id
+            ];
+            $userRealNameData = $userRealName::updateOrCreate($w, $data);
+
+            // 重置个人实名状态
+            $this->user->update(['vtruename' => 0]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
             return responseException(__('api.failed'));
         }
+
         return responseMessage('', new UserRealNameResource($userRealNameData));
     }
 
@@ -139,7 +160,7 @@ class UserRealNameController extends BaseController
         $userRealNameData = $userRealName::ofUserid($this->user->id)->first();
 
         // 查询身份证正面数据
-        $faceImgPath = config('filesystems.disks.uploads.root'). $userRealNameData->face_img;
+        $faceImgPath = Storage::disk('uploads')->path($userRealNameData->face_img);
         try {
             $idInfo = $idCardService->getData($faceImgPath, 'face');
             if (!$idInfo || !$idInfo['success']) {
@@ -157,7 +178,7 @@ class UserRealNameController extends BaseController
         }
 
         // 查询身份证反面数据
-        $backImgPath = config('filesystems.disks.uploads.root'). $userRealNameData->back_img;
+        $backImgPath = Storage::disk('uploads')->path($userRealNameData->back_img);
         try {
             $idBackInfo = $idCardService->getData($backImgPath, 'back');
             if (!$idBackInfo || !$idBackInfo['success']) {
@@ -225,10 +246,22 @@ class UserRealNameController extends BaseController
 
         DB::beginTransaction();
         try {
+
+            // E签宝个人实名认证  个人三要素认证
+            $realNameService = new RealNameService();
+            $checkData = [
+                'mobile' => $this->user->mobile,
+                'name' => $userRealNameData->truename,
+                'idno' => $userRealNameData->idcard,
+            ];
+            $result = $realNameService->teleComAuth($checkData);
+            logger(__METHOD__, ['msg' => '个人实名检查成功', 'checkData' => $checkData, 'result' => $result]);
+
             if (!$userRealNameData->save()) {
-                throw new \Exception('保存失败');
+                throw new \Exception('实名信息保存失败');
             }
 
+            // todo 若可以修改实名认证  需要删除原有Esign账户
             // 创建esign用户
             $accountid = $esignService->addPerson([
                 'mobile' => $this->user->mobile,
@@ -251,7 +284,7 @@ class UserRealNameController extends BaseController
 
         // 清除缓存
         $this->clearCache();
-        return responseMessage(__('api.success'));
+        return responseMessage(__('api.success'), new UserRealNameResource($userRealNameData));
     }
 
     /**
@@ -261,7 +294,6 @@ class UserRealNameController extends BaseController
      */
     public function cancel(UserRealNameRequest $request)
     {
-        // todo 删除图片
         $userRealNameData = UserRealName::ofUserid($this->user->id)->first();
         if (!$userRealNameData) {
             return responseException(__('api.no_result'));
@@ -273,6 +305,10 @@ class UserRealNameController extends BaseController
             }
             $userRealNameData[$k] = '';
         }
+        // 删除图片
+        if ($userRealNameData->face_img) Storage::disk('uploads')->delete($userRealNameData->face_img);
+        if ($userRealNameData->back_img) Storage::disk('uploads')->delete($userRealNameData->back_img);
+
         if (!$userRealNameData->save()) {
             return responseException(__('web.failed'));
         }

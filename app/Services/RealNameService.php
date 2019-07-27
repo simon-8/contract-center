@@ -7,6 +7,7 @@
  */
 namespace App\Services;
 
+use tech\core\HttpUtils;
 use tech\realname\rest\external\Person;
 use tech\realname\rest\external\Organ;
 
@@ -17,12 +18,29 @@ class RealNameService
     const API_DOMAIN_HTTP_TEST = 'http://smlrealname.tsign.cn:8080';
     const API_DOMAIN_HTTPS_TEST = 'https://smlrealname.tsign.cn:443'; // 测试环境
 
+    // 个人实名认证 运营商三要素
     const API_TELE_COM_AUTH = '/realname/rest/external/person/telecomAuth';
+
+    protected $_config = [];
+
+    protected function getConfig()
+    {
+        $this->_config = [
+            'project_id' => config('esign.appid'),
+            'project_secret' => config('esign.appSecret'),
+            'sign_algorithm' => 'HMACSHA256',
+        ];
+    }
+
+    public function __construct()
+    {
+        $this->getConfig();
+    }
 
     /**
      * @return string
      */
-    public function getServerUrl()
+    protected function getServerUrl()
     {
         if (is_debug_env() && env('APP_ENV') === 'local') {
             return self::API_DOMAIN_HTTPS_TEST;
@@ -30,9 +48,167 @@ class RealNameService
         return self::API_DOMAIN_HTTPS;
     }
 
-    public function telecomAuth()
+    /**
+     * 个人实名 运营商三要素
+     * @param $data
+     * @return array|mixed
+     * @throws \Exception
+     */
+    public function teleComAuth($data)
+    {
+        $param = [];
+        $param['mobile'] = $data['mobile'] ?? '';
+        $param['name'] = $data['name'] ?? '';
+        $param['idno'] = $data['idno'] ?? '';
+        $response = $this->notifyToServer(self::API_TELE_COM_AUTH, $param);
+        if ($response['errCode']) {
+            throw new \Exception('实名认证失败:'. $response['msg'].', 请确认当前绑定手机号为本人使用');
+        }
+        return $response;
+    }
+
+    public function sdfas()
     {
 
+    }
+
+    /**
+     * @param $api
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function notifyToServer($api, $data)
+    {
+        \Log::debug('ServerRequest ==> ' . (is_array($data) ? var_export($data, true) : $data));
+        $response = $this->requestPost($this->getServerUrl(). $api, $data);
+
+        \Log::debug('ServerResponse ==> ' . $response);
+        $response = json_decode($response, true);
+        return $response;
+    }
+
+    /**
+     * @param $api
+     * @param $data
+     * @return bool|mixed|string
+     * @throws \Exception
+     */
+    protected function queryFromServer($api, $data)
+    {
+        \Log::debug('ServerRequest ==> ' . (is_array($data) ? var_export($data, true) : $data));
+        $response = $this->requestGet($this->getServerUrl(). $api, $data);
+
+        \Log::debug('ServerResponse ==> ' . $response);
+        $response = json_decode($response, true);
+        return $response;
+    }
+
+    protected function makeRequesHeader($sign)
+    {
+        return [
+            'X-timevale-mode: package',
+            'X-timevale-project-id:' . $this->_config['project_id'],
+            'X-timevale-signature-algorithm:' . strtolower($this->_config['sign_algorithm']),
+            'X-timevale-signature:'. $sign,
+            'Content-Type:application/json;charset=UTF-8',
+        ];
+    }
+
+    /**
+     * 生成签名结果
+     * @param string $query 要签名的参数
+     * @return string 签名结果字符串
+     */
+    private function makeRequestSign($query)
+    {
+        switch (strtoupper(trim($this->_config['sign_algorithm']))) {
+            case 'HMACSHA256' :
+                $mySign = $this->hmacSHA256Sign($query, $this->_config['project_secret']);
+                break;
+            case 'RSA' :
+                $mySign = $this->rsaSign($query, $this->_config['rsa_private_key']);
+                break;
+            default :
+                $mySign = '';
+        }
+        return $mySign;
+    }
+
+    /**
+     * 验证服务端返回的签名结果
+     * @param string $str 要验证的字符串
+     * @param string $sign 签名字符串
+     * @return bool        验证结果
+     */
+    private function verifyResponse($str, $sign)
+    {
+        //验证服务端返回的签名
+        switch (strtoupper(trim($this->_config['sign_algorithm']))) {
+            case 'HMACSHA256':
+                return $this->hmacSHA256Verify($str, $sign, $this->_config['project_secret']);
+            case 'RSA':
+                return $this->rsaVerify($str, $sign, $this->_config['esign_public_key']);
+                break;
+        }
+        return false;
+    }
+
+    /**
+     * 签名字符串
+     * @param string $str 需要签名的字符串
+     * @param string $key 私钥
+     * @return string       签名结果
+     */
+    private function hmacSHA256Sign($str, $key)
+    {
+        return hash_hmac('sha256', $str, $key);
+    }
+
+    /**
+     * 验证签名
+     * @param string $str 需要签名的字符串
+     * @param string $sign 签名结果
+     * @param string $key 私钥
+     * @return bool
+     */
+    private function hmacSHA256Verify($str, $sign, $key)
+    {
+        $mySign = $this->hmacSHA256Sign($str, $key);
+        return ($mySign === $sign);
+    }
+
+    /**
+     * RSA签名
+     * @param string $str 待签名数据
+     * @param string $priKey 接入平台私钥文件路径
+     * @return string 签名结果
+     */
+    private function rsaSign($str, $priKey)
+    {
+        //$priKey = file_get_contents($privateKeyPath);
+        //$res = openssl_get_privatekey($priKey);
+        $res = openssl_pkey_get_private($priKey);
+        openssl_sign($str, $sign, $res);
+        openssl_free_key($res);
+        return bin2hex($sign);
+    }
+
+    /**
+     * RSA验签
+     * @param string $str 待签名数据
+     * @param string $sign 要校对的的签名结果
+     * @param string $pubKey e签宝的公钥文件路径
+     * @return bool 验证结果
+     */
+    private function rsaVerify($str, $sign, $pubKey)
+    {
+        //$pubKey = file_get_contents($publicKeyPath);
+        //$res = openssl_get_publickey($pubKey);
+        $res = openssl_pkey_get_public($pubKey);
+        $result = openssl_verify($str, pack("H*", $sign), $res);
+        openssl_free_key($res);
+        return (1 == $result);
     }
 
     /**
@@ -44,19 +220,51 @@ class RealNameService
      */
     protected function requestPost($api, $data)
     {
+        //if (!empty($data) && is_array($data)) {
+        //    $data = http_build_query($data);
+        //}
+        $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $ch = curl_init($api);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $sign = $this->makeRequestSign($data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->makeRequesHeader($sign));
+        $response = curl_exec($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
+        if (empty($error)) {
+            return $response;
+        }
+        throw new \Exception($error);
+    }
+
+    /**
+     * GET请求
+     * @param $api
+     * @param $data
+     * @return bool|string
+     * @throws \Exception
+     */
+    protected function requestGet($api, $data)
+    {
         if (!empty($data) && is_array($data)) {
             $data = http_build_query($data);
         }
-        //$header = $this->makeHeader();
-        $ch = curl_init($this->getServerUrl() . $api);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
+        $ch = curl_init($api .'?'. $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        //curl_setopt($ch, CURLOPT_POST, TRUE);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $response = curl_exec($ch);
         $error = curl_error($ch);
         curl_close($ch);

@@ -90,16 +90,18 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('', 'UserCompanyController@store');
             Route::put('', 'UserCompanyController@update');
             Route::delete('', 'UserCompanyController@destroy');
+            Route::get('search', 'UserCompanyController@search');
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
-    //Route::get('test', function() {
-    //    (new \App\Services\SmsService())->sendTemplateSms('17788560708', [
-    //        'title' => '租房小合同',
-    //        'name' => '静哥哥'
-    //    ], \App\Services\SmsService::TEMPLATE_USER_SIGNED);
-    //});
+    Route::get('test', function() {
+        (new \App\Services\RealNameService())->teleComAuth([
+            'mobile' => 17788561708,
+            'name' => '刘文静',
+            'idno' => '340811199012035318'
+        ]);
+    });
     //Route::get('test', function(\App\Services\ContractService $contractService) {
     //    $contract = \App\Models\Contract::find(1);
     //    $content = $contract->content->getAttribute('content');

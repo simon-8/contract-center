@@ -8,6 +8,7 @@
 namespace App\Services;
 
 use App\Models\Contract;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 
 class ContractService
@@ -17,7 +18,7 @@ class ContractService
 
     public function __construct()
     {
-        $basePath = config('filesystems.disks.uploads.root'). '/pdf';
+        $basePath = Storage::disk('uploads')->path('pdf');
         $this->pdfSourceRoot = $basePath. '/source';
         $this->pdfOutputRoot = $basePath.'/output';
     }

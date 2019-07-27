@@ -8,6 +8,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\ImageService;
 use Cblink\Region\Area;
+use Storage;
 
 //use Cblink\Region\Region;
 
@@ -33,7 +34,7 @@ class AjaxController extends Controller
                     return responseException('文件无效');
                 }
                 $result = $request::file($name)->store('/images/'.date('Ym/d'), 'uploads');
-                $basePath = str_replace(public_path(), '', config('filesystems.disks.uploads.root'));
+                $basePath = str_replace(public_path(), '', Storage::disk('uploads')->path(''));
                 $url = $basePath.$result;
                 // todo 保存到session中
                 //$imageService->pushSessionImages($url);

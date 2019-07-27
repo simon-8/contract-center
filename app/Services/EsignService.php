@@ -160,6 +160,9 @@ class EsignService
      */
     public function updateOrganize($accountid, $data)
     {
+        $param['mobile'] = $data['mobile'];
+        $param['name'] = $data['name'];
+        $param['idcard'] = $data['idcard'];
         $ret = self::$eSign->updateOrganizeAccount($accountid, $data);
         if ($ret['errCode']) {
             throw new \Exception($ret['msg']);

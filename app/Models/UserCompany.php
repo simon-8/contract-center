@@ -6,6 +6,8 @@
  */
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * App\Models\UserCompany
  *
@@ -50,6 +52,17 @@ class UserCompany extends Base
     const REG_TYPE_MERGE = 1;
     const REG_TYPE_REGCODE = 2;
     const REG_TYPE_OTHER = 23;
+
+    /**
+     * @param Builder $query
+     * @param string $data
+     * @return Builder
+     */
+    public function scopeOfName(Builder $query, $data = '')
+    {
+        if (!$data) return $query;
+        return $query->where('name', 'like', '%'. $data .'%');
+    }
 
     /**
      * 企业注册类型
