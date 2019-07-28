@@ -71,6 +71,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::get('info', 'UserController@info');
 
             Route::post('sign/confirm', 'SignController@confirm');
+            Route::post('sign/send-verify-code', 'SignController@sendVerifyCode');
+            Route::post('sign/verify-code', 'SignController@verifyCode');
             Route::apiResource('sign', 'SignController');
         });
     });
@@ -91,9 +93,14 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::put('', 'UserCompanyController@update');
             Route::delete('', 'UserCompanyController@destroy');
             Route::get('search', 'UserCompanyController@search');
+            Route::post('to-pay/{id}', 'UserCompanyController@toPay');
+            Route::post('pay-amount-verify/{id}', 'UserCompanyController@payAmountVerify');
+            Route::get('banks', 'UserCompanyController@banks');
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
+
+    Route::any('user-company-order/notify/{pid}', 'UserCompanyOrderController@notify')->name('userCompanyOrder.notify');
 
     Route::get('test', function() {
         (new \App\Services\RealNameService())->teleComAuth([

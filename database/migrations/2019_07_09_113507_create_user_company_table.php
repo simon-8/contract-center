@@ -19,7 +19,13 @@ class CreateUserCompanyTable extends Migration
             $table->string('name')->default('')->comment('组织名称');
             $table->string('organ_code')->default('')->comment('机构代码');
             $table->unsignedTinyInteger('reg_type')->default(0)->comment('机构类型');
+            $table->string('legal_name')->default('')->comment('法人姓名');
+            $table->string('legal_idno')->default('')->comment('法人身份证号码');
+            $table->string('mobile', 50)->default('')->comment('联系号码');
+            $table->string('address')->default('')->comment('注册地址');
             $table->string('sign_data')->default('')->comment('签名图片base64数据');
+            $table->string('server_id')->default('')->comment('服务ID');
+            $table->unsignedTinyInteger('status')->default(0)->comment('状态');
             $table->timestamps();
         });
     }

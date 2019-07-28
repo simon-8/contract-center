@@ -6,38 +6,23 @@
  */
 namespace App\Models;
 
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
- * App\Models\UserCompany
- *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofCatid($data = '')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofCreatedAt($data = '')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofStatus($data = '')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Base ofUserid($data = 0)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany query()
- * @mixin \Eloquent
- * @property int $id
- * @property int $userid 用户ID
- * @property string $name 组织名称
- * @property string $organ_code 机构代码
- * @property int $reg_type 机构类型
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereOrganCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereRegType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereUserid($value)
- * @property string|null $sign_data 签名图片地址
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCompany whereSignData($value)
- */
 class UserCompany extends Base
 {
+    use ModelTrait;
+
+    const REG_TYPE_NORMAL = 0;
+    const REG_TYPE_MERGE = 1;
+    const REG_TYPE_REGCODE = 2;
+    const REG_TYPE_OTHER = 23;
+
+    const STATUS_VERIFYD_INFO = 0;
+    const STATUS_APPLY_PAY = 1;
+    const STATUS_PAYED = 2;
+    const STATUS_SUCCESS = 3;
+
     protected $table = 'user_company';
 
     protected $fillable = [
@@ -45,13 +30,23 @@ class UserCompany extends Base
         'name',
         'organ_code',
         'reg_type',
+        'legal_name',
+        'legal_idno',
+        'mobile',
+        'address',
         'sign_data',
+        'service_id',
+        'status',
     ];
 
-    const REG_TYPE_NORMAL = 0;
-    const REG_TYPE_MERGE = 1;
-    const REG_TYPE_REGCODE = 2;
-    const REG_TYPE_OTHER = 23;
+    /**
+     * 关联用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'userid', 'id');
+    }
 
     /**
      * @param Builder $query

@@ -37,6 +37,8 @@ class UserCompanyRequest extends BaseRequest
             'name' => 'required',
             'organ_code' => 'required',
             'reg_type' => 'required',
+            'legal_name' => 'required',
+            'legal_idno' => 'required',
         ];
     }
 
@@ -49,6 +51,8 @@ class UserCompanyRequest extends BaseRequest
             'name' => 'required',
             'organ_code' => 'required',
             'reg_type' => 'required',
+            'legal_name' => 'required',
+            'legal_idno' => 'required',
         ];
     }
 
@@ -70,5 +74,34 @@ class UserCompanyRequest extends BaseRequest
     public function validateUpdate($data)
     {
         $this->check($data, $this->updateRules());
+    }
+
+    /**
+     * @param $data
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function validateConfirm($data)
+    {
+        $rules = [
+            'name' => 'required',
+            'cardno' => 'required',
+            'subbranch' => 'required',
+            'bank' => 'required',
+            'provice' => 'required',
+            'city' => 'required',
+        ];
+        $this->check($data, $rules);
+    }
+
+    /**
+     * @param $data
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function validateBanks($data)
+    {
+        $rules = [
+            'keyword' => 'required',
+        ];
+        $this->check($data, $rules);
     }
 }

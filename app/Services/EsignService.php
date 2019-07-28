@@ -282,14 +282,14 @@ class EsignService
      * @return bool
      * @throws \Exception
      */
-    //public function sendSignCode($personAccountId)
-    //{
-    //    $ret = self::$eSign->sendSignCode($personAccountId);
-    //    if ($ret['errCode']) {
-    //        throw new \Exception($ret['msg']);
-    //    }
-    //    return true;
-    //}
+    public function sendSignCode($personAccountId)
+    {
+        $ret = self::$eSign->sendSignCode($personAccountId);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        return true;
+    }
 
     /**
      * 发送签署短信验证码（指定手机号）
@@ -298,14 +298,47 @@ class EsignService
      * @return bool
      * @throws \Exception
      */
-    //public function sendMassge3rd($accountId, $mobile)
-    //{
-    //    $ret = self::$eSign->sendSignCodeToMobile($accountId, $mobile);
-    //    if ($ret['errCode']) {
-    //        throw new \Exception($ret['msg']);
-    //    }
-    //    return true;
-    //}
+    public function sendSignCodeToMobile($accountId, $mobile)
+    {
+        $ret = self::$eSign->sendSignCodeToMobile($accountId, $mobile);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        return true;
+    }
+
+    /**
+     * 预先验证短信验证码
+     * @param $accountId
+     * @param $code
+     * @return bool
+     * @throws \Exception
+     */
+    public function preVerifySignCode($accountId, $code)
+    {
+        $ret = self::$eSign->preverifyCode($accountId, $code);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        return true;
+    }
+
+    /**
+     * 预先验证短信验证码 (指定手机号)
+     * @param $accountId
+     * @param $mobile
+     * @param $code
+     * @return bool
+     * @throws \Exception
+     */
+    public function preVerifySignCodeToMobile($accountId, $mobile, $code)
+    {
+        $ret = self::$eSign->preverify3rdCode($accountId, $mobile, $code);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        return true;
+    }
 
     /**
      * 平台用户PDF摘要签署（文件流&短信验证）

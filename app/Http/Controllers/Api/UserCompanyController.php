@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: *
+ * Note: 用户填写企业信息store -> 发送短信验证码 -> 确认校验码并设置用户企业认证OK confirm
  * User: Liu
  * Date: 2019/7/9
  */
@@ -11,6 +11,7 @@ use App\Models\EsignUser;
 use App\Models\UserCompany;
 use App\Http\Resources\UserCompany as UserCompanyResource;
 use App\Services\EsignService;
+use App\Services\RealNameService;
 use DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,16 +48,23 @@ class UserCompanyController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(UserCompanyRequest $request, UserCompany $userCompany, EsignService $esignService)
+    public function store(UserCompanyRequest $request, UserCompany $userCompany, EsignService $esignService, RealNameService $realNameService)
     {
         $data = $request->all();
         $request->validateStore($data);
 
         $data['userid'] = $this->user->id;
         unset($data['sign_data']);
+
         DB::beginTransaction();
         try {
-            //$upSignData = false;
+            $response = $realNameService->infoComAuth($data);
+            if ($response) {
+                $data['service_id'] = $response['service_id'];
+            }
+            // 重置状态
+            $data['status'] = UserCompany::STATUS_VERIFYD_INFO;
+
             $userCompanyData = $userCompany::ofUserid($this->user->id)->first();
             if ($userCompanyData) {
                 $esignUser = EsignUser::ofUserid($this->user->id)->ofType(EsignUser::TYPE_COMPANY)->first();
@@ -96,7 +104,7 @@ class UserCompanyController extends BaseController
                 $userCompanyData->sign_data = $this->storeSignImage($base64);
                 $userCompanyData->save();
             }
-            $this->user->update(['vcompany' => 1]);
+            //$this->user->update(['vcompany' => 1]);
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -140,5 +148,91 @@ class UserCompanyController extends BaseController
             $lists[$k] = new UserCompanyResource($v);
         }
         return responseMessage('', $lists);
+    }
+
+    /**
+     * 银行列表
+     * @param UserCompanyRequest $request
+     * @param RealNameService $realNameService
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function banks(UserCompanyRequest $request, RealNameService $realNameService)
+    {
+        $data = $request->only(['keyword']);
+        if (empty($data)) {
+            return responseException(__('api.empty_param'));
+        }
+        try {
+            $response = $realNameService->organBankList($data);
+            $lists = $response['list'];
+        } catch (\Exception $e) {
+            return responseException('查询银行列表失败:'. $e->getMessage());
+        }
+        return responseMessage('', $lists);
+    }
+
+    /**
+     * 申请打款
+     * @param UserCompanyRequest $request
+     * @param RealNameService $realNameService
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function toPay(UserCompanyRequest $request, RealNameService $realNameService, $id)
+    {
+        $data = $request->only([
+            'name',
+            'cardno',
+            'subbranch',
+            'bank',
+            'provice',
+            'city',
+        ]);
+        $request->validateConfirm($data);
+
+        $userCompany = UserCompany::find($id);
+
+        DB::beginTransaction();
+        try {
+            $data['notify'] = route('api.userCompanyOrder.notify', ['pid' => $id]);
+            $param['serviceId'] = $userCompany->service_id;
+            $response = $realNameService->organPay($data, $id);
+            //if ($response) {
+            //    $data['service_id'] = $response['service_id'];
+            //}
+            $userCompany->status = UserCompany::STATUS_APPLY_PAY;
+            $userCompany->save();
+            //$this->user->update(['vcompany' => 1]);
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return responseException($exception->getMessage());
+        }
+
+        return responseMessage(__('api.success'));
+    }
+
+    /**
+     * 支付金额验证
+     * @param UserCompanyRequest $request
+     * @param RealNameService $realNameService
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function payAmountVerify(UserCompanyRequest $request, RealNameService $realNameService, $id)
+    {
+        $data = $request->only([
+            'code',
+        ]);
+        $userCompany = UserCompany::find($id);
+        try {
+            $data['service_id'] = $userCompany->service_id;
+            $response = $realNameService->organPayAmountCheck($data);
+            $userCompany->status = UserCompany::STATUS_SUCCESS;
+        } catch (\Exception $e) {
+            return responseException($e->getMessage());
+        }
+        return responseMessage(__('api.success'));
     }
 }

@@ -6,22 +6,13 @@
  */
 namespace App\Models;
 
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Models\RolePermission
- *
- * @property string $role_id 角色ID
- * @property string $access_id 权限ID
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RolePermission newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RolePermission newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RolePermission query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RolePermission whereAccessId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RolePermission whereRoleId($value)
- * @mixin \Eloquent
- */
 class RolePermission extends Model
 {
+    use ModelTrait;
+
     public $table = 'role_permission';
 
     public $timestamps = false;

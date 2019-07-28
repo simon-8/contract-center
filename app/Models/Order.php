@@ -6,50 +6,13 @@
  */
 namespace App\Models;
 
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Models\Order
- *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order query()
- * @mixin \Eloquent
- * @property-read \App\Models\Contract $contract
- * @property-read \App\Models\User $user
- * @property int $id
- * @property int $contract_id 合同ID
- * @property int $userid 用户ID
- * @property float $amount 金额
- * @property string $orderid 订单ID
- * @property string $torderid 第三方订单ID
- * @property string $channel 支付渠道
- * @property string $gateway 支付方式
- * @property string $openid openid
- * @property string $remark 备注
- * @property int $status 状态 0待支付 1已支付 2申请退款 3退款失败 4已退款 9已关闭
- * @property int $client_id 客户端ID
- * @property string|null $payed_at 付款时间
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereChannel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereClientId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereContractId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereGateway($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereOpenid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereOrderid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order wherePayedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereRemark($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereTorderid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUserid($value)
- */
 class Order extends Model
 {
+    use ModelTrait;
+
     const STATUS_WAIT_PAY = 0;// 待付款
     const STATUS_ALREADY_PAY = 1;// 已付款
     const STATUS_CONFIRM = 2;// 已确认

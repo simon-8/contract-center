@@ -2,97 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Models\Contract
- *
- * @property int $id
- * @property string $name 合同名称
- * @property int $catid 合同分类
- * @property int $userid 关联用户ID
- * @property int $targetid 目标用户ID
- * @property int $lawyerid 关联律师ID
- * @property int $mycatid 我的分类(文件夹)
- * @property string $jiafang 甲方
- * @property string $yifang 乙方
- * @property string $jujianren 居间人
- * @property int $confirm_first
- * @property int $confirm_second
- * @property int $status 状态
- * @property string $confirm_at 确认时间
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\ContractContent $content
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ContractFile[] $file
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofCatid($data = 0)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofJiafang($data = '')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofJujianren($data = '')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofLawyerid($data = 0)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofMycatid($data = 0)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofStatus($data = '')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofUserid($data = 0)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofYifang($data = '')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereCatid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereConfirmAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereJiafang($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereJujianren($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereLawyerid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereMycatid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereTargetConfirm($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereTargetid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUserConfirm($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUserid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereYifang($value)
- * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofTargetid($data = 0)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofCreatedAt($data = '')
- * @property-read \App\Models\Order $order
- * @property-read \App\Models\User $target
- * @property-read \App\Models\User $user
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sign[] $sign
- * @property int $signed_first 用户已签名
- * @property int $signed_second 对方已签名
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereTargetSigned($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUserSigned($value)
- * @property int $userid_first 甲方用户ID
- * @property int $userid_second 乙方用户ID
- * @property int $userid_three 居间人用户ID
- * @property int $confirm_three 居间人是否已确认
- * @property int $signed_three 居间人是否已签名
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereConfirmFirst($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereConfirmSecond($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereConfirmThree($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignedFirst($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignedSecond($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignedThree($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridFirst($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridSecond($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUseridThree($value)
- * @property-read \App\Models\User $owner
- * @property-read \App\Models\User $userFirst
- * @property-read \App\Models\User $userSecond
- * @property-read \App\Models\User $userThree
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract ofMine($data = 0)
- * @property string $path_pdf pdf文件地址
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract wherePathPdf($value)
- * @property int $sign_type_first 甲方签名类型 0个人 1公司
- * @property int $sign_type_second 乙方签名类型 0个人 1公司
- * @property int $sign_type_three 居间人签名类型 0个人 1公司
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignTypeFirst($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignTypeSecond($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereSignTypeThree($value)
- */
 class Contract extends Base
 {
+    use ModelTrait;
+
     protected $table = 'contract';
 
     protected $fillable = [

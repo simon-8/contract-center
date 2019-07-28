@@ -7,6 +7,7 @@
  */
 namespace App\Services;
 
+use App\Models\UserCompany;
 use tech\core\HttpUtils;
 use tech\realname\rest\external\Person;
 use tech\realname\rest\external\Organ;
@@ -20,6 +21,14 @@ class RealNameService
 
     // 个人实名认证 运营商三要素
     const API_TELE_COM_AUTH = '/realname/rest/external/person/telecomAuth';
+    // 企业信息校验
+    const API_INFO_COM_AUTH = '/realname/rest/external/organ/infoAuth';
+    // 企业对公打款
+    const API_ORGAN_TO_PAY = '/realname/rest/external/organ/toPay';
+    // 企业对公打款 金额校验
+    const API_ORGAN_PAY_AMOUNT_CHECK = '/realname/rest/external/organ/payAuth';
+    // 企业对公打款 银行列表
+    const API_ORGAN_BANK_LIST = '/realname/rest/info/bank';
 
     protected $_config = [];
 
@@ -67,9 +76,83 @@ class RealNameService
         return $response;
     }
 
-    public function sdfas()
+    /**
+     * 企业身份验证
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function infoComAuth($data)
     {
+        $param = [];
+        $param['name'] = $data['name'];
+        $param['codeORG'] = $data['organ_code'];
+        $param['legalName'] = $data['legal_name'];
+        $param['legalIdno'] = $data['legal_idno'];
+        $response = $this->notifyToServer(self::API_INFO_COM_AUTH, $param);
+        if ($response['errCode']) {
+            throw new \Exception('企业实名认证失败:'. $response['msg']);
+        }
+        return $response;
+    }
 
+    /**
+     * 企业对公打款
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function organPay($data, $pid)
+    {
+        $param = [];
+        $param['name'] = $data['name'];
+        $param['cardno'] = $data['cardno'];
+        $param['subbranch'] = $data['subbranch'];
+        $param['bank'] = $data['bank'];
+        $param['provice'] = $data['provice'];
+        $param['city'] = $data['city'];
+        $param['notify'] = route('api.userCompanyOrder.notify', ['pid' => $pid]);
+        $param['city'] = $data['city'];
+        $param['serviceId'] = $data['service_id'];
+        //$param['serviceId'] = $data['service_id'];
+        $response = $this->notifyToServer(self::API_ORGAN_TO_PAY, $param);
+        if ($response['errCode']) {
+            throw new \Exception('尝试对公打款失败:'. $response['msg']);
+        }
+        return $response;
+    }
+
+    /**
+     * 打款金额验证
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function organPayAmountCheck($data)
+    {
+        $param['serviceId'] = $data['service_id'];
+        $param['code'] = $data['code'];
+        $response = $this->notifyToServer(self::API_ORGAN_PAY_AMOUNT_CHECK, $param);
+        if ($response['errCode']) {
+            throw new \Exception('打款金额验证失败: '. $response['msg']);
+        }
+        return $response;
+    }
+
+    /**
+     * 企业对公打款 银行列表
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function organBankList($data)
+    {
+        $param['keyword'] = $data['keyword'];
+        $response = $this->notifyToServer(self::API_ORGAN_BANK_LIST, $param);
+        if ($response['errCode']) {
+            throw new \Exception('打款金额验证失败: '. $response['msg']);
+        }
+        return $response;
     }
 
     /**

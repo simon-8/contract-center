@@ -22,7 +22,7 @@ class SignController extends BaseController
      */
     protected function makeStorePath($id)
     {
-        return '/signs/'. $id;
+        return 'signs/'. $id;
     }
 
     /**
@@ -61,7 +61,7 @@ class SignController extends BaseController
         // 存储图片
         $storePath = $this->makeStorePath($data['contract_id']);
         $filename = $this->user->id .'.'. $file->extension();
-        $data['thumb'] = '/'. $file->storeAs($storePath, $filename, 'uploads');
+        $data['thumb'] = $file->storeAs($storePath, $filename, 'uploads');
 
         $data['userid'] = $this->user->id;
 
@@ -122,7 +122,7 @@ class SignController extends BaseController
         // 存储图片
         $storePath = $this->makeStorePath($sign->contract_id);
         $filename = $this->user->id .'.'. $file->extension();
-        $data['thumb'] = '/'. $file->storeAs($storePath, $filename, 'uploads');
+        $data['thumb'] = $file->storeAs($storePath, $filename, 'uploads');
 
         if (!$sign->update($data)) {
             return responseException(__('api.failed'));
@@ -201,6 +201,38 @@ class SignController extends BaseController
         // 触发usersign事件
         event(new UserSign($contract, $this->user));
 
+        return responseMessage(__('api.success'));
+    }
+
+    /**
+     * @param EsignService $esignService
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendVerifyCode(EsignService $esignService)
+    {
+        try {
+            $esignService->sendSignCodeToMobile($this->user->esignUser->accountid, $this->user->mobile);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$e->getMessage()]);
+            return responseException($e->getMessage());
+        }
+        return responseMessage(__('api.success'));
+    }
+
+    /**
+     * @param \Request $request
+     * @param EsignService $esignService
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verifyCode(\Request $request, EsignService $esignService)
+    {
+        $data = $request::only(['code']);
+        try {
+            $esignService->preVerifySignCodeToMobile($this->user->esignUser->accountid, $this->user->mobile, $data['code']);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$e->getMessage()]);
+            return responseException($e->getMessage());
+        }
         return responseMessage(__('api.success'));
     }
 }
