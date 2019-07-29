@@ -38,7 +38,8 @@ class UserCompanyRequest extends BaseRequest
             'organ_code' => 'required',
             'reg_type' => 'required',
             'legal_name' => 'required',
-            'legal_idno' => 'required',
+            'address' => 'required',
+            //'legal_idno' => 'required',
         ];
     }
 
@@ -52,7 +53,8 @@ class UserCompanyRequest extends BaseRequest
             'organ_code' => 'required',
             'reg_type' => 'required',
             'legal_name' => 'required',
-            'legal_idno' => 'required',
+            //'legal_idno' => 'required',
+            'address' => 'required',
         ];
     }
 
@@ -80,7 +82,7 @@ class UserCompanyRequest extends BaseRequest
      * @param $data
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validateConfirm($data)
+    public function validateToPay($data)
     {
         $rules = [
             'name' => 'required',

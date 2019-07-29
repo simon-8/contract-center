@@ -95,7 +95,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::get('search', 'UserCompanyController@search');
             Route::post('to-pay/{id}', 'UserCompanyController@toPay');
             Route::post('pay-amount-verify/{id}', 'UserCompanyController@payAmountVerify');
-            Route::get('banks', 'UserCompanyController@banks');
+            Route::get('bank', 'UserCompanyController@bank');
+            Route::get('area', 'UserCompanyController@area');
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });

@@ -7,6 +7,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\UserCompanyRequest;
+use App\Models\EsignBank;
+use App\Models\EsignBankArea;
 use App\Models\EsignUser;
 use App\Models\UserCompany;
 use App\Http\Resources\UserCompany as UserCompanyResource;
@@ -156,17 +158,43 @@ class UserCompanyController extends BaseController
      * @param RealNameService $realNameService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function banks(UserCompanyRequest $request, RealNameService $realNameService)
+    public function bank(UserCompanyRequest $request, RealNameService $realNameService)
     {
-        $data = $request->only(['keyword']);
-        if (empty($data)) {
+        $data = $request->only(['bank', 'province', 'city']);
+        if (empty($data['bank']) || empty($data['province']) || empty($data['city'])) {
             return responseException(__('api.empty_param'));
         }
+        //$lists = EsignBank::whereProvince($data['province'])
+        //    ->whereCity($data['city'])
+        //    ->where('bank_name', 'like', '%'.$data['bank'].'%')
+        //    ->get();
         try {
-            $response = $realNameService->organBankList($data);
+            $response = $realNameService->organBankList([
+                'keyword' => $data['province'].$data['city'].$data['bank']
+            ]);
             $lists = $response['list'];
         } catch (\Exception $e) {
             return responseException('查询银行列表失败:'. $e->getMessage());
+        }
+        return responseMessage('', $lists);
+    }
+
+    /**
+     * @param UserCompanyRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function area(UserCompanyRequest $request)
+    {
+        //$data = $request->only(['province']);
+        //if (empty($data['province'])) {
+        //    $lists = EsignBankArea::groupBy('province')->get('province')->pluck('province')->all();
+        //} else {
+        //    $lists = EsignBankArea::whereProvince($data['province'])->get('city')->pluck('city')->all();
+        //}
+        $lists = [];
+        $areas = EsignBankArea::all();
+        foreach ($areas as $k => $area) {
+            $lists[$area['province']][] = $area['city'];
         }
         return responseMessage('', $lists);
     }
@@ -189,7 +217,7 @@ class UserCompanyController extends BaseController
             'provice',
             'city',
         ]);
-        $request->validateConfirm($data);
+        $request->validateToPay($data);
 
         $userCompany = UserCompany::find($id);
 

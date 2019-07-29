@@ -18,10 +18,10 @@ class UserCompany extends Base
     const REG_TYPE_REGCODE = 2;
     const REG_TYPE_OTHER = 23;
 
-    const STATUS_VERIFYD_INFO = 0;
-    const STATUS_APPLY_PAY = 1;
-    const STATUS_PAYED = 2;
-    const STATUS_SUCCESS = 3;
+    const STATUS_VERIFYD_INFO = 0;// 通过身份校验
+    const STATUS_APPLY_PAY = 1;// 申请支付
+    const STATUS_PAYED = 2;// 已支付
+    const STATUS_SUCCESS = 3;// 认证成功
 
     protected $table = 'user_company';
 
