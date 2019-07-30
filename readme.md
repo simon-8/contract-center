@@ -81,3 +81,56 @@ php artisan esign:init
 - laravel-snappy [文档](https://github.com/barryvdh/laravel-snappy)
     - 中文乱码
         - 复制`simsun.ttc` 到服务器 `/usr/share/fonts/truetype`
+        
+      
+        
+## PhpStorm提示
+
+- model写完后运行 `php artisan ide-helper:models` 选择`no`, 更新`_ide_helper_models.php`文件
+
+## Model
+- 特殊处理的字段, 可以使用本地作用域
+
+```
+# App\Models\User
+public function scopeOfNickname($query, $data)
+{
+    if (empty($data)) return $query;
+    return $query->where('nickname', 'like', '%'.$data.'%');
+}
+# 使用
+User::ofNickname('师傅'); // 等效User::where('nickname', 'like', '%'.$data.'%');
+```
+
+- 普通字段, Laravel提供了魔术方法, 可以直接使用whereField的形式, 无需单独编写
+
+```
+# 使用
+User::whereStatus(1);// 等效User::where('status', 1);
+```
+
+## 表单验证
+- 如果需要验证表单字段是否填写, 推荐使用Request类, 填写rules规则, 调用即可
+
+```
+# App\Http\Requests\MenuRequest
+public function validateStore($data)
+{
+    $rule = [
+        'pid' => 'required|numeric',
+        'name' => 'required',
+        'route' => 'required_without:link',
+        'link' => 'required_without:route',
+    ];
+    return $this->check($data, $rule);
+}
+
+# 使用
+public function store(MenuRequest $request)
+{
+    $data = $request->all();
+    $request->validateCreate($data);
+
+    逻辑处理...
+}
+```
