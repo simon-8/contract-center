@@ -109,7 +109,7 @@ class RealNameService
         $param['cardno'] = $data['cardno'];
         $param['subbranch'] = $data['subbranch'];
         $param['bank'] = $data['bank'];
-        $param['provice'] = $data['provice'];
+        $param['provice'] = $data['province'];
         $param['city'] = $data['city'];
         $param['notify'] = route('api.userCompanyOrder.notify', ['pid' => $pid]);
         $param['city'] = $data['city'];
@@ -131,7 +131,7 @@ class RealNameService
     public function organPayAmountCheck($data)
     {
         $param['serviceId'] = $data['service_id'];
-        $param['code'] = $data['code'];
+        $param['cash'] = $data['cash'];
         $response = $this->notifyToServer(self::API_ORGAN_PAY_AMOUNT_CHECK, $param);
         if ($response['errCode']) {
             throw new \Exception('打款金额验证失败: '. $response['msg']);

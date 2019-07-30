@@ -113,7 +113,7 @@ class UserCompanyController extends BaseController
             return responseException($exception->getMessage());
         }
 
-        return responseMessage(__('api.success'));
+        return responseMessage(__('api.success'), new UserCompanyResource($userCompanyData));
     }
 
     /**
@@ -154,23 +154,28 @@ class UserCompanyController extends BaseController
 
     /**
      * 银行列表
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function bank()
+    {
+        $lists = EsignBank::select('bank_name')->groupBy('bank_name')->pluck('bank_name')->all();
+        return responseMessage('', $lists);
+    }
+
+    /**
      * @param UserCompanyRequest $request
      * @param RealNameService $realNameService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function bank(UserCompanyRequest $request, RealNameService $realNameService)
+    public function subBank(UserCompanyRequest $request, RealNameService $realNameService)
     {
-        $data = $request->only(['bank', 'province', 'city']);
-        if (empty($data['bank']) || empty($data['province']) || empty($data['city'])) {
+        $data = $request->only(['subbranch']);
+        if (empty($data['subbranch'])) {
             return responseException(__('api.empty_param'));
         }
-        //$lists = EsignBank::whereProvince($data['province'])
-        //    ->whereCity($data['city'])
-        //    ->where('bank_name', 'like', '%'.$data['bank'].'%')
-        //    ->get();
         try {
             $response = $realNameService->organBankList([
-                'keyword' => $data['province'].$data['city'].$data['bank']
+                'keyword' => $data['subbranch']
             ]);
             $lists = $response['list'];
         } catch (\Exception $e) {
@@ -185,12 +190,6 @@ class UserCompanyController extends BaseController
      */
     public function area(UserCompanyRequest $request)
     {
-        //$data = $request->only(['province']);
-        //if (empty($data['province'])) {
-        //    $lists = EsignBankArea::groupBy('province')->get('province')->pluck('province')->all();
-        //} else {
-        //    $lists = EsignBankArea::whereProvince($data['province'])->get('city')->pluck('city')->all();
-        //}
         $lists = [];
         $areas = EsignBankArea::all();
         foreach ($areas as $k => $area) {
@@ -205,7 +204,7 @@ class UserCompanyController extends BaseController
      * @param RealNameService $realNameService
      * @param $id
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Illuminate\Validation\ValidationException|\Exception
      */
     public function toPay(UserCompanyRequest $request, RealNameService $realNameService, $id)
     {
@@ -214,7 +213,7 @@ class UserCompanyController extends BaseController
             'cardno',
             'subbranch',
             'bank',
-            'provice',
+            'province',
             'city',
         ]);
         $request->validateToPay($data);
@@ -226,12 +225,10 @@ class UserCompanyController extends BaseController
             $data['notify'] = route('api.userCompanyOrder.notify', ['pid' => $id]);
             $param['serviceId'] = $userCompany->service_id;
             $response = $realNameService->organPay($data, $id);
-            //if ($response) {
-            //    $data['service_id'] = $response['service_id'];
-            //}
+
             $userCompany->status = UserCompany::STATUS_APPLY_PAY;
             $userCompany->save();
-            //$this->user->update(['vcompany' => 1]);
+
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -251,7 +248,7 @@ class UserCompanyController extends BaseController
     public function payAmountVerify(UserCompanyRequest $request, RealNameService $realNameService, $id)
     {
         $data = $request->only([
-            'code',
+            'cash',
         ]);
         $userCompany = UserCompany::find($id);
         try {

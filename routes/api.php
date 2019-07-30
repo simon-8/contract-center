@@ -93,9 +93,10 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::put('', 'UserCompanyController@update');
             Route::delete('', 'UserCompanyController@destroy');
             Route::get('search', 'UserCompanyController@search');
-            Route::post('to-pay/{id}', 'UserCompanyController@toPay');
+            Route::post('topay/{id}', 'UserCompanyController@toPay');
             Route::post('pay-amount-verify/{id}', 'UserCompanyController@payAmountVerify');
             Route::get('bank', 'UserCompanyController@bank');
+            Route::get('sub-bank', 'UserCompanyController@subBank');
             Route::get('area', 'UserCompanyController@area');
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');

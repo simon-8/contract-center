@@ -89,7 +89,7 @@ class UserCompanyRequest extends BaseRequest
             'cardno' => 'required',
             'subbranch' => 'required',
             'bank' => 'required',
-            'provice' => 'required',
+            'province' => 'required',
             'city' => 'required',
         ];
         $this->check($data, $rules);

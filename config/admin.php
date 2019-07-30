@@ -7,6 +7,6 @@
 return [
     'basePath' => 'pc',// 后台地址
     'cdnResourcePath' => env('CDN_RESOURCE_PATH'),
-    'contractPrice' => 1,// 合同价格
-    'contractLawyerConfirmPrice' => 1,// 律师见证价格
+    'contractPrice' => 0.01,// 合同价格
+    'contractLawyerConfirmPrice' => 0.01,// 律师见证价格
 ];
