@@ -29,43 +29,23 @@ class UserCompanyRequest extends BaseRequest
     }
 
     /**
-     * @return array
-     */
-    protected function storeRules()
-    {
-        return [
-            'name' => 'required',
-            'organ_code' => 'required',
-            'reg_type' => 'required',
-            'legal_name' => 'required',
-            'address' => 'required',
-            //'legal_idno' => 'required',
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function updateRules()
-    {
-        return [
-            'name' => 'required',
-            'organ_code' => 'required',
-            'reg_type' => 'required',
-            'legal_name' => 'required',
-            //'legal_idno' => 'required',
-            'address' => 'required',
-        ];
-    }
-
-    /**
      * 保存校验
      * @param $data
      * @throws \Illuminate\Validation\ValidationException
      */
     public function validateStore($data)
     {
-        $this->check($data, $this->storeRules());
+        $rule = [
+            'name' => 'required',
+            'organ_code' => 'required',
+            'reg_type' => 'required',
+            'legal_name' => 'required',
+            'address' => 'required',
+            //'legal_idno' => 'required',
+            'mobile' => 'required|zh_mobile',
+            'captcha' => 'required'
+        ];
+        $this->check($data, $rule);
     }
 
     /**
@@ -75,7 +55,15 @@ class UserCompanyRequest extends BaseRequest
      */
     public function validateUpdate($data)
     {
-        $this->check($data, $this->updateRules());
+        $rule = [
+            'name' => 'required',
+            'organ_code' => 'required',
+            'reg_type' => 'required',
+            'legal_name' => 'required',
+            //'legal_idno' => 'required',
+            'address' => 'required',
+        ];
+        $this->check($data, $rule);
     }
 
     /**

@@ -98,6 +98,9 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::get('bank', 'UserCompanyController@bank');
             Route::get('sub-bank', 'UserCompanyController@subBank');
             Route::get('area', 'UserCompanyController@area');
+
+            Route::post('send-code', 'UserController@sendCode');
+            //Route::post('bind-mobile', 'UserController@bindMobile');
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });

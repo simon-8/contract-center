@@ -7,13 +7,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\UserCompanyRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\EsignBank;
 use App\Models\EsignBankArea;
 use App\Models\EsignUser;
+use App\Models\User;
 use App\Models\UserCompany;
 use App\Http\Resources\UserCompany as UserCompanyResource;
 use App\Services\EsignService;
 use App\Services\RealNameService;
+use App\Services\SmsService;
 use DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,10 +50,12 @@ class UserCompanyController extends BaseController
      * @param UserCompanyRequest $request
      * @param UserCompany $userCompany
      * @param EsignService $esignService
+     * @param RealNameService $realNameService
+     * @param SmsService $smsService
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(UserCompanyRequest $request, UserCompany $userCompany, EsignService $esignService, RealNameService $realNameService)
+    public function store(UserCompanyRequest $request, UserCompany $userCompany, EsignService $esignService, RealNameService $realNameService, SmsService $smsService)
     {
         $data = $request->all();
         $request->validateStore($data);
@@ -60,6 +65,10 @@ class UserCompanyController extends BaseController
 
         DB::beginTransaction();
         try {
+            // 验证短信验证码
+            $smsService->verifyCode($data['mobile'], $data['captcha']);
+
+            // E签宝信息验证
             $response = $realNameService->infoComAuth($data);
             if ($response) {
                 $data['service_id'] = $response['service_id'];
@@ -163,6 +172,7 @@ class UserCompanyController extends BaseController
     }
 
     /**
+     * 查询支行列表
      * @param UserCompanyRequest $request
      * @param RealNameService $realNameService
      * @return \Illuminate\Http\JsonResponse
@@ -185,6 +195,7 @@ class UserCompanyController extends BaseController
     }
 
     /**
+     * 获取所有地区
      * @param UserCompanyRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -235,7 +246,7 @@ class UserCompanyController extends BaseController
             return responseException($exception->getMessage());
         }
 
-        return responseMessage(__('api.success'));
+        return responseMessage(__('api.success'), new UserCompanyResource($userCompany));
     }
 
     /**
@@ -258,6 +269,26 @@ class UserCompanyController extends BaseController
         } catch (\Exception $e) {
             return responseException($e->getMessage());
         }
+        return responseMessage(__('api.success'), new UserCompanyResource($userCompany));
+    }
+
+    /**
+     * 发送短信
+     * @param UserRequest $request
+     * @param SmsService $smsService
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendCode(UserRequest $request, SmsService $smsService)
+    {
+        $data = $request->all();
+        $request->validateSendSms($data);
+
+        try {
+            $smsService->sendVerifyCode($data['mobile']);
+        } catch (\Exception $e) {
+            return responseException($e->getMessage());
+        }
+
         return responseMessage(__('api.success'));
     }
 }
