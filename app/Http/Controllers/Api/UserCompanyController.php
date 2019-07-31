@@ -55,7 +55,7 @@ class UserCompanyController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(UserCompanyRequest $request, UserCompany $userCompany, EsignService $esignService, RealNameService $realNameService, SmsService $smsService)
+    public function store(UserCompanyRequest $request, UserCompany $userCompany, RealNameService $realNameService, SmsService $smsService)
     {
         $data = $request->all();
         $request->validateStore($data);
@@ -76,6 +76,7 @@ class UserCompanyController extends BaseController
             // 重置状态
             $data['status'] = UserCompany::STATUS_VERIFYD_INFO;
 
+            $esignService = new EsignService();
             $userCompanyData = $userCompany::ofUserid($this->user->id)->first();
             if ($userCompanyData) {
                 $esignUser = EsignUser::ofUserid($this->user->id)->ofType(EsignUser::TYPE_COMPANY)->first();
