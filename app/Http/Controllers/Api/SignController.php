@@ -152,7 +152,7 @@ class SignController extends BaseController
      */
     public function confirm(\Request $request)
     {
-        $data = $request::only(['contract_id', 'sign_type', 'companyid', 'captcha']);
+        $data = $request::only(['contract_id', 'sign_type', 'company_id', 'captcha']);
 
         //if ($data['sign_type'] == Contract::SIGN_TYPE_PERSON) {
         //    if (!$this->user->esignUser()->where('type', EsignUser::TYPE_PERSON)->exists()) {
@@ -185,19 +185,19 @@ class SignController extends BaseController
 
             $contract->signed_first = 1;
             $contract->sign_type_first = $data['sign_type'];
-            $contract->companyid_first = $data['companyid'];
+            $contract->companyid_first = $data['company_id'];
 
         } else if ($contract->userid_second == $this->user->id) {
 
             $contract->signed_second = 1;
             $contract->sign_type_second = $data['sign_type'];
-            $contract->companyid_second = $data['companyid'];
+            $contract->companyid_second = $data['company_id'];
 
         } else if ($contract->userid_three == $this->user->id) {
 
             $contract->signed_three = 1;
             $contract->sign_type_three = $data['sign_type'];
-            $contract->companyid_three = $data['companyid'];
+            $contract->companyid_three = $data['company_id'];
 
         }
 
@@ -221,7 +221,7 @@ class SignController extends BaseController
     }
 
     /**
-     * 发送校验码
+     * 发送校验码 个人发给自己, 企业发给对应企业联系号码
      * @param \Request $request
      * @param EsignService $esignService
      * @return \Illuminate\Http\JsonResponse
@@ -230,7 +230,14 @@ class SignController extends BaseController
     {
         $data = $request::only(['company_id']);
         try {
-            $esignService->sendSignCodeToMobile($this->user->esignUser->accountid, $this->user->mobile);
+            // 个人
+            if (empty($data['company_id'])) {
+                $mobile = $this->user->mobile;
+            } else {
+                $companyData = UserCompany::find($data['company_id']);
+                $mobile = $companyData['mobile'];
+            }
+            $esignService->sendSignCodeToMobile($this->user->esignUser->accountid, $mobile);
         } catch (\Exception $e) {
             logger(__METHOD__, [$e->getMessage()]);
             return responseException($e->getMessage());
