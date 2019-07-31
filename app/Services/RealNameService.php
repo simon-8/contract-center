@@ -85,10 +85,18 @@ class RealNameService
     public function infoComAuth($data)
     {
         $param = [];
-        $param['name'] = $data['name'];
-        $param['codeORG'] = $data['organ_code'];
-        $param['legalName'] = $data['legal_name'];
-        $param['legalIdno'] = $data['legal_idno'];
+        $param['name'] = $data['name'] ?? '';
+        if (UserCompany::REG_TYPE_NORMAL) {
+            $param['codeORG'] = $data['organ_code'] ?? '';
+        } else if (UserCompany::REG_TYPE_MERGE) {
+            $param['codeUSC'] = $data['organ_code'] ?? '';
+        } else if (UserCompany::REG_TYPE_REGCODE) {
+            $param['codeREG'] = $data['organ_code'] ?? '';
+        } else {
+            $param['codeORG'] = $data['organ_code'] ?? '';
+        }
+        $param['legalName'] = $data['legal_name'] ?? '';
+        $param['legalIdno'] = $data['legal_idno'] ?? '';
         $response = $this->notifyToServer(self::API_INFO_COM_AUTH, $param);
         if ($response['errCode']) {
             throw new \Exception('企业实名认证失败:'. $response['msg']);

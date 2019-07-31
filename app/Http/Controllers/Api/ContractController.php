@@ -174,6 +174,7 @@ class ContractController extends BaseController
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
+            logger(__METHOD__, [$exception->getMessage()]);
             return responseException($exception->getMessage());
         }
 

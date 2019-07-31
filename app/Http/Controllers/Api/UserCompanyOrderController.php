@@ -14,7 +14,7 @@ use App\Models\UserCompany;
 use App\Models\UserCompanyOrder;
 use EasyWeChat\Factory;
 
-class UserCompanyOrderController extends BaseController
+class UserCompanyOrderController extends Controller
 {
 
     /**
@@ -28,17 +28,17 @@ class UserCompanyOrderController extends BaseController
         logger(__METHOD__, $request::all());
         $notifyData = $request::input('esign_return');
         $notifyData = json_decode($notifyData, true);
-        $order = UserCompanyOrder::where('pid', $pid)->first();
-        if ($notifyData['result'] !== 'SUCCESS') {
+        if ($notifyData['result'] !== 'PAY_SUCCESS') {
             return responseException(__('api.failed'));
         }
-        if ($notifyData['msg']) $order->remark = $notifyData['msg'];
-        $order->save();
+        //$order = UserCompanyOrder::where('pid', $pid)->first();
+        //if ($notifyData['msg']) $order->remark = $notifyData['msg'];
+        //$order->save();
         $userCompany = UserCompany::find($pid);
         $userCompany->status = UserCompany::STATUS_PAYED;
         $userCompany->save();
 
-        $userCompany->user->update(['vcompany' => 1]);
+        //$userCompany->user->update(['vcompany' => 1]);
         return '';
     }
 

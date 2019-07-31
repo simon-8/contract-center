@@ -105,7 +105,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
-    Route::any('user-company-order/notify/{pid}', 'UserCompanyOrderController@notify')->name('userCompanyOrder.notify');
+    Route::post('user-company-order/notify/{pid}', 'UserCompanyOrderController@notify')->name('userCompanyOrder.notify');
 
     Route::get('test', function() {
         (new \App\Services\RealNameService())->teleComAuth([

@@ -66,12 +66,12 @@ class UserCompanyController extends BaseController
         DB::beginTransaction();
         try {
             // 验证短信验证码
-            $smsService->verifyCode($data['mobile'], $data['captcha']);
+            //$smsService->verifyCode($data['mobile'], $data['captcha']);
 
             // E签宝信息验证
             $response = $realNameService->infoComAuth($data);
             if ($response) {
-                $data['service_id'] = $response['service_id'];
+                $data['service_id'] = $response['serviceId'];
             }
             // 重置状态
             $data['status'] = UserCompany::STATUS_VERIFYD_INFO;
@@ -235,7 +235,7 @@ class UserCompanyController extends BaseController
         DB::beginTransaction();
         try {
             $data['notify'] = route('api.userCompanyOrder.notify', ['pid' => $id]);
-            $param['serviceId'] = $userCompany->service_id;
+            $data['service_id'] = $userCompany->service_id;
             $response = $realNameService->organPay($data, $id);
 
             $userCompany->status = UserCompany::STATUS_APPLY_PAY;
