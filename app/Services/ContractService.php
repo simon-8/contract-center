@@ -13,15 +13,14 @@ use PDF;
 
 class ContractService
 {
-    protected $pdfSourceRoot; // pdf原始目录
-    protected $pdfOutputRoot; // pdf输出目录
+    //protected $pdfSourceRoot; // pdf原始目录
+    //protected $pdfOutputRoot; // pdf输出目录
 
-    public function __construct()
-    {
-        $basePath = Storage::disk('uploads')->path('pdf');
-        $this->pdfSourceRoot = $basePath. '/source';
-        $this->pdfOutputRoot = $basePath.'/output';
-    }
+    //public function __construct()
+    //{
+    //    $this->pdfSourceRoot = 'pdf/source';
+    //    $this->pdfOutputRoot = 'pdf/output';
+    //}
 
     /**
      * 生成存储路径
@@ -32,9 +31,9 @@ class ContractService
     public function makeStorePath($id, $output = false)
     {
         if ($output) {
-            $dir = $this->pdfOutputRoot;
+            $dir = 'pdf/output';
         } else {
-            $dir = $this->pdfSourceRoot;
+            $dir = 'pdf/source';
         }
         return $dir. "/{$id}.pdf";
     }
@@ -52,6 +51,7 @@ class ContractService
         $contract->content = $content;
         $pdf = PDF::loadView('api.contract.show', compact('contract'));
         $storePath = $this->makeStorePath($contract->id, $output);
+        $storePath = Storage::disk('uploads')->path($storePath);
         return $pdf->save($storePath, true);
     }
 }

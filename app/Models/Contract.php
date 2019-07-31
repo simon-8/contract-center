@@ -25,6 +25,10 @@ class Contract extends Base
         'userid_second',
         'userid_three',
 
+        'companyid_first',
+        'companyid_second',
+        'companyid_three',
+
         'confirm_first',
         'confirm_second',
         'confirm_three',
@@ -113,6 +117,33 @@ class Contract extends Base
     public function userThree()
     {
         return $this->belongsTo('App\Models\User', 'userid_three', 'id');
+    }
+
+    /**
+     * 关联甲方公司
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function companyFirst()
+    {
+        return $this->belongsTo('App\Models\UserCompany', 'companyid_first', 'id');
+    }
+
+    /**
+     * 关联乙方公司
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function companySecond()
+    {
+        return $this->belongsTo('App\Models\UserCompany', 'companyid_second', 'id');
+    }
+
+    /**
+     * 关联居间公司
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function companyThree()
+    {
+        return $this->belongsTo('App\Models\UserCompany', 'companyid_three', 'id');
     }
 
     /**

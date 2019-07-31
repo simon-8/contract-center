@@ -11,6 +11,7 @@ use App\Models\EsignUser;
 use App\Models\Sign;
 use App\Http\Resources\Sign as SignResource;
 use App\Events\UserSign;
+use App\Models\UserCompany;
 use App\Services\ContractService;
 use App\Services\EsignService;
 
@@ -38,7 +39,7 @@ class SignController extends BaseController
     }
 
     /**
-     * 保存
+     * 保存 (目前只有个人需要保存 公司直接选择已有)
      * @param \Request $request
      * @param Sign $sign
      * @return \Illuminate\Http\JsonResponse
@@ -145,24 +146,36 @@ class SignController extends BaseController
     }
 
     /**
-     * 确认签名 sign_type 签名类型 0个人 1公司
+     * 确认签名 只有公司的签名需要确认
      * @param \Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function confirm(\Request $request)
     {
-        $data = $request::only(['contract_id', 'sign_type']);
+        $data = $request::only(['contract_id', 'sign_type', 'companyid', 'captcha']);
 
-        if ($data['sign_type'] == Contract::SIGN_TYPE_PERSON) {
-            if (!$this->user->esignUser()->where('type', EsignUser::TYPE_PERSON)->exists()) {
-                return responseException('请先通过实名认证');
-            }
-        }
+        //if ($data['sign_type'] == Contract::SIGN_TYPE_PERSON) {
+        //    if (!$this->user->esignUser()->where('type', EsignUser::TYPE_PERSON)->exists()) {
+        //        return responseException('请先通过实名认证');
+        //    }
+        //}
 
-        if ($data['sign_type'] == Contract::SIGN_TYPE_COMPANY) {
-            if (!$this->user->esignUser()->where('type', EsignUser::TYPE_COMPANY)->exists()) {
-                return responseException('请先通过企业认证');
+        //if ($data['sign_type'] == Contract::SIGN_TYPE_COMPANY) {
+            if (empty($data['company_id'])) {
+                return responseException('请选择签名企业');
             }
+            if (!UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($data['company_id'])->exists()) {
+                return responseException('签名企业未通过认证');
+            }
+        //}
+        $companyData = UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($data['company_id'])->first();
+        // 验证短信
+        try {
+            $esignService = new EsignService();
+            $esignService->preVerifySignCodeToMobile($this->user->esignUser->accountid, $companyData->mobile, $data['captcha']);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$e->getMessage()]);
+            return responseException($e->getMessage());
         }
 
         // 更新 contract signed_xxx  sign_type_xxx
@@ -172,16 +185,19 @@ class SignController extends BaseController
 
             $contract->signed_first = 1;
             $contract->sign_type_first = $data['sign_type'];
+            $contract->companyid_first = $data['companyid'];
 
         } else if ($contract->userid_second == $this->user->id) {
 
             $contract->signed_second = 1;
             $contract->sign_type_second = $data['sign_type'];
+            $contract->companyid_second = $data['companyid'];
 
         } else if ($contract->userid_three == $this->user->id) {
 
             $contract->signed_three = 1;
             $contract->sign_type_three = $data['sign_type'];
+            $contract->companyid_three = $data['companyid'];
 
         }
 
@@ -205,11 +221,14 @@ class SignController extends BaseController
     }
 
     /**
+     * 发送校验码
+     * @param \Request $request
      * @param EsignService $esignService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function sendVerifyCode(EsignService $esignService)
+    public function sendVerifyCode(\Request $request, EsignService $esignService)
     {
+        $data = $request::only(['company_id']);
         try {
             $esignService->sendSignCodeToMobile($this->user->esignUser->accountid, $this->user->mobile);
         } catch (\Exception $e) {
@@ -220,6 +239,7 @@ class SignController extends BaseController
     }
 
     /**
+     * 预先校验验证码
      * @param \Request $request
      * @param EsignService $esignService
      * @return \Illuminate\Http\JsonResponse

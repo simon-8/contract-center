@@ -11,7 +11,7 @@ use App\Services\ContractService;
 use App\Services\EsignService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class UserSignListener implements ShouldQueue
 {
@@ -23,15 +23,16 @@ class UserSignListener implements ShouldQueue
 
     public $esignService;
 
+    public $contract;
+    public $user;
+
     /**
      * UserSignListener constructor.
      * @throws \Exception
      */
     public function __construct()
     {
-        info(__METHOD__, [time()]);
-        $this->contractService = new ContractService();
-        $this->esignService = new EsignService();
+        //info(__METHOD__, [time()]);
     }
 
     /**
@@ -44,25 +45,28 @@ class UserSignListener implements ShouldQueue
     {
         \Log::info(__METHOD__);
 
-        $contract = $event->contract;
-        $user = $event->user;
+        $this->contractService = new ContractService();
+        $this->esignService = new EsignService();
+        //$this->event = $event;
+        $this->contract = $event->contract;
+        $this->user = $event->user;
 
         // PDF路径
-        $sourceFile = $this->contractService->makeStorePath($contract->id);
-        $outputFile = $this->contractService->makeStorePath($contract->id, true);
+        $sourceFile = $this->contractService->makeStorePath($this->contract->id);
+        $outputFile = $this->contractService->makeStorePath($this->contract->id, true);
 
         // 当output中存在文件时, 表示有一方已签署
-        $uploadPath = Storage::disk('uploads')->path('');
-        if (Storage::disk('uploads')->exists(str_replace($uploadPath, '', $outputFile))) {
+        //$uploadPath = Storage::disk('uploads')->path('');
+        if (Storage::disk('uploads')->exists($outputFile)) {
             $sourceFile = $outputFile;
         }
 
         // 签章配置
         $signData = [
-            'accountid' => $user->esignUser->accountid,
+            'accountid' => $this->user->esignUser->accountid,
             'signFile' => [
-                'srcPdfFile' => $sourceFile,
-                'dstPdfFile' => $outputFile,
+                'srcPdfFile' => Storage::disk('uploads')->path($sourceFile),
+                'dstPdfFile' => Storage::disk('uploads')->path($outputFile),
                 //'fileName' => '',
                 //'ownerPassword' => '',
             ],
@@ -83,37 +87,37 @@ class UserSignListener implements ShouldQueue
 
         // 签章关键字定位 && 签名类型
         $signType = Contract::SIGN_TYPE_PERSON;
-        if ($contract->userid_first == $user->id) {
+        if ($this->contract->userid_first == $this->user->id) {
 
             $signData['signPos']['key'] = '甲方签章';
-            $signType = $contract->sign_type_first;
+            $signType = $this->contract->sign_type_first;
 
-        } else if ($contract->userid_second == $user->id) {
+        } else if ($this->contract->userid_second == $this->user->id) {
 
             $signData['signPos']['key'] = '乙方签章';
-            $signType = $contract->sign_type_second;
+            $signType = $this->contract->sign_type_second;
 
-        } else if ($contract->userid_three == $user->id) {
+        } else if ($this->contract->userid_three == $this->user->id) {
 
             $signData['signPos']['key'] = '居间人签章';
-            $signType = $contract->sign_type_three;
+            $signType = $this->contract->sign_type_three;
 
         }
 
         if ($signType == Contract::SIGN_TYPE_COMPANY) {
-            $signData['sealData'] = $this->companySignImage($event);
+            $signData['sealData'] = $this->companySignImage();
             $signData['signPos']['width'] = 159;
         } else {
-            $signData['sealData'] = $this->userSignImage($event);
+            $signData['sealData'] = $this->userSignImage();
         }
 
         $serviceid = $this->esignService->userSign($signData);
 
         // 签名记录
         EsignSignLog::create([
-            'contract_id' => $contract->id,
-            'name' => $contract->name,
-            'userid' => $user->id,
+            'contract_id' => $this->contract->id,
+            'name' => $this->contract->name,
+            'userid' => $this->user->id,
             'serviceid' => $serviceid,
         ]);
         return $serviceid;
@@ -121,14 +125,13 @@ class UserSignListener implements ShouldQueue
 
     /**
      * 用户签名
-     * @param $event
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException|\Exception
      */
-    protected function userSignImage(UserSign $event)
+    protected function userSignImage()
     {
         // 获取签名图片
-        $sign = $event->contract->sign()->where('userid', $event->user->id)->first();
+        $sign = $this->contract->sign()->where('userid', $this->user->id)->first();
         if (!$sign) {
             throw new \Exception('用户未上传签名');
         }
@@ -142,15 +145,21 @@ class UserSignListener implements ShouldQueue
 
     /**
      * 公司签名
-     * @param UserSign $event
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException|\Exception
      */
-    protected function companySignImage(UserSign $event)
+    protected function companySignImage()
     {
-        $companyInfo = $event->user->company;
+        $companyInfo = [];
+        if ($this->contract->userid_first == $this->user->id) {
+            $companyInfo = $this->contract->companyFirst;
+        } else if ($this->contract->userid_second == $this->user->id) {
+            $companyInfo = $this->contract->companySecond;
+        } else if ($this->contract->userid_three == $this->user->id) {
+            $companyInfo = $this->contract->companyThree;
+        }
         if (!$companyInfo && !$companyInfo->sign_data) {
-            throw new \Exception('用户未验证公司');
+            throw new \Exception('无签名文件');
         }
 
         if (!Storage::disk('uploads')->exists($companyInfo->sign_data)) {

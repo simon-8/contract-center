@@ -154,6 +154,7 @@ class UserCompanyController extends BaseController
             return responseMessage();
         }
         $lists = UserCompany::ofName($data['name'] ?? '')
+            ->ofStatus(UserCompany::STATUS_SUCCESS)
             ->orderByDesc('id')
             ->get();
         foreach ($lists as $k => $v) {
