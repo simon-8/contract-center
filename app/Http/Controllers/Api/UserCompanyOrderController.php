@@ -18,7 +18,7 @@ class UserCompanyOrderController extends Controller
 {
 
     /**
-     * 转发通知
+     * 已打款到企业账户通知
      * @param \Request $request
      * @param $pid
      * @return \Illuminate\Http\JsonResponse|string
@@ -31,14 +31,10 @@ class UserCompanyOrderController extends Controller
         if ($notifyData['result'] !== 'PAY_SUCCESS') {
             return responseException(__('api.failed'));
         }
-        //$order = UserCompanyOrder::where('pid', $pid)->first();
-        //if ($notifyData['msg']) $order->remark = $notifyData['msg'];
-        //$order->save();
+
         $userCompany = UserCompany::find($pid);
         $userCompany->status = UserCompany::STATUS_PAYED;
         $userCompany->save();
-
-        //$userCompany->user->update(['vcompany' => 1]);
         return '';
     }
 
