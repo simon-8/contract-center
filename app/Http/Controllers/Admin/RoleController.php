@@ -22,7 +22,7 @@ class RoleController extends Controller
      */
     public function index(Role $role)
     {
-        $lists = $role->paginate(ModelService::$pagesize);
+        $lists = $role->paginate();
         return view('admin.role.index' , compact('lists'));
     }
 

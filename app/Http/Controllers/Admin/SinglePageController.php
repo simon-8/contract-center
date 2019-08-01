@@ -28,7 +28,7 @@ class SinglePageController extends Controller
 
         $lists = $singlePage->ofStatus($data['status'] ?? '')
             ->ofTitle($data['keyword'] ?? '')
-            ->paginate(ModelService::$pagesize);
+            ->paginate();
         $lists->appends($data);
 
         $status_num = $singlePage->get_status_num();

@@ -10,7 +10,6 @@ use App\Models\Manager;
 use App\Repositories\ManagerRepository;
 use App\Http\Requests\ManagerRequest;
 use App\Services\AuthService;
-use App\Services\ModelService;
 
 class ManagerController extends BaseController
 {
@@ -21,7 +20,7 @@ class ManagerController extends BaseController
      */
     public function index(Manager $manager)
     {
-        $lists = $manager->paginate(ModelService::$pagesize);
+        $lists = $manager->paginate();
         return view('admin.manager.index', compact('lists'));
     }
 

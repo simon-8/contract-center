@@ -21,7 +21,7 @@ class RoleAccessController extends Controller
      */
     public function index(RoleAccess $roleAccess)
     {
-        $lists = $roleAccess->paginate(ModelService::$pagesize);
+        $lists = $roleAccess->paginate();
         return view('admin.role_access.index' , compact('lists'));
     }
 
