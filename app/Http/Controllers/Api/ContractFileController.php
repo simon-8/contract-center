@@ -43,8 +43,7 @@ class ContractFileController extends BaseController
         }
 
         $data = $request::all();
-        $lists = $contractFile->ofUserid($this->user->id)
-            ->ofContractId($data['contract_id'] ?? 0)
+        $lists = $contractFile->ofContractId($data['contract_id'] ?? 0)
             ->get();
         return ContractFileResource::collection($lists);
     }
@@ -56,7 +55,7 @@ class ContractFileController extends BaseController
      */
     public function show(ContractFile $contractFile)
     {
-        $this->checkAuth($contractFile);
+        //$this->checkAuth($contractFile);
 
         return responseMessage('', new ContractFileResource($contractFile));
     }

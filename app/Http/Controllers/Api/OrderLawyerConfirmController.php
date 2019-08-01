@@ -35,6 +35,7 @@ class OrderLawyerConfirmController extends BaseController
             return responseMessage('', new OrderLawyerConfirmResource($orderData));
         } else {
             return responseMessage('', [
+                'status' => Order::STATUS_WAIT_PAY,
                 'amount' => config('admin.contractLawyerConfirmPrice')
             ]);
         }
@@ -74,7 +75,7 @@ class OrderLawyerConfirmController extends BaseController
             ->ofUserid($this->user->id)
             ->first();
 
-        if ($orderData && $orderData->status == Order::STATUS_ALREADY_PAY) {
+        if ($orderData && $orderData->status == Order::STATUS_WAIT_SEND) {
             return responseException('该订单已支付, 无法重复付款');
         }
         // 对应contract状态检查
@@ -248,7 +249,7 @@ class OrderLawyerConfirmController extends BaseController
                 \Log::info('notifyWechat result ==> 订单金额不匹配');
                 return $fail('订单金额不匹配');
             }
-            $order->status = Order::STATUS_ALREADY_PAY;
+            $order->status = Order::STATUS_WAIT_SEND;
             $order->torderid = $message['transaction_id'];
             $order->payed_at = date('Y-m-d H:i:s');
             $order->save();

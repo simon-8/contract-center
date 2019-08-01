@@ -14,7 +14,8 @@ class OrderLawyerConfirm extends Base
     use ModelTrait;
 
     const STATUS_WAIT_PAY = 0;// 待付款
-    const STATUS_ALREADY_PAY = 1;// 已付款
+    const STATUS_WAIT_SEND = 1;// 已付款 待发送
+    const STATUS_HAS_BEEN_SEND = 2;// 已发送
 
     public $table = 'order_lawyer_confirm';
 
@@ -90,7 +91,8 @@ class OrderLawyerConfirm extends Base
     public function getStatus() {
         $statusArr = [
             self::STATUS_WAIT_PAY => '待支付',
-            self::STATUS_ALREADY_PAY => '已支付',
+            self::STATUS_WAIT_SEND => '已支付',
+            self::STATUS_HAS_BEEN_SEND => '已发送',
         ];
         return $statusArr;
     }
