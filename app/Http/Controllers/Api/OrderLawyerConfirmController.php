@@ -255,9 +255,9 @@ class OrderLawyerConfirmController extends BaseController
             $order->save();
 
             // 更新关联状态
-            $order->contract->update([
-                'status' => Contract::STATUS_PAYED
-            ]);
+            //$order->contract->update([
+            //    'status' => Contract::STATUS_LAWYER_CONFIRM
+            //]);
             // todo 支付成功
             //event(new \App\Events\OrderPayed($order));
             return true;
