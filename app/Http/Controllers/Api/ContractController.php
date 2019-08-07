@@ -199,17 +199,27 @@ class ContractController extends BaseController
                 'jiafang' => $data['fills']['jiafang'] ?? '',
                 'yifang' =>  $data['fills']['yifang'] ?? '',
                 'jujianren' =>  $data['fills']['jujianren'] ?? '',
+                'userid_first' => 0,
+                'userid_second' => 0,
+                'userid_three' => 0,
+                'companyid_first' => 0,
+                'companyid_second' => 0,
+                'companyid_three' => 0,
                 'confirm_first' => 0,
                 'confirm_second' => 0,
+                'confirm_three' => 0,
+                'signed_first' => 0,
+                'signed_second' => 0,
+                'signed_three' => 0,
+                'signed_type_first' => 0,
+                'signed_type_second' => 0,
+                'signed_type_three' => 0,
             ];
-            if ($contract::CAT_THREE) {
-                $updateData['confirm_three'] = 0;
-            }
             // 设置targetid
             //if ($this->user->id != $contract->userid) {
             //    $updateData['targetid'] = $this->user->id;
             //}
-            $updateData['confirm_second'] = 0;
+            //$updateData['confirm_second'] = 0;
             $contractData = $contract->update($updateData);
 
             $contract->content->update([
