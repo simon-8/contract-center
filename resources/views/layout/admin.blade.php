@@ -49,7 +49,7 @@
     </script>
 </head>
 
-<body class="gray-bg" data1="1">
+<body class="gray-bg">
 <div class="wrapper wrapper-content">
     <div class="row">
         @include('admin.public.message')

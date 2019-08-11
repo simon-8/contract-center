@@ -177,6 +177,45 @@ function seditor($content = '' , $name = 'content', $extends = '')
     return false;
 }
 
+function contractTemplateEditor($content = '' , $name = 'content', $extends = '')
+{
+    $editor = env('WEB_EDITOR', 'ueditor');
+    $str = '';
+    if ($editor == 'kindeditor') {
+        $url = "/plugins/editor/kindeditor/kindeditor.js";
+        $lang = "/plugins/editor/kindeditor/lang/zh_CN.js";
+        $str .= "<script charset='utf-8' src='$url'></script>";
+        $str .= "<script charset='utf-8' src='$lang'></script>";
+        $str .= "<script>";
+        $str .= " KindEditor.ready(function(K) { window.editor = K.create('#$name',{width:'100%',cssPath : '/plugins/editor/kindeditor/plugins/code/new.css',resizeMode:0});});";
+        $str .= "</script>";
+        return $str;
+    } else if ($editor == 'ueditor') {
+        $str .= "<script id='content' type='text/plain' style='width:100%;height:500px;' name='{$name}' {$extends}>" . $content . "</script>";
+        $str .= "<script type='text/javascript' src='".skinPath()."js/plugins/editor/ueditor/ueditor.config.js'></script>";
+        $str .= "<script type='text/javascript' src='".skinPath()."js/plugins/editor/ueditor/ueditor.all.js'></script>";
+        $str .= "<script type='text/javascript'> var ue = UE.getEditor('{$name}',{elementPathEnabled:false,contextMenu:[],enableAutoSave: false,saveInterval:500000,toolbars: [
+    ['fullscreen', 'source', 'undo', 'redo', 'indent', 'bold', 'italic','underline','strikethrough','removeformat','fontsize','paragraph','justifyleft','justifyright','justifycenter','justifyjustify']], fontfamily: {
+    label: '',
+    name: 'songti',
+    val: '宋体,SimSun'
+}});</script>";
+        return $str;
+
+    } else if ($editor == 'markdown') {
+        //echo "<textarea name='" . $name . "' data-provide='markdown' {$extends} rows='10'>" . $content . "</textarea>";
+        //echo "<link rel='stylesheet' type='text/css' href='/manage/css/plugins/markdown/bootstrap-markdown.min.css' />";
+        //echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/markdown.js'></script>";
+        //echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/to-markdown.js'></script>";
+        //echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/bootstrap-markdown.js'></script>";
+        //echo "<script type='text/javascript' src='/manage/plugins/editor/markdown/bootstrap-markdown.zh.js'></script>";
+        $str .= "<div id='{$name}'><textarea name='{$name}' style='display:none;'>{$content}</textarea></div>";
+        $str .= view('markdown::encode', ['editors'=>[$name]]);
+        return $str;
+    }
+    return false;
+}
+
 function is_markdown()
 {
     return env('WEB_EDITOR') === 'markdown' ? 1 : 0;

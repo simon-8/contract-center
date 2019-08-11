@@ -62,6 +62,11 @@ class Contract extends Base
     const CAT_DOUBLE = 1;
     const CAT_THREE = 2;
 
+    // 参与者类型 (双方合同  三方合同)
+    const PLAYER_TYPE_NORMAL = 0;
+    const PLAYER_TYPE_TWO = 1;
+    const PLAYER_TYPE_THREE = 2;
+
     // 签名类型 0个人 1公司
     const SIGN_TYPE_PERSON = 0;
     const SIGN_TYPE_COMPANY = 1;
@@ -267,7 +272,7 @@ class Contract extends Base
         $cats = [
             self::CAT_NORMAL => '通用',
             self::CAT_DOUBLE => '两方',
-            self::CAT_THREE => '三方',
+            self::CAT_THREE  => '三方',
         ];
         return $cats;
     }
@@ -291,10 +296,10 @@ class Contract extends Base
     public function getStatus()
     {
         $statusArr = [
-            self::STATUS_APPLY => '一方申请',
-            self::STATUS_CONFIRM => '双方确认',
-            self::STATUS_PAYED => '一方支付',
-            self::STATUS_SIGN => '双方签名',
+            self::STATUS_APPLY          => '一方申请',
+            self::STATUS_CONFIRM        => '双方确认',
+            self::STATUS_PAYED          => '一方支付',
+            self::STATUS_SIGN           => '双方签名',
             self::STATUS_LAWYER_CONFIRM => '已见证',
         ];
         return $statusArr;
@@ -309,6 +314,31 @@ class Contract extends Base
     {
         if ($status === null) $status = $this->status;
         return $this->getStatus()[$status] ?? 'not found';
+    }
+
+    /**
+     * 参与者类型
+     * @return array
+     */
+    public function getPlayerType()
+    {
+        $arr = [
+            //self::PLAYER_TYPE_NORMAL => '单方',
+            self::PLAYER_TYPE_TWO => '双方',
+            self::PLAYER_TYPE_THREE => '三方'
+        ];
+        return $arr;
+    }
+
+    /**
+     * 参与者类型
+     * @param null $type
+     * @return mixed|string
+     */
+    public function getPlayerTypeText($type = null)
+    {
+        if ($type === null) $type = $this->player_type;
+        return $this->getPlayerType()[$type] ?? 'not fund';
     }
 
     /**
