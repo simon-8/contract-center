@@ -28,7 +28,7 @@
                                     <td>{{ $v['id'] }}</td>
                                     <td align="left">{{ $v['name'] }}</td>
                                     <td>{{ $v->contractCategory->name }}</td>
-                                    <td>{{ $contractModel->getPlayerTypeText($v['catid']) }}</td>
+                                    <td>{{ $contractModel->getPlayersText($v['catid']) }}</td>
 {{--                                    <td></td>--}}
 {{--                                    <td>--}}
                                         <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit1({{ $v['id'] }}, '{{ editURL('admin.contract-tpl-section.update', $v['id']) }}')">编辑</button>
@@ -45,7 +45,7 @@
                         @endif
                     </table>
                 </div>
-                <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加菜单</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加模块</button>
             </div>
         </div>
         <script>
@@ -58,7 +58,7 @@
                 $.each(json , function(k , v){
                     if (k === 'catid') {
                         $(updateModal).find('[name=' + k + ']').val(v);
-                    } else if (k === 'player_type') {
+                    } else if (k === 'players') {
                         $(updateModal).find('[name=' + k + ']').val(v);
                     } else {
                         $(updateModal).find('[name=' + k + ']').val(v);
@@ -99,8 +99,8 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">参与人类型</label>
                                 <div class="col-sm-10">
-                                    <select name="player_type" class="form-control">
-                                        @foreach($contractModel->getPlayerType() as $typeid => $typename)
+                                    <select name="players" class="form-control">
+                                        @foreach($contractModel->getPlayers() as $typeid => $typename)
                                             <option value="{{ $typeid }}">{{ $typename }}</option>
                                         @endforeach
                                     </select>
@@ -166,8 +166,8 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">参与人类型</label>
                                 <div class="col-sm-10">
-                                    <select name="player_type" class="form-control">
-                                        @foreach($contractModel->getPlayerType() as $typeid => $typename)
+                                    <select name="players" class="form-control">
+                                        @foreach($contractModel->getPlayers() as $typeid => $typename)
                                             <option value="{{ $typeid }}">{{ $typename }}</option>
                                         @endforeach
                                     </select>

@@ -8,7 +8,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ContractCategoryRequest;
+use App\Models\Contract;
 use App\Models\ContractCategory;
+use App\Models\ContractTplSection;
 
 class ContractCategoryController extends BaseController
 {
@@ -21,6 +23,19 @@ class ContractCategoryController extends BaseController
     {
         $lists = $contractCategory->paginate();
         return view('admin.contract_category.index', compact('lists'));
+    }
+
+    public function show(Contract $contract, ContractTplSection $contractTplSection, ContractCategory $contractCategory)
+    {
+        $data = [];
+        $data['players'] = $contract->getPlayers();
+        foreach ($data['players'] as $typeid => $typename) {
+            $data['tplSection'][$typeid] = $contractTplSection->ofCatid($contractCategory->id)
+                ->ofPlayers($typeid)
+                ->orderByDesc('listorder')
+                ->get();
+        }
+        return view('admin.contract_category.show', compact('contractCategory', 'data'));
     }
 
     /**

@@ -14,6 +14,7 @@ class Contract extends Base
     protected $fillable = [
         'name',
         'catid',
+        'players',
         'userid',
         'lawyerid',
         'mycatid',
@@ -58,14 +59,14 @@ class Contract extends Base
     const USER_TYPE_THREE = 'three';
 
     // 分类
-    const CAT_NORMAL = 0;
-    const CAT_DOUBLE = 1;
-    const CAT_THREE = 2;
+    //const CAT_NORMAL = 0;
+    //const CAT_DOUBLE = 1;
+    //const CAT_THREE = 2;
 
     // 参与者类型 (双方合同  三方合同)
-    const PLAYER_TYPE_NORMAL = 0;
-    const PLAYER_TYPE_TWO = 1;
-    const PLAYER_TYPE_THREE = 2;
+    const PLAYERS_NORMAL = 0;
+    const PLAYERS_TWO = 1;
+    const PLAYERS_THREE = 2;
 
     // 签名类型 0个人 1公司
     const SIGN_TYPE_PERSON = 0;
@@ -320,12 +321,12 @@ class Contract extends Base
      * 参与者类型
      * @return array
      */
-    public function getPlayerType()
+    public function getPlayers()
     {
         $arr = [
-            //self::PLAYER_TYPE_NORMAL => '单方',
-            self::PLAYER_TYPE_TWO => '双方',
-            self::PLAYER_TYPE_THREE => '三方'
+            //self::PLAYERS_NORMAL => '单方',
+            self::PLAYERS_TWO => '双方',
+            self::PLAYERS_THREE => '三方'
         ];
         return $arr;
     }
@@ -335,10 +336,10 @@ class Contract extends Base
      * @param null $type
      * @return mixed|string
      */
-    public function getPlayerTypeText($type = null)
+    public function getPlayersText($type = null)
     {
-        if ($type === null) $type = $this->player_type;
-        return $this->getPlayerType()[$type] ?? 'not fund';
+        if ($type === null) $type = $this->players;
+        return $this->getPlayers()[$type] ?? 'not fund';
     }
 
     /**

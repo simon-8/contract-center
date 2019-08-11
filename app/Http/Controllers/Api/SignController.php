@@ -87,11 +87,11 @@ class SignController extends BaseController
         }
 
         // 参与方都签了名 直接修改状态
-        if ($contract->catid == $contract::CAT_DOUBLE) {
+        if ($contract->players == $contract::PLAYERS_TWO) {
             if ($contract->signed_first && $contract->signed_second) {
                 $contract->status = $contract::STATUS_SIGN;
             }
-        } else if ($contract->catid == $contract::CAT_THREE) {
+        } else if ($contract->players == $contract::PLAYERS_THREE) {
             if ($contract->signed_first && $contract->signed_second && $contract->signed_three) {
                 $contract->status = $contract::STATUS_SIGN;
             }
@@ -202,11 +202,11 @@ class SignController extends BaseController
         }
 
         // 参与方都签了名 直接修改状态
-        if ($contract->catid == $contract::CAT_DOUBLE) {
+        if ($contract->players == $contract::PLAYERS_TWO) {
             if ($contract->signed_first && $contract->signed_second) {
                 $contract->status = $contract::STATUS_SIGN;
             }
-        } else if ($contract->catid == $contract::CAT_THREE) {
+        } else if ($contract->players == $contract::PLAYERS_THREE) {
             if ($contract->signed_first && $contract->signed_second && $contract->signed_three) {
                 $contract->status = $contract::STATUS_SIGN;
             }

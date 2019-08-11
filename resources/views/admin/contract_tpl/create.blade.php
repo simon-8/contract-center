@@ -38,9 +38,9 @@
 {{--                    <label class="col-sm-2 control-label">参与者类型</label>--}}
 {{--                    <div class="col-sm-10">--}}
 {{--                        <select name="typeid" class="form-control inline" style="width: 180px;">--}}
-{{--                            @foreach((new \App\Models\Contract())->getPlayerType() as $typeid => $typename)--}}
+{{--                            @foreach((new \App\Models\Contract())->getPlayers() as $typeid => $typename)--}}
 {{--                                <option value="{{ $typeid }}"--}}
-{{--                                        @if (isset($contractTpl->player_type) && $contractTpl->player_type === $typeid) selected @endif>{{ $typename }}--}}
+{{--                                        @if (isset($contractTpl->players) && $contractTpl->players === $typeid) selected @endif>{{ $typename }}--}}
 {{--                                </option>--}}
 {{--                            @endforeach--}}
 {{--                        </select>--}}

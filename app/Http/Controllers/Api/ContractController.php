@@ -270,7 +270,7 @@ class ContractController extends BaseController
         $updateData["confirm_{$userType}"] = 1;
         $contract->fill($updateData);
 
-        if ($contract->catid == $contract::CAT_THREE) {
+        if ($contract->players == $contract::PLAYERS_TWO) {
             if ($contract->confirm_first && $contract->confirm_second && $contract->confirm_three) {
                 $updateData['status'] = $contract::STATUS_CONFIRM;
                 $updateData['confirm_at'] = date('Y-m-d H:i:s');

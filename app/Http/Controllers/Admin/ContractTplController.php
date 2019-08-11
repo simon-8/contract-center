@@ -20,6 +20,7 @@ class ContractTplController extends Controller
         $lists = $contractTpl->ofCatid($data['catid'] ?? '')
             ->ofCreatedAt($data['created_at'] ?? '')
             ->ofContent($data['content'] ?? '')
+            ->ofSectionId($data['section_id'])
             ->orderByDesc('id')
             ->paginate();
         return view('admin.contract_tpl.index', compact('lists', 'data'));

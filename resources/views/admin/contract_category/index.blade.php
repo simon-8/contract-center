@@ -19,6 +19,7 @@
                             <td>{{ $v['id'] }}</td>
                             <td>{{ $v['name'] }}</td>
                             <td>
+                                <a class="btn btn-sm btn-primary" href="{{ editURL('admin.contract-category.show', $v->id) }}">管理</a>
                                 <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit({{ $v['id'] }}, '{{ editURL('admin.contract-category.update', $v['id']) }}')">编辑</button>
                                 <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract-category.destroy', $v['id']) }}')">删除</button>
                             </td>

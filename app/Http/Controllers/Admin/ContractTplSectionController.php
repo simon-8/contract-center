@@ -48,7 +48,7 @@ class ContractTplSectionController extends Controller
             return back()->withErrors(__('web.failed'))->withInput();
         }
 
-        return redirect()->route('admin.contract-tpl-section.index')->with('message', __('web.success'));
+        return back()->with('message', __('web.success'));
     }
 
     /**
@@ -75,7 +75,7 @@ class ContractTplSectionController extends Controller
             return back()->withErrors(__('web.failed'))->withInput();
         }
 
-        return redirect()->route('admin.contract-tpl-section.index')->with('message', __('web.success'));
+        return back()->with('message', __('web.success'));
     }
 
     /**
@@ -88,6 +88,6 @@ class ContractTplSectionController extends Controller
         if (!$contractTplSection->delete()) {
             return back()->withErrors(__('web.failed'));
         }
-        return redirect()->route('admin.contract-tpl-section.index')->with('message', __('web.success'));
+        return back()->with('message', __('web.success'));
     }
 }

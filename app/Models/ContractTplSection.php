@@ -14,7 +14,7 @@ class ContractTplSection extends Base
 
     protected $fillable = [
         'catid',
-        'player_type',
+        'players',
         'name',
         'listorder',
     ];
@@ -29,6 +29,7 @@ class ContractTplSection extends Base
     }
 
     /**
+     * 名称
      * @param Builder $query
      * @param string $data
      * @return Builder
@@ -37,5 +38,17 @@ class ContractTplSection extends Base
     {
         if (empty($data)) return $query;
         return $query->where('name', 'like', '%'.$data.'%');
+    }
+
+    /**
+     * 参与人类型
+     * @param Builder $query
+     * @param string $data
+     * @return Builder
+     */
+    public function scopeOfPlayers(Builder $query, $data = '')
+    {
+        if (empty($data)) return $query;
+        return $query->where('players', $data);
     }
 }

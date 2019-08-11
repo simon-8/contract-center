@@ -35,7 +35,7 @@ class ContractTplSectionRequest extends BaseRequest
     {
         $rule = [
             'catid' => 'required',
-            'player_type' => 'required',
+            'players' => 'required',
             'name' => 'required',
             'listorder' => 'required',
         ];
@@ -51,7 +51,7 @@ class ContractTplSectionRequest extends BaseRequest
     {
         $rule = [
             'catid' => 'required',
-            'player_type' => 'required',
+            'players' => 'required',
             'name' => 'required',
             'listorder' => 'required',
         ];

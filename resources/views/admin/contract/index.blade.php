@@ -19,10 +19,20 @@
                     <div class="input-group m-b">
                         <select name="catid" class="form-control inline">
                             <option value="">请选择分类</option>
-                            @foreach((new \App\Models\Contract())->getCats() as $catid => $catname)
+                            @foreach((new \App\Models\ContractCategory())->getCats() as $catid => $catname)
                             <option value="{{ $catid }}"
                                 @if (isset($data['catid']) && $data['catid'] === (string) $catid) selected @endif>{{ $catname }}
                             </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="input-group m-b">
+                        <select name="catid" class="form-control inline">
+                            <option value="">参与人类型</option>
+                            @foreach((new \App\Models\Contract())->getPlayers() as $typeid => $typename)
+                                <option value="{{ $typeid }}"
+                                        @if (isset($data['players']) && $data['players'] === (string) $typeid) selected @endif>{{ $typename }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
