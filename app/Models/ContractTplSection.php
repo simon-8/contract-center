@@ -19,6 +19,11 @@ class ContractTplSection extends Base
         'listorder',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     /**
      * 合同分类
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

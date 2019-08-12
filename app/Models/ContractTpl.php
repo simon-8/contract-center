@@ -68,4 +68,15 @@ class ContractTpl extends Base
         if (!$data) return $query;
         return $query->where('section_id', $data);
     }
+
+    /**
+     * @param Builder $query
+     * @param int $data
+     * @return Builder
+     */
+    public function scopeOfPlayers(Builder $query, $data = null)
+    {
+        if (is_null($data)) return $query;
+        return $query->where('players', $data);
+    }
 }

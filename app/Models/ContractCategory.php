@@ -19,6 +19,19 @@ class ContractCategory extends Base
         'name'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tplSection()
+    {
+        return $this->hasMany('App\Models\ContractTplSection', 'catid', 'id');
+    }
+
     /**
      * @return ContractCategory[]|\Illuminate\Database\Eloquent\Collection
      */
