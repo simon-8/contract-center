@@ -3,7 +3,9 @@
 @section('content')
 
 <div class="ibox float-e-margins">
+    <script>
 
+    </script>
     <form method="post" class="form-horizontal" action="{{ isset($contractTpl->id) ? editURL('admin.contract-tpl.update', $contractTpl->id) : route('admin.contract-tpl.store') }}" id="sform">
         {!! csrf_field() !!}
         {!! method_field(isset($contractTpl->id) ? 'PUT' : 'POST') !!}

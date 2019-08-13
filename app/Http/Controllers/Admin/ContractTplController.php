@@ -21,7 +21,7 @@ class ContractTplController extends Controller
         $lists = $contractTpl->ofCatid($data['catid'] ?? '')
             ->ofCreatedAt($data['created_at'] ?? '')
             ->ofContent($data['content'] ?? '')
-            ->ofSectionId($data['section_id'])
+            ->ofSectionId($data['section_id'] ?? '')
             ->orderByDesc('id')
             ->paginate();
         return view('admin.contract_tpl.index', compact('lists', 'data'));
@@ -46,6 +46,9 @@ class ContractTplController extends Controller
         $data = $request->all();
         $request->validateStore($data);
 
+        if (strpos($data['content'], ContractTpl::FILL_STRING) !== false) {
+
+        }
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
         $data['players'] = $section['players'];
