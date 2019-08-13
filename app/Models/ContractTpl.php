@@ -14,9 +14,16 @@ class ContractTpl extends Base
 
     protected $fillable = [
         'section_id',
+        'catid',
+        'players',
         'content',
         'listorder',
     ];
+
+    public function getContentAttribute($value)
+    {
+        return $value ? strip_tags($value) : '';
+    }
 
     /**
      * 合同类型
@@ -52,17 +59,6 @@ class ContractTpl extends Base
      * @param int $data
      * @return Builder
      */
-    public function scopeOfTypeid(Builder $query, $data = 0)
-    {
-        if (!$data) return $query;
-        return $query->where('typeid', $data);
-    }
-
-    /**
-     * @param Builder $query
-     * @param int $data
-     * @return Builder
-     */
     public function scopeOfSectionId(Builder $query, $data = 0)
     {
         if (!$data) return $query;
@@ -74,9 +70,9 @@ class ContractTpl extends Base
      * @param int $data
      * @return Builder
      */
-    public function scopeOfPlayers(Builder $query, $data = null)
+    public function scopeOfPlayers(Builder $query, $data = '')
     {
-        if (is_null($data)) return $query;
+        if ($data === '') return $query;
         return $query->where('players', $data);
     }
 }

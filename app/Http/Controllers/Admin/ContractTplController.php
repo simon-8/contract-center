@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ContractTplRequest;
 use App\Models\ContractTpl;
+use App\Models\ContractTplSection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -45,6 +46,9 @@ class ContractTplController extends Controller
         $data = $request->all();
         $request->validateStore($data);
 
+        $section = ContractTplSection::find($data['section_id']);
+        $data['catid'] = $section['catid'];
+        $data['players'] = $section['players'];
         if (!$contractTpl->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
@@ -72,6 +76,9 @@ class ContractTplController extends Controller
         $data = $request->all();
         $request->validateUpdate($data);
 
+        $section = ContractTplSection::find($data['section_id']);
+        $data['catid'] = $section['catid'];
+        $data['players'] = $section['players'];
         if (!$contractTpl->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }

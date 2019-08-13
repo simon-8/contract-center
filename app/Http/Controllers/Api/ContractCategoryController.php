@@ -24,7 +24,7 @@ class ContractCategoryController extends BaseController
                     ->ofPlayers($playerId)
                     ->orderByDesc('listorder')
                     ->get();
-                $info['section'][$playerId][] = $sections;
+                $info['section'][$playerId] = $sections;
             }
             $data[] = $info;
         });

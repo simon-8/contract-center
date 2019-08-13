@@ -21,8 +21,11 @@ class ContractTplController extends BaseController
      */
     public function index(\Request $request)
     {
-        $data = $request::input(['section_id']);
-        $lists = ContractTpl::ofSectionID($data['section_id'])->get();
+        $data = $request::only(['section_id', 'catid', 'players']);
+        $lists = ContractTpl::ofSectionID($data['section_id'] ?? '')
+            ->ofCatid($data['catid'] ?? '')
+            ->ofPlayers($data['player'] ?? '')
+            ->get();
 
         return responseMessage('', $lists);
     }
