@@ -30,7 +30,7 @@
                                     <td>{{ $v->contractCategory->name }}</td>
                                     <td>{{ $contractModel->getPlayersText($v['catid']) }}</td>
 {{--                                    <td></td>--}}
-{{--                                    <td>--}}
+                                    <td>
                                         <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit1({{ $v['id'] }}, '{{ editURL('admin.contract-tpl-section.update', $v['id']) }}')">编辑</button>
                                         <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract-tpl-section.destroy', $v['id']) }}')">删除</button>
                                     </td>
