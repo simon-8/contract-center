@@ -202,7 +202,7 @@ class MenusTableSeeder extends Seeder
                 'link' => '',
                 'icon' => 'fa fa-folder',
                 'listorder' => 0,
-                'items' => 1,
+                'items' => 3,
             ),
             17 => 
             array (
@@ -230,8 +230,8 @@ class MenusTableSeeder extends Seeder
             array (
                 'id' => 27,
                 'pid' => 26,
-                'name' => '填空模板管理',
-                'route' => 'admin.contract-tpl-fill.index',
+                'name' => '合同模板列表',
+                'route' => 'admin.contract-tpl.index',
                 'link' => '',
                 'icon' => '',
                 'listorder' => 0,
@@ -241,8 +241,8 @@ class MenusTableSeeder extends Seeder
             array (
                 'id' => 28,
                 'pid' => 26,
-                'name' => '通用模板管理',
-                'route' => 'admin.contract-tpl-rule.index',
+                'name' => '模板模块管理',
+                'route' => 'admin.contract-tpl-section.index',
                 'link' => '',
                 'icon' => '',
                 'listorder' => 0,
@@ -255,6 +255,28 @@ class MenusTableSeeder extends Seeder
                 'name' => '队列管理',
                 'route' => '',
                 'link' => '/horizon',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            22 => 
+            array (
+                'id' => 30,
+                'pid' => 24,
+                'name' => '合同类型',
+                'route' => 'admin.contract-category.index',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            23 => 
+            array (
+                'id' => 31,
+                'pid' => 24,
+                'name' => '快递费用管理',
+                'route' => 'admin.express-fee.index',
+                'link' => '',
                 'icon' => '',
                 'listorder' => 0,
                 'items' => 0,

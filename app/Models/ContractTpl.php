@@ -19,12 +19,23 @@ class ContractTpl extends Base
         'catid',
         'players',
         'content',
+        'formdata',
         'listorder',
     ];
 
     public function getContentAttribute($value)
     {
         return $value ? strip_tags($value) : '';
+    }
+
+    public function getFormdataAttribute($value)
+    {
+        return $value ? json_decode($value, true) : [];
+    }
+
+    public function setFormdataAttribute($value)
+    {
+        $this->attributes['formdata'] = json_encode($value);
     }
 
     /**

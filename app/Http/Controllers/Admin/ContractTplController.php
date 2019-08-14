@@ -47,7 +47,15 @@ class ContractTplController extends Controller
         $request->validateStore($data);
 
         if (strpos($data['content'], ContractTpl::FILL_STRING) !== false) {
-
+            $arr = explode(ContractTpl::FILL_STRING, strip_tags($data['content']));
+            $newArr = [];
+            array_map(function($item) use(&$newArr) {
+                $newArr[] = $item;
+                $newArr[] = [
+                    'type' => 'input',
+                ];
+            }, $arr);
+            $data['formdata'] = array_slice($newArr, 0, -1);
         }
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
@@ -78,6 +86,19 @@ class ContractTplController extends Controller
     {
         $data = $request->all();
         $request->validateUpdate($data);
+
+        if (strpos($data['content'], ContractTpl::FILL_STRING) !== false) {
+            $arr = explode(ContractTpl::FILL_STRING, strip_tags($data['content']));
+            $newArr = [];
+            array_map(function($item) use(&$newArr) {
+                $newArr[] = $item;
+                $newArr[] = [
+                    'type' => 'input',
+                ];
+            }, $arr);
+
+            $data['formdata'] = array_slice($newArr, 0, -1);
+        }
 
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
