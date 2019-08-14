@@ -37,7 +37,7 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
         //Route::resource('contract-tpl-fill', 'ContractTplFillController');
         //Route::resource('contract-tpl-rule', 'ContractTplRuleController');
         Route::resource('single-page', 'SinglePageController');
-
+        Route::resource('express-fee', 'ExpressFeeController');
         // database
         Route::prefix('database')->group(function() {
             Route::get('/', 'DatabaseController@getIndex')->name('database.index');

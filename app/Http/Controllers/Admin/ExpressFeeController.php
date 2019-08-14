@@ -19,18 +19,18 @@ class ExpressFeeController extends BaseController
         return view('admin.express_fee.index', compact('lists'));
     }
 
-    public function store()
+    /**
+     * 保存价格
+     * @param \Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(\Request $request)
     {
+        $fees = $request::input('fee');
+        foreach ($fees as $areaid => $fee) {
+            ExpressFee::ofId($areaid)->update(['amount' => $fee]);
+        }
 
-    }
-
-    public function update()
-    {
-
-    }
-
-    public function destroy()
-    {
-
+        return redirect()->route('admin.express-fee.index')->with('message', __('web.success'));
     }
 }
