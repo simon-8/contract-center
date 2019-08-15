@@ -22,9 +22,12 @@ class ContractCategoryController extends BaseController
             foreach ($players as $playerId => $playerName) {
                 $sections = ContractTplSection::ofCatid($v->id)
                     ->ofPlayers($playerId)
+                    //->with(['contract-tpl' => function ($query) {
+                    //    $query->select([''])->orderByDesc('listorder');
+                    //}])
                     ->orderByDesc('listorder')
                     ->get();
-                $info['section'][$playerId] = $sections;
+                $info['sections'][$playerId] = $sections;
             }
             $data[] = $info;
         });

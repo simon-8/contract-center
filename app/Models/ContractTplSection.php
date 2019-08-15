@@ -34,6 +34,15 @@ class ContractTplSection extends Base
     }
 
     /**
+     * 关联模板
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function contractTpl()
+    {
+        return $this->hasMany('App\Models\ContractTpl', 'section_id', 'id');
+    }
+
+    /**
      * 名称
      * @param Builder $query
      * @param string $data
