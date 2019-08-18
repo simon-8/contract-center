@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\OrderLawyerConfirmRequest as OrderRequest;
 use App\Http\Resources\OrderLawyerConfirm as OrderLawyerConfirmResource;
 use App\Models\Contract;
+use App\Models\ExpressFee;
 use App\Models\OrderLawyerConfirm as Order;
 use App\Models\OrderRefund;
 use App\Models\User;
@@ -89,9 +90,22 @@ class OrderLawyerConfirmController extends BaseController
             return responseException('收货地址不存在, 请稍候重试');
         }
 
+        $fee = 0;
+        try {
+            $expressFee = ExpressFee::find($request::input('address_id'));
+            if ($expressFee) {
+                $fee = $expressFee->amount;
+            }
+        } catch (\Exception $exception) {
+
+        }
+        if (!$fee) {
+            $fee = config('admin.contractLawyerConfirmPrice');
+        }
+
         $data['address'] = $address->only(['linkman', 'mobile', 'province', 'city', 'area', 'address']);
         $data['userid'] = $this->user->id;
-        $data['amount'] = config('admin.contractLawyerConfirmPrice');
+        $data['amount'] = $fee;
         $data['openid'] = $this->getOpenid();
         $data['orderid'] = Order::createOrderNo($channel);
 
@@ -296,5 +310,27 @@ class OrderLawyerConfirmController extends BaseController
             return false;
         }
         return true;
+    }
+
+    /**
+     * 快递费用查询
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function queryExpressFee(\Request $request)
+    {
+        $fee = 0;
+        try {
+            $expressFee = ExpressFee::find($request::input('address_id'));
+            if ($expressFee) {
+                $fee = $expressFee->amount;
+            }
+        } catch (\Exception $exception) {
+
+        }
+        if (!$fee) {
+            $fee = config('admin.contractLawyerConfirmPrice');
+        }
+        return responseMessage(__('api.success'), compact('fee'));
     }
 }

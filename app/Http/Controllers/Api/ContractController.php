@@ -20,6 +20,7 @@ use App\Events\UserConfirm;
 use App\Http\Requests\ContractRequest;
 use App\Http\Resources\Contract AS ContractResource;
 use App\Models\Contract;
+use App\Models\ContractTplSection;
 use App\Services\ContractService;
 use \DB;
 
@@ -130,9 +131,7 @@ class ContractController extends BaseController
     {
         //$this->checkAuth($contract);
 
-        $content = $contract->content->getAttribute('content');
-        unset($contract->content);
-        $contract->content = $content;
+        $contract->loadMissing('content');
         return responseMessage('', new ContractResource($contract));
     }
 
@@ -146,26 +145,39 @@ class ContractController extends BaseController
     public function store(\Request $request, Contract $contract)
     {
         $data = $request::json()->all();
-        $data = collect($data)->only(['catid', 'fills', 'rules', 'agree'])->toArray();
+        $data = collect($data)->only(['catid', 'players', 'fillsData'])->toArray();
+        logger(__METHOD__, $data);
 
-        //$userType = $contract->getUserType($data['user_type']);
-        //unset($data['user_type']);
+        $sectionIds = array_keys($data['fillsData']);
+        $tplIds = [];
+        foreach ($data['fillsData'] as $sectionid => $v) {
+            $tplIds = array_merge($tplIds, array_keys($v));
+        }
+
+        $sections = ContractTplSection::whereIn('id', $sectionIds)->with(['contractTpl' => function($query) use ($tplIds) {
+            $query->whereIn('id', $tplIds)->orderByDesc('listorder');
+        }])
+        ->orderByDesc('listorder')
+        ->get()
+        ->toArray();
 
         DB::beginTransaction();
         try {
             $contractData = $contract->create([
                 'userid' => $this->user->id,
                 'catid' => $data['catid'],
-                'jiafang' => $data['fills']['jiafang'] ?? '',
-                'yifang' =>  $data['fills']['yifang'] ?? '',
-                'jujianren' =>  $data['fills']['jujianren'] ?? '',
+                'players' => $data['players'],
+                'jiafang' => '',
+                'yifang' =>  '',
+                'jujianren' =>  '',
                 //"userid_{$userType}" => $this->user->id,
                 'status' => $contract::STATUS_APPLY
             ]);
 
             $contractData->content()->create([
                 'id' => $contractData->id,
-                'content' => $data
+                'tpl' => $sections,
+                'fill' => $data['fillsData']
             ]);
             // todo 放入模型created事件 处理
             $contractData->name = __('contract.name', ['id' => $contractData->id]);
@@ -191,39 +203,57 @@ class ContractController extends BaseController
     public function update(\Request $request, Contract $contract)
     {
         $data = $request::json()->all();
-        $data = collect($data)->only(['fills', 'rules', 'agree'])->toArray();
+        $data = collect($data)->only(['catid', 'players', 'fillsData'])->toArray();
+        logger(__METHOD__, $data);
+
+        $sectionIds = array_keys($data['fillsData']);
+        $tplIds = [];
+        foreach ($data['fillsData'] as $sectionid => $v) {
+            $tplIds = array_merge($tplIds, array_keys($v));
+        }
+
+        $sections = ContractTplSection::whereIn('id', $sectionIds)
+            ->with(['contractTpl' => function($query) use ($tplIds) {
+                $query->whereIn('id', $tplIds)->orderByDesc('listorder');
+            }])
+            ->orderByDesc('listorder')
+            ->get()
+            ->toArray();
 
         DB::beginTransaction();
         try {
+            // 重置数据 等待重新确认
             $updateData = [
                 'jiafang' => $data['fills']['jiafang'] ?? '',
                 'yifang' =>  $data['fills']['yifang'] ?? '',
                 'jujianren' =>  $data['fills']['jujianren'] ?? '',
+                // 用户ID
                 'userid_first' => 0,
                 'userid_second' => 0,
                 'userid_three' => 0,
+                // 公司ID
                 'companyid_first' => 0,
                 'companyid_second' => 0,
                 'companyid_three' => 0,
+                // 确认状态
                 'confirm_first' => 0,
                 'confirm_second' => 0,
                 'confirm_three' => 0,
+                // 签名状态
                 'signed_first' => 0,
                 'signed_second' => 0,
                 'signed_three' => 0,
+                // 签名类型
                 'signed_type_first' => 0,
                 'signed_type_second' => 0,
                 'signed_type_three' => 0,
             ];
-            // 设置targetid
-            //if ($this->user->id != $contract->userid) {
-            //    $updateData['targetid'] = $this->user->id;
-            //}
-            //$updateData['confirm_second'] = 0;
+
             $contractData = $contract->update($updateData);
 
             $contract->content->update([
-                'content' => $data
+                'tpl' => $sections,
+                'fill' => $data['fillsData']
             ]);
 
             DB::commit();
@@ -232,7 +262,7 @@ class ContractController extends BaseController
             return responseException($exception->getMessage());
         }
 
-        return responseMessage();
+        return responseMessage('', new ContractResource($contract));
     }
 
     /**
@@ -270,7 +300,16 @@ class ContractController extends BaseController
         $updateData["confirm_{$userType}"] = 1;
         $contract->fill($updateData);
 
-        if ($contract->players == $contract::PLAYERS_TWO) {
+        // 直接设置当前用户真实姓名 (此时可能未实名)
+        //if ($userType === Contract::USER_TYPE_FIRST) {
+        //    $updateData['jiafang'] = $this->user;
+        //} else if ($userType === Contract::USER_TYPE_SECOND) {
+        //    $updateData['jiafang'] = $this->user;
+        //} else if ($userType === Contract::USER_TYPE_THREE) {
+        //    $updateData['jiafang'] = $this->user;
+        //}
+
+        if ($contract->players == $contract::PLAYERS_THREE) {
             if ($contract->confirm_first && $contract->confirm_second && $contract->confirm_three) {
                 $updateData['status'] = $contract::STATUS_CONFIRM;
                 $updateData['confirm_at'] = date('Y-m-d H:i:s');
@@ -292,10 +331,7 @@ class ContractController extends BaseController
             event(new UserConfirm($contract));
         }
 
-        $content = $contract->content->getAttribute('content');
-        unset($contract->content);
-        $contract->content = $content;
+        $contract->loadMissing('content');
         return responseMessage('', new ContractResource($contract));
-        //return responseMessage('', $contract->status);
     }
 }

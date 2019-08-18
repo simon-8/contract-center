@@ -1,5 +1,5 @@
-@inject('contractTplFill', 'App\Models\ContractTplFill')
-@inject('contractTplRule', 'App\Models\ContractTplRule')
+{{--@inject('contractTplFill', 'App\Models\ContractTplFill')--}}
+{{--@inject('contractTplRule', 'App\Models\ContractTplRule')--}}
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,35 +78,30 @@
     <div class="main">
         <div class="head">
             <div class="title text-center">
-                租赁合同
+                {{ $contract->getCatText() }}
             </div>
             <div class="name text-right">
                 {{ $contract->name }}
             </div>
         </div>
 
-        <div class="fills">
-            @foreach($contractTplFill->ofCatid([0, $contract->catid])->get() as $k => $v)
+        <div class="sections">
+            @foreach ($sections as $k => $section)
+                <h6>{{ $k+1 }}. {{ $section['name'] }}</h6>
+                @foreach ($section['contract_tpl'] as $tpl)
                 <p>
-                    {{ $v->content }}: <span class="fill-value">{{ empty($contract->content['fills'][$v->formname]) ? '/' : $contract->content['fills'][$v->formname] }}</span>
+                    @foreach ($tpl['formdata'] as $formKey => $formItem)
+                        @if (is_array($formItem))
+                            <span class="fill-value">
+                                {{ $fill[$section['id']][$tpl['id']][$formKey] ?? ''}}
+                            </span>
+                        @else
+                            {{ str_replace('&nbsp;', ' ', $formItem) }}
+                        @endif
+                    @endforeach
                 </p>
+                @endforeach
             @endforeach
-        </div>
-
-        <div class="rules">
-            @php
-                $i = 1;
-            @endphp
-            @foreach($contractTplRule->ofCatid([0, $contract->catid])->get() as $k => $v)
-                @if (in_array($v->id, $contract->content['rules']))
-                    <p>
-                        {{ $i++ }}. {{ $v->content }}
-                    </p>
-                @endif
-            @endforeach
-        </div>
-        <div class="agree">
-            <p>{{ $contract->content['agree'] }}</p>
         </div>
     </div>
 
@@ -129,7 +124,7 @@
                 {{ date('d', strtotime($contract->confirm_at)) }} 日
             </p>
         </div>
-        @if($contract->players == $contract::PLAYERS_TWO)
+        @if($contract->players == $contract::PLAYERS_THREE)
         <div class="col-4">
             <p>居间人签章：</p>
             <p>电话：<span class="fill-value">{{ $contract->userThree->mobile ?? '/' }}</span></p>

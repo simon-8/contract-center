@@ -46,7 +46,7 @@ class SignController extends BaseController
      */
     public function store(\Request $request, Sign $sign)
     {
-        if (!$this->user->esignUser()->where('type', EsignUser::TYPE_PERSON)->count()) {
+        if (!$this->user->vtruename) {
             return responseException('请先通过实名认证');
         }
 
@@ -80,10 +80,13 @@ class SignController extends BaseController
 
         if ($contract->userid_first == $this->user->id) {
             $contract->signed_first = 1;
+            $contract->jiafang = $this->user->realname->truename;
         } else if ($contract->userid_second == $this->user->id) {
             $contract->signed_second = 1;
+            $contract->yifang = $this->user->realname->truename;
         } else if ($contract->userid_three == $this->user->id) {
             $contract->signed_three = 1;
+            $contract->jujianren = $this->user->realname->truename;
         }
 
         // 参与方都签了名 直接修改状态
@@ -154,20 +157,13 @@ class SignController extends BaseController
     {
         $data = $request::only(['contract_id', 'sign_type', 'company_id', 'captcha']);
 
-        //if ($data['sign_type'] == Contract::SIGN_TYPE_PERSON) {
-        //    if (!$this->user->esignUser()->where('type', EsignUser::TYPE_PERSON)->exists()) {
-        //        return responseException('请先通过实名认证');
-        //    }
-        //}
+        if (empty($data['company_id'])) {
+            return responseException('请选择签名企业');
+        }
+        if (!UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($data['company_id'])->exists()) {
+            return responseException('签名企业未通过认证');
+        }
 
-        //if ($data['sign_type'] == Contract::SIGN_TYPE_COMPANY) {
-            if (empty($data['company_id'])) {
-                return responseException('请选择签名企业');
-            }
-            if (!UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($data['company_id'])->exists()) {
-                return responseException('签名企业未通过认证');
-            }
-        //}
         $companyData = UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($data['company_id'])->first();
         // 验证短信
         try {

@@ -12,7 +12,8 @@ class ContractContent extends Model
     protected $table = 'contract_content';
 
     protected $fillable = [
-        'content',
+        'tpl',
+        'fill',
     ];
 
     public $timestamps = false;
@@ -21,16 +22,33 @@ class ContractContent extends Model
      * @param $value
      * @return mixed
      */
-    public function getContentAttribute($value)
-    {
-        return unserialize($value);
-    }
+    //public function getTplAttribute($value)
+    //{
+    //    return json_decode($value, true);
+    //}
 
     /**
      * @param $value
      */
-    public function setContentAttribute($value)
+    public function setTplAttribute($value)
     {
-        $this->attributes['content'] = serialize($value);
+        $this->attributes['tpl'] = json_encode($value);
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    //public function getFillAttribute($value)
+    //{
+    //    return json_decode($value, true);
+    //}
+
+    /**
+     * @param $value
+     */
+    public function setFillAttribute($value)
+    {
+        $this->attributes['fill'] = json_encode($value, JSON_FORCE_OBJECT);
     }
 }

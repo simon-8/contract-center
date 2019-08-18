@@ -104,6 +104,15 @@ class User extends Authenticatable
     }
 
     /**
+     * 实名信息
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function realname()
+    {
+        return $this->hasOne('App\Models\UserRealName', 'userid', 'id');
+    }
+
+    /**
      * 匹配小程序  PassPort使用id做用户名
      * 其他应用同上
      * @param $username

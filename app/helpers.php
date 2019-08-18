@@ -215,7 +215,7 @@ function contractTemplateEditor($content = '' , $name = 'content', $extends = ''
                 onclick:function () {
                     //这里可以不用执行命令,做你自己的操作也可
                     //editor.execCommand(uiName);
-                    editor.execCommand('insertHtml', '@填空@')
+                    editor.execCommand('insertHtml', '__填空__')
                 }
             });
 

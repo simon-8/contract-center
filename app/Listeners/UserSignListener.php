@@ -85,7 +85,7 @@ class UserSignListener implements ShouldQueue
             'stream' => true,
         ];
 
-        // 签章关键字定位 && 签名类型
+        // 签章关键字定位 && 当前用户签名类型
         $signType = Contract::SIGN_TYPE_PERSON;
         if ($this->contract->userid_first == $this->user->id) {
 

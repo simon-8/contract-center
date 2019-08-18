@@ -10,7 +10,7 @@ class ContractTpl extends Base
 {
     use ModelTrait;
 
-    const FILL_STRING = '@填空@';
+    const FILL_STRING = '__填空__';
 
     protected $table = 'contract_tpl';
 
@@ -21,6 +21,11 @@ class ContractTpl extends Base
         'content',
         'formdata',
         'listorder',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function getContentAttribute($value)

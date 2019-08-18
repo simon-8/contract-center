@@ -46,10 +46,9 @@ class ContractService
      */
     public function makePdf(Contract $contract, $output = false)
     {
-        $content = $contract->content->getAttribute('content');
-        unset($contract->content);
-        $contract->content = $content;
-        $pdf = PDF::loadView('api.contract.show', compact('contract'));
+        $sections = json_decode($contract->content->tpl, true);
+        $fill = json_decode($contract->content->fill, true);
+        $pdf = PDF::loadView('api.contract.show', compact('contract', 'sections', 'fill'));
         $storePath = $this->makeStorePath($contract->id, $output);
         $storePath = Storage::disk('uploads')->path($storePath);
         return $pdf->save($storePath, true);

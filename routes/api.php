@@ -61,6 +61,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('', 'OrderLawyerConfirmController@store');
             //Route::post('repay/{orderid}', 'OrderLawyerConfirmController@reStore');
             Route::post('cancel/{orderid}', 'OrderLawyerConfirmController@cancel');
+            Route::get('query-express-fee', 'OrderLawyerConfirmController@queryExpressFee');
         });
         Route::any('notify/{channel}', 'OrderLawyerConfirmController@notify')->name('orderLawyerConfirm.notify');
         //Route::any('refund/{channel}', 'OrderLawyerConfirmController@refund')->name('orderLawyerConfirm.refund');
@@ -116,14 +117,15 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             'idno' => '340811199012035318'
         ]);
     });
-    //Route::get('test', function(\App\Services\ContractService $contractService) {
-    //    $contract = \App\Models\Contract::find(1);
-    //    $content = $contract->content->getAttribute('content');
-    //    unset($contract->content);
-    //    $contract->content = $content;
-    //
-    //    //$contractService->makePdf($contract);
-    //    return view('api.contract.show', compact('contract'));
-    //});
+    Route::get('test', function(\App\Services\ContractService $contractService) {
+        $contract = \App\Models\Contract::find(20);
+        //$content = $contract->content->getAttribute('content');
+        //unset($contract->content);
+        //$contract->content = $content;
+
+        $sections = json_decode($contract->content->tpl, true);
+        $fill = json_decode($contract->content->fill, true);
+        return view('api.contract.show', compact('contract', 'sections', 'fill'));
+    });
 
 });

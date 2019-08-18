@@ -65,8 +65,8 @@ class Contract extends Base
 
     // 参与者类型 (双方合同  三方合同)
     const PLAYERS_NORMAL = 0;
-    const PLAYERS_TWO = 1;
-    const PLAYERS_THREE = 2;
+    const PLAYERS_TWO = 2;
+    const PLAYERS_THREE = 3;
 
     // 签名类型 0个人 1公司
     const SIGN_TYPE_PERSON = 0;
@@ -181,6 +181,15 @@ class Contract extends Base
     }
 
     /**
+     * 关联分类
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo('App\Models\ContractCategory', 'catid', 'id');
+    }
+
+    /**
      * 对方用户ID
      * @param $query
      * @param int $data
@@ -280,13 +289,13 @@ class Contract extends Base
 
     /**
      * 获取分类名
-     * @param $catid
      * @return mixed|string
      */
-    public function getCatText($catid = null)
+    public function getCatText()
     {
-        if ($catid === null) $catid = $this->catid;
-        return $this->getCats()[$catid] ?? 'not found';
+        //if ($catid === null) $catid = $this->catid;
+        //return $this->getCats()[$catid] ?? 'not found';
+        return $this->category->name;
     }
 
     /**
