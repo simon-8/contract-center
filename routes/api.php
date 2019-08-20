@@ -77,6 +77,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('sign/send-verify-code', 'SignController@sendVerifyCode');
             Route::post('sign/verify-code', 'SignController@verifyCode');
             Route::apiResource('sign', 'SignController');
+
+            Route::get('test', 'UserController@test');
         });
     });
     Route::middleware('auth:api')->group(function () {

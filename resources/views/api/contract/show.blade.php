@@ -1,5 +1,3 @@
-{{--@inject('contractTplFill', 'App\Models\ContractTplFill')--}}
-{{--@inject('contractTplRule', 'App\Models\ContractTplRule')--}}
 <!DOCTYPE html>
 <html>
 <head>

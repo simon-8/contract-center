@@ -47,7 +47,7 @@ class UserConfirmListener implements ShouldQueue
         // pdf 文档位置
         $outputFile = $this->contractService->makeStorePath($event->contract->id, true);
         if (!$event->contract->path_pdf) {
-            $path_pdf = str_replace(Storage::disk('uploads')->path(''), '', $outputFile);
+            $path_pdf = $outputFile;
             // 防止更新关联模型
             //unset($event->contract->content, $event->contract->user_first, $event->contract->user_second, $event->contract->user_three);
             //$event->contract->save();

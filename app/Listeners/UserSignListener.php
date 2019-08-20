@@ -111,6 +111,7 @@ class UserSignListener implements ShouldQueue
             $signData['sealData'] = $this->userSignImage();
         }
 
+        logger(__METHOD__, $signData);
         $serviceid = $this->esignService->userSign($signData);
 
         // 签名记录

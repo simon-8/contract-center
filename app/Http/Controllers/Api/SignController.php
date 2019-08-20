@@ -228,14 +228,20 @@ class SignController extends BaseController
     public function sendVerifyCode(\Request $request, EsignService $esignService)
     {
         $data = $request::only(['company_id']);
-        try {
-            // 个人
-            if (empty($data['company_id'])) {
-                $mobile = $this->user->mobile;
-            } else {
-                $companyData = UserCompany::find($data['company_id']);
-                $mobile = $companyData['mobile'];
+        // 个人
+        if (empty($data['company_id'])) {
+            if (!$this->user->vtruename) {
+                return responseException('请先通过实名认证');
             }
+            $mobile = $this->user->mobile;
+        } else {
+            $companyData = UserCompany::find($data['company_id']);
+            if (!$companyData || $companyData->status < UserCompany::STATUS_SUCCESS) {
+                return responseException('签名企业未通过认证');
+            }
+            $mobile = $companyData['mobile'];
+        }
+        try {
             $esignService->sendSignCodeToMobile($this->user->esignUser->accountid, $mobile);
         } catch (\Exception $e) {
             logger(__METHOD__, [$e->getMessage()]);

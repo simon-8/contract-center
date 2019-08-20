@@ -78,4 +78,9 @@ class UserController extends BaseController
         return responseMessage(__('api.success'));
     }
 
+    public function test()
+    {
+        $user = $this->user->realname;
+        dd($user);
+    }
 }
