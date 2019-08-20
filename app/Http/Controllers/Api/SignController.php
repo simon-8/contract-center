@@ -182,18 +182,21 @@ class SignController extends BaseController
             $contract->signed_first = 1;
             $contract->sign_type_first = $data['sign_type'];
             $contract->companyid_first = $data['company_id'];
+            $contract->jiafang = $companyData->name;
 
         } else if ($contract->userid_second == $this->user->id) {
 
             $contract->signed_second = 1;
             $contract->sign_type_second = $data['sign_type'];
             $contract->companyid_second = $data['company_id'];
+            $contract->yifang = $companyData->name;
 
         } else if ($contract->userid_three == $this->user->id) {
 
             $contract->signed_three = 1;
             $contract->sign_type_three = $data['sign_type'];
             $contract->companyid_three = $data['company_id'];
+            $contract->jujianren = $companyData->name;
 
         }
 
