@@ -17,24 +17,24 @@
                 @else
                     <h5>添加模板</h5>
                 @endif
+                    <input type="hidden" name="section_id" value="{{ $contractTpl['section_id'] }}">
             </div>
             <div class="ibox-content">
 
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">所属模块</label>
-                    <div class="col-sm-10">
-                        <select name="section_id" class="form-control inline" style="width: 180px;">
-{{--                            <option value="">请选择合同类型</option>--}}
-                            @foreach((new \App\Models\ContractTplSection())->get()->pluck('name', 'id') as $section_id => $section_name)
-                                <option value="{{ $section_id }}"
-                                        @if (isset($contractTpl->section_id) && $contractTpl->section_id === $section_id) selected @endif>{{ $section_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <span class="help-block m-b-none"></span>
-                    </div>
-                </div>
-                <div class="hr-line-dashed"></div>
+{{--                <div class="form-group">--}}
+{{--                    <label class="col-sm-2 control-label">所属模块</label>--}}
+{{--                    <div class="col-sm-10">--}}
+{{--                        <select name="section_id" class="form-control inline" style="width: 180px;">--}}
+{{--                            @foreach((new \App\Models\ContractTplSection())->get()->pluck('name', 'id') as $section_id => $section_name)--}}
+{{--                                <option value="{{ $section_id }}"--}}
+{{--                                        @if (isset($contractTpl->section_id) && $contractTpl->section_id === $section_id) selected @endif>{{ $section_name }}--}}
+{{--                                </option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                        <span class="help-block m-b-none"></span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="hr-line-dashed"></div>--}}
 
 {{--                <div class="form-group">--}}
 {{--                    <label class="col-sm-2 control-label">参与者类型</label>--}}

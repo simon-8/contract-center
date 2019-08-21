@@ -17,11 +17,12 @@ class ContractTplController extends Controller
      */
     public function index(\Request $request, ContractTpl $contractTpl)
     {
-        $data = $request::only(['created_at', 'content', 'section_id']);
+        $data = $request::only(['created_at', 'content', 'section_id', 'players']);
         $lists = $contractTpl->ofCatid($data['catid'] ?? '')
             ->ofCreatedAt($data['created_at'] ?? '')
             ->ofContent($data['content'] ?? '')
             ->ofSectionId($data['section_id'] ?? '')
+            ->ofPlayers($data['players'] ?? '')
             ->orderByDesc('id')
             ->paginate();
         return view('admin.contract_tpl.index', compact('lists', 'data'));
@@ -30,9 +31,10 @@ class ContractTplController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(\Request $request)
     {
-        return view('admin.contract_tpl.create');
+        $contractTpl = $request::all();
+        return view('admin.contract_tpl.create', compact('contractTpl'));
     }
 
     /**
@@ -56,6 +58,8 @@ class ContractTplController extends Controller
                 ];
             }, $arr);
             $data['formdata'] = array_slice($newArr, 0, -1);
+        } else {
+            $data['formdata'] = [];
         }
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
@@ -64,7 +68,10 @@ class ContractTplController extends Controller
             return back()->withErrors(__('web.failed'))->withInput();
         }
 
-        return redirect()->route('admin.contract-tpl.index')->with('message', __('web.success'));
+        return redirect()->route('admin.contract-tpl.index', [
+            'section_id' => $data['section_id'],
+            'players' => $data['players'],
+        ])->with('message', __('web.success'));
     }
 
     /**
@@ -107,7 +114,10 @@ class ContractTplController extends Controller
             return back()->withErrors(__('web.failed'))->withInput();
         }
 
-        return redirect()->route('admin.contract-tpl.index')->with('message', __('web.success'));
+        return redirect()->route('admin.contract-tpl.index', [
+            'section_id' => $data['section_id'],
+            'players' => $data['players'],
+        ])->with('message', __('web.success'));
     }
 
     /**
@@ -120,6 +130,9 @@ class ContractTplController extends Controller
         if (!$contractTpl->delete()) {
             return back()->withErrors(__('web.failed'));
         }
-        return redirect()->route('admin.contract-tpl.index')->with('message', __('web.success'));
+        return redirect()->route('admin.contract-tpl.index', [
+            'section_id' => $contractTpl['section_id'],
+            'players' => $contractTpl['players'],
+        ])->with('message', __('web.success'));
     }
 }

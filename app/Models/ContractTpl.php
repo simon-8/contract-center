@@ -90,7 +90,7 @@ class ContractTpl extends Base
      */
     public function scopeOfPlayers(Builder $query, $data = '')
     {
-        if ($data === '') return $query;
+        if (!$data) return $query;
         return $query->where('players', $data);
     }
 }

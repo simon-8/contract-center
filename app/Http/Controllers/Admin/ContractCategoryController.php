@@ -29,6 +29,7 @@ class ContractCategoryController extends BaseController
     {
         $data = [];
         $data['players'] = $contract->getPlayers();
+        $data['catid'] = $contractCategory->id;
         foreach ($data['players'] as $typeid => $typename) {
             $data['tplSection'][$typeid] = $contractTplSection->ofCatid($contractCategory->id)
                 ->ofPlayers($typeid)

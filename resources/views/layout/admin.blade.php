@@ -148,6 +148,35 @@
         $(updateModal).modal('show');
     }
 
+    function openFrame(obj, href, page, name) {
+        let create = true;
+        $(".J_menuTab", parent.document).each(function () {
+            if ($(this).data('id') === page) {
+                if (!$(this).hasClass('active')) {
+                    $(this).addClass("active").siblings(".J_menuTab").removeClass("active");
+                    $(".J_mainContent .J_iframe", parent.document).each(function () {
+                        if ($(this).data("id") === page) {
+                            $(this).show().siblings(".J_iframe").hide();
+                            if ($(this).attr('src') != href) {
+                                $(this).attr('src', href);
+                            }
+                        }
+                        //return $(this).data("id") === page ? $(this).show().siblings(".J_iframe").hide() : '';
+                    });
+                    create = false;
+                }
+                $(this).html(name + ' <i class="fa fa-times-circle"></i>');
+            }
+        });
+        if (create) {
+            var menu = '<a href="javascript:;" class="active J_menuTab" data-id="' + page + '">' + name + ' <i class="fa fa-times-circle"></i></a>';
+            $(".J_menuTab", parent.document).removeClass("active");
+            var iframe = '<iframe class="J_iframe" name="iframe' + page + '" width="100%" height="100%" src="' + href + '" frameborder="0" data-id="' + page + '" seamless></iframe>';
+            $(".J_menuTabs .page-tabs-content", parent.document).append(menu);
+            $(".J_mainContent", parent.document).find("iframe.J_iframe").hide().parents(".J_mainContent").append(iframe);
+        }
+    }
+
     /*
     * 加载层
     * */

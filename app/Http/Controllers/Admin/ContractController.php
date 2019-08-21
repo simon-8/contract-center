@@ -51,27 +51,6 @@ class ContractController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * 详情
      * @param Contract $contract
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -81,29 +60,6 @@ class ContractController extends Controller
         $fills = ContractTplFill::ofCatid([0, $contract->catid])->get();
         $rules = ContractTplRule::ofCatid([0, $contract->catid])->get();
         return view('admin.contract.show', compact('contract', 'fills', 'rules'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**

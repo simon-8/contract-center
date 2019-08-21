@@ -17,9 +17,9 @@
                     @foreach($lists as $v)
                         <tr>
                             <td>{{ $v['id'] }}</td>
-                            <td>{{ $v['name'] }}</td>
+                            <td class="name">{{ $v['name'] }}</td>
                             <td>
-                                <a class="btn btn-sm btn-primary" href="{{ editURL('admin.contract-category.show', $v->id) }}">管理</a>
+                                <button class="btn btn-sm btn-primary control-section" data-page="section" data-href="{{ editURL('admin.contract-category.show', $v->id) }}">模块管理</button>
                                 <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit({{ $v['id'] }}, '{{ editURL('admin.contract-category.update', $v['id']) }}')">编辑</button>
                                 <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract-category.destroy', $v['id']) }}')">删除</button>
                             </td>
@@ -37,21 +37,15 @@
             <button class="btn btn-success" data-toggle="modal" data-target="#createModal">添加</button>
         </div>
     </div>
+
     <script>
-        //var createModal = '#createModal';
-        //
-        //function AddChild(id) {
-        //    var json = $('#edit_' + id).attr('data');
-        //    json = JSON.parse(json);
-        //    $(createModal).find('select[name=pid]').val(json.id);
-        //    $(createModal).modal('show');
-        //}
-        //$(function() {
-        //    $("form [name='route']").change(function() {
-        //        let txt = $(this).find("option:selected").attr('data');
-        //        $(this).closest('form').find("[name='name']").val(txt);
-        //    });
-        //});
+        $('.control-section').click(function() {
+            let href = $(this).data('href'),
+                page = $(this).data('page'),
+                name = $(this).text();
+            name = $(this).closest('tr').find('.name').text() + name;
+            openFrame($(this), href, page, name);
+        });
     </script>
 
     {{--delete--}}

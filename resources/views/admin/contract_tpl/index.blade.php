@@ -9,30 +9,30 @@
         </div>
         <div class="ibox-content">
             <div class="m-b-md">
-                <form action="{{ route(request()->route()->getName()) }}" method="get" class="form-inline" id="searchForm">
-                    <div class="input-group m-b">
-                        <span class="input-group-addon">添加时间</span>
-                        <input type="text" name="created_at" id="created_at" class="form-control" autocomplete="off"
-                               placeholder="点击选择" value="{{ $data['created_at']??'' }}">
-                    </div>
+{{--                <form action="{{ route(request()->route()->getName()) }}" method="get" class="form-inline" id="searchForm">--}}
+{{--                    <div class="input-group m-b">--}}
+{{--                        <span class="input-group-addon">添加时间</span>--}}
+{{--                        <input type="text" name="created_at" id="created_at" class="form-control" autocomplete="off"--}}
+{{--                               placeholder="点击选择" value="{{ $data['created_at']??'' }}">--}}
+{{--                    </div>--}}
 
-                    <div class="input-group m-b">
-                        <select name="catid" class="form-control inline">
-                            <option value="">请选择分类</option>
-                            @foreach((new \App\Models\ContractCategory())->getCats() as $catid => $catname)
-                            <option value="{{ $catid }}"
-                                @if (isset($data['catid']) && $data['catid'] === (string) $catid) selected @endif>{{ $catname }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="input-group m-b">
-                        <input type="text" name="content" id="content" class="form-control" autocomplete="off"
-                               style="width:180px;" placeholder="请输入关键词" value="{{ $data['content']??'' }}">
-                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> 搜索</button>
-                    </div>
-                </form>
-                <a href="{{ route('admin.contract-tpl.create') }}" class="btn btn-primary">
+{{--                    <div class="input-group m-b">--}}
+{{--                        <select name="catid" class="form-control inline">--}}
+{{--                            <option value="">请选择分类</option>--}}
+{{--                            @foreach((new \App\Models\ContractCategory())->getCats() as $catid => $catname)--}}
+{{--                            <option value="{{ $catid }}"--}}
+{{--                                @if (isset($data['catid']) && $data['catid'] === (string) $catid) selected @endif>{{ $catname }}--}}
+{{--                            </option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                    </div>--}}
+{{--                    <div class="input-group m-b">--}}
+{{--                        <input type="text" name="content" id="content" class="form-control" autocomplete="off"--}}
+{{--                               style="width:180px;" placeholder="请输入关键词" value="{{ $data['content']??'' }}">--}}
+{{--                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> 搜索</button>--}}
+{{--                    </div>--}}
+{{--                </form>--}}
+                <a href="{{ route('admin.contract-tpl.create', ['section_id' => $data['section_id'] ?? '', 'players' => $data['players'] ?? '']) }}" class="btn btn-primary">
                     <i class="fa fa-plus"></i>&nbsp;新增
                 </a>
             </div>

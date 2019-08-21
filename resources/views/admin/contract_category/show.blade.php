@@ -25,7 +25,7 @@
                             @endif
                             <td>{{ $section->name }}</td>
                             <td>
-                                <button data-href="{{ route('admin.contract-tpl.index', ['section_id' => $section->id]) }}" class="btn btn-sm btn-secondary action-tpl">模板管理</button>
+                                <button data-href="{{ route('admin.contract-tpl.index', ['section_id' => $section->id, 'players' => $typeid]) }}" class="btn btn-sm btn-secondary action-tpl">模板管理</button>
                                 <button class="btn btn-sm btn-info" id="edit_{{ $section['id'] }}" data='@json($section)' onclick="Edit({{ $section['id'] }}, '{{ editURL('admin.contract-tpl-section.update', $section['id']) }}')">编辑</button>
                                 <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract-tpl-section.destroy', $section['id']) }}')">删除</button>
                             </td>
@@ -76,17 +76,18 @@
                     {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">模板分类</label>
-                        <div class="col-sm-10">
-                            <select name="catid" class="form-control">
-                                @foreach($contractCategoryModel->getCats() as $catid => $catname)
-                                    <option value="{{ $catid }}">{{ $catname }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block m-b-none">选择所属分类</span>
-                        </div>
-                    </div>
+                    <input type="hidden" name="catid" value="{{ $data['catid'] }}">
+{{--                    <div class="form-group">--}}
+{{--                        <label class="col-sm-2 control-label">模板分类</label>--}}
+{{--                        <div class="col-sm-10">--}}
+{{--                            <select name="catid" class="form-control">--}}
+{{--                                @foreach($contractCategoryModel->getCats() as $catid => $catname)--}}
+{{--                                    <option value="{{ $catid }}">{{ $catname }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                            <span class="help-block m-b-none">选择所属分类</span>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">参与人类型</label>
                         <div class="col-sm-10">
@@ -139,21 +140,22 @@
                 <input type="hidden" name="id" value="">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">编辑菜单</h4>
+                    <h4 class="modal-title">编辑模块</h4>
                     {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">模板分类</label>
-                        <div class="col-sm-10">
-                            <select name="catid" class="form-control">
-                                @foreach($contractCategoryModel->getCats() as $catid => $catname)
-                                    <option value="{{ $catid }}">{{ $catname }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block m-b-none">选择所属分类</span>
-                        </div>
-                    </div>
+                    <input type="hidden" name="catid" value="{{ $data['catid'] }}">
+{{--                    <div class="form-group">--}}
+{{--                        <label class="col-sm-2 control-label">模板分类</label>--}}
+{{--                        <div class="col-sm-10">--}}
+{{--                            <select name="catid" class="form-control">--}}
+{{--                                @foreach($contractCategoryModel->getCats() as $catid => $catname)--}}
+{{--                                    <option value="{{ $catid }}">{{ $catname }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                            <span class="help-block m-b-none">选择所属分类</span>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">参与人类型</label>
                         <div class="col-sm-10">

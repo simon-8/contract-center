@@ -85,6 +85,9 @@ class ContractTplSectionController extends Controller
      */
     public function destroy(ContractTplSection $contractTplSection)
     {
+        if ($contractTplSection->contractTpl()->count()) {
+            return back()->withErrors('请先删除该模块下的所有模板');
+        }
         if (!$contractTplSection->delete()) {
             return back()->withErrors(__('web.failed'));
         }

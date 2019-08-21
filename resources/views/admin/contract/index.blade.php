@@ -79,9 +79,9 @@
                     </div>
 
                 </form>
-                <a href="{{ route('admin.contract.create') }}" class="btn btn-primary">
-                    <i class="fa fa-plus"></i>&nbsp;新增
-                </a>
+{{--                <a href="{{ route('admin.contract.create') }}" class="btn btn-primary">--}}
+{{--                    <i class="fa fa-plus"></i>&nbsp;新增--}}
+{{--                </a>--}}
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover bg-white text-center text-nowrap">
