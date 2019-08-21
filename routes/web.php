@@ -38,6 +38,9 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
         //Route::resource('contract-tpl-rule', 'ContractTplRuleController');
         Route::resource('single-page', 'SinglePageController');
         Route::resource('express-fee', 'ExpressFeeController');
+        Route::prefix('operation')->group(function() {
+            Route::get('order', 'OperationController@order')->name('operation.order');
+        });
         // database
         Route::prefix('database')->group(function() {
             Route::get('/', 'DatabaseController@getIndex')->name('database.index');

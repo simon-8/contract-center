@@ -100,6 +100,9 @@ return [
 
     'admin.express-fee.index' => '快递费用管理',
     'admin.express-fee.store' => '快递费用更新',
+
+    'admin.operation.*' => '运营信息',
+    'admin.operation.order' => '订单管理',
     //'admin.express-fee.edit' => '模板模块编辑',
     //'admin.contract-tpl-fill.*' => '填空模板管理',
     //'admin.contract-tpl-fill.index' => ' 填空模板列表',
