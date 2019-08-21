@@ -20,7 +20,7 @@
     <script src="{{ skinPath() }}js/bootstrap.min.js"></script>
 
     <!-- 自定义js -->
-    <script src="{{ skinPath() }}js/plugins/layer/layer.min.js"></script>
+    <script src="{{ skinPath() }}js/plugins/layer/layer.js"></script>
     <script src="{{ skinPath() }}js/plugins/laydate/laydate.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
 

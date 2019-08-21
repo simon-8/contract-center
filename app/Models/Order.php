@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\ModelTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -59,6 +60,18 @@ class Order extends Model
     {
         return $this->belongsTo('App\Models\Contract', 'contract_id', 'id');
     }
+
+    /**
+     * @param Builder $query
+     * @param string $data
+     * @return Builder
+     */
+    public function scopeOfOrderid(Builder $query, $data = '')
+    {
+        if (!$data) return $query;
+        return $query->where('orderid', $data);
+    }
+
 
     /**
      * 所有状态

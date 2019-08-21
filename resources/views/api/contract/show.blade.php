@@ -25,6 +25,7 @@
         }
         .container {
             width: 794px;
+            margin: 0 auto;
             /*border: 1px solid red;*/
         }
         .container .main .sections {

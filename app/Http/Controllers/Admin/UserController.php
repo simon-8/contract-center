@@ -41,4 +41,13 @@ class UserController extends BaseController
         $user->save();
         return responseMessage(__('web.success'));
     }
+
+    /**
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show(User $user)
+    {
+        return view('admin.user.show', compact('user'));
+    }
 }

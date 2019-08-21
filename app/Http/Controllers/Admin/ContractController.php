@@ -57,9 +57,9 @@ class ContractController extends Controller
      */
     public function show(Contract $contract)
     {
-        $fills = ContractTplFill::ofCatid([0, $contract->catid])->get();
-        $rules = ContractTplRule::ofCatid([0, $contract->catid])->get();
-        return view('admin.contract.show', compact('contract', 'fills', 'rules'));
+        $sections = json_decode($contract->content->tpl, true);
+        $fill = json_decode($contract->content->fill, true);
+        return view('admin.contract.show', compact('contract', 'sections', 'fill'));
     }
 
     /**

@@ -102,7 +102,7 @@
 </div>
 
 <!-- <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
-<script src="{{ skinPath() }}js/plugins/layer/layer.min.js"></script>
+<script src="{{ skinPath() }}js/plugins/layer/layer.js"></script>
 <script src="{{ skinPath() }}js/admin.js"></script>
 <script type="text/javascript" src="{{ skinPath() }}js/contabs.min.js"></script>
 <!-- <script type="text/javascript" src="js/contabs.min.js"></script> -->
