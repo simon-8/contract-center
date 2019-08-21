@@ -13,11 +13,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage;
 
-class UserSignListener implements ShouldQueue
+class UserSignListener
 {
-    use InteractsWithQueue;
+    //use InteractsWithQueue;
 
-    public $tries = 1;
+    //public $tries = 1;
 
     public $contractService;
 
@@ -178,8 +178,8 @@ class UserSignListener implements ShouldQueue
      * @param  \Exception  $exception
      * @return void
      */
-    public function failed(UserSign $event, $exception)
-    {
-        info(__METHOD__, [$exception->getMessage()]);
-    }
+    //public function failed(UserSign $event, $exception)
+    //{
+    //    info(__METHOD__, [$exception->getMessage()]);
+    //}
 }

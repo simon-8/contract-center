@@ -119,8 +119,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             'idno' => '340811199012035318'
         ]);
     });
-    Route::get('test', function(\App\Services\ContractService $contractService) {
-        $contract = \App\Models\Contract::find(20);
+    Route::get('test/{id}', function($id) {
+        $contract = \App\Models\Contract::find($id);
         //$content = $contract->content->getAttribute('content');
         //unset($contract->content);
         //$contract->content = $content;

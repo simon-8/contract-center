@@ -27,8 +27,14 @@
             width: 794px;
             /*border: 1px solid red;*/
         }
-        .container .main p {
+        .container .main .sections {
             text-indent: 2em;
+            padding: 5px 0;
+        }
+        .container .main .section {
+            padding: 5px 0;
+        }
+        .container .main .section p {
             padding: 5px 0;
         }
         .container .main .head .title {
@@ -85,20 +91,26 @@
 
         <div class="sections">
             @foreach ($sections as $k => $section)
-                <h6>{{ $k+1 }}. {{ $section['name'] }}</h6>
-                @foreach ($section['contract_tpl'] as $tpl)
-                <p>
-                    @foreach ($tpl['formdata'] as $formKey => $formItem)
-                        @if (is_array($formItem))
-                            <span class="fill-value">
-                                {{ $fill[$section['id']][$tpl['id']][$formKey] ?? ''}}
-                            </span>
-                        @else
-                            {{ str_replace('&nbsp;', ' ', $formItem) }}
-                        @endif
+                <div class="section">
+                    <h4>{{ $k+1 }}. {{ $section['name'] }}</h4>
+                    @foreach ($section['contract_tpl'] as $tpl)
+                        <p>
+                            @foreach ($tpl['formdata'] as $formKey => $formItem)
+                                @if (is_array($formItem))
+                                    <span class="fill-value">
+                                    @if (empty($fill[$section['id']][$tpl['id']][$formKey]))
+                                       &nbsp;/&nbsp;
+                                    @else
+                                            {{ $fill[$section['id']][$tpl['id']][$formKey] }}
+                                    @endif
+                                    </span>
+                                @else
+                                    {{ str_replace('&nbsp;', ' ', $formItem) }}
+                                @endif
+                            @endforeach
+                        </p>
                     @endforeach
-                </p>
-                @endforeach
+                </div>
             @endforeach
         </div>
     </div>
