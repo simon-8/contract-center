@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\ModelTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderLawyerConfirm extends Base
@@ -32,10 +33,29 @@ class OrderLawyerConfirm extends Base
         'openid',
         'remark',
         'address',
+        'express_name',
+        'express_no',
         'status',
         'client_id',
         'payed_at',
     ];
+
+    /**
+     * @param $value
+     * @return array|mixed
+     */
+    public function getAddressAttribute($value)
+    {
+        return $value ? json_decode($value, true) : [];
+    }
+
+    /**
+     * @param $value
+     */
+    public function setAddressAttribute($value)
+    {
+        $this->attributes['address'] = $value ? json_encode($value) : '';
+    }
 
     /**
      * 关联用户
@@ -56,20 +76,14 @@ class OrderLawyerConfirm extends Base
     }
 
     /**
-     * @param $value
-     * @return array|mixed
+     * @param Builder $query
+     * @param string $data
+     * @return Builder
      */
-    public function getAddressAttribute($value)
+    public function scopeOfOrderid(Builder $query, $data = '')
     {
-        return $value ? json_decode($value, true) : [];
-    }
-
-    /**
-     * @param $value
-     */
-    public function setAddressAttribute($value)
-    {
-        $this->attributes['address'] = $value ? json_encode($value) : '';
+        if (!$data) return $query;
+        return $query->where('orderid', $data);
     }
 
     /**

@@ -40,7 +40,9 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
         Route::resource('express-fee', 'ExpressFeeController');
         Route::prefix('operation')->group(function() {
             Route::get('order', 'OperationController@order')->name('operation.order');
+
         });
+        Route::resource('order-lawyer-confirm', 'OrderLawyerConfirmController');
         // database
         Route::prefix('database')->group(function() {
             Route::get('/', 'DatabaseController@getIndex')->name('database.index');

@@ -3,7 +3,7 @@
 <div class="col-sm-12 animated fadeInRight">
     <div class="ibox">
         <div class="ibox-title">
-            <h5>订单列表</h5>
+            <h5>律师见证</h5>
         </div>
         <div class="ibox-content">
             <div class="m-b-md">
@@ -37,7 +37,7 @@
                     <div class="input-group m-b">
                         <select name="status" class="form-control inline">
                             <option value="">请选择状态</option>
-                            @foreach((new \App\Models\Order())->getStatus() as $status => $statusText)
+                            @foreach((new \App\Models\OrderLawyerConfirm())->getStatus() as $status => $statusText)
                                 <option value="{{ $status }}"
                                         @if (isset($data['status']) && $data['status'] === (string) $status) selected @endif>{{ $statusText }}
                                 </option>
@@ -76,11 +76,12 @@
                         <td style="width: 60px;">充值渠道</td>
                         <td style="width: 60px;">充值方式</td>
                         <td style="width: 60px;">备注</td>
+                        <td style="width: 60px;">地址</td>
                         <td style="width: 60px;">状态</td>
                         <td style="width: 100px;">支付时间</td>
 {{--                        <td style="width: 100px;">创建时间</td>--}}
                         <td style="width: 100px;">更新时间</td>
-{{--                        <td style="width: 180px;">操作</td>--}}
+                        <td style="width: 180px;">操作</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -103,35 +104,31 @@
                                     <a href="javascript:void;" class="show-remark" data-remark="{{ $v->remark }}">查看</a>
                                 </td>
                                 <td>
-                                    @if ($v->status == \App\Models\Order::STATUS_WAIT_PAY)
+                                    <a href="javascript:void;" class="show-address" data-address='@json($v->address)' data-href="{{ editURL('admin.order-lawyer-confirm.update', $v['id']) }}">查看</a>
+                                </td>
+                                <td>
+                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_WAIT_PAY)
                                         <span class="label lable-xs label-default radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\Order::STATUS_ALREADY_PAY)
+                                    @elseif($v->status == \App\Models\OrderLawyerConfirm::STATUS_WAIT_SEND)
                                         <span class="label lable-xs label-primary radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\Order::STATUS_CONFIRM)
+                                    @elseif($v->status == \App\Models\OrderLawyerConfirm::STATUS_HAS_BEEN_SEND)
                                         <span class="label lable-xs label-primary radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\Order::STATUS_APPLY_REFUND)
-                                        <span class="label lable-xs label-warning radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\Order::STATUS_REFUND_FAILD)
-                                        <span class="label lable-xs label-danger radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\Order::STATUS_REFUND_SUCCESS)
-                                        <span class="label lable-xs label-success radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\Order::STATUS_TRADE_SUCCESS)
-                                        <span class="label lable-xs label-success radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\Order::STATUS_TRADE_CLOSE)
-                                        <span class="label lable-xs label-default radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\Order::STATUS_TRADE_SELL_CLOSE)
-                                        <span class="label lable-xs label-default radius">{{ $v->getStatusText() }}</span>
                                     @endif
                                 </td>
                                 <td>{{ $v->payed_at }}</td>
 {{--                                <td>{{ $v->created_at }}</td>--}}
                                 <td>{{ $v->updated_at }}</td>
 
-{{--                                <td>--}}
-{{--                                    <a class="btn btn-sm btn-default" href="{{ route('admin.contract.show', ['id' => $v->id]) }}">查看</a>--}}
+                                <td>
+                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_WAIT_SEND)
+                                    <a class="btn btn-sm btn-info show-control" data-express='@json($v->only(['express_name', 'express_no']))' data-href="{{ editURL('admin.order-lawyer-confirm.update', $v['id']) }}">发货</a>
+                                    @endif
+                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_HAS_BEEN_SEND)
+                                        <a class="btn btn-sm btn-info show-control" data-express='@json($v->only(['express_name', 'express_no']))' data-href="{{ editURL('admin.order-lawyer-confirm.update', $v['id']) }}">快递信息</a>
+                                    @endif
 {{--                                    <a class="btn btn-sm btn-info" href="{{ route('admin.contract.edit', ['id' => $v->id]) }}">编辑</a>--}}
 {{--                                    <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract.destroy', $v->id) }}')">删除</button>--}}
-{{--                                </td>--}}
+                                </td>
                             </tr>
                         @endforeach
                     @else
@@ -155,8 +152,106 @@
     {{--delete--}}
     @include('admin.modal.delete')
 
+    {{-- address --}}
+    <div class="modal inmodal" id="addressModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInDown">
+                <form action="" method="POST" class="form-horizontal">
+                    {!! csrf_field() !!}
+                    {!! method_field('PUT') !!}
+                    <input type="hidden" name="id" value="">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">收货地址</h4>
+                        {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">省份</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="province" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">城市</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="city" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">地区</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="area" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">详细地址</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="address" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系人</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="linkman" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系手机</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="mobile" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+{{--                    <div class="modal-footer">--}}
+{{--                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>--}}
+{{--                        <button type="submit" class="btn btn-primary">修改</button>--}}
+{{--                    </div>--}}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{--update--}}
+    <div class="modal inmodal" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInDown">
+                <form action="" method="POST" class="form-horizontal">
+                    {!! csrf_field() !!}
+                    {!! method_field('PUT') !!}
+                    <input type="hidden" name="id" value="">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">更新</h4>
+                        {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="status" value="{{ \App\Models\OrderLawyerConfirm::STATUS_HAS_BEEN_SEND }}">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">快递名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="express_name" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">快递单号</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="express_no" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">修改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
+    let addressModal = '#addressModal';
+    let updateModal = '#updateModal';
     let updated_at = laydate.render({
         elem: '#updated_at',
         max: '{{ date('Y-m-d') }}',
@@ -188,5 +283,28 @@
     }, function () {
         layer.closeAll();
     });
+
+    $('.show-address').click(function() {
+        let address = $(this).attr('data-address');
+        let href = $(this).attr('data-href');
+        let json = JSON.parse(address);
+        $.each(json , function(k , v){
+            $(addressModal).find('[name=' + k + ']').val(v);
+        });
+        //$(addressModal).find('form').attr('action', href);
+        $(addressModal).modal('show');
+    });
+
+    $('.show-control').click(function() {
+        let express = $(this).attr('data-express');
+        let href = $(this).attr('data-href');
+        let json = JSON.parse(express);
+        $.each(json , function(k , v){
+            $(updateModal).find('[name=' + k + ']').val(v);
+        });
+        $(updateModal).find('form').attr('action', href);
+        $(updateModal).modal('show');
+    });
+
 </script>
 @endsection
