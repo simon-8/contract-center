@@ -306,10 +306,10 @@ class Contract extends Base
     public function getStatus()
     {
         $statusArr = [
-            self::STATUS_APPLY          => '一方申请',
-            self::STATUS_CONFIRM        => '双方确认',
-            self::STATUS_PAYED          => '一方支付',
-            self::STATUS_SIGN           => '双方签名',
+            self::STATUS_APPLY          => '已申请',
+            self::STATUS_CONFIRM        => '已确认',
+            self::STATUS_PAYED          => '已支付',
+            self::STATUS_SIGN           => '已签名',
             self::STATUS_LAWYER_CONFIRM => '已见证',
         ];
         return $statusArr;

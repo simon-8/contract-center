@@ -54,7 +54,14 @@ class ContractController extends BaseController
      */
     public function getStatus(Contract $contract)
     {
-        return responseMessage('', $contract->getStatus());
+        $statusArr = [
+            Contract::STATUS_APPLY          => '一方申请',
+            Contract::STATUS_CONFIRM        => '双方确认',
+            Contract::STATUS_PAYED          => '进行签名',
+            Contract::STATUS_SIGN           => '签名完毕',
+            Contract::STATUS_LAWYER_CONFIRM => '已见证',
+        ];
+        return responseMessage('', $statusArr);
     }
 
     /**

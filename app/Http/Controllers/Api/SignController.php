@@ -14,6 +14,7 @@ use App\Events\UserSign;
 use App\Models\UserCompany;
 use App\Services\ContractService;
 use App\Services\EsignService;
+use Illuminate\Support\Facades\DB;
 
 class SignController extends BaseController
 {
@@ -43,8 +44,9 @@ class SignController extends BaseController
      * @param \Request $request
      * @param Sign $sign
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function store(\Request $request, Sign $sign)
+    public function store(\Request $request, ContractService $contractService, Sign $sign)
     {
         if (!$this->user->vtruename) {
             return responseException('请先通过实名认证');
@@ -100,10 +102,18 @@ class SignController extends BaseController
             }
         }
 
-        $contract->save();
+        DB::beginTransaction();
+        try {
+            $contract->save();
+            $contractService->userSign($contract, $this->user, $this->user->mobile, $data['captcha']);
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return responseException('签名失败: '. $exception->getMessage());
+        }
 
         // 触发usersign事件
-        event(new UserSign($contract, $this->user, $this->user->mobile, $data['captcha']));
+        event(new UserSign($contract, $this->user));
 
         return responseMessage(__('api.success'));
     }
@@ -151,9 +161,11 @@ class SignController extends BaseController
     /**
      * 确认签名 只有公司的签名需要确认
      * @param \Request $request
+     * @param ContractService $contractService
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function confirm(\Request $request)
+    public function confirm(\Request $request, ContractService $contractService)
     {
         $data = $request::only(['contract_id', 'sign_type', 'company_id', 'captcha']);
 
@@ -211,10 +223,18 @@ class SignController extends BaseController
             }
         }
 
-        $contract->save();
+        DB::beginTransaction();
+        try {
+            $contract->save();
+            $contractService->userSign($contract, $this->user, $companyData->mobile, $data['captcha']);
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return responseException('签名失败: '. $exception->getMessage());
+        }
 
         // 触发usersign事件
-        event(new UserSign($contract, $this->user, $companyData->mobile, $data['captcha']));
+        event(new UserSign($contract, $this->user));
 
         return responseMessage(__('api.success'));
     }

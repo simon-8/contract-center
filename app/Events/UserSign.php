@@ -18,22 +18,20 @@ class UserSign
 
     public $contract; // 合同
     public $user; // 用户
-    public $mobile; // 签署手机号
-    public $captcha; // 签署验证码
+    //public $mobile; // 签署手机号
+    //public $captcha; // 签署验证码
 
     /**
      * UserSign constructor.
      * @param Contract $contract
      * @param User $user
-     * @param string $mobile
-     * @param string $captcha
      */
-    public function __construct(Contract $contract, User $user, $mobile = '', $captcha = '')
+    public function __construct(Contract $contract, User $user)
     {
         $this->contract = $contract;
         $this->user = $user;
-        $this->mobile = $mobile;
-        $this->captcha = $captcha;
+        //$this->mobile = $mobile;
+        //$this->captcha = $captcha;
     }
 
     /**
