@@ -51,7 +51,7 @@ class SignController extends BaseController
         }
 
         // todo 权限检查
-        $data = $request::only(['contract_id']);
+        $data = $request::only(['contract_id', 'captcha']);
         if (!$request::hasFile('file')) {
             return responseException('请选择文件上传');
         }
@@ -103,7 +103,7 @@ class SignController extends BaseController
         $contract->save();
 
         // 触发usersign事件
-        event(new UserSign($contract, $this->user));
+        event(new UserSign($contract, $this->user, $this->user->mobile, $data['captcha']));
 
         return responseMessage(__('api.success'));
     }
@@ -214,7 +214,7 @@ class SignController extends BaseController
         $contract->save();
 
         // 触发usersign事件
-        event(new UserSign($contract, $this->user));
+        event(new UserSign($contract, $this->user, $companyData->mobile, $data['captcha']));
 
         return responseMessage(__('api.success'));
     }

@@ -13,6 +13,15 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property \App\Services\ContractService $contractService
+ * @property \App\Services\EsignService $esignService
+ * @property \App\Models\Contract $contract
+ * @property \App\Models\User $user
+ * @property string $mobile
+ * @property string $captcha
+ *
+ * */
 class UserSignListener
 {
     //use InteractsWithQueue;
@@ -20,11 +29,11 @@ class UserSignListener
     //public $tries = 1;
 
     public $contractService;
-
     public $esignService;
-
-    public $contract;
-    public $user;
+    public $contract; // 合同
+    public $user; // 用户
+    public $mobile; // 签署手机号
+    public $captcha; // 签署验证码
 
     /**
      * UserSignListener constructor.
@@ -50,13 +59,40 @@ class UserSignListener
         //$this->event = $event;
         $this->contract = $event->contract;
         $this->user = $event->user;
+        $this->mobile = $event->mobile;
+        $this->captcha = $event->captcha;
 
+        $signData = $this->makeSignData();
+        logger(__METHOD__, $signData);
+        try {
+            $serviceid = $this->esignService->userSignToMobile($signData);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$e->getMessage()]);
+            return responseException('签名失败');
+        }
+
+        // 签名记录
+        EsignSignLog::create([
+            'contract_id' => $this->contract->id,
+            'name' => $this->contract->name,
+            'userid' => $this->user->id,
+            'serviceid' => $serviceid,
+        ]);
+        return $serviceid;
+    }
+
+    /**
+     * 生成签名数据
+     * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function makeSignData()
+    {
         // PDF路径
         $sourceFile = $this->contractService->makeStorePath($this->contract->id);
         $outputFile = $this->contractService->makeStorePath($this->contract->id, true);
 
-        // 当output中存在文件时, 表示有一方已签署
-        //$uploadPath = Storage::disk('uploads')->path('');
+        // 当output中存在文件时, 表示有一方已签署, 直接修改已签署文件
         if (Storage::disk('uploads')->exists($outputFile)) {
             $sourceFile = $outputFile;
         }
@@ -83,6 +119,8 @@ class UserSignListener
             'signType' => 'Key',
             'sealData' => '',
             'stream' => true,
+            'mobile' => $this->mobile,
+            'code' => $this->captcha,
         ];
 
         // 签章关键字定位 && 当前用户签名类型
@@ -110,18 +148,7 @@ class UserSignListener
         } else {
             $signData['sealData'] = $this->userSignImage();
         }
-
-        logger(__METHOD__, $signData);
-        $serviceid = $this->esignService->userSign($signData);
-
-        // 签名记录
-        EsignSignLog::create([
-            'contract_id' => $this->contract->id,
-            'name' => $this->contract->name,
-            'userid' => $this->user->id,
-            'serviceid' => $serviceid,
-        ]);
-        return $serviceid;
+        return $signData;
     }
 
     /**

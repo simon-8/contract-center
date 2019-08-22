@@ -16,17 +16,24 @@ class UserSign
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $contract;
-    public $user;
+    public $contract; // 合同
+    public $user; // 用户
+    public $mobile; // 签署手机号
+    public $captcha; // 签署验证码
+
     /**
-     * UserConfirm constructor.
+     * UserSign constructor.
      * @param Contract $contract
      * @param User $user
+     * @param string $mobile
+     * @param string $captcha
      */
-    public function __construct(Contract $contract, User $user)
+    public function __construct(Contract $contract, User $user, $mobile = '', $captcha = '')
     {
         $this->contract = $contract;
         $this->user = $user;
+        $this->mobile = $mobile;
+        $this->captcha = $captcha;
     }
 
     /**

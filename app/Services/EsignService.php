@@ -208,6 +208,31 @@ class EsignService
     }
 
     /**
+     * 指定手机校验
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function userSignToMobile($data)
+    {
+        $accountId = $data['accountid'];
+        $signFile = $data['signFile'];
+        $signPos = $data['signPos'];
+        $signType = $data['signType'];
+        $sealData = $data['sealData'];
+        $stream = $data['stream'];
+        $mobile = $data['mobile'];
+        $code = $data['code'];
+
+        $ret = self::$eSign->userSafeMobileSignPDF($accountId, $signFile, $signPos, $signType, $sealData, $mobile, $code, $stream);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        $signServiceId = end($ret);
+        return $signServiceId;
+    }
+
+    /**
      * 创建企业印章
      * @param $organizeAccountId
      * @return mixed
