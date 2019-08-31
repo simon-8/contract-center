@@ -29,7 +29,7 @@
                     <div class="input-group m-b">
                         <select name="catid" class="form-control inline">
                             <option value="">参与人类型</option>
-                            @foreach((new \App\Models\Contract())->getPlayers() as $typeid => $typename)
+                            @foreach(\App\Models\Contract::getPlayers() as $typeid => $typename)
                                 <option value="{{ $typeid }}"
                                         @if (isset($data['players']) && $data['players'] === (string) $typeid) selected @endif>{{ $typename }}
                                 </option>

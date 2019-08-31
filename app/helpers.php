@@ -195,7 +195,7 @@ function contractTemplateEditor($content = '' , $name = 'content', $extends = ''
         $str .= "<script type='text/javascript' src='".skinPath()."js/plugins/editor/ueditor/ueditor.config.js'></script>";
         $str .= "<script type='text/javascript' src='".skinPath()."js/plugins/editor/ueditor/ueditor.all.js'></script>";
         $str .= "<script type='text/javascript'>
-        UE.registerUI('插入填空',function(editor,uiName){
+        UE.registerUI('插入一个填空选项',function(editor,uiName){
             //注册按钮执行时的command命令，使用命令默认就会带有回退操作
             editor.registerCommand(uiName,{
                 execCommand:function(){
@@ -210,12 +210,12 @@ function contractTemplateEditor($content = '' , $name = 'content', $extends = ''
                 //提示
                 title:uiName,
                 //需要添加的额外样式，指定icon图标，这里默认使用一个重复的icon
-                //cssRules :'background-position: -500px 0;',
+                cssRules :'background-position: 475px 45px;',
                 //点击时执行的命令
                 onclick:function () {
                     //这里可以不用执行命令,做你自己的操作也可
                     //editor.execCommand(uiName);
-                    editor.execCommand('insertHtml', '__填空__')
+                    editor.execCommand('insertHtml', '".(App\Models\ContractTpl::FILL_STRING)."')
                 }
             });
 

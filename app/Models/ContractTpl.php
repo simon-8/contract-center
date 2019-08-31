@@ -10,7 +10,7 @@ class ContractTpl extends Base
 {
     use ModelTrait;
 
-    const FILL_STRING = '__填空__';
+    const FILL_STRING = '____填空____';
 
     protected $table = 'contract_tpl';
 

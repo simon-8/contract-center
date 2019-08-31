@@ -28,7 +28,7 @@
                                     <td>{{ $v['id'] }}</td>
                                     <td align="left">{{ $v['name'] }}</td>
                                     <td>{{ $v->contractCategory->name }}</td>
-                                    <td>{{ $contractModel->getPlayersText($v['catid']) }}</td>
+                                    <td>{{ App\Models\Contract::getPlayersText($v['catid']) }}</td>
 {{--                                    <td></td>--}}
                                     <td>
                                         <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit1({{ $v['id'] }}, '{{ editURL('admin.contract-tpl-section.update', $v['id']) }}')">编辑</button>
@@ -100,7 +100,7 @@
                                 <label class="col-sm-2 control-label">参与人类型</label>
                                 <div class="col-sm-10">
                                     <select name="players" class="form-control">
-                                        @foreach($contractModel->getPlayers() as $typeid => $typename)
+                                        @foreach(App\Models\Contract::getPlayers() as $typeid => $typename)
                                             <option value="{{ $typeid }}">{{ $typename }}</option>
                                         @endforeach
                                     </select>
@@ -167,7 +167,7 @@
                                 <label class="col-sm-2 control-label">参与人类型</label>
                                 <div class="col-sm-10">
                                     <select name="players" class="form-control">
-                                        @foreach($contractModel->getPlayers() as $typeid => $typename)
+                                        @foreach(App\Models\Contract::getPlayers() as $typeid => $typename)
                                             <option value="{{ $typeid }}">{{ $typename }}</option>
                                         @endforeach
                                     </select>

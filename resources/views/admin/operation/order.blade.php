@@ -27,7 +27,7 @@
                     <div class="input-group m-b">
                         <select name="players" class="form-control inline">
                             <option value="">参与人类型</option>
-                            @foreach((new \App\Models\Contract())->getPlayers() as $key => $val)
+                            @foreach(App\Models\Contract::getPlayers() as $key => $val)
                                 <option value="{{ $key }}"
                                         @if (isset($data['players']) && $data['players'] === (string) $key) selected @endif>{{ $val }}
                                 </option>

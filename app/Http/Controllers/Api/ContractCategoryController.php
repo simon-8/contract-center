@@ -16,9 +16,9 @@ class ContractCategoryController extends BaseController
     public function index(\Request $request)
     {
         $data = [];
-        ContractCategory::get()->each(function($v) use (&$data) {
+        $players = Contract::getPlayers();
+        ContractCategory::get()->each(function($v) use (&$data, $players) {
             $info = $v->toArray();
-            $players = (new Contract())->getPlayers();
             foreach ($players as $playerId => $playerName) {
                 $sections = ContractTplSection::ofCatid($v->id)
                     ->ofPlayers($playerId)

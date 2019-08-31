@@ -92,7 +92,7 @@
                         <label class="col-sm-2 control-label">参与人类型</label>
                         <div class="col-sm-10">
                             <select name="players" class="form-control">
-                                @foreach($contractModel->getPlayers() as $typeid => $typename)
+                                @foreach(App\Models\Contract::getPlayers() as $typeid => $typename)
                                     <option value="{{ $typeid }}">{{ $typename }}</option>
                                 @endforeach
                             </select>
@@ -160,7 +160,7 @@
                         <label class="col-sm-2 control-label">参与人类型</label>
                         <div class="col-sm-10">
                             <select name="players" class="form-control">
-                                @foreach($contractModel->getPlayers() as $typeid => $typename)
+                                @foreach(App\Models\Contract::getPlayers() as $typeid => $typename)
                                     <option value="{{ $typeid }}">{{ $typename }}</option>
                                 @endforeach
                             </select>

@@ -330,7 +330,7 @@ class Contract extends Base
      * 参与者类型
      * @return array
      */
-    public function getPlayers()
+    public static function getPlayers()
     {
         $arr = [
             //self::PLAYERS_NORMAL => '单方',
@@ -348,7 +348,7 @@ class Contract extends Base
     public function getPlayersText($type = null)
     {
         if ($type === null) $type = $this->players;
-        return $this->getPlayers()[$type] ?? 'not fund';
+        return self::getPlayers()[$type] ?? 'not fund';
     }
 
     /**
