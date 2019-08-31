@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class BaseController extends Controller
 {
@@ -21,5 +22,20 @@ class BaseController extends Controller
         if ($request::hasHeader('client-id')) {
             $this->client_id = intval($request::header('client-id'));
         }
+    }
+
+    /**
+     * 获取用户openid
+     * @return string
+     */
+    public function getOpenid()
+    {
+        $openid = '';
+        if ($this->client_id === User::CLIENT_ID_MINI_PROGRAM) {
+            $openid = $this->user->miniGameOpenid();
+        } else if ($this->client_id === User::CLIENT_ID_WECHAT) {
+            $openid = $this->user->wechatOpenid();
+        }
+        return $openid;
     }
 }

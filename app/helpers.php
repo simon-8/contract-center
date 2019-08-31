@@ -95,6 +95,26 @@ function imgurl($url = '', $disk = '')
 }
 
 /**
+ * 资源URL 辅助imgurl
+ * @param string $url
+ * @param string $disk
+ * @return string
+ */
+function resourceUrl($url = '', $disk = 'uploads')
+{
+    if(empty($url)) return '';
+
+    if (substr($url, 0, 4) === 'http') {
+        return $url;
+    }
+    if ($disk) {
+        return Storage::disk($disk)->url($url);
+    }
+    $basePath = config('admin.cdnResourcePath') ?: config('app.url');
+    return $basePath . $url;
+}
+
+/**
  * validate.js
  * @return string
  */

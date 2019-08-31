@@ -60,10 +60,10 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::get('', 'OrderLawyerConfirmController@show');
             Route::post('', 'OrderLawyerConfirmController@store');
             //Route::post('repay/{orderid}', 'OrderLawyerConfirmController@reStore');
-            Route::post('cancel/{orderid}', 'OrderLawyerConfirmController@cancel');
-            Route::get('query-express-fee', 'OrderLawyerConfirmController@queryExpressFee');
+            //Route::post('cancel/{orderid}', 'OrderLawyerConfirmController@cancel');
+            //Route::get('query-express-fee', 'OrderLawyerConfirmController@queryExpressFee');
         });
-        Route::any('notify/{channel}', 'OrderLawyerConfirmController@notify')->name('orderLawyerConfirm.notify');
+        //Route::any('notify/{channel}', 'OrderLawyerConfirmController@notify')->name('orderLawyerConfirm.notify');
         //Route::any('refund/{channel}', 'OrderLawyerConfirmController@refund')->name('orderLawyerConfirm.refund');
     });
 

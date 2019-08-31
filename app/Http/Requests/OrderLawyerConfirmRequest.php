@@ -33,8 +33,6 @@ class OrderLawyerConfirmRequest extends BaseRequest
     {
         return [
             'contract_id' => 'required',
-            'channel' => 'required',
-            'gateway' => 'required',
         ];
     }
 

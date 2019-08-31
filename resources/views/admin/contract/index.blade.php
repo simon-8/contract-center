@@ -93,8 +93,10 @@
                         <td style="width: 100px;">甲方</td>
                         <td style="width: 100px;">乙方</td>
                         <td style="width: 100px;">居间人</td>
-                        <td style="width: 60px;">甲方确认</td>
-                        <td style="width: 60px;">乙方确认</td>
+                        <td style="width: 60px;">甲确认</td>
+                        <td style="width: 60px;">乙确认</td>
+                        <td style="width: 60px;">甲签名</td>
+                        <td style="width: 60px;">乙签名</td>
                         <td style="width: 60px;">状态</td>
                         <td style="width: 100px;">创建时间</td>
                         <td style="width: 100px;">更新时间</td>
@@ -109,7 +111,11 @@
                                 <td>{{ $v->id }}</td>
 {{--                                <td>{{ $v->listorder }}</td>--}}
                                 <td>
-                                    <span class="label label-primary">{{ $v->getCatText() }}</span>
+                                    <span class="label label-default">
+                                        {{ $v->getCatText() }}
+                                    </span>&nbsp;
+                                    <span class="label label-default">{{ $v->getPlayersText() }}</span>
+                                </td>
                                 </td>
                                 <td>{{ $v->name }}</td>
                                 <td>{{ $v->jiafang ?: '/' }}</td>
@@ -117,6 +123,8 @@
                                 <td>{{ $v->jujianren ?: '/' }}</td>
                                 <td>{!! colorText($v->confirm_first, '是', '否') !!}</td>
                                 <td>{!! colorText($v->confirm_second, '是', '否') !!}</td>
+                                <td>{!! colorText($v->signed_first, '是', '否') !!}</td>
+                                <td>{!! colorText($v->signed_second, '是', '否') !!}</td>
                                 <td>
                                     <span class="label label-success">{{ $v->getStatusText()  }}</span>
                                 </td>
@@ -124,8 +132,11 @@
                                 <td>{{ $v->updated_at }}</td>
                                 <td>{{ $v->confirm_at }}</td>
                                 <td>
-                                    <a class="btn btn-sm btn-default" href="{{ route('admin.contract.show', ['id' => $v->id]) }}">查看</a>
-                                    <a class="btn btn-sm btn-info" href="{{ route('admin.contract.edit', ['id' => $v->id]) }}">编辑</a>
+                                    @if($v->path_pdf)
+                                    <a class="btn btn-sm btn-white" href="{{ resourceUrl($v->path_pdf) }}" target="_blank">PDF</a>
+                                    @endif
+                                    <a class="btn btn-sm btn-primary contract-show" data-href="{{ route('admin.contract.show', ['id' => $v->id]) }}">查看</a>
+{{--                                    <a class="btn btn-sm btn-info" href="{{ route('admin.contract.edit', ['id' => $v->id]) }}">编辑</a>--}}
                                     <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract.destroy', $v->id) }}')">删除</button>
                                 </td>
                             </tr>
@@ -172,6 +183,16 @@
         //        searchForm.find('[name=maxDate]').val('');
         //    }
         //}
+    });
+
+    $('.contract-show').click(function () {
+        layer.open({
+            type: 2,
+            title: '合同预览',
+            shadeClose: true,
+            content: $(this).data('href'),
+            area: ['65%', '80%']
+        });
     });
 </script>
 @endsection
