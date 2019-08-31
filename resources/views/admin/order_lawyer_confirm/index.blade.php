@@ -9,7 +9,7 @@
             <div class="m-b-md">
                 <form action="{{ route(request()->route()->getName()) }}" method="get" class="form-inline" id="searchForm">
                     <div class="input-group m-b">
-                        <span class="input-group-addon">支付时间</span>
+                        <span class="input-group-addon">更新时间</span>
                         <input type="text" name="updated_at" id="updated_at" class="form-control" autocomplete="off"
                                placeholder="点击选择" value="{{ $data['updated_at']??'' }}">
                     </div>
@@ -46,9 +46,9 @@
                     </div>
                     <div class="input-group m-b">
                         <select name="type" class="form-control inline" style="width:120px;">
-                            <option value="orderid"
-                                    @if (isset($data['type']) && $data['type'] === 'orderid') selected @endif>订单ID
-                            </option>
+{{--                            <option value="orderid"--}}
+{{--                                    @if (isset($data['type']) && $data['type'] === 'orderid') selected @endif>订单ID--}}
+{{--                            </option>--}}
                             <option value="name"
                                     @if (isset($data['type']) && $data['type'] === 'name') selected @endif>合同名称
                             </option>
@@ -70,15 +70,15 @@
                         <td style="width: 50px;">编号</td>
                         <td style="width: 60px;">合同名称</td>
                         <td style="width: 60px;">用户昵称</td>
-                        <td style="width: 100px;">订单价格</td>
-                        <td style="width: 100px;">订单ID</td>
+{{--                        <td style="width: 100px;">订单价格</td>--}}
+{{--                        <td style="width: 100px;">订单ID</td>--}}
 {{--                        <td style="width: 100px;">第三方ID</td>--}}
-                        <td style="width: 60px;">充值渠道</td>
-                        <td style="width: 60px;">充值方式</td>
+{{--                        <td style="width: 60px;">充值渠道</td>--}}
+{{--                        <td style="width: 60px;">充值方式</td>--}}
                         <td style="width: 60px;">备注</td>
                         <td style="width: 60px;">地址</td>
                         <td style="width: 60px;">状态</td>
-                        <td style="width: 100px;">支付时间</td>
+                        <td style="width: 100px;">申请时间</td>
 {{--                        <td style="width: 100px;">创建时间</td>--}}
                         <td style="width: 100px;">更新时间</td>
                         <td style="width: 180px;">操作</td>
@@ -95,11 +95,11 @@
                                 <td>
                                     <a href="javascript:void;" title="点击查看用户信息" class="show-user" data-href="{{ editURL('admin.user.show', $v->userid) }}">{{ $v->user->nickname }}</a>
                                 </td>
-                                <td>{{ $v->amount }}</td>
-                                <td>{{ $v->orderid }}</td>
+{{--                                <td>{{ $v->amount }}</td>--}}
+{{--                                <td>{{ $v->orderid }}</td>--}}
 {{--                                <td>{{ $v->torderid }}</td>--}}
-                                <td>{{ $v->channel }}</td>
-                                <td>{{ $v->gateway }}</td>
+{{--                                <td>{{ $v->channel }}</td>--}}
+{{--                                <td>{{ $v->gateway }}</td>--}}
                                 <td>
                                     <a href="javascript:void;" class="show-remark" data-remark="{{ $v->remark }}">查看</a>
                                 </td>
@@ -107,20 +107,18 @@
                                     <a href="javascript:void;" class="show-address" data-address='@json($v->address)' data-href="{{ editURL('admin.order-lawyer-confirm.update', $v['id']) }}">查看</a>
                                 </td>
                                 <td>
-                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_WAIT_PAY)
+                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_APPLY)
                                         <span class="label lable-xs label-default radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\OrderLawyerConfirm::STATUS_WAIT_SEND)
-                                        <span class="label lable-xs label-primary radius">{{ $v->getStatusText() }}</span>
                                     @elseif($v->status == \App\Models\OrderLawyerConfirm::STATUS_HAS_BEEN_SEND)
                                         <span class="label lable-xs label-primary radius">{{ $v->getStatusText() }}</span>
                                     @endif
                                 </td>
-                                <td>{{ $v->payed_at }}</td>
-{{--                                <td>{{ $v->created_at }}</td>--}}
+{{--                                <td>{{ $v->payed_at }}</td>--}}
+                                <td>{{ $v->created_at }}</td>
                                 <td>{{ $v->updated_at }}</td>
 
                                 <td>
-                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_WAIT_SEND)
+                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_APPLY)
                                     <a class="btn btn-sm btn-info show-control" data-express='@json($v->only(['express_name', 'express_no']))' data-href="{{ editURL('admin.order-lawyer-confirm.update', $v['id']) }}">发货</a>
                                     @endif
                                     @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_HAS_BEEN_SEND)
@@ -133,7 +131,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="13" rowspan="4">
+                            <td colspan="8" rowspan="4">
                                 未找到数据
                             </td>
                         </tr>
