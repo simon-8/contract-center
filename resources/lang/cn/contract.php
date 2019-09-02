@@ -6,5 +6,6 @@
  * Time: 14:37
  */
 return [
-    'name' => '浙易盟 (租) :id号',
+    'name'  => ':catname :id号',
+    'number' => '浙e（合）字第 :id号',
 ];

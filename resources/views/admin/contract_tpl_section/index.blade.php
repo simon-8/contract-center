@@ -89,7 +89,7 @@
                                 <label class="col-sm-2 control-label">模板分类</label>
                                 <div class="col-sm-10">
                                     <select name="catid" class="form-control">
-                                        @foreach($contractCategoryModel->getCats() as $catid => $catname)
+                                        @foreach(\App\Models\ContractCategory::getCats() as $catid => $catname)
                                             <option value="{{ $catid }}">{{ $catname }}</option>
                                         @endforeach
                                     </select>
@@ -156,7 +156,7 @@
                                 <label class="col-sm-2 control-label">模板分类</label>
                                 <div class="col-sm-10">
                                     <select name="catid" class="form-control">
-                                        @foreach($contractCategoryModel->getCats() as $catid => $catname)
+                                        @foreach(\App\Models\ContractCategory::getCats() as $catid => $catname)
                                             <option value="{{ $catid }}">{{ $catname }}</option>
                                         @endforeach
                                     </select>

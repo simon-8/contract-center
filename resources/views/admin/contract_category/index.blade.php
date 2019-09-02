@@ -15,7 +15,13 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$k}}" class="" aria-expanded="true">{{ $v['name'] }} ({{ $players[$v->players] }})</a>
+                            <a data-toggle="collapse"
+                               data-parent="#accordion"
+                               href="#collapse{{$k}}"
+                               class=""
+                               aria-expanded="true"
+                               title="点击收起"
+                            >{{ $v['name'] }} ({{ $players[$v->players] }})</a>
 
                             <div class="pull-right">
                                 <button class="btn btn-xs btn-warning add-section" data-id="{{$v->id}}" data-players="{{$v->players}}">添加模块</button>
@@ -32,7 +38,7 @@
                         </h4>
                     </div>
                     <div id="collapse{{$k}}" class="panel-collapse collapse in" aria-expanded="true" style="">
-                        <div class="panel-body">
+                        <div class="panel-body no-padding">
                             <table
                                 class="table table-bordered table-striped table-hover text-nowrap bg-white text-center no-margins">
                                 <tr>
@@ -156,7 +162,6 @@
     <script>
         let createSectionModal = '#createSectionModal';
         let updateSectionModal = '#updateSectionModal';
-        let playerAliasModal = '#playerAliasModal';
         $('.control-section').click(function () {
             let href = $(this).data('href'),
                 page = $(this).data('page'),
@@ -204,7 +209,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span
                                 aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">添加</h4>
+                        <h4 class="modal-title">添加合同类型</h4>
                         {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
                     </div>
                     <div class="modal-body">
@@ -225,6 +230,13 @@
                                     @endforeach
                                 </select>
                                 <span class="help-block m-b-none">选择参与人类型</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">类型简介</label>
+                            <div class="col-sm-10">
+                                <textarea name="introduce" class="form-control" rows="8" width="90%">{{ old('introduce') }}</textarea>
+                                <span class="help-block m-b-none">类型简介</span>
                             </div>
                         </div>
                     </div>
@@ -270,6 +282,13 @@
                                 <span class="help-block m-b-none">选择参与人类型</span>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">类型简介</label>
+                            <div class="col-sm-10">
+                                <textarea name="introduce" class="form-control" rows="8" width="90%">{{ old('introduce') }}</textarea>
+                                <span class="help-block m-b-none">类型简介</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -296,28 +315,6 @@
                 <div class="modal-body">
                     <input type="hidden" name="catid" value="">
                     <input type="hidden" name="players" value="">
-                    {{--                    <div class="form-group">--}}
-                    {{--                        <label class="col-sm-2 control-label">模板分类</label>--}}
-                    {{--                        <div class="col-sm-10">--}}
-                    {{--                            <select name="catid" class="form-control">--}}
-                    {{--                                @foreach($contractCategoryModel->getCats() as $catid => $catname)--}}
-                    {{--                                    <option value="{{ $catid }}">{{ $catname }}</option>--}}
-                    {{--                                @endforeach--}}
-                    {{--                            </select>--}}
-                    {{--                            <span class="help-block m-b-none">选择所属分类</span>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
-{{--                    <div class="form-group">--}}
-{{--                        <label class="col-sm-2 control-label">参与人</label>--}}
-{{--                        <div class="col-sm-10">--}}
-{{--                            <select name="players" class="form-control">--}}
-{{--                                @foreach(App\Models\Contract::getPlayers() as $typeid => $typename)--}}
-{{--                                    <option value="{{ $typeid }}">{{ $typename }}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
-{{--                            <span class="help-block m-b-none">选择参与人类型</span>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">模块名</label>
                         <div class="col-sm-10">
@@ -361,17 +358,6 @@
                 <div class="modal-body">
                     <input type="hidden" name="catid" value="">
                     <input type="hidden" name="players" value="">
-{{--                    <div class="form-group">--}}
-{{--                        <label class="col-sm-2 control-label">参与人</label>--}}
-{{--                        <div class="col-sm-10">--}}
-{{--                            <select name="players" class="form-control">--}}
-{{--                                @foreach(App\Models\Contract::getPlayers() as $typeid => $typename)--}}
-{{--                                    <option value="{{ $typeid }}">{{ $typename }}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
-{{--                            <span class="help-block m-b-none">选择参与人类型</span>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">模块名</label>
                         <div class="col-sm-10">
@@ -385,45 +371,6 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="listorder" value="" placeholder="0">
                             <span class="help-block m-b-none">越大越靠前</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                    <button type="submit" class="btn btn-primary">确定</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-{{--playerAlias--}}
-<div class="modal inmodal" id="playerAliasModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content animated bounceInDown">
-            <form action="{{ route('admin.contract-category.store') }}" method="POST" class="form-horizontal">
-                {!! csrf_field() !!}
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span
-                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">设置别名供小程序端显示</h4>
-                    {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">原名</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="origin_name" value=""
-                                   readonly>
-                            <span class="help-block m-b-none">小程序端显示的名称</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">别名</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="alias_name" value="{{ old('alias_name') }}"
-                                   placeholder="">
-                            <span class="help-block m-b-none">小程序端显示的名称</span>
                         </div>
                     </div>
                 </div>

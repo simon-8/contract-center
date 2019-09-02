@@ -20,6 +20,7 @@ use App\Events\UserConfirm;
 use App\Http\Requests\ContractRequest;
 use App\Http\Resources\Contract AS ContractResource;
 use App\Models\Contract;
+use App\Models\ContractCategory;
 use App\Models\ContractTplSection;
 use App\Services\ContractService;
 use \DB;
@@ -187,7 +188,11 @@ class ContractController extends BaseController
                 'fill' => $data['fillsData']
             ]);
             // todo 放入模型created事件 处理
-            $contractData->name = __('contract.name', ['id' => $contractData->id]);
+            $catname = ContractCategory::getCatName($data['catid']);
+            $contractData->name = __('contract.name', [
+                'catname' => $catname,
+                'id' => $contractData->id,
+            ]);
             $contractData->save();
 
             DB::commit();
@@ -298,7 +303,7 @@ class ContractController extends BaseController
     public function confirm(ContractRequest $request, Contract $contract)
     {
         if (!$this->user->vtruename) {
-            return responseException('请先通过实名认证');
+            return responseException('请先通过实名认证', ['vtruename' => false]);
         }
         $data = $request->only(['user_type']);
         $request->validateConfirm($data);

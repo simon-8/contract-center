@@ -8,6 +8,7 @@
 namespace App\Models;
 
 use App\Traits\ModelTrait;
+use Illuminate\Support\Facades\Cache;
 
 class ContractCategory extends Base
 {
@@ -18,6 +19,7 @@ class ContractCategory extends Base
     protected $fillable = [
         'name',
         'players',
+        'introduce',
     ];
 
     protected $hidden = [
@@ -34,10 +36,24 @@ class ContractCategory extends Base
     }
 
     /**
+     * 获取所有分类
      * @return ContractCategory[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function getCats()
+    public static function getCats()
     {
-        return $this->select(['id', 'name'])->get()->pluck('name', 'id');
+        return self::select(['id', 'name'])->get()->pluck('name', 'id');
+    }
+
+    /**
+     * 获取分类名称
+     * @param null $catid
+     * @return mixed
+     */
+    public static function getCatName($catid = null)
+    {
+        $cats = Cache::remember(__CLASS__.'.cats', now()->addHour(), function() {
+            return self::getCats();
+        });
+        return $cats[$catid];
     }
 }
