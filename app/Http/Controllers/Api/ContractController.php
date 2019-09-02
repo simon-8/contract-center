@@ -297,6 +297,9 @@ class ContractController extends BaseController
      */
     public function confirm(ContractRequest $request, Contract $contract)
     {
+        if (!$this->user->vtruename) {
+            return responseException('请先通过实名认证');
+        }
         $data = $request->only(['user_type']);
         $request->validateConfirm($data);
 
@@ -307,14 +310,14 @@ class ContractController extends BaseController
         $updateData["confirm_{$userType}"] = 1;
         $contract->fill($updateData);
 
-        // 直接设置当前用户真实姓名 (此时可能未实名)
-        //if ($userType === Contract::USER_TYPE_FIRST) {
-        //    $updateData['jiafang'] = $this->user;
-        //} else if ($userType === Contract::USER_TYPE_SECOND) {
-        //    $updateData['jiafang'] = $this->user;
-        //} else if ($userType === Contract::USER_TYPE_THREE) {
-        //    $updateData['jiafang'] = $this->user;
-        //}
+        // 直接设置当前用户真实姓名
+        if ($userType === Contract::USER_TYPE_FIRST) {
+            $updateData['jiafang'] = $this->user->realname->truename;
+        } else if ($userType === Contract::USER_TYPE_SECOND) {
+            $updateData['yifang'] = $this->user->realname->truename;
+        } else if ($userType === Contract::USER_TYPE_THREE) {
+            $updateData['jujianren'] = $this->user->realname->truename;
+        }
 
         if ($contract->players == $contract::PLAYERS_THREE) {
             if ($contract->confirm_first && $contract->confirm_second && $contract->confirm_three) {
