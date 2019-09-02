@@ -21,19 +21,10 @@ class ContractCategoryController extends BaseController
      */
     public function index(ContractCategory $contractCategory)
     {
-        $lists = $contractCategory->paginate();
+        $lists = $contractCategory->with(['tplSection' => function($query) {
+            $query->orderByDesc('listorder');
+        }])->paginate();
         $players = Contract::getPlayers();
-        foreach ($lists as $k => $v) {
-            $a = [];
-            foreach ($players as $typeid => $typename) {
-                $a[$typeid] = $v->tplSection()
-                    ->ofPlayers($typeid)
-                    ->orderByDesc('listorder')
-                    ->get();
-            }
-            $v['tplSection'] = $a;
-            $lists[$k] = $v;
-        }
         return view('admin.contract_category.index', compact('lists', 'players'));
     }
 

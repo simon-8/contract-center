@@ -15,22 +15,9 @@ class ContractCategoryController extends BaseController
 {
     public function index(\Request $request)
     {
-        $data = [];
-        $players = Contract::getPlayers();
-        ContractCategory::get()->each(function($v) use (&$data, $players) {
-            $info = $v->toArray();
-            foreach ($players as $playerId => $playerName) {
-                $sections = ContractTplSection::ofCatid($v->id)
-                    ->ofPlayers($playerId)
-                    //->with(['contract-tpl' => function ($query) {
-                    //    $query->select([''])->orderByDesc('listorder');
-                    //}])
-                    ->orderByDesc('listorder')
-                    ->get();
-                $info['sections'][$playerId] = $sections;
-            }
-            $data[] = $info;
-        });
+        $data = ContractCategory::with(['tplSection' => function($query) {
+            $query->orderByDesc('listorder');
+        }])->get();
 
         return responseMessage('', $data);
     }

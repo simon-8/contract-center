@@ -16,7 +16,8 @@ class ContractCategory extends Base
     protected $table = 'contract_category';
 
     protected $fillable = [
-        'name'
+        'name',
+        'players',
     ];
 
     protected $hidden = [
