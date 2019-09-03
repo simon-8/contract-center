@@ -27,6 +27,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     });
 
     Route::apiResource('banner', 'BannerController');
+    Route::apiResource('online-config', 'OnlineConfigController');
 
     Route::prefix('contract')->group(function () {
         Route::get('status', 'ContractController@getStatus');

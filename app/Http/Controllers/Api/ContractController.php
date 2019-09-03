@@ -303,7 +303,7 @@ class ContractController extends BaseController
     public function confirm(ContractRequest $request, Contract $contract)
     {
         if (!$this->user->vtruename) {
-            return responseException('请先通过实名认证', ['vtruename' => false]);
+            return responseException('请先通过实名认证', ['vtruename' => true]);
         }
         $data = $request->only(['user_type']);
         $request->validateConfirm($data);
