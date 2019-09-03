@@ -60,7 +60,7 @@ class ContractController extends BaseController
             Contract::STATUS_CONFIRM        => '双方确认',
             Contract::STATUS_PAYED          => '进行签名',
             Contract::STATUS_SIGN           => '签名完毕',
-            Contract::STATUS_LAWYER_CONFIRM => '已见证',
+            //Contract::STATUS_LAWYER_CONFIRM => '已见证',
         ];
         return responseMessage('', $statusArr);
     }

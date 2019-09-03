@@ -51,7 +51,7 @@ class Contract extends Base
     const STATUS_CONFIRM = 1;
     const STATUS_PAYED = 2;
     const STATUS_SIGN = 3;
-    const STATUS_LAWYER_CONFIRM = 4;
+    //const STATUS_LAWYER_CONFIRM = 4;
 
     // 用户类型 first甲 second乙 three居间
     const USER_TYPE_FIRST = 'first';
@@ -310,7 +310,7 @@ class Contract extends Base
             self::STATUS_CONFIRM        => '已确认',
             self::STATUS_PAYED          => '已支付',
             self::STATUS_SIGN           => '已签名',
-            self::STATUS_LAWYER_CONFIRM => '已见证',
+            //self::STATUS_LAWYER_CONFIRM => '已见证',
         ];
         return $statusArr;
     }

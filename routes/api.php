@@ -56,7 +56,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         Route::any('refund/{channel}', 'OrderController@refund')->name('order.refund');
     });
 
-    Route::prefix('order-lawyer-confirm')->group(function () {
+    Route::resource('order-lawyer-confirm', 'OrderLawyerConfirmController');
+/*    Route::prefix('order-lawyer-confirm')->group(function () {
         Route::middleware('auth:api')->group(function () {
             Route::get('', 'OrderLawyerConfirmController@show');
             Route::post('', 'OrderLawyerConfirmController@store');
@@ -66,7 +67,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         });
         //Route::any('notify/{channel}', 'OrderLawyerConfirmController@notify')->name('orderLawyerConfirm.notify');
         //Route::any('refund/{channel}', 'OrderLawyerConfirmController@refund')->name('orderLawyerConfirm.refund');
-    });
+    });*/
 
     Route::prefix('user')->group(function () {
         Route::group(['middleware' => 'auth:api'], function() {

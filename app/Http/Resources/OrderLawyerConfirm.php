@@ -16,7 +16,7 @@ class OrderLawyerConfirm extends JsonResource
     {
         $data = parent::toArray($request);
         $data['statusText'] = (new \App\Models\OrderLawyerConfirm())->getStatusText($data['status']);
-        unset($data['created_at'], $data['updated_at']);
+        //unset($data['created_at'], $data['updated_at']);
         return $data;
     }
 }

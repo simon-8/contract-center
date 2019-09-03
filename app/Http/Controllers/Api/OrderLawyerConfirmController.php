@@ -21,15 +21,26 @@ use function EasyWeChat\Kernel\Support\generate_sign;
 class OrderLawyerConfirmController extends BaseController
 {
     /**
+     * 首页
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index()
+    {
+        $lists = Order::ofUserid($this->user->id)
+            ->with(['contract'])
+            ->orderByDesc('id')
+            ->paginate();
+        return OrderLawyerConfirmResource::collection($lists);
+    }
+
+    /**
      * 详情
-     * @param \Request $request
-     * @param Order $order
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(\Request $request, Order $order)
+    public function show($id)
     {
-        $data = $request::only(['contract_id']);
-        $orderData = $order->ofContractID($data['contract_id'])
+        $orderData = Order::ofId($id)
             ->ofUserid($this->user->id)
             ->first();
         if ($orderData) {
@@ -45,7 +56,7 @@ class OrderLawyerConfirmController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(OrderRequest $request, Order $order)
+    public function store(OrderRequest $request)
     {
         logger('order.store', $request->all());
         $data = $request->only([
@@ -55,7 +66,7 @@ class OrderLawyerConfirmController extends BaseController
         $request->validateStore($data);
 
         // 已有order状态检查
-        $orderData = $order->ofContractID($data['contract_id'])
+        $orderData = Order::ofContractID($data['contract_id'])
             ->ofUserid($this->user->id)
             ->first();
 
@@ -80,7 +91,7 @@ class OrderLawyerConfirmController extends BaseController
         if ($orderData) {
             $orderData->update($data);
         } else {
-            $orderData = $order->create($data);
+            $orderData = Order::create($data);
         }
 
         if (!$orderData) {
