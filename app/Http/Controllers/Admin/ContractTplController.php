@@ -59,7 +59,7 @@ class ContractTplController extends Controller
             }, $arr);
             $data['formdata'] = array_slice($newArr, 0, -1);
         } else {
-            $data['formdata'] = [];
+            $data['formdata'] = [strip_tags($data['content'])];
         }
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
@@ -105,6 +105,8 @@ class ContractTplController extends Controller
             }, $arr);
 
             $data['formdata'] = array_slice($newArr, 0, -1);
+        } else {
+            $data['formdata'] = [strip_tags($data['content'])];
         }
 
         $section = ContractTplSection::find($data['section_id']);
