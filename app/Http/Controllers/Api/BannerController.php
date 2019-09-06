@@ -24,6 +24,9 @@ class BannerController
             'url',
             'title'
         ])->get()->toArray();
+        foreach ($lists as &$v) {
+            $v['thumb'] = imgurl($v['thumb'], 'uploads');
+        }
         return responseMessage('', $lists);
     }
 }
