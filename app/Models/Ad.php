@@ -25,10 +25,10 @@ class Ad extends Model
         'listorder'
     ];
 
-    public function getThumbAttribute($value)
-    {
-        return $value ? imgurl($value) : '';
-    }
+    //public function getThumbAttribute($value)
+    //{
+    //    return $value ? imgurl($value) : '';
+    //}
 
     /**
      * 广告对应广告位
