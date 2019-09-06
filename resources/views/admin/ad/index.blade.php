@@ -26,7 +26,7 @@
                             <td>{{ $v['title'] }}</td>
                             <td>{{ $v['content'] }}</td>
                             <td>
-                                <a href="javascript:;" data-url="{{ $v['thumb'] }}" class="btn btn-warning btn-sm imgview">预览</a>
+                                <a href="javascript:;" data-url="{{ imgurl($v['thumb'], 'uploads') }}" class="btn btn-warning btn-sm imgview">预览</a>
                             </td>
                             <td>
                                 @empty($v['url'])
@@ -57,7 +57,7 @@
 
     <script>
         var updateModal = '#updateModal';
-        
+
         function Edit1(id, url)
         {
             var json = $('#edit_' + id).attr('data');
