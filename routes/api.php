@@ -38,7 +38,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
 
     Route::apiResource('contract', 'ContractController')
         ->middleware('auth:api')
-        ->except('getStatus', 'getStatusCount');
+        ->except('getStatus', 'getStatusCount', 'show');
 
     Route::apiResource('contract-category', 'ContractCategoryController');
     Route::apiResource('contract-tpl', 'ContractTplController');

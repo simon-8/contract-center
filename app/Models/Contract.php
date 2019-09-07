@@ -381,4 +381,22 @@ class Contract extends Base
         }
         return $userType;
     }
+
+    /**
+     * 权限检查
+     * @param $userid
+     * @param null $contract
+     * @return bool
+     */
+    public function authCheck($userid, $contract = null)
+    {
+        if ($contract === null) $contract = $this;
+        $players = [
+            $contract->userid,
+            $contract->userid_first,
+            $contract->userid_second,
+            $contract->userid_three,
+        ];
+        return in_array($userid, $players);
+    }
 }

@@ -63,6 +63,15 @@ class UserCompanyController extends BaseController
         $data['userid'] = $this->user->id;
         unset($data['sign_data']);
 
+        if (empty($data['id'])) {
+            if (UserCompany::whereName($data['name'])->exists()) {
+                return responseException('该机构名称已认证');
+            }
+            if (UserCompany::whereOrganCode($data['organ_code'])->exists()) {
+                return responseException('该机构号码已被使用');
+            }
+        }
+
         DB::beginTransaction();
         try {
             // 验证短信验证码

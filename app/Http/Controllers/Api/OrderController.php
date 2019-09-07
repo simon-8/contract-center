@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Resources\Contract as ContractResource;
 use App\Models\Contract;
 use App\Models\Order;
 use App\Models\OrderRefund;
@@ -47,7 +48,11 @@ class OrderController extends BaseController
 
         $contract = Contract::find($data['contract_id']);
         if ($contract->status >= Contract::STATUS_PAYED) {
-            return responseException('该合同已支付, 无法重复付款');
+            //return responseException('该合同已支付, 无法重复付款');
+            return responseMessage('', [
+                'payed' => 1,
+                'contract' => new ContractResource($contract),
+            ]);
         }
         $data['userid'] = $this->user->id;
         $data['amount'] = config('admin.contractPrice');

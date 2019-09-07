@@ -138,6 +138,15 @@ class ContractController extends BaseController
     public function show(Contract $contract)
     {
         //$this->checkAuth($contract);
+        if (!$this->user) {
+            return responseException(__('api.no_auth'));
+        }
+        // 已确认 已签名 已支付
+        if ($contract->status > Contract::STATUS_APPLY) {
+            if (!$contract->authCheck($this->user->id)) {
+                return responseException('该合同已被他人领签');
+            }
+        }
 
         $contract->loadMissing('content');
         return responseMessage('', new ContractResource($contract));
