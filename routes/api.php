@@ -32,6 +32,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::prefix('contract')->group(function () {
         Route::get('status', 'ContractController@getStatus');
         Route::get('status-count', 'ContractController@getStatusCount');
+        Route::get('{contract}', 'ContractController@show');
         Route::post('confirm/{contract}', 'ContractController@confirm');
         Route::post('sign', 'ContractController@sign');
     });
