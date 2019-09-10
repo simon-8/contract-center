@@ -11,6 +11,7 @@ class ContractTpl extends Base
     use ModelTrait;
 
     const FILL_STRING = '____填空____';
+    const FILL_BR = '<br/>';
 
     protected $table = 'contract_tpl';
 
@@ -28,10 +29,10 @@ class ContractTpl extends Base
         'updated_at'
     ];
 
-    public function getContentAttribute($value)
-    {
-        return $value ? strip_tags($value) : '';
-    }
+    //public function getContentAttribute($value)
+    //{
+    //    return $value ? strip_tags($value) : '';
+    //}
 
     public function getFormdataAttribute($value)
     {

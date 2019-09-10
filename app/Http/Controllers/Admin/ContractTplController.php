@@ -94,8 +94,12 @@ class ContractTplController extends Controller
         $data = $request->all();
         $request->validateUpdate($data);
 
-        if (strpos($data['content'], ContractTpl::FILL_STRING) !== false) {
-            $arr = explode(ContractTpl::FILL_STRING, strip_tags($data['content']));
+        $content = $data['content'];
+        $content = str_replace('<p>', '', $content);
+        $content = str_replace('</p>', '<br/>', $content);
+
+        if (strpos($content, ContractTpl::FILL_STRING) !== false) {
+            $arr = explode(ContractTpl::FILL_STRING, strip_tags($content));
             $newArr = [];
             array_map(function($item) use(&$newArr) {
                 $newArr[] = $item;
@@ -106,9 +110,27 @@ class ContractTplController extends Controller
 
             $data['formdata'] = array_slice($newArr, 0, -1);
         } else {
-            $data['formdata'] = [strip_tags($data['content'])];
+            $data['formdata'] = [$content];
         }
 
+        foreach ($data['formdata'] as $k => $item) {
+            if (strpos($item, '<br/>') !== false) {
+                $arr = explode('<br/>', $item);
+                $newArr = [];
+                array_map(function($item) use(&$newArr) {
+                    $newArr[] = strip_tags($item);
+                    $newArr[] = [
+                        'type' => 'br',
+                    ];
+                }, $arr);
+                dd($content, $data['formdata'], $newArr);
+                array_splice($data['formdata'], $k, 1, $newArr);
+                $data['formdata'][$k] = $newArr;
+            } else {
+                $data['formdata'][$k] = strip_tags($item);
+            }
+        }
+        dd($data['formdata']);
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
         $data['players'] = $section['players'];
