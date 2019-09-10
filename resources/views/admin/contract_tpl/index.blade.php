@@ -56,7 +56,7 @@
                                 <td>{{ $v->id }}</td>
                                 <td>{{ $v->listorder }}</td>
                                 <td>{{ $v->contractTplSection->name }}</td>
-                                <td>{{ \Str::limit($v->content, 30) }}</td>
+                                <td>{{ \Str::limit(strip_tags($v->content), 30) }}</td>
                                 <td>{{ $v->created_at }}</td>
                                 <td>{{ $v->updated_at }}</td>
                                 <td>

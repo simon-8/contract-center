@@ -48,22 +48,10 @@ class ContractTplController extends Controller
         $data = $request->all();
         $request->validateStore($data);
 
-        if (strpos($data['content'], ContractTpl::FILL_STRING) !== false) {
-            $arr = explode(ContractTpl::FILL_STRING, strip_tags($data['content']));
-            $newArr = [];
-            array_map(function($item) use(&$newArr) {
-                $newArr[] = $item;
-                $newArr[] = [
-                    'type' => 'input',
-                ];
-            }, $arr);
-            $data['formdata'] = array_slice($newArr, 0, -1);
-        } else {
-            $data['formdata'] = [strip_tags($data['content'])];
-        }
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
         $data['players'] = $section['players'];
+        $data['formdata'] = $this->makeFormData($data['content']);
         if (!$contractTpl->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
@@ -94,12 +82,32 @@ class ContractTplController extends Controller
         $data = $request->all();
         $request->validateUpdate($data);
 
-        $content = $data['content'];
+        $section = ContractTplSection::find($data['section_id']);
+        $data['catid'] = $section['catid'];
+        $data['players'] = $section['players'];
+        $data['formdata'] = $this->makeFormData($data['content']);
+        if (!$contractTpl->update($data)) {
+            return back()->withErrors(__('web.failed'))->withInput();
+        }
+
+        return redirect()->route('admin.contract-tpl.index', [
+            'section_id' => $data['section_id'],
+            'players' => $data['players'],
+        ])->with('message', __('web.success'));
+    }
+
+    /**
+     * 生成formdata
+     * @param $content
+     * @return array
+     */
+    private function makeFormData($content)
+    {
         $content = str_replace('<p>', '', $content);
         $content = str_replace('</p>', '<br/>', $content);
 
         if (strpos($content, ContractTpl::FILL_STRING) !== false) {
-            $arr = explode(ContractTpl::FILL_STRING, strip_tags($content));
+            $arr = explode(ContractTpl::FILL_STRING, strip_tags($content, '<br>'));
             $newArr = [];
             array_map(function($item) use(&$newArr) {
                 $newArr[] = $item;
@@ -113,35 +121,29 @@ class ContractTplController extends Controller
             $data['formdata'] = [$content];
         }
 
+        $formdata = [];
         foreach ($data['formdata'] as $k => $item) {
+            if (is_array($item)) {
+                $formdata[] = $item;
+                continue;
+            }
             if (strpos($item, '<br/>') !== false) {
                 $arr = explode('<br/>', $item);
                 $newArr = [];
                 array_map(function($item) use(&$newArr) {
+                    if (!$item) return;
                     $newArr[] = strip_tags($item);
                     $newArr[] = [
                         'type' => 'br',
                     ];
                 }, $arr);
-                dd($content, $data['formdata'], $newArr);
-                array_splice($data['formdata'], $k, 1, $newArr);
-                $data['formdata'][$k] = $newArr;
+                //$formdata = array_merge($formdata, array_slice($newArr, 0, -1));
+                $formdata = array_merge($formdata, $newArr);
             } else {
-                $data['formdata'][$k] = strip_tags($item);
+                $formdata[] = $item;
             }
         }
-        dd($data['formdata']);
-        $section = ContractTplSection::find($data['section_id']);
-        $data['catid'] = $section['catid'];
-        $data['players'] = $section['players'];
-        if (!$contractTpl->update($data)) {
-            return back()->withErrors(__('web.failed'))->withInput();
-        }
-
-        return redirect()->route('admin.contract-tpl.index', [
-            'section_id' => $data['section_id'],
-            'players' => $data['players'],
-        ])->with('message', __('web.success'));
+        return $formdata;
     }
 
     /**
