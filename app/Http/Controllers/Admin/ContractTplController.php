@@ -104,10 +104,10 @@ class ContractTplController extends Controller
     private function makeFormData($content)
     {
         $content = str_replace('<p>', '', $content);
-        $content = str_replace('</p>', '<br/>', $content);
+        $content = str_replace('</p>', "\n", $content);
 
         if (strpos($content, ContractTpl::FILL_STRING) !== false) {
-            $arr = explode(ContractTpl::FILL_STRING, strip_tags($content, '<br>'));
+            $arr = explode(ContractTpl::FILL_STRING, strip_tags($content));
             $newArr = [];
             array_map(function($item) use(&$newArr) {
                 $newArr[] = $item;
@@ -121,29 +121,31 @@ class ContractTplController extends Controller
             $data['formdata'] = [$content];
         }
 
-        $formdata = [];
-        foreach ($data['formdata'] as $k => $item) {
-            if (is_array($item)) {
-                $formdata[] = $item;
-                continue;
-            }
-            if (strpos($item, '<br/>') !== false) {
-                $arr = explode('<br/>', $item);
-                $newArr = [];
-                array_map(function($item) use(&$newArr) {
-                    if (!$item) return;
-                    $newArr[] = strip_tags($item);
-                    $newArr[] = [
-                        'type' => 'br',
-                    ];
-                }, $arr);
-                //$formdata = array_merge($formdata, array_slice($newArr, 0, -1));
-                $formdata = array_merge($formdata, $newArr);
-            } else {
-                $formdata[] = $item;
-            }
-        }
-        return $formdata;
+        //$formdata = [];
+        //foreach ($data['formdata'] as $k => $item) {
+        //    if (is_array($item)) {
+        //        $formdata[] = $item;
+        //        continue;
+        //    }
+        //    if (strpos($item, '<br/>') !== false) {
+        //        $arr = explode('<br/>', $item);
+        //        $newArr = [];
+        //        logger(__METHOD__, $arr);
+        //        array_map(function($item) use(&$newArr) {
+        //            if (!$item) return;
+        //            $newArr[] = strip_tags($item);
+        //            $newArr[] = [
+        //                'type' => 'br',
+        //            ];
+        //        }, $arr);
+        //        //$formdata = array_merge($formdata, array_slice($newArr, 0, -1));
+        //        $formdata = array_merge($formdata, $newArr);
+        //    } else {
+        //        $formdata[] = $item;
+        //    }
+        //}
+        //dd($data['formdata'], $formdata);
+        return $data['formdata'];
     }
 
     /**
