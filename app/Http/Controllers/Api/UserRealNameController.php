@@ -151,13 +151,12 @@ class UserRealNameController extends BaseController
 
     /**
      * 通过接口查询身份证信息并缓存查询到的信息
-     * @param UserRealName $userRealName
      * @param IdCardService $idCardService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UserRealName $userRealName, IdCardService $idCardService)
+    public function update(IdCardService $idCardService)
     {
-        $userRealNameData = $userRealName::ofUserid($this->user->id)->first();
+        $userRealNameData = UserRealName::ofUserid($this->user->id)->first();
 
         // 查询身份证正面数据
         $faceImgPath = Storage::disk('uploads')->path($userRealNameData->face_img);
@@ -177,6 +176,9 @@ class UserRealNameController extends BaseController
             return responseException('身份证正面识别失败');
         }
 
+        if (UserRealName::whereIdCard($userRealNameData->idcard)->exists()) {
+            return responseException('该身份证号码已被其他用户验证');
+        }
         // 查询身份证反面数据
         $backImgPath = Storage::disk('uploads')->path($userRealNameData->back_img);
         try {

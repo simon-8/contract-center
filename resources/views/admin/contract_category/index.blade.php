@@ -39,41 +39,43 @@
                     </div>
                     <div id="collapse{{$k}}" class="panel-collapse collapse in" aria-expanded="true" style="">
                         <div class="panel-body no-padding">
-                            <table
-                                class="table table-bordered table-striped table-hover text-nowrap bg-white text-center no-margins">
-                                <tr>
-{{--                                    <td width="50">参与人类型</td>--}}
-                                    <td>模块名称</td>
-                                    <td width="180">操作</td>
-                                </tr>
-                                @if($v->tplSection->count())
-                                    @foreach ($v->tplSection as $k => $section)
-                                        <tr>
-                                            <td>{{ $section->name }}</td>
-                                            <td>
-                                                <button
-                                                    data-href="{{ route('admin.contract-tpl.index', ['section_id' => $section->id, 'players' => $section->players]) }}"
-                                                    class="btn btn-sm btn-secondary action-tpl">模板管理
-                                                </button>
-                                                <button class="btn btn-sm btn-info edit-section"
-                                                        data-json='@json($section)'
-                                                        data-href="{{ editURL('admin.contract-tpl-section.update', $section['id']) }}">
-                                                    编辑
-                                                </button>
-                                                <button class="btn btn-sm btn-danger"
-                                                        onclick="Delete('{{ editURL('admin.contract-tpl-section.destroy', $section['id']) }}')">
-                                                    删除
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
+                            <div class="table-responsive">
+                                <table
+                                    class="table table-bordered table-striped table-hover text-nowrap bg-white text-center no-margins">
                                     <tr>
-                                        <td>空</td>
-                                        <td></td>
+                                        {{--                                    <td width="50">参与人类型</td>--}}
+                                        <td style="width: 70%;">模块名称</td>
+                                        <td style="width: 30%;">操作</td>
                                     </tr>
-                                @endif
-                            </table>
+                                    @if($v->tplSection->count())
+                                        @foreach ($v->tplSection as $k => $section)
+                                            <tr>
+                                                <td>{{ $section->name }}</td>
+                                                <td>
+                                                    <button
+                                                        data-href="{{ route('admin.contract-tpl.index', ['section_id' => $section->id, 'players' => $section->players]) }}"
+                                                        class="btn btn-sm btn-secondary action-tpl">模板管理
+                                                    </button>
+                                                    <button class="btn btn-sm btn-info edit-section"
+                                                            data-json='@json($section)'
+                                                            data-href="{{ editURL('admin.contract-tpl-section.update', $section['id']) }}">
+                                                        编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger"
+                                                            onclick="Delete('{{ editURL('admin.contract-tpl-section.destroy', $section['id']) }}')">
+                                                        删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td>空</td>
+                                            <td></td>
+                                        </tr>
+                                    @endif
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
