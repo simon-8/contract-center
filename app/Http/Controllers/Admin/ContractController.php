@@ -59,7 +59,7 @@ class ContractController extends Controller
     {
         $sections = json_decode($contract->content->tpl, true);
         $fill = json_decode($contract->content->fill, true);
-        return view('admin.contract.show', compact('contract', 'sections', 'fill'));
+        return view('api.contract.show', compact('contract', 'sections', 'fill'));
     }
 
     /**

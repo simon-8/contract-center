@@ -132,7 +132,13 @@
     <div class="footer">
         <div class="@if($contract->players == $contract::PLAYERS_TWO) col-6 @else col-4 @endif">
             <p>甲方签章：</p>
-            <p>电话：<span class="fill-value">{{ $contract->userFirst->mobile ?? '/' }}</span></p>
+            @if($contract->companyid_first)
+                <p>验证电话: <span class="fill-value">{{ $contract->companyFirst->mobile }}</span></p>
+                <p>经办人: <span class="fill-value">{{ $contract->userFirst->realname->truename }}</span></p>
+                <p>经办人电话: <span class="fill-value">{{ $contract->userFirst->mobile }}</span></p>
+            @else
+                <p>电话：<span class="fill-value">{{ $contract->userFirst->mobile ?? '/' }}</span></p>
+            @endif
             <p>
                 {{ date('Y', strtotime($contract->confirm_at)) }} 年
                 {{ date('m', strtotime($contract->confirm_at)) }} 月
@@ -140,8 +146,14 @@
             </p>
         </div>
         <div class="@if($contract->players == $contract::PLAYERS_TWO) col-6 @else col-4 @endif">
-            <p>乙方签章：<span class="fill-value">{{ $contract->userSecond->mobile ?? '/' }}</span></p>
-            <p>电话：<span class="fill-value">{{ $contract->userSecond->mobile ?? '/' }}</span></p>
+            <p>乙方签章：</p>
+            @if($contract->companyid_second)
+                <p>验证电话: <span class="fill-value">{{ $contract->companySecond->mobile }}</span></p>
+                <p>经办人: <span class="fill-value">{{ $contract->userSecond->realname->truename }}</span></p>
+                <p>经办人电话: <span class="fill-value">{{ $contract->userSecond->mobile }}</span></p>
+            @else
+                <p>电话：<span class="fill-value">{{ $contract->userSecond->mobile ?? '/' }}</span></p>
+            @endif
             <p>
                 {{ date('Y', strtotime($contract->confirm_at)) }} 年
                 {{ date('m', strtotime($contract->confirm_at)) }} 月
@@ -151,7 +163,13 @@
         @if($contract->players == $contract::PLAYERS_THREE)
             <div class="col-4">
                 <p>居间人签章：</p>
-                <p>电话：<span class="fill-value">{{ $contract->userThree->mobile ?? '/' }}</span></p>
+                @if($contract->companyid_three)
+                    <p>验证电话: <span class="fill-value">{{ $contract->companyThree->mobile }}</span></p>
+                    <p>经办人: <span class="fill-value">{{ $contract->userThree->realname->truename }}</span></p>
+                    <p>经办人电话: <span class="fill-value">{{ $contract->userThree->mobile }}</span></p>
+                @else
+                    <p>电话：<span class="fill-value">{{ $contract->userThree->mobile ?? '/' }}</span></p>
+                @endif
                 <p>
                     {{ date('Y', strtotime($contract->confirm_at)) }} 年
                     {{ date('m', strtotime($contract->confirm_at)) }} 月

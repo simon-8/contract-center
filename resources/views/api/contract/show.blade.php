@@ -119,7 +119,7 @@
                                     @endif
                                     </span>
                                 @else
-                                    {{ str_replace('&nbsp;', ' ', $formItem) }}
+                                    {!! str_replace(['&nbsp;', "\n"], [' ', '</p><p>'], $formItem) !!}
                                 @endif
                             @endforeach
                         </p>
@@ -147,7 +147,6 @@
         </div>
         <div class="@if($contract->players == $contract::PLAYERS_TWO) col-6 @else col-4 @endif">
             <p>乙方签章：</p>
-            <p>电话：<span class="fill-value">{{ $contract->userSecond->mobile ?? '/' }}</span></p>
             @if($contract->companyid_second)
                 <p>验证电话: <span class="fill-value">{{ $contract->companySecond->mobile }}</span></p>
                 <p>经办人: <span class="fill-value">{{ $contract->userSecond->realname->truename }}</span></p>
