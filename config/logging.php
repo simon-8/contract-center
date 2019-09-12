@@ -50,7 +50,14 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
-            'days' => 14,
+            'days' => 7,
+        ],
+
+        'sql' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/sql.log'),
+            'level' => 'debug',
+            'days' => 5,
         ],
 
         'slack' => [

@@ -25,9 +25,6 @@ class DBQueryListener
         }
         $tmp = vsprintf($tmp, $qBindings);
         $tmp = str_replace("\\", "", $tmp);
-        \Log::info(' [sql] ('.$event->time.'ms) '.$tmp);
-        //if (env('APP_ENV', 'production') == 'local') {
-        //
-        //}
+        \Log::channel('sql')->info(' ['.$event->time.'ms] '.$tmp);
     }
 }
