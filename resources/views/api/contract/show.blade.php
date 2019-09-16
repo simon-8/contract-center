@@ -106,7 +106,8 @@
             </div>
             @foreach ($sections as $k => $section)
                 <div class="section">
-                    <h4>{{ $k+1 }}. {{ $section['name'] }}</h4>
+{{--                    <h4>{{ $k+1 }}. {{ $section['name'] }}</h4>--}}
+                    <h4>{{ $section['name'] }}</h4>
                     @foreach ($section['contract_tpl'] as $tpl)
                         <p>
                             @foreach ($tpl['formdata'] as $formKey => $formItem)

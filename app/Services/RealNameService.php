@@ -171,6 +171,7 @@ class RealNameService
      */
     protected function notifyToServer($api, $data)
     {
+        \Log::debug('ServerRequest ==> ' . $api);
         \Log::debug('ServerRequest ==> ' . (is_array($data) ? var_export($data, true) : $data));
         $response = $this->requestPost($this->getServerUrl(). $api, $data);
 
@@ -187,6 +188,7 @@ class RealNameService
      */
     protected function queryFromServer($api, $data)
     {
+        \Log::debug('ServerRequest ==> ' . $api);
         \Log::debug('ServerRequest ==> ' . (is_array($data) ? var_export($data, true) : $data));
         $response = $this->requestGet($this->getServerUrl(). $api, $data);
 

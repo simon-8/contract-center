@@ -26,9 +26,16 @@ class UserCompanyOrderController extends Controller
     public function notify(\Request $request, $pid)
     {
         logger(__METHOD__, $request::all());
-        $notifyData = $request::input('esign_return');
-        $notifyData = json_decode($notifyData, true);
-        if ($notifyData['result'] !== 'PAY_SUCCESS') {
+        logger(__METHOD__, [file_get_contents('php://input')]);
+
+        //$notifyData = $request::input('esign_return');
+        $notifyStr = file_get_contents('php://input');
+        parse_str($notifyStr, $notifyData);
+        $notifyData = json_decode($notifyData['esign_return'], true);
+
+        logger(__METHOD__, $notifyData ?: []);
+
+        if (!$notifyData || $notifyData['result'] !== 'PAY_SUCCESS') {
             return responseException(__('api.failed'));
         }
 

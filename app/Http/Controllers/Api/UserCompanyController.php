@@ -53,7 +53,7 @@ class UserCompanyController extends BaseController
      * @param RealNameService $realNameService
      * @param SmsService $smsService
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Illuminate\Validation\ValidationException|\Exception
      */
     public function store(UserCompanyRequest $request, UserCompany $userCompany, RealNameService $realNameService, SmsService $smsService)
     {

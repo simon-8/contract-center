@@ -176,7 +176,7 @@ class UserRealNameController extends BaseController
             return responseException('身份证正面识别失败');
         }
 
-        if (UserRealName::whereIdCard($userRealNameData->idcard)->exists()) {
+        if (UserRealName::whereIdcard($userRealNameData->idcard)->exists()) {
             return responseException('该身份证号码已被其他用户验证');
         }
         // 查询身份证反面数据

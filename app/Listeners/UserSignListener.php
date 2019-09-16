@@ -1,6 +1,8 @@
 <?php
 /*
  * 用户签名后签署PDF文件
+ *
+ * 已废弃
  * */
 namespace App\Listeners;
 
