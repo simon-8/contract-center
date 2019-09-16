@@ -190,6 +190,14 @@ class Contract extends Base
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function signCode()
+    {
+        return $this->belongsTo('App\Models\ContractSignCode', 'contract_id', 'id');
+    }
+
+    /**
      * 对方用户ID
      * @param $query
      * @param int $data
