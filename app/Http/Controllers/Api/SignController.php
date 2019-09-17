@@ -7,12 +7,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Contract;
-use App\Models\ContractSignCode;
 use App\Models\EsignUser;
 use App\Models\Sign;
 use App\Http\Resources\Sign as SignResource;
 use App\Events\UserSign;
-use App\Models\User;
 use App\Models\UserCompany;
 use App\Services\ContractService;
 use App\Services\EsignService;
@@ -108,11 +106,7 @@ class SignController extends BaseController
         DB::beginTransaction();
         try {
             $contract->save();
-            //$contractService->userSign($contract, $this->user, $this->user->mobile, $data['captcha']);
-            // 保存验证码数据
-            $this->storeContractSignCode($contract, $this->user, $this->user->mobile, $data['captcha']);
-            // 签名
-            $this->allSign($contract);
+            $contractService->userSign($contract, $this->user, $this->user->mobile, $data['captcha']);
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -123,57 +117,6 @@ class SignController extends BaseController
         event(new UserSign($contract, $this->user));
 
         return responseMessage(__('api.success'));
-    }
-
-    /**
-     * 保存合同验证码数据
-     * @param Contract $contract
-     * @param User $user
-     * @param $mobile
-     * @param $code
-     */
-    private function storeContractSignCode(Contract $contract, User $user, $mobile, $code)
-    {
-        $where = [
-            'contract_id' => $contract->id,
-            'userid' => $user->id,
-        ];
-        ContractSignCode::updateOrCreate($where, [
-            'mobile' => $mobile,
-            'code' => $code,
-        ]);
-    }
-
-    /**
-     * 所有人都签名
-     * 生成pdf文档
-     * 然后依次签名
-     * @param Contract $contract
-     * @return bool
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    private function allSign(Contract $contract)
-    {
-        if ($contract->status != $contract::STATUS_SIGN) {
-            return true;
-        }
-
-        // 生成pdf文档
-        $contractService = new ContractService();
-        $contractService->makePdf($contract);
-
-        // pdf 文档位置
-        $outputFile = $contractService->makeStorePath($contract->id, true);
-        if (!$contract->path_pdf) {
-            $contract->update([
-                'path_pdf' => $outputFile
-            ]);
-        }
-
-        $signCode = $contract->signCode;
-        $contractService->userSign($contract, $contract->userFirst, $signCode->mobile_first, $signCode->code_first);
-        $contractService->userSign($contract, $contract->userSecond, $signCode->mobile_second, $signCode->code_second);
-        $contractService->userSign($contract, $contract->userThree, $signCode->mobile_three, $signCode->code_three);
     }
 
     /**
@@ -284,11 +227,7 @@ class SignController extends BaseController
         DB::beginTransaction();
         try {
             $contract->save();
-            //$contractService->userSign($contract, $this->user, $companyData->mobile, $data['captcha']);
-            // 保存验证码数据
-            $this->storeContractSignCode($contract, $this->user, $companyData->mobile, $data['captcha']);
-            // 签名
-            $this->allSign($contract);
+            $contractService->userSign($contract, $this->user, $companyData->mobile, $data['captcha']);
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -349,6 +288,4 @@ class SignController extends BaseController
         }
         return responseMessage(__('api.success'));
     }
-
-    //private function
 }

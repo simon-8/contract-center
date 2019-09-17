@@ -235,15 +235,19 @@ class EsignService
     /**
      * 创建企业印章
      * @param $organizeAccountId
+     * @param null $templateType
+     * @param null $color
+     * @param null $hText
+     * @param null $qText
      * @return mixed
      * @throws \Exception
      */
-    public function addOrganizeTemplateSeal($organizeAccountId)
+    public function addOrganizeTemplateSeal($organizeAccountId, $templateType = null, $color = null, $hText = null, $qText = null)
     {
-        $templateType = OrganizeTemplateType::STAR;
-        $color = SealColor::RED;
-        $hText = "";
-        $qText = "";
+        $templateType = $templateType ?? OrganizeTemplateType::STAR;
+        $color = $color ?? SealColor::RED;
+        $hText = $hText ?? "";
+        $qText = $qText ?? "";
         $ret = self::$eSign->addTemplateSeal($organizeAccountId, $templateType, $color, $hText, $qText);
         if ($ret['errCode']) {
             throw new \Exception($ret['msg']);
@@ -255,17 +259,23 @@ class EsignService
     /**
      * 创建个人印章
      * @param $personAccountId
+     * @param null $templateType
+     * @param null $color
      * @return mixed
+     * @throws \Exception
      */
-    //public function addPersonTemplateSeal($personAccountId)
-    //{
-    //    $accountId = $personAccountId;
-    //    $templateType = PersonTemplateType::RECTANGLE;
-    //    $color = SealColor::RED;
-    //    $ret = self::$eSign->addTemplateSeal($accountId, $templateType, $color);
-    //    $imageBase64 = end($ret);
-    //    return $imageBase64;
-    //}
+    public function addPersonTemplateSeal($personAccountId, $templateType = null, $color = null)
+    {
+        $accountId = $personAccountId;
+        $templateType = $templateType ?? PersonTemplateType::RECTANGLE;
+        $color = $color ?? SealColor::RED;
+        $ret = self::$eSign->addTemplateSeal($accountId, $templateType, $color);
+        if ($ret['errCode']) {
+            throw new \Exception($ret['msg']);
+        }
+        $imageBase64 = end($ret);
+        return $imageBase64;
+    }
 
     /**
      * 平台自身签署

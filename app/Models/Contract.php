@@ -190,14 +190,6 @@ class Contract extends Base
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function signCode()
-    {
-        return $this->belongsTo('App\Models\ContractSignCode', 'contract_id', 'id');
-    }
-
-    /**
      * 对方用户ID
      * @param $query
      * @param int $data
@@ -388,6 +380,41 @@ class Contract extends Base
             $userType = self::USER_TYPE_THREE;
         }
         return $userType;
+    }
+
+    /**
+     * @param $userid
+     * @return string
+     */
+    public function getUserTypeByUserid($userid)
+    {
+        $type = '';
+        if ($userid == $this->userid_first) {
+            $type = 'first';
+        } else if ($userid == $this->userid_second) {
+            $type = 'second';
+        } else if ($userid == $this->userid_three) {
+            $type = 'three';
+        }
+        return $type;
+    }
+
+    /**
+     * 获取用户ID字段
+     * @param $userid
+     * @return string
+     */
+    public function getUseridField($userid)
+    {
+        $field = '';
+        if ($userid == $this->userid_first) {
+            $field = 'userid_first';
+        } else if ($userid == $this->userid_second) {
+            $field = 'userid_second';
+        } else if ($userid == $this->userid_three) {
+            $field = 'userid_three';
+        }
+        return $field;
     }
 
     /**

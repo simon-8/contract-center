@@ -23,7 +23,8 @@ class CreateUserCompanyTable extends Migration
             $table->string('legal_idno')->default('')->comment('法人身份证号码');
             $table->string('mobile', 50)->default('')->comment('联系号码');
             $table->string('address')->default('')->comment('注册地址');
-            $table->string('sign_data')->default('')->comment('签名图片base64数据');
+            $table->string('seal_img')->default('')->comment('印章图片地址');
+            $table->text('sign_data')->nullable()->comment('名称签名图片base64数据');
             $table->string('service_id')->default('')->comment('服务ID');
             $table->unsignedTinyInteger('status')->default(0)->comment('状态');
             $table->timestamps();

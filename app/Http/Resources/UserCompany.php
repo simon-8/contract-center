@@ -15,7 +15,8 @@ class UserCompany extends JsonResource
     public function toArray($request)
     {
         $data = parent::toArray($request);
-        $data['sign_data'] = empty($data['sign_data']) ? '' : imgurl($data['sign_data'], 'uploads');
+        // todo 20190917 本次更新保留sign_data字段
+        $data['sign_data'] = empty($data['seal_img']) ? '' : imgurl($data['seal_img'], 'uploads');
         unset($data['created_at'], $data['updated_at']);
         return $data;
     }

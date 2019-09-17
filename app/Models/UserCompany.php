@@ -34,6 +34,7 @@ class UserCompany extends Base
         'legal_idno',
         'mobile',
         'address',
+        'seal_img',
         'sign_data',
         'service_id',
         'status',

@@ -27,5 +27,6 @@ class UserRealName extends Base
         'issue',
         'face_img',
         'back_img',
+        'sign_data',
     ];
 }

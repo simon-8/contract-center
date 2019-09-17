@@ -29,6 +29,7 @@ class CreateUserRealNameTable extends Migration
             $table->string('face_img')->default('')->comment('身份证正面图片');
             $table->string('back_img')->default('')->comment('身份证反面图片');
 
+            $table->text('sign_data')->nullable()->comment('签名图片数据');
             $table->timestamps();
         });
     }

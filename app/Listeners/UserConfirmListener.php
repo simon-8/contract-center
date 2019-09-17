@@ -41,17 +41,19 @@ class UserConfirmListener implements ShouldQueue
         if ($event->contract->status != Contract::STATUS_CONFIRM) {
             return;
         }
-        // todo 发送通知各方已确认
-        // 生成pdf文档
-        //$this->contractService->makePdf($event->contract);
 
-        // pdf 文档位置
-        //$outputFile = $this->contractService->makeStorePath($event->contract->id, true);
-        //if (!$event->contract->path_pdf) {
-        //    $event->contract->update([
-        //        'path_pdf' => $outputFile
-        //    ]);
-        //}
+        // 生成pdf文档
+        $this->contractService->makePdf($event->contract);
+
+         //pdf 文档位置
+        $outputFile = $this->contractService->makeStorePath($event->contract->id, true);
+        if (!$event->contract->path_pdf) {
+            $event->contract->update([
+                'path_pdf' => $outputFile
+            ]);
+        }
+
+        // todo 发送通知各方已确认
     }
 
     /**

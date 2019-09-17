@@ -14,11 +14,14 @@ use App\Models\EsignUser;
 use App\Models\User;
 use App\Models\UserCompany;
 use App\Http\Resources\UserCompany as UserCompanyResource;
+use App\Services\ContractService;
 use App\Services\EsignService;
 use App\Services\RealNameService;
 use App\Services\SmsService;
 use DB;
 use Illuminate\Support\Facades\Storage;
+use tech\constants\OrganizeTemplateType;
+use tech\constants\SealColor;
 
 class UserCompanyController extends BaseController
 {
@@ -120,9 +123,13 @@ class UserCompanyController extends BaseController
                     'accountid' => $accountid,
                 ]);
 
-                // 新建印章图片模板
+                // 保存普通签名图片
+                $contractService = new ContractService();
+                $userCompanyData->sign_data = $contractService->makeSimpleSignData($userCompanyData->name);
+
+                // 新建印章图片模板 红色圆形含五角星
                 $base64 = $esignService->addOrganizeTemplateSeal($accountid);
-                $userCompanyData->sign_data = $this->storeSignImage($base64);
+                $userCompanyData->seal_img = $this->storeSignImage($base64);
                 $userCompanyData->save();
             }
             //$this->user->update(['vcompany' => 1]);

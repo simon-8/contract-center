@@ -21,6 +21,7 @@ use App\Models\EsignUser;
 use App\Models\UserRealName;
 
 use App\Http\Resources\UserRealName as UserRealNameResource;
+use App\Services\ContractService;
 use App\Services\EsignService;
 use App\Services\Ocr\IdCardService;
 use App\Services\RealNameService;
@@ -28,6 +29,8 @@ use \DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use tech\constants\PersonTemplateType;
+use tech\constants\SealColor;
 
 class UserRealNameController extends BaseController
 {
@@ -275,6 +278,11 @@ class UserRealNameController extends BaseController
             ], [
                 'accountid' => $accountid
             ]);
+
+            // 保存普通签名图片
+            $contractService = new ContractService();
+            $userRealNameData->sign_data = $contractService->makeSimpleSignData($userRealNameData->truename);
+            $userRealNameData->save();
 
             // 用户已通过实名认证
             $this->user->update(['vtruename' => 1]);
