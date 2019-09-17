@@ -46,10 +46,10 @@ class UserConfirmListener implements ShouldQueue
         $this->contractService->makePdf($event->contract);
 
          //pdf 文档位置
-        $outputFile = $this->contractService->makeStorePath($event->contract->id, true);
+        $sourcePath = $this->contractService->makeStorePath($event->contract->id);
         if (!$event->contract->path_pdf) {
             $event->contract->update([
-                'path_pdf' => $outputFile
+                'path_pdf' => $sourcePath
             ]);
         }
 

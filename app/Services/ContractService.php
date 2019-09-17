@@ -107,7 +107,7 @@ class ContractService
                 'dstPdfFile' => Storage::disk('uploads')->path($outputFile),
             ],
             'signPos' => [
-                'posX' => '50',
+                'posX' => '150',
                 'posY' => '0',
                 'key' => '甲方:',
                 //'width' => '100',
@@ -350,10 +350,10 @@ class ContractService
      */
     public function makeSimpleSignData($text)
     {
-        $size = 12;
+        $size = 10;
         $font = public_path("fonts/simsun.ttc");
         $length = mb_strlen($text);
-        $image = imagecreatetruecolor($length*20,30);//建立一张图片，设置宽高
+        $image = imagecreatetruecolor(220,30);//建立一张图片，设置宽高
         $bg = imagecolorallocatealpha($image,0,0,0,127);//设置图片透明背景
         $color = imagecolorallocate($image,0,0,0); //设置字体颜色
         imagealphablending($image, false);//显示透明背景

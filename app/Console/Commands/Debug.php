@@ -35,22 +35,21 @@ class Debug extends Command
     }
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @throws \Exception
      */
     public function handle()
     {
-        //$contractService = new ContractService();
-        //$signData = $contractService->makeSimpleSignData('杭州道易企业管理咨询有限公司');
-        //$imageData = "data:image/png;base64,". $signData;
-        //dd($imageData);
-        $esignService = new EsignService();
-        $esignService->addOrganizeTemplateSeal(
-            '0EA9F7D90B594F39B8DE8121BA754517',
-            OrganizeTemplateType::RECT,
-            SealColor::BLACK,
-            '杭州道易企业管理咨询有限公司'
-        );
+        $contractService = new ContractService();
+        $signData = $contractService->makeSimpleSignData('刘文静');
+        $imageData = "data:image/png;base64,". $signData;
+        dd($imageData);
+        //$esignService = new EsignService();
+        //$res = $esignService->addOrganizeTemplateSeal(
+        //    '7075EE6532884300BA06036F2AAC00C2',
+        //    OrganizeTemplateType::RECT,
+        //    SealColor::BLACK,
+        //    '杭州道易企业管理咨询有限公司'
+        //);
+        //dd($res);
     }
 }

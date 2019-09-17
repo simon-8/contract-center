@@ -134,6 +134,8 @@ class MiniProgramController extends Controller
             if (!$userData) {
                 return responseException(__('auth.get_userinfo_exception'), []);
             }
+            $userData->avatar = $data['avatar'];
+            $userData->nickname = $data['nickname'];
             $userData->last_login_time = $data['last_login_time'];
             $userData->save();
         }

@@ -105,8 +105,9 @@ class SignController extends BaseController
 
         DB::beginTransaction();
         try {
-            $contract->save();
             $contractService->userSign($contract, $this->user, $this->user->mobile, $data['captcha']);
+            $contract->path_pdf = $contractService->makeStorePath($contract->id, true);
+            $contract->save();
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -226,8 +227,9 @@ class SignController extends BaseController
 
         DB::beginTransaction();
         try {
-            $contract->save();
             $contractService->userSign($contract, $this->user, $companyData->mobile, $data['captcha']);
+            $contract->path_pdf = $contractService->makeStorePath($contract->id, true);
+            $contract->save();
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
