@@ -18,20 +18,16 @@ namespace App\Http\Controllers\Api;
 use App\Events\UserConfirm;
 use App\Http\Requests\ContractRequest;
 use App\Http\Resources\Contract AS ContractResource;
+use App\Http\Resources\UserCompany as UserCompanyResource;
 use App\Models\Contract;
 use App\Models\ContractCategory;
 use App\Models\ContractTplSection;
+use App\Models\UserCompany;
 use App\Services\ContractService;
 use \DB;
 
 class ContractController extends BaseController
 {
-    //public function __construct(\Request $request)
-    //{
-    //    parent::__construct($request);
-    //    $this->middleware('auth:api')->except('getStatus', 'getStatusCount');
-    //}
-
     /**
      * 权限检查
      * @param $contract
@@ -246,9 +242,9 @@ class ContractController extends BaseController
         try {
             // 重置数据 等待重新确认
             $updateData = [
-                'jiafang' => $data['fills']['jiafang'] ?? '',
-                'yifang' =>  $data['fills']['yifang'] ?? '',
-                'jujianren' =>  $data['fills']['jujianren'] ?? '',
+                'jiafang' => '',
+                'yifang' => '',
+                'jujianren' => '',
                 // 用户ID
                 'userid_first' => 0,
                 'userid_second' => 0,
@@ -284,6 +280,7 @@ class ContractController extends BaseController
             return responseException($exception->getMessage());
         }
 
+        // todo 通知各个成员数据变更
         return responseMessage('', new ContractResource($contract));
     }
 
@@ -315,23 +312,38 @@ class ContractController extends BaseController
         if (!$this->user->vtruename) {
             return responseException('请先通过实名认证', ['vtruename' => true]);
         }
-        $data = $request->only(['user_type']);
+        $data = $request->only(['user_type', 'companyid']);
         $request->validateConfirm($data);
 
         $userType = $contract->getUserType($data['user_type']);
         unset($data['user_type']);
 
         $updateData["userid_{$userType}"] = $this->user->id;
+        $updateData["companyid_{$userType}"] = $data['companyid'];
         $updateData["confirm_{$userType}"] = 1;
         $contract->fill($updateData);
 
-        // 直接设置当前用户真实姓名
+        $companyData = [];
+        if ($data['companyid']) {
+            $companyData = UserCompany::find($data['companyid']);
+            if (empty($companyData) || !$companyData->id) {
+                return responseException('未找到该企业信息, 请确认');
+            }
+            if ($companyData->status != UserCompany::STATUS_SUCCESS) {
+                return responseException('该企业还未认证成功, 请认证后再试');
+            }
+        }
+        // 设置各方名称 && 签名类型
+        $identityName = $companyData ? $companyData['name'] : $this->user->truename;
         if ($userType === Contract::USER_TYPE_FIRST) {
-            $updateData['jiafang'] = $this->user->realname->truename;
+            $updateData['jiafang'] = $identityName;
+            $updateData['sign_type_first'] = $companyData ? 1 : 0;
         } else if ($userType === Contract::USER_TYPE_SECOND) {
-            $updateData['yifang'] = $this->user->realname->truename;
+            $updateData['yifang'] = $identityName;
+            $updateData['sign_type_second'] = $companyData ? 1 : 0;
         } else if ($userType === Contract::USER_TYPE_THREE) {
-            $updateData['jujianren'] = $this->user->realname->truename;
+            $updateData['jujianren'] = $identityName;
+            $updateData['sign_type_three'] = $companyData ? 1 : 0;
         }
 
         if ($contract->players == $contract::PLAYERS_THREE) {
@@ -358,5 +370,29 @@ class ContractController extends BaseController
 
         $contract->loadMissing('content');
         return responseMessage('', new ContractResource($contract));
+    }
+
+    /**
+     * 签名企业信息
+     * @param \Request $request
+     * @param Contract $contract
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function signCompanyInfo(\Request $request, Contract $contract)
+    {
+        // 根据用户类型获取企业ID
+        $userType = $contract->getUserTypeByUserid($this->user->id);
+        $companyid = $contract['companyid_'. $userType];
+
+        if (!$companyid) {
+            return responseException('该合同无法使用企业签名');
+        }
+        $companyData = UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($companyid)->first();
+        if (!$companyData) {
+            return responseException('该企业未通过企业认证');
+        }
+        $companyData['mobile'] = stringHide($companyData['mobile']);
+        unset($companyData['legal_idno']);
+        return responseMessage('', new UserCompanyResource($companyData));
     }
 }

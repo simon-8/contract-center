@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->default('')->comment('用户名');
             $table->string('password')->default('')->comment('密码');
             $table->string('nickname')->default('')->comment('昵称');
+            $table->string('truename')->default('')->comment('真实姓名');
             $table->string('mobile', 15)->default('')->comment('手机号码');
             $table->string('email')->default('')->comment('email');
             $table->unsignedDecimal('money')->default(0)->comment('余额');

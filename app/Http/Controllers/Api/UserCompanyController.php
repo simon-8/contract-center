@@ -41,6 +41,18 @@ class UserCompanyController extends BaseController
      */
     public function show(UserCompany $userCompany)
     {
+        $userCompany['mobile'] = stringHide($userCompany['mobile']);
+        unset($userCompany['legal_idno']);
+        return responseMessage('', new UserCompanyResource($userCompany));
+    }
+
+    /**
+     * 我的
+     * @param UserCompany $userCompany
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function my(UserCompany $userCompany)
+    {
         $userCompanyData = $userCompany::ofUserid($this->user->id)->first();
         if (!$userCompanyData) {
             return responseMessage('');
@@ -122,10 +134,6 @@ class UserCompanyController extends BaseController
                 ], [
                     'accountid' => $accountid,
                 ]);
-
-                // 保存普通签名图片
-                $contractService = new ContractService();
-                $userCompanyData->sign_data = $contractService->makeSimpleSignData($userCompanyData->name);
 
                 // 新建印章图片模板 红色圆形含五角星
                 $base64 = $esignService->addOrganizeTemplateSeal($accountid);

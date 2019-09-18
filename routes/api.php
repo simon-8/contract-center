@@ -34,7 +34,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         Route::get('status-count', 'ContractController@getStatusCount');
         Route::get('{contract}', 'ContractController@show');
         Route::post('confirm/{contract}', 'ContractController@confirm');
-        Route::post('sign', 'ContractController@sign');
+        //Route::post('sign', 'ContractController@sign');
+        Route::get('sign-company-info/{contract}', 'ContractController@signCompanyInfo');
     });
 
     Route::apiResource('contract', 'ContractController')
@@ -96,7 +97,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::get('cancel', 'UserRealNameController@cancel');
         });
         Route::prefix('user-company')->group(function() {
-            Route::get('', 'UserCompanyController@show');
+            Route::get('{userCompany}', 'UserCompanyController@show');
+            Route::get('', 'UserCompanyController@my');
             Route::post('', 'UserCompanyController@store');
             Route::put('', 'UserCompanyController@update');
             Route::delete('', 'UserCompanyController@destroy');

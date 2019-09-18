@@ -83,13 +83,10 @@ class SignController extends BaseController
 
         if ($contract->userid_first == $this->user->id) {
             $contract->signed_first = 1;
-            $contract->jiafang = $this->user->realname->truename;
         } else if ($contract->userid_second == $this->user->id) {
             $contract->signed_second = 1;
-            $contract->yifang = $this->user->realname->truename;
         } else if ($contract->userid_three == $this->user->id) {
             $contract->signed_three = 1;
-            $contract->jujianren = $this->user->realname->truename;
         }
 
         // 参与方都签了名 直接修改状态
@@ -169,16 +166,24 @@ class SignController extends BaseController
      */
     public function confirm(\Request $request, ContractService $contractService)
     {
-        $data = $request::only(['contract_id', 'sign_type', 'company_id', 'captcha']);
+        $data = $request::only(['contract_id', 'captcha']);
 
-        if (empty($data['company_id'])) {
-            return responseException('请选择签名企业');
+        $contract = Contract::find($data['contract_id']);
+        if (empty($contract->id)) {
+            return responseException('合同不存在');
         }
-        if (!UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($data['company_id'])->exists()) {
-            return responseException('签名企业未通过认证');
+        // 根据用户类型获取企业ID
+        $userType = $contract->getUserTypeByUserid($this->user->id);
+        $companyid = $contract['companyid_'. $userType];
+
+        if (!$companyid) {
+            return responseException('该合同无法使用企业签名');
+        }
+        $companyData = UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($companyid)->first();
+        if (!$companyData) {
+            return responseException('该企业未通过企业认证');
         }
 
-        $companyData = UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($data['company_id'])->first();
         // 验证短信
         try {
             $esignService = new EsignService();
@@ -188,30 +193,12 @@ class SignController extends BaseController
             return responseException($e->getMessage());
         }
 
-        // 更新 contract signed_xxx  sign_type_xxx
-        $contract = Contract::find($data['contract_id']);
-
         if ($contract->userid_first == $this->user->id) {
-
             $contract->signed_first = 1;
-            $contract->sign_type_first = $data['sign_type'];
-            $contract->companyid_first = $data['company_id'];
-            $contract->jiafang = $companyData->name;
-
         } else if ($contract->userid_second == $this->user->id) {
-
             $contract->signed_second = 1;
-            $contract->sign_type_second = $data['sign_type'];
-            $contract->companyid_second = $data['company_id'];
-            $contract->yifang = $companyData->name;
-
         } else if ($contract->userid_three == $this->user->id) {
-
             $contract->signed_three = 1;
-            $contract->sign_type_three = $data['sign_type'];
-            $contract->companyid_three = $data['company_id'];
-            $contract->jujianren = $companyData->name;
-
         }
 
         // 参与方都签了名 直接修改状态

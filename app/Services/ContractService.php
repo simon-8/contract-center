@@ -54,11 +54,17 @@ class ContractService
         return $dir. "/{$id}.pdf";
     }
 
+    /**
+     * @return string
+     */
     private function getSourcePath()
     {
         return $this->makeStorePath($this->contract->id);
     }
 
+    /**
+     * @return string
+     */
     private function getOutPutPath()
     {
         return $this->contractService->makeStorePath($this->contract->id, true);
@@ -81,112 +87,13 @@ class ContractService
     }
 
     /**
-     * 头部签名
-     * @return array
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    /*protected function makeHeaderSignData()
-    {
-        // PDF路径
-        $sourceFile = $this->getSourcePath();
-        $outputFile = $this->getOutPutPath();
-
-        // 当output中存在文件时, 表示有一方已签署, 直接修改已签署文件
-        if (Storage::disk('uploads')->exists($outputFile)) {
-            $sourceFile = $outputFile;
-        }
-
-        // 签章配置
-        $signData = [
-            'accountid' => $this->user->esignUser->accountid,
-            'signFile' => [
-                'srcPdfFile' => Storage::disk('uploads')->path($sourceFile),
-                'dstPdfFile' => Storage::disk('uploads')->path($outputFile),
-            ],
-            'signPos' => [
-                'posX' => '150',
-                'posY' => '0',
-                'key' => '甲方:',
-                //'width' => '100',
-                'addSignTime' => 'true',
-            ],
-            'signType' => SignType::KEYWORD,
-            'sealData' => '',
-            'stream' => true,
-        ];
-
-        // 签章关键字定位 && 当前用户签名类型
-        $signType = Contract::SIGN_TYPE_PERSON;
-        if ($this->contract->userid_first == $this->user->id) {
-
-            $signData['signPos']['key'] = '甲方:';
-            $signType = $this->contract->sign_type_first;
-
-        } else if ($this->contract->userid_second == $this->user->id) {
-
-            $signData['signPos']['key'] = '乙方:';
-            $signType = $this->contract->sign_type_second;
-
-        } else if ($this->contract->userid_three == $this->user->id) {
-
-            $signData['signPos']['key'] = '居间人:';
-            $signType = $this->contract->sign_type_three;
-
-        }
-
-        if ($signType == Contract::SIGN_TYPE_COMPANY) {
-            $signData['sealData'] = $this->headerComSignImage();
-            //$signData['signPos']['width'] = 159;
-        } else {
-            $signData['sealData'] = $this->headerUserSignImage();
-        }
-        return $signData;
-    }*/
-
-    /**
-     * 顶部 用户签名
-     * @return string
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException|\Exception
-     */
-/*    protected function headerUserSignImage()
-    {
-        // 获取签名图片
-        $realNameData = $this->user->realname;
-        if (empty($realNameData) || empty($realNameData->sign_data)) {
-            throw new \Exception('未找到用户签名数据(1)');
-        }
-        return $realNameData->sign_data;
-    }*/
-
-    /**
-     * 顶部 公司签名
-     * @return string
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException|\Exception
-     */
-/*    protected function headerComSignImage()
-    {
-        $companyInfo = [];
-        if ($this->contract->userid_first == $this->user->id) {
-            $companyInfo = $this->contract->companyFirst;
-        } else if ($this->contract->userid_second == $this->user->id) {
-            $companyInfo = $this->contract->companySecond;
-        } else if ($this->contract->userid_three == $this->user->id) {
-            $companyInfo = $this->contract->companyThree;
-        }
-        if (!$companyInfo && !$companyInfo->sign_data) {
-            throw new \Exception('未找到公司签名数据(1)');
-        }
-        return $companyInfo->sign_data;
-    }*/
-
-    /**
      * 生成签名数据
      * @param $mobile
      * @param $captcha
      * @return array
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function makeBottomSignData($mobile, $captcha)
+    protected function makeSignOption($mobile, $captcha)
     {
         // PDF路径
         $sourceFile = $this->getSourcePath();
@@ -238,10 +145,10 @@ class ContractService
         }
 
         if ($signType == Contract::SIGN_TYPE_COMPANY) {
-            $signData['sealData'] = $this->bottomComSignImage();
+            $signData['sealData'] = $this->comSignImage();
             $signData['signPos']['width'] = 159;
         } else {
-            $signData['sealData'] = $this->bottomUserSignImage();
+            $signData['sealData'] = $this->userSignImage();
         }
         return $signData;
     }
@@ -251,7 +158,7 @@ class ContractService
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException|\Exception
      */
-    protected function bottomUserSignImage()
+    protected function userSignImage()
     {
         // 获取签名图片
         $sign = $this->contract->sign()->where('userid', $this->user->id)->first();
@@ -271,7 +178,7 @@ class ContractService
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException|\Exception
      */
-    protected function bottomComSignImage()
+    protected function comSignImage()
     {
         $companyInfo = [];
         if ($this->contract->userid_first == $this->user->id) {
@@ -311,24 +218,11 @@ class ContractService
         $this->contract = $contract;
         $this->user = $user;
 
-/*        // headerSign
-        $signData = $this->makeHeaderSignData();
-        logger(__METHOD__, $signData);
-        $serviceid = $this->esignService->userSign($signData);
-
-        // 签名记录
-        EsignSignLog::create([
-            'contract_id' => $this->contract->id,
-            'name' => $this->contract->name,
-            'userid' => $this->user->id,
-            'serviceid' => $serviceid,
-        ]);*/
-
         // bottomSign
-        $signData = $this->makeBottomSignData($mobile, $captcha);
-        logger(__METHOD__, $signData);
+        $signOption = $this->makeSignOption($mobile, $captcha);
+        logger(__METHOD__, $signOption);
 
-        $serviceid = $this->esignService->userSignToMobile($signData);
+        $serviceid = $this->esignService->userSignToMobile($signOption);
 
         // 签名记录
         EsignSignLog::create([
@@ -338,32 +232,5 @@ class ContractService
             'serviceid' => $serviceid,
         ]);
         return $serviceid;
-    }
-
-    /**
-     * base64加密后的普通签名图片
-     * @param $text
-     * @return string
-     */
-    public function makeSimpleSignData($text)
-    {
-        $size = 10;
-        $font = public_path("fonts/simsun.ttc");
-        $length = mb_strlen($text);
-        $image = imagecreatetruecolor(220,30);//建立一张图片，设置宽高
-        $bg = imagecolorallocatealpha($image,0,0,0,127);//设置图片透明背景
-        $color = imagecolorallocate($image,0,0,0); //设置字体颜色
-        imagealphablending($image, false);//显示透明背景
-        imagefill($image,0,0,$bg);//填充背景
-
-        ob_start();
-        imagefttext($image,$size,0,5,15,$color,$font,$text);
-        imagesavealpha($image,true);
-        imagepng($image);
-        $imageData = ob_get_contents();
-        ob_end_clean();
-
-        //$imageData = "data:image/png;base64,". base64_encode($imageData);
-        return base64_encode($imageData);
     }
 }

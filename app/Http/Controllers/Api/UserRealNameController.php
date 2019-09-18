@@ -279,13 +279,11 @@ class UserRealNameController extends BaseController
                 'accountid' => $accountid
             ]);
 
-            // 保存普通签名图片
-            $contractService = new ContractService();
-            $userRealNameData->sign_data = $contractService->makeSimpleSignData($userRealNameData->truename);
-            $userRealNameData->save();
-
             // 用户已通过实名认证
-            $this->user->update(['vtruename' => 1]);
+            $this->user->update([
+                'vtruename' => 1,
+                'truename' => $userRealNameData->truename
+            ]);
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
