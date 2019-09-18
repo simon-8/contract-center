@@ -39,12 +39,12 @@ class UserCompanyController extends BaseController
      * @param UserCompany $userCompany
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(UserCompany $userCompany)
-    {
-        $userCompany['mobile'] = stringHide($userCompany['mobile']);
-        unset($userCompany['legal_idno']);
-        return responseMessage('', new UserCompanyResource($userCompany));
-    }
+    //public function show(UserCompany $userCompany)
+    //{
+    //    $userCompany['mobile'] = stringHide($userCompany['mobile']);
+    //    unset($userCompany['legal_idno']);
+    //    return responseMessage('', new UserCompanyResource($userCompany));
+    //}
 
     /**
      * 我的

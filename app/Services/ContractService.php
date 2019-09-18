@@ -146,7 +146,9 @@ class ContractService
 
         if ($signType == Contract::SIGN_TYPE_COMPANY) {
             $signData['sealData'] = $this->comSignImage();
-            $signData['signPos']['width'] = 159;
+            $signData['signPos']['width'] = '159';
+            //$signData['signPos']['posX'] = '40';
+            $signData['signPos']['posY'] = '30';
         } else {
             $signData['sealData'] = $this->userSignImage();
         }

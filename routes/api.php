@@ -97,7 +97,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::get('cancel', 'UserRealNameController@cancel');
         });
         Route::prefix('user-company')->group(function() {
-            Route::get('{userCompany}', 'UserCompanyController@show');
+            //Route::get('{userCompany}', 'UserCompanyController@show');
             Route::get('', 'UserCompanyController@my');
             Route::post('', 'UserCompanyController@store');
             Route::put('', 'UserCompanyController@update');
