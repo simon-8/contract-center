@@ -72,9 +72,6 @@ class ContractService
      */
     public function makePdf(Contract $contract, $output = false)
     {
-        $contract['jiafang'] = '';
-        $contract['yifang'] = '';
-        $contract['jujianren'] = '';
         $sections = json_decode($contract->content->tpl, true);
         $fill = json_decode($contract->content->fill, true);
         $pdf = PDF::loadView('api.contract.show', compact('contract', 'sections', 'fill'));
@@ -88,7 +85,7 @@ class ContractService
      * @return array
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function makeHeaderSignData()
+    /*protected function makeHeaderSignData()
     {
         // PDF路径
         $sourceFile = $this->getSourcePath();
@@ -144,14 +141,14 @@ class ContractService
             $signData['sealData'] = $this->headerUserSignImage();
         }
         return $signData;
-    }
+    }*/
 
     /**
      * 顶部 用户签名
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException|\Exception
      */
-    protected function headerUserSignImage()
+/*    protected function headerUserSignImage()
     {
         // 获取签名图片
         $realNameData = $this->user->realname;
@@ -159,14 +156,14 @@ class ContractService
             throw new \Exception('未找到用户签名数据(1)');
         }
         return $realNameData->sign_data;
-    }
+    }*/
 
     /**
      * 顶部 公司签名
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException|\Exception
      */
-    protected function headerComSignImage()
+/*    protected function headerComSignImage()
     {
         $companyInfo = [];
         if ($this->contract->userid_first == $this->user->id) {
@@ -180,7 +177,7 @@ class ContractService
             throw new \Exception('未找到公司签名数据(1)');
         }
         return $companyInfo->sign_data;
-    }
+    }*/
 
     /**
      * 生成签名数据
@@ -314,7 +311,7 @@ class ContractService
         $this->contract = $contract;
         $this->user = $user;
 
-        // headerSign
+/*        // headerSign
         $signData = $this->makeHeaderSignData();
         logger(__METHOD__, $signData);
         $serviceid = $this->esignService->userSign($signData);
@@ -325,7 +322,7 @@ class ContractService
             'name' => $this->contract->name,
             'userid' => $this->user->id,
             'serviceid' => $serviceid,
-        ]);
+        ]);*/
 
         // bottomSign
         $signData = $this->makeBottomSignData($mobile, $captcha);
