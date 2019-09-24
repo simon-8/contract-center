@@ -46,7 +46,23 @@ class OrderLawyerConfirmController extends BaseController
         if ($orderData) {
             return responseMessage('', new OrderLawyerConfirmResource($orderData));
         }
-        return responseMessage();
+        return responseMessage('', ['amount' => config('admin.contractLawyerConfirmPrice')]);
+    }
+
+    /**
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showByUser(\Request $request)
+    {
+        $data = $request::only(['contract_id']);
+        $orderData = Order::ofContractID($data['contract_id'] ?? 0)
+            ->ofUserid($this->user->id)
+            ->first();
+        if ($orderData) {
+            return responseMessage('', new OrderLawyerConfirmResource($orderData));
+        }
+        return responseMessage('', ['amount' => config('admin.contractLawyerConfirmPrice')]);
     }
 
     /**
@@ -62,13 +78,31 @@ class OrderLawyerConfirmController extends BaseController
         $data = $request->only([
             'contract_id',
             'address_id',
+            'channel',
+            'gateway',
         ]);
         $request->validateStore($data);
+
+        $gateway = $data['gateway'] ?? '';
+        $channel = $data['channel'] ?? '';
+
+        // channel检查
+        if (empty($channel) || !method_exists($this, $channel)) {
+            return responseException('支付通道不存在, 请检查channel值');
+        }
 
         // 已有order状态检查
         $orderData = Order::ofContractID($data['contract_id'])
             ->ofUserid($this->user->id)
             ->first();
+
+        if ($orderData && $orderData->status == Order::STATUS_PAYED) {
+            return responseException('该订单已支付, 无法重复付款');
+        }
+
+        if ($orderData && $orderData->status == Order::STATUS_SUCCESS) {
+            return responseException('该订单已完成, 无法重复付款');
+        }
 
         // 对应contract状态检查
         $contract = Contract::find($data['contract_id']);
@@ -81,11 +115,11 @@ class OrderLawyerConfirmController extends BaseController
             return responseException('收货地址不存在, 请稍候重试');
         }
 
-        $data['address'] = $address->only(['linkman', 'mobile', 'province', 'city', 'area', 'address']);
+        $data['address'] = $address->only(['id', 'linkman', 'mobile', 'province', 'city', 'area', 'address']);
         $data['userid'] = $this->user->id;
-        $data['amount'] = 0;
+        $data['amount'] = config('admin.contractLawyerConfirmPrice');
         $data['openid'] = $this->getOpenid();
-        $data['orderid'] = '';
+        $data['orderid'] = Order::createOrderNo($channel);
 
         // 有则更新 无则创建
         if ($orderData) {
@@ -95,9 +129,9 @@ class OrderLawyerConfirmController extends BaseController
         }
 
         if (!$orderData) {
-            return responseException('申请失败, 请稍候重试');
+            return responseException('订单创建失败, 请稍候重试');
         }
-        return responseMessage();
+        return $this->$channel($orderData, $gateway);
     }
 
 
@@ -131,7 +165,7 @@ class OrderLawyerConfirmController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
-    /*public function wechat(Order $order, $gateway = '')
+    public function wechat(Order $order, $gateway = '')
     {
         $config = [
             //'sandbox' => true,
@@ -168,7 +202,7 @@ class OrderLawyerConfirmController extends BaseController
         $params['paySign'] = generate_sign($params, $config['key']);
 
         return responseMessage('', $params);
-    }*/
+    }
 
     /**
      * 转发通知
@@ -176,19 +210,19 @@ class OrderLawyerConfirmController extends BaseController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \EasyWeChat\Kernel\Exceptions\Exception
      */
-/*    public function notify($channel)
+    public function notify($channel)
     {
         if ($channel === 'wechat') {
             return $this->notifyWechat();
         }
-    }*/
+    }
 
     /**
      * 微信回调通知
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \EasyWeChat\Kernel\Exceptions\Exception
      */
-    /*protected function notifyWechat()
+    protected function notifyWechat()
     {
         $config = [
             'app_id' => config('wechat.payment.default.app_id'),
@@ -227,7 +261,7 @@ class OrderLawyerConfirmController extends BaseController
                 \Log::info('notifyWechat result ==> 订单金额不匹配');
                 return $fail('订单金额不匹配');
             }
-            $order->status = Order::STATUS_WAIT_SEND;
+            $order->status = Order::STATUS_PAYED;
             $order->torderid = $message['transaction_id'];
             $order->payed_at = date('Y-m-d H:i:s');
             $order->save();
@@ -242,7 +276,7 @@ class OrderLawyerConfirmController extends BaseController
         });
 
         return $response;
-    }*/
+    }
 
     /**
      * 微信订单查询 (根据商户订单号)
@@ -250,7 +284,7 @@ class OrderLawyerConfirmController extends BaseController
      * @return bool
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
-    /*protected function wechatQuery($out_trade_no)
+    protected function wechatQuery($out_trade_no)
     {
         $config = [
             'app_id' => config('wechat.payment.default.app_id'),
@@ -274,27 +308,27 @@ class OrderLawyerConfirmController extends BaseController
             return false;
         }
         return true;
-    }*/
+    }
 
     /**
      * 快递费用查询
      * @param \Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    /*public function queryExpressFee(\Request $request)
-    {
-        $fee = 0;
-        try {
-            $expressFee = ExpressFee::find($request::input('address_id'));
-            if ($expressFee) {
-                $fee = $expressFee->amount;
-            }
-        } catch (\Exception $exception) {
-
-        }
-        if (!$fee) {
-            $fee = config('admin.contractLawyerConfirmPrice');
-        }
-        return responseMessage(__('api.success'), compact('fee'));
-    }*/
+    //public function queryExpressFee(\Request $request)
+    //{
+    //    $fee = 0;
+    //    try {
+    //        $expressFee = ExpressFee::find($request::input('address_id'));
+    //        if ($expressFee) {
+    //            $fee = $expressFee->amount;
+    //        }
+    //    } catch (\Exception $exception) {
+    //
+    //    }
+    //    if (!$fee) {
+    //        $fee = config('admin.contractLawyerConfirmPrice');
+    //    }
+    //    return responseMessage(__('api.success'), compact('fee'));
+    //}
 }

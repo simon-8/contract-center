@@ -53,7 +53,7 @@ class OrderLawyerConfirmController extends BaseController
     public function send(\Request $request, OrderLawyerConfirm $orderLawyerConfirm)
     {
         $data = $request::all();
-        $data['status'] = OrderLawyerConfirm::STATUS_HAS_BEEN_SEND;
+        $data['status'] = OrderLawyerConfirm::STATUS_SUCCESS;
         if (!$orderLawyerConfirm->update($data)) {
             return back()->withInput()->withErrors(__('web.failed'));
         }

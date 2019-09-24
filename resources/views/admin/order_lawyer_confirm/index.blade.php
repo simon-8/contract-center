@@ -107,10 +107,12 @@
                                     <a href="javascript:void;" class="show-address" data-address='@json($v->address)' data-href="{{ editURL('admin.order-lawyer-confirm.update', $v['id']) }}">查看</a>
                                 </td>
                                 <td>
-                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_APPLY)
+                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_WAIT_PAY)
                                         <span class="label lable-xs label-default radius">{{ $v->getStatusText() }}</span>
-                                    @elseif($v->status == \App\Models\OrderLawyerConfirm::STATUS_HAS_BEEN_SEND)
+                                    @elseif($v->status == \App\Models\OrderLawyerConfirm::STATUS_PAYED)
                                         <span class="label lable-xs label-primary radius">{{ $v->getStatusText() }}</span>
+                                    @elseif($v->status == \App\Models\OrderLawyerConfirm::STATUS_SUCCESS)
+                                        <span class="label lable-xs label-success radius">{{ $v->getStatusText() }}</span>
                                     @endif
                                 </td>
 {{--                                <td>{{ $v->payed_at }}</td>--}}
@@ -118,10 +120,10 @@
                                 <td>{{ $v->updated_at }}</td>
 
                                 <td>
-                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_APPLY)
+                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_PAYED)
                                     <a class="btn btn-sm btn-info show-control" data-express='@json($v->only(['express_name', 'express_no']))' data-href="{{ editURL('admin.order-lawyer-confirm.update', $v['id']) }}">发货</a>
                                     @endif
-                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_HAS_BEEN_SEND)
+                                    @if ($v->status == \App\Models\OrderLawyerConfirm::STATUS_SUCCESS)
                                         <a class="btn btn-sm btn-info show-control" data-express='@json($v->only(['express_name', 'express_no']))' data-href="{{ editURL('admin.order-lawyer-confirm.update', $v['id']) }}">快递信息</a>
                                     @endif
 {{--                                    <a class="btn btn-sm btn-info" href="{{ route('admin.contract.edit', ['id' => $v->id]) }}">编辑</a>--}}
@@ -224,7 +226,7 @@
                         {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" name="status" value="{{ \App\Models\OrderLawyerConfirm::STATUS_HAS_BEEN_SEND }}">
+                        <input type="hidden" name="status" value="{{ \App\Models\OrderLawyerConfirm::STATUS_SUCCESS }}">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">快递名称</label>
                             <div class="col-sm-10">

@@ -44,7 +44,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
 
     Route::apiResource('contract-category', 'ContractCategoryController');
     Route::apiResource('contract-tpl', 'ContractTplController');
-    Route::apiResource('contract-template', 'ContractTemplateController');
+    //Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
     Route::apiResource('single-page', 'SinglePageController');
 
@@ -58,7 +58,14 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         Route::any('refund/{channel}', 'OrderController@refund')->name('order.refund');
     });
 
-    Route::resource('order-lawyer-confirm', 'OrderLawyerConfirmController');
+    Route::prefix('order-lawyer-confirm')->group(function() {
+        Route::any('notify/{channel}', 'OrderLawyerConfirmController@notify')->name('orderLawyerConfirm.notify');
+        Route::any('refund/{channel}', 'OrderLawyerConfirmController@refund')->name('orderLawyerConfirm.refund');
+        Route::get('show-by-user', 'OrderLawyerConfirmController@showByUser');
+    });
+    Route::resource('order-lawyer-confirm', 'OrderLawyerConfirmController')
+        ->middleware('auth:api')
+        ->except('notify', 'refund');
 /*    Route::prefix('order-lawyer-confirm')->group(function () {
         Route::middleware('auth:api')->group(function () {
             Route::get('', 'OrderLawyerConfirmController@show');
