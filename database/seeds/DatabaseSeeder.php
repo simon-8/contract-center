@@ -20,8 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ManagerTableSeeder::class);
         $this->call(OauthClientsTableSeeder::class);
         $this->call(OauthPersonalAccessClientsTableSeeder::class);
-        $this->call(ContractTplFillsTableSeeder::class);
-        $this->call(ContractTplRulesTableSeeder::class);
         $this->call(SinglePageTableSeeder::class);
         $this->call(ExpressFeeTableSeeder::class);
         $this->call(AdTableSeeder::class);
