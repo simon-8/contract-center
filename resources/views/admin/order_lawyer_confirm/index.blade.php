@@ -70,11 +70,11 @@
                         <td style="width: 50px;">编号</td>
                         <td style="width: 60px;">合同名称</td>
                         <td style="width: 60px;">用户昵称</td>
-{{--                        <td style="width: 100px;">订单价格</td>--}}
-{{--                        <td style="width: 100px;">订单ID</td>--}}
-{{--                        <td style="width: 100px;">第三方ID</td>--}}
-{{--                        <td style="width: 60px;">充值渠道</td>--}}
-{{--                        <td style="width: 60px;">充值方式</td>--}}
+                        <td style="width: 100px;">订单价格</td>
+                        <td style="width: 100px;">订单ID</td>
+                        <td style="width: 100px;">第三方ID</td>
+                        <td style="width: 60px;">充值渠道</td>
+                        <td style="width: 60px;">充值方式</td>
                         <td style="width: 60px;">备注</td>
                         <td style="width: 60px;">地址</td>
                         <td style="width: 60px;">状态</td>
@@ -95,11 +95,11 @@
                                 <td>
                                     <a href="javascript:void;" title="点击查看用户信息" class="show-user" data-href="{{ editURL('admin.user.show', $v->userid) }}">{{ $v->user->nickname }}</a>
                                 </td>
-{{--                                <td>{{ $v->amount }}</td>--}}
-{{--                                <td>{{ $v->orderid }}</td>--}}
-{{--                                <td>{{ $v->torderid }}</td>--}}
-{{--                                <td>{{ $v->channel }}</td>--}}
-{{--                                <td>{{ $v->gateway }}</td>--}}
+                                <td>{{ $v->amount }}</td>
+                                <td>{{ $v->orderid }}</td>
+                                <td>{{ $v->torderid }}</td>
+                                <td>{{ $v->channel }}</td>
+                                <td>{{ $v->gateway }}</td>
                                 <td>
                                     <a href="javascript:void;" class="show-remark" data-remark="{{ $v->remark }}">查看</a>
                                 </td>
@@ -133,7 +133,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="8" rowspan="4">
+                            <td colspan="13" rowspan="4">
                                 未找到数据
                             </td>
                         </tr>

@@ -96,17 +96,6 @@ class MenusTableSeeder extends Seeder
             ),
             7 => 
             array (
-                'id' => 14,
-                'pid' => 0,
-                'name' => '文章管理',
-                'route' => 'admin.article.index',
-                'link' => '',
-                'icon' => 'fa fa-book',
-                'listorder' => 94,
-                'items' => 0,
-            ),
-            8 => 
-            array (
                 'id' => 16,
                 'pid' => 6,
                 'name' => '系统日志',
@@ -116,7 +105,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            9 => 
+            8 => 
             array (
                 'id' => 17,
                 'pid' => 0,
@@ -127,7 +116,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 93,
                 'items' => 1,
             ),
-            10 => 
+            9 => 
             array (
                 'id' => 18,
                 'pid' => 2,
@@ -138,7 +127,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            11 => 
+            10 => 
             array (
                 'id' => 19,
                 'pid' => 2,
@@ -149,7 +138,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 3,
                 'items' => 0,
             ),
-            12 => 
+            11 => 
             array (
                 'id' => 20,
                 'pid' => 2,
@@ -160,7 +149,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            13 => 
+            12 => 
             array (
                 'id' => 21,
                 'pid' => 0,
@@ -171,7 +160,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            14 => 
+            13 => 
             array (
                 'id' => 22,
                 'pid' => 21,
@@ -182,7 +171,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            15 => 
+            14 => 
             array (
                 'id' => 23,
                 'pid' => 17,
@@ -193,7 +182,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            16 => 
+            15 => 
             array (
                 'id' => 24,
                 'pid' => 0,
@@ -204,7 +193,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 3,
             ),
-            17 => 
+            16 => 
             array (
                 'id' => 25,
                 'pid' => 24,
@@ -215,40 +204,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            18 => 
-            array (
-                'id' => 26,
-                'pid' => 0,
-                'name' => '合同模板管理',
-                'route' => 'admin.contract-template.*',
-                'link' => '',
-                'icon' => 'fa fa-folder-o',
-                'listorder' => 0,
-                'items' => 2,
-            ),
-            19 => 
-            array (
-                'id' => 27,
-                'pid' => 26,
-                'name' => '合同模板列表',
-                'route' => 'admin.contract-tpl.index',
-                'link' => '',
-                'icon' => '',
-                'listorder' => 0,
-                'items' => 0,
-            ),
-            20 => 
-            array (
-                'id' => 28,
-                'pid' => 26,
-                'name' => '模板模块管理',
-                'route' => 'admin.contract-tpl-section.index',
-                'link' => '',
-                'icon' => '',
-                'listorder' => 0,
-                'items' => 0,
-            ),
-            21 => 
+            17 => 
             array (
                 'id' => 29,
                 'pid' => 6,
@@ -259,7 +215,7 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            22 => 
+            18 => 
             array (
                 'id' => 30,
                 'pid' => 24,
@@ -270,12 +226,45 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
-            23 => 
+            19 => 
             array (
                 'id' => 31,
                 'pid' => 24,
                 'name' => '快递费用管理',
                 'route' => 'admin.express-fee.index',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            20 => 
+            array (
+                'id' => 32,
+                'pid' => 0,
+                'name' => '运营信息',
+                'route' => 'admin.operation.*',
+                'link' => '',
+                'icon' => 'fa fa-pie-chart',
+                'listorder' => 0,
+                'items' => 2,
+            ),
+            21 => 
+            array (
+                'id' => 33,
+                'pid' => 32,
+                'name' => '订单管理',
+                'route' => 'admin.operation.order',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
+            22 => 
+            array (
+                'id' => 34,
+                'pid' => 32,
+                'name' => '律师见证',
+                'route' => 'admin.order-lawyer-confirm.index',
                 'link' => '',
                 'icon' => '',
                 'listorder' => 0,

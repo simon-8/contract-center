@@ -21,6 +21,8 @@ class CreateUserAddressTable extends Migration
             $table->string('country')->default('')->comment('国家');
             $table->string('province')->default('')->comment('省');
             $table->string('city')->default('')->comment('城市');
+            $table->string('area')->default('')->comment('区县');
+            $table->string('areaid')->default('')->comment('地区ID');
             $table->string('address')->default('')->comment('地址');
             $table->char('postcode', 5)->default('')->comment('邮编');
             $table->timestamps();

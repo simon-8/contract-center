@@ -305,6 +305,180 @@ class RoleAccessTableSeeder extends Seeder
                 'name' => '单页详情',
                 'route' => 'admin.single-page.show',
             ),
+            48 => 
+            array (
+                'id' => 49,
+                'name' => '合同管理',
+                'route' => 'admin.contract.*',
+            ),
+            49 => 
+            array (
+                'id' => 50,
+                'name' => '合同列表',
+                'route' => 'admin.contract.index',
+            ),
+            50 => 
+            array (
+                'id' => 51,
+                'name' => '添加合同',
+                'route' => 'admin.contract.create',
+            ),
+            51 => 
+            array (
+                'id' => 52,
+                'name' => '编辑合同',
+                'route' => 'admin.contract.edit',
+            ),
+            52 => 
+            array (
+                'id' => 53,
+                'name' => '删除合同',
+                'route' => 'admin.contract.destroy',
+            ),
+            53 => 
+            array (
+                'id' => 54,
+                'name' => '合同详情',
+                'route' => 'admin.contract.show',
+            ),
+            54 => 
+            array (
+                'id' => 55,
+                'name' => '合同类型',
+                'route' => 'admin.contract-category.*',
+            ),
+            55 => 
+            array (
+                'id' => 56,
+                'name' => '类型列表',
+                'route' => 'admin.contract-category.index',
+            ),
+            56 => 
+            array (
+                'id' => 57,
+                'name' => '添加类型',
+                'route' => 'admin.contract-category.create',
+            ),
+            57 => 
+            array (
+                'id' => 58,
+                'name' => '编辑类型',
+                'route' => 'admin.contract-category.edit',
+            ),
+            58 => 
+            array (
+                'id' => 59,
+                'name' => '删除类型',
+                'route' => 'admin.contract-category.destroy',
+            ),
+            59 => 
+            array (
+                'id' => 60,
+                'name' => '类型详情',
+                'route' => 'admin.contract-category.show',
+            ),
+            60 => 
+            array (
+                'id' => 61,
+                'name' => '合同模板管理',
+                'route' => 'admin.contract-tpl.*',
+            ),
+            61 => 
+            array (
+                'id' => 62,
+                'name' => '合同模板列表',
+                'route' => 'admin.contract-tpl.index',
+            ),
+            62 => 
+            array (
+                'id' => 63,
+                'name' => '合同模板添加',
+                'route' => 'admin.contract-tpl.create',
+            ),
+            63 => 
+            array (
+                'id' => 64,
+                'name' => '合同模板编辑',
+                'route' => 'admin.contract-tpl.edit',
+            ),
+            64 => 
+            array (
+                'id' => 65,
+                'name' => '合同模板删除',
+                'route' => 'admin.contract-tpl.destroy',
+            ),
+            65 => 
+            array (
+                'id' => 66,
+                'name' => '合同模板详情',
+                'route' => 'admin.contract-tpl.show',
+            ),
+            66 => 
+            array (
+                'id' => 67,
+                'name' => '模板模块管理',
+                'route' => 'admin.contract-tpl-section.*',
+            ),
+            67 => 
+            array (
+                'id' => 68,
+                'name' => '模板模块列表',
+                'route' => 'admin.contract-tpl-section.index',
+            ),
+            68 => 
+            array (
+                'id' => 69,
+                'name' => '模板模块添加',
+                'route' => 'admin.contract-tpl-section.create',
+            ),
+            69 => 
+            array (
+                'id' => 70,
+                'name' => '模板模块编辑',
+                'route' => 'admin.contract-tpl-section.edit',
+            ),
+            70 => 
+            array (
+                'id' => 71,
+                'name' => '模板模块删除',
+                'route' => 'admin.contract-tpl-section.destroy',
+            ),
+            71 => 
+            array (
+                'id' => 72,
+                'name' => '模板模块详情',
+                'route' => 'admin.contract-tpl-section.show',
+            ),
+            72 => 
+            array (
+                'id' => 73,
+                'name' => '快递费用管理',
+                'route' => 'admin.express-fee.index',
+            ),
+            73 => 
+            array (
+                'id' => 74,
+                'name' => '快递费用更新',
+                'route' => 'admin.express-fee.store',
+            ),
+            74 => 
+            array (
+                'id' => 75,
+                'name' => '运营信息',
+                'route' => 'admin.operation.*',
+            ),
+            75 => 
+            array (
+                'id' => 76,
+                'name' => '订单管理',
+                'route' => 'admin.operation.order',
+            ),
+            76 => 
+            array (
+                'id' => 77,
+                'name' => '律师见证',
+                'route' => 'admin.order-lawyer-confirm.index',
+            ),
         ));
         
         

@@ -15,7 +15,8 @@ class CreateContractContentTable extends Migration
     {
         Schema::create('contract_content', function (Blueprint $table) {
             $table->unsignedInteger('id')->primary();
-            $table->text('content');
+            $table->text('tpl')->comment('模板');
+            $table->text('fill')->comment('填空值');
         });
     }
 

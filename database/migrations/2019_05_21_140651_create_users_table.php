@@ -30,6 +30,9 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('client_id')->default(0)->comment('所属客户端 ID');
             //$table->timestamp('subscribe_at')->comment('关注公众号时间');
             $table->timestamp('last_login_time')->comment('最后登录时间');
+            $table->unsignedTinyInteger('is_block')->default(0)->comment('是否冻结');
+            $table->unsignedTinyInteger('vtruename')->default(0)->comment('是否实名认证');
+            $table->unsignedTinyInteger('vcompany')->default(0)->comment('是否公司认证');
             $table->timestamps();
         });
     }

@@ -25,6 +25,8 @@ class CreateOrderLawyerConfirmTable extends Migration
             $table->string('openid')->default('')->comment('openid');
             $table->string('remark')->default('')->comment('备注');
             $table->json('address')->comment('地址json');
+            $table->string('express_name')->default('')->comment('快递名称');
+            $table->string('express_no')->default('')->comment('快递单号');
             $table->unsignedTinyInteger('status')->default(0)->comment('状态 0待支付 1已支付');
             $table->unsignedSmallInteger('client_id')->default(0)->comment('客户端ID');
             $table->timestamp('payed_at')->nullable()->comment('付款时间');

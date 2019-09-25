@@ -19,6 +19,7 @@ class CreateContractTplTable extends Migration
             $table->unsignedInteger('catid')->default(0)->comment('所属分类');
             $table->unsignedInteger('players')->default(0)->comment('几方合同 两方 三方');
             $table->text('content')->comment('内容');
+            $table->text('formdata')->comment('表单内容');
             $table->unsignedTinyInteger('listorder')->default(0)->comment('排序');
             $table->timestamps();
         });

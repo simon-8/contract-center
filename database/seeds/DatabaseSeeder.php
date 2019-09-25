@@ -24,5 +24,12 @@ class DatabaseSeeder extends Seeder
         $this->call(ContractTplRulesTableSeeder::class);
         $this->call(SinglePageTableSeeder::class);
         $this->call(ExpressFeeTableSeeder::class);
+        $this->call(AdTableSeeder::class);
+        $this->call(AdPlaceTableSeeder::class);
+        $this->call(ContractCategoryTableSeeder::class);
+        $this->call(ContractTplTableSeeder::class);
+        $this->call(ContractTplSectionTableSeeder::class);
+        $this->call(EsignBankTableSeeder::class);
+        $this->call(EsignBankAreaTableSeeder::class);
     }
 }
