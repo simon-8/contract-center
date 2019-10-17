@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\AuthService;
+use Illuminate\Support\Arr;
 
 class IndexController extends Controller
 {
@@ -25,7 +26,7 @@ class IndexController extends Controller
             ['name' => 'Laravel 版本',      'value' => app()->version()],
             ['name' => 'CGI',               'value' => php_sapi_name()],
             ['name' => '系统信息',          'value' => php_uname()],
-            ['name' => 'Server',            'value' => array_get($_SERVER, 'SERVER_SOFTWARE')],
+            ['name' => 'Server',            'value' => Arr::get($_SERVER, 'SERVER_SOFTWARE')],
             ['name' => 'Cache driver',      'value' => config('cache.default')],
             ['name' => 'Session driver',    'value' => config('session.driver')],
             ['name' => 'Queue driver',      'value' => config('queue.default')],
