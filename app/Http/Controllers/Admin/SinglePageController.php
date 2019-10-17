@@ -101,7 +101,7 @@ class SinglePageController extends Controller
      */
     public function destroy(SinglePage $singlePage)
     {
-        if ($singlePage < 5) return back()->withErrors(__('web.no_allow_delete'));
+        if ($singlePage->id < 5) return back()->withErrors(__('web.no_allow_delete'));
         if (!$singlePage->delete()) {
             return back()->withErrors(__('web.failed'));
         }
