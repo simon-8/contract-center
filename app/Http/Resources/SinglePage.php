@@ -15,7 +15,7 @@ class SinglePage extends JsonResource
     public function toArray($request)
     {
         $data = parent::toArray($request);
-        if ($data['content']) {
+        if (!empty($data['content'])) {
             // image
             preg_match_all('#<img.*?src="([^"]*)"[^>]*>#i', $data['content'], $match);
             $oldImgs = [];
@@ -46,7 +46,7 @@ class SinglePage extends JsonResource
             }
         }
 
-        unset($data['created_at'], $data['updated_at']);
+        //unset($data['created_at'], $data['updated_at']);
         return $data;
     }
 }

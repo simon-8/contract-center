@@ -24,15 +24,18 @@ class SinglePageController extends Controller
      */
     public function index(\Request $request, SinglePage $singlePage)
     {
-        $data = $request::only(['status', 'keyword']);
+        $data = $request::only(['catid', 'status', 'keyword']);
 
         $lists = $singlePage->ofStatus($data['status'] ?? '')
             ->ofTitle($data['keyword'] ?? '')
+            ->ofCatid($data['catid'] ?? '')
+            ->orderByDesc('listorder')
             ->paginate();
         $lists->appends($data);
 
+        $categorys = $singlePage->getCats();
         $status_num = $singlePage->get_status_num();
-        return view('admin.single_page.index', compact('lists', 'status_num', 'data'));
+        return view('admin.single_page.index', compact('lists', 'status_num', 'categorys','data'));
     }
 
     /**

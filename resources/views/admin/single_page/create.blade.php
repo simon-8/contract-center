@@ -16,7 +16,6 @@
                     @endif
                 </div>
                 <div class="ibox-content">
-
                     <div class="form-group">
                         <label class="col-sm-1 control-label">单页标题</label>
                         <div class="col-sm-11">
@@ -25,6 +24,19 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
+
+{{--                    <div class="form-group">--}}
+{{--                        <label class="col-sm-1 control-label">所属分类</label>--}}
+{{--                        <div class="col-sm-11">--}}
+{{--                            <select name="catid" class="form-control inline" style="width: 120px;">--}}
+{{--                                @foreach((new \App\Models\SinglePage())->getCats() as $catid => $catname)--}}
+{{--                                <option value="{{ $catid }}" @if (isset($singlePage->catid) && $singlePage->catid == $catid) selected @endif>{{ $catname }}--}}
+{{--                                </option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="hr-line-dashed"></div>--}}
 
                     <div class="form-group">
                         <label class="col-sm-1 control-label">内容</label>
@@ -49,19 +61,18 @@
                 </div>
                 <div class="ibox-content">
 
-                    {{--<div class="form-group">--}}
-                        {{--<label class="col-sm-2 control-label">分类</label>--}}
-                        {{--<div class="col-sm-10">--}}
-                            {{--<select name="catid" class="form-control">--}}
-                                {{--@if(!empty($categorys))--}}
-                                    {{--@foreach ($categorys as $category)--}}
-                                        {{--<option value="{{ $category['id'] }}">{{ $category['name'] }}</option>--}}
-                                    {{--@endforeach--}}
-                                {{--@endif--}}
-                            {{--</select>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                    {{--<div class="hr-line-dashed"></div>--}}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属分类</label>
+                        <div class="col-sm-10">
+                            <select name="catid" class="form-control inline" style="width: 120px;">
+                                @foreach((new \App\Models\SinglePage())->getCats() as $catid => $catname)
+                                    <option value="{{ $catid }}" @if (isset($singlePage->catid) && $singlePage->catid == $catid) selected @endif>{{ $catname }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
 
                     <div class="form-group hidden">
                         <label class="col-sm-2 control-label">缩略图</label>
@@ -73,6 +84,15 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed hidden"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">排序</label>
+                        <div class="col-sm-10">
+                            <input type="number" name="listorder" class="form-control inline" style="width: 80px;" value="{{ $singlePage->listorder ?? 0 }}">
+                            <span class="help-block m-b-none">越大越靠前</span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">状态</label>
