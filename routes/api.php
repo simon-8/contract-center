@@ -47,7 +47,12 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     //Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
     Route::apiResource('single-page', 'SinglePageController');
-    Route::apiResource('company-staff', 'CompanyStaffController');
+
+    Route::prefix('company/staff')->group(function() {
+        Route::post('apply', 'CompanyStaffController@apply');
+        Route::post('cancel', 'CompanyStaffController@cancel');
+    });
+    Route::apiResource('company/staff', 'CompanyStaffController');
 
     Route::prefix('order')->group(function () {
         Route::middleware('auth:api')->group(function () {

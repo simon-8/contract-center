@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserCompanyStaffTable extends Migration
+class CreateCompanyStaffTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUserCompanyStaffTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_company_staff', function (Blueprint $table) {
+        Schema::create('company_staff', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('userid')->default(0)->comment('用户ID');
             $table->unsignedBigInteger('company_id')->default(0)->comment('公司ID');
@@ -29,6 +29,6 @@ class CreateUserCompanyStaffTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_company_staff');
+        Schema::dropIfExists('company_staff');
     }
 }
