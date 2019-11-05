@@ -18,11 +18,11 @@ namespace App\Http\Controllers\Api;
 use App\Events\UserConfirm;
 use App\Http\Requests\ContractRequest;
 use App\Http\Resources\Contract AS ContractResource;
-use App\Http\Resources\UserCompany as UserCompanyResource;
+use App\Http\Resources\Company as CompanyResource;
 use App\Models\Contract;
 use App\Models\ContractCategory;
 use App\Models\ContractTplSection;
-use App\Models\UserCompany;
+use App\Models\Company;
 use App\Services\ContractService;
 use \DB;
 
@@ -325,11 +325,11 @@ class ContractController extends BaseController
 
         $companyData = [];
         if ($data['companyid']) {
-            $companyData = UserCompany::find($data['companyid']);
+            $companyData = Company::find($data['companyid']);
             if (empty($companyData) || !$companyData->id) {
                 return responseException('未找到该企业信息, 请确认');
             }
-            if ($companyData->status != UserCompany::STATUS_SUCCESS) {
+            if ($companyData->status != Company::STATUS_SUCCESS) {
                 return responseException('该企业还未认证成功, 请认证后再试');
             }
         }
@@ -387,12 +387,12 @@ class ContractController extends BaseController
         if (!$companyid) {
             return responseException('该合同无法使用企业签名');
         }
-        $companyData = UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($companyid)->first();
+        $companyData = Company::ofStatus(Company::STATUS_SUCCESS)->whereId($companyid)->first();
         if (!$companyData) {
             return responseException('该企业未通过企业认证');
         }
         $companyData['mobile'] = stringHide($companyData['mobile']);
         unset($companyData['legal_idno']);
-        return responseMessage('', new UserCompanyResource($companyData));
+        return responseMessage('', new CompanyResource($companyData));
     }
 }

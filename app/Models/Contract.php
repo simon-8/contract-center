@@ -132,7 +132,7 @@ class Contract extends Base
      */
     public function companyFirst()
     {
-        return $this->belongsTo('App\Models\UserCompany', 'companyid_first', 'id');
+        return $this->belongsTo('App\Models\Company', 'companyid_first', 'id');
     }
 
     /**
@@ -141,7 +141,7 @@ class Contract extends Base
      */
     public function companySecond()
     {
-        return $this->belongsTo('App\Models\UserCompany', 'companyid_second', 'id');
+        return $this->belongsTo('App\Models\Company', 'companyid_second', 'id');
     }
 
     /**
@@ -150,7 +150,7 @@ class Contract extends Base
      */
     public function companyThree()
     {
-        return $this->belongsTo('App\Models\UserCompany', 'companyid_three', 'id');
+        return $this->belongsTo('App\Models\Company', 'companyid_three', 'id');
     }
 
     /**

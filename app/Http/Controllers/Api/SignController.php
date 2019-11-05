@@ -11,7 +11,7 @@ use App\Models\EsignUser;
 use App\Models\Sign;
 use App\Http\Resources\Sign as SignResource;
 use App\Events\UserSign;
-use App\Models\UserCompany;
+use App\Models\Company;
 use App\Services\ContractService;
 use App\Services\EsignService;
 use Illuminate\Support\Facades\DB;
@@ -179,7 +179,7 @@ class SignController extends BaseController
         if (!$companyid) {
             return responseException('该合同无法使用企业签名');
         }
-        $companyData = UserCompany::ofStatus(UserCompany::STATUS_SUCCESS)->whereId($companyid)->first();
+        $companyData = Company::ofStatus(Company::STATUS_SUCCESS)->whereId($companyid)->first();
         if (!$companyData) {
             return responseException('该企业未通过企业认证');
         }
@@ -245,8 +245,8 @@ class SignController extends BaseController
             }
             $mobile = $this->user->mobile;
         } else {
-            $companyData = UserCompany::find($data['company_id']);
-            if (!$companyData || $companyData->status < UserCompany::STATUS_SUCCESS) {
+            $companyData = Company::find($data['company_id']);
+            if (!$companyData || $companyData->status < Company::STATUS_SUCCESS) {
                 return responseException('签名企业未通过认证');
             }
             $mobile = $companyData['mobile'];

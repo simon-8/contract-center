@@ -47,6 +47,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     //Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
     Route::apiResource('single-page', 'SinglePageController');
+    Route::apiResource('company-staff', 'CompanyStaffController');
 
     Route::prefix('order')->group(function () {
         Route::middleware('auth:api')->group(function () {
@@ -103,18 +104,17 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('confirm', 'UserRealNameController@confirm');
             Route::get('cancel', 'UserRealNameController@cancel');
         });
-        Route::prefix('user-company')->group(function() {
-            //Route::get('{userCompany}', 'UserCompanyController@show');
-            Route::get('', 'UserCompanyController@my');
-            Route::post('', 'UserCompanyController@store');
-            Route::put('', 'UserCompanyController@update');
-            Route::delete('', 'UserCompanyController@destroy');
-            Route::get('search', 'UserCompanyController@search');
-            Route::post('topay/{id}', 'UserCompanyController@toPay');
-            Route::post('pay-amount-verify/{id}', 'UserCompanyController@payAmountVerify');
-            Route::get('bank', 'UserCompanyController@bank');
-            Route::get('sub-bank', 'UserCompanyController@subBank');
-            Route::get('area', 'UserCompanyController@area');
+        Route::prefix('company')->group(function() {
+            Route::get('', 'CompanyController@my');
+            Route::post('', 'CompanyController@store');
+            Route::put('', 'CompanyController@update');
+            Route::delete('', 'CompanyController@destroy');
+            Route::get('search', 'CompanyController@search');
+            Route::post('topay/{id}', 'CompanyController@toPay');
+            Route::post('pay-amount-verify/{id}', 'CompanyController@payAmountVerify');
+            Route::get('bank', 'CompanyController@bank');
+            Route::get('sub-bank', 'CompanyController@subBank');
+            Route::get('area', 'CompanyController@area');
 
             Route::post('send-code', 'UserController@sendCode');
             //Route::post('bind-mobile', 'UserController@bindMobile');
@@ -122,24 +122,20 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
 
-    Route::post('user-company-order/notify/{pid}', 'UserCompanyOrderController@notify')->name('userCompanyOrder.notify');
+    Route::post('company-order/notify/{pid}', 'CompanyOrderController@notify')->name('companyOrder.notify');
 
-    Route::get('test', function() {
-        (new \App\Services\RealNameService())->teleComAuth([
-            'mobile' => 17788561708,
-            'name' => '刘文静',
-            'idno' => '340811199012035318'
-        ]);
-    });
-    Route::get('test/{id}', function($id) {
-        $contract = \App\Models\Contract::find($id);
-        //$content = $contract->content->getAttribute('content');
-        //unset($contract->content);
-        //$contract->content = $content;
-
-        $sections = json_decode($contract->content->tpl, true);
-        $fill = json_decode($contract->content->fill, true);
-        return view('api.contract.show', compact('contract', 'sections', 'fill'));
-    });
+    //Route::get('test', function() {
+    //    (new \App\Services\RealNameService())->teleComAuth([
+    //        'mobile' => 17788561708,
+    //        'name' => '刘文静',
+    //        'idno' => '340811199110035318'
+    //    ]);
+    //});
+    //Route::get('test/{id}', function($id) {
+    //    $contract = \App\Models\Contract::find($id);
+    //    $sections = json_decode($contract->content->tpl, true);
+    //    $fill = json_decode($contract->content->fill, true);
+    //    return view('api.contract.show', compact('contract', 'sections', 'fill'));
+    //});
 
 });

@@ -10,11 +10,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\UserCompany;
-use App\Models\UserCompanyOrder;
+use App\Models\Company;
+//use App\Models\UserCompanyOrder;
 use EasyWeChat\Factory;
 
-class UserCompanyOrderController extends Controller
+class CompanyOrderController extends Controller
 {
 
     /**
@@ -39,9 +39,9 @@ class UserCompanyOrderController extends Controller
             return responseException(__('api.failed'));
         }
 
-        $userCompany = UserCompany::find($pid);
-        $userCompany->status = UserCompany::STATUS_PAYED;
-        $userCompany->save();
+        $company = Company::find($pid);
+        $company->status = Company::STATUS_PAYED;
+        $company->save();
         return '';
     }
 

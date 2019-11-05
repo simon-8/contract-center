@@ -7,7 +7,7 @@
  */
 namespace App\Services;
 
-use App\Models\UserCompany;
+use App\Models\Company;
 use tech\core\HttpUtils;
 use tech\realname\rest\external\Person;
 use tech\realname\rest\external\Organ;
@@ -86,11 +86,11 @@ class RealNameService
     {
         $param = [];
         $param['name'] = $data['name'] ?? '';
-        if (UserCompany::REG_TYPE_NORMAL) {
+        if (Company::REG_TYPE_NORMAL) {
             $param['codeORG'] = $data['organ_code'] ?? '';
-        } else if (UserCompany::REG_TYPE_MERGE) {
+        } else if (Company::REG_TYPE_MERGE) {
             $param['codeUSC'] = $data['organ_code'] ?? '';
-        } else if (UserCompany::REG_TYPE_REGCODE) {
+        } else if (Company::REG_TYPE_REGCODE) {
             $param['codeREG'] = $data['organ_code'] ?? '';
         } else {
             $param['codeORG'] = $data['organ_code'] ?? '';
@@ -119,7 +119,7 @@ class RealNameService
         $param['bank'] = $data['bank'];
         $param['provice'] = $data['province'];
         $param['city'] = $data['city'];
-        $param['notify'] = route('api.userCompanyOrder.notify', ['pid' => $pid]);
+        $param['notify'] = route('api.companyOrder.notify', ['pid' => $pid]);
         $param['city'] = $data['city'];
         $param['serviceId'] = $data['service_id'];
         //$param['serviceId'] = $data['service_id'];

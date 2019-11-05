@@ -13,7 +13,7 @@ class CreateUserCompanyTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_company', function (Blueprint $table) {
+        Schema::create('company', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('userid')->default(0)->comment('用户ID');
             $table->string('name')->default('')->comment('组织名称');
@@ -38,6 +38,6 @@ class CreateUserCompanyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_company');
+        Schema::dropIfExists('company');
     }
 }

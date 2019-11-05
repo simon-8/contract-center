@@ -9,16 +9,21 @@ namespace App\Models;
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Builder;
 
-class UserCompanyStaff extends Base
+class Company extends Base
 {
     use ModelTrait;
 
-    const STATUS_APPLY = 0;// 申请加入
-    const STATUS_REFUSE = 1;// 拒绝
-    const STATUS_SUCCESS = 2;// 同意
-    const STATUS_CANCEL = 3;// 撤销
+    const REG_TYPE_NORMAL = 0;
+    const REG_TYPE_MERGE = 1;
+    const REG_TYPE_REGCODE = 2;
+    const REG_TYPE_OTHER = 23;
 
-    protected $table = 'user_company_staff';
+    const STATUS_VERIFYD_INFO = 0;// 通过身份校验
+    const STATUS_APPLY_PAY = 1;// 申请支付
+    const STATUS_PAYED = 2;// 已支付
+    const STATUS_SUCCESS = 3;// 认证成功
+
+    protected $table = 'company';
 
     protected $fillable = [
         'userid',
