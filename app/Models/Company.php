@@ -50,6 +50,15 @@ class Company extends Base
     }
 
     /**
+     * 所属职员
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function staff()
+    {
+        return $this->belongsToMany('App\Models\User', 'company_staff', 'company_id', 'userid');
+    }
+
+    /**
      * @param Builder $query
      * @param string $data
      * @return Builder

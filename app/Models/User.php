@@ -105,6 +105,15 @@ class User extends Authenticatable
     }
 
     /**
+     * 加入的公司
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function joinCompany()
+    {
+        return $this->belongsToMany('App\Models\Company', 'company_staff', 'userid', 'company_id');
+    }
+
+    /**
      * 实名信息
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
