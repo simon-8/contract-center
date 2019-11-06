@@ -15,7 +15,7 @@ use App\Http\Resources\CompanyStaff as CompanyStaffResource;
 class CompanyStaffController extends BaseController
 {
     /**
-     * 列表
+     * 职员列表
      * @param \Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
@@ -50,6 +50,64 @@ class CompanyStaffController extends BaseController
         ], [
             'status' => CompanyStaff::STATUS_APPLY
         ]);
+        return responseMessage(__('api.success'));
+    }
+
+    /**
+     * 确认授权
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function confirm(\Request $request)
+    {
+        $data = $request::all();
+        if (empty($data['company_id'])) {
+            return responseException('缺少必要参数: company_id');
+        }
+        if (empty($data['userid'])) {
+            return responseException('缺少必要参数: userid');
+        }
+        $companyData = Company::find($data['company_id']);
+        if (!$companyData) {
+            return responseException('公司不存在');
+        }
+        if ($companyData['userid'] != $this->user->id) {
+            return responseException(__('api.no_auth'));
+        }
+        CompanyStaff::whereUserid($data['userid'])
+            ->whereCompanyId($data['company_id'])
+            ->update([
+                'status' => CompanyStaff::STATUS_SUCCESS,
+            ]);
+        return responseMessage(__('api.success'));
+    }
+
+    /**
+     * 拒绝
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refuse(\Request $request)
+    {
+        $data = $request::all();
+        if (empty($data['company_id'])) {
+            return responseException('缺少必要参数: company_id');
+        }
+        if (empty($data['userid'])) {
+            return responseException('缺少必要参数: userid');
+        }
+        $companyData = Company::find($data['company_id']);
+        if (!$companyData) {
+            return responseException('公司不存在');
+        }
+        if ($companyData['userid'] != $this->user->id) {
+            return responseException(__('api.no_auth'));
+        }
+        CompanyStaff::whereUserid($data['userid'])
+            ->whereCompanyId($data['company_id'])
+            ->update([
+                'status' => CompanyStaff::STATUS_REFUSE,
+            ]);
         return responseMessage(__('api.success'));
     }
 

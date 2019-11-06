@@ -51,6 +51,9 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::prefix('company/staff')->group(function() {
         Route::post('apply', 'CompanyStaffController@apply');
         Route::post('cancel', 'CompanyStaffController@cancel');
+        Route::post('confirm', 'CompanyStaffController@confirm');
+        Route::post('refuse', 'CompanyStaffController@refuse');
+
     });
     Route::apiResource('company/staff', 'CompanyStaffController');
 
