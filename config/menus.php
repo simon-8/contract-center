@@ -63,6 +63,9 @@ return [
     'admin.user.index' => '用户列表',
     'admin.user.create' => '添加用户',
 
+    'admin.company.*' => '公司管理',
+    'admin.company.index' => '公司列表',
+
     'admin.single-page.*' => '单页管理',
     'admin.single-page.index' => '单页列表',
     'admin.single-page.create' => '添加单页',

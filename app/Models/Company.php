@@ -40,6 +40,19 @@ class Company extends Base
         'status',
     ];
 
+    protected $appends = [
+        'status_text',
+    ];
+
+    /**
+     * @param $value
+     * @return mixed|string
+     */
+    public function getStatusTextAttribute($value)
+    {
+        return $this->getStatusText($value);
+    }
+
     /**
      * 关联用户
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -67,6 +80,32 @@ class Company extends Base
     {
         if (!$data) return $query;
         return $query->where('name', 'like', '%'. $data .'%');
+    }
+    /**
+     * 获取状态数组
+     * @param null $status
+     * @return array
+     */
+    public function getStatus()
+    {
+        $statusArr = [
+            self::STATUS_VERIFYD_INFO => '校验通过',
+            self::STATUS_APPLY_PAY => '申请支付',
+            self::STATUS_PAYED => '已支付',
+            self::STATUS_SUCCESS => '认证成功',
+        ];
+        return $statusArr;
+    }
+
+    /**
+     * 获取文本
+     * @param null $status
+     * @return mixed|string
+     */
+    public function getStatusText($status = null)
+    {
+        if ($status === null) $status = $this->status;
+        return $this->getStatus()[$status] ?? 'not found';
     }
 
     /**
