@@ -70,6 +70,7 @@
                         <td style="width: 100px;">法人身份证</td>
                         <td style="width: 60px;">联系手机</td>
                         <td style="width: 60px;">注册地址</td>
+                        <td style="width: 60px;">免费签名</td>
                         <td style="width: 60px;">状态</td>
 {{--                        <td style="width: 100px;">创建时间</td>--}}
                         <td style="width: 100px;">更新时间</td>
@@ -83,25 +84,25 @@
                                 <td>{{ $v->id }}</td>
                                 <td>{{ $v->name }}</td>
                                 <td>{{ $v->organ_code ?: '/' }}</td>
-                                <td>{{ $v->reg_type ?: '/' }}</td>
+                                <td>{{ $v->reg_type_text ?: '/' }}</td>
                                 <td>{{ $v->legal_name ?: '-' }}</td>
                                 <td>{{ $v->legal_idno ?: '-' }}</td>
                                 <td>{{ $v->mobile ?: '-' }}</td>
                                 <td>{{ $v->address ?: '-' }}</td>
+                                <td>{{ $v->sign_free ?: '-' }}</td>
                                 <td>
                                     <span class="label label-success">{{ $v->status_text  }}</span>
                                 </td>
 {{--                                <td>{{ $v->created_at }}</td>--}}
                                 <td>{{ $v->updated_at }}</td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary contract-show" data-href="{{ route('admin.contract.show', ['id' => $v->id]) }}">查看</a>
-                                    <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract.destroy', $v->id) }}')">删除</button>
+                                    <a class="btn btn-sm btn-secondary sign-free-update" data-company='@json($v)'  data-href="{{ route('admin.company.signFreeUpdate', ['id' => $v->id]) }}">免签次数</a>
                                 </td>
                             </tr>
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="13" rowspan="4">
+                            <td colspan="12" rowspan="4">
                                 未找到数据
                             </td>
                         </tr>
@@ -120,12 +121,53 @@
     {{--delete--}}
     @include('admin.modal.delete')
 
+    <div class="modal inmodal" id="signFreeModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInDown">
+                <form action="" method="POST" class="form-horizontal">
+                    {!! csrf_field() !!}
+                    {!! method_field('PUT') !!}
+{{--                    <input type="hidden" name="id" value="">--}}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">修改免费签名次数</h4>
+                        {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">免费次数</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="sign_free" value="" placeholder="">
+                                <span class="help-block m-b-none">请填写大于0的正整数</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">确定</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
 <script>
     let created_at = laydate.render({
         elem: '#created_at',
         max: '{{ date('Y-m-d') }}',
         range: true,
+    });
+</script>
+<script>
+    let signFreeModal = '#signFreeModal';
+    $('.sign-free-update').click(function() {
+        let href = $(this).attr('data-href');
+        let company = $(this).attr('data-company');
+        let json = JSON.parse(company);
+        $(signFreeModal).find('form').attr('action', href);
+        $(signFreeModal).find('[name=sign_free]').val(json.sign_free);
+        $(signFreeModal).modal('show');
     });
 </script>
 @endsection

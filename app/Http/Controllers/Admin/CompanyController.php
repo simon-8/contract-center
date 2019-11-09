@@ -73,4 +73,24 @@ class CompanyController extends Controller
         }
         return redirect()->route('admin.company.index')->with('message' , __('web.success'));
     }
+
+    /**
+     * 更新免费签名次数
+     * @param \Request $request
+     * @param Company $company
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function signFreeUpdate(\Request $request, Company $company)
+    {
+        $data = $request::only(['sign_free']);
+        $data['sign_free'] = intval($data['sign_free']);
+        if (empty($data['sign_free'])) {
+            return back()->withErrors('sign_free值不正确')->withInput();
+        }
+        if (!$company->update($data)) {
+            return back()->withErrors('更新失败')->withInput();
+        }
+        return redirect()->route('admin.company.index')->with('message' , __('web.success'));
+
+    }
 }

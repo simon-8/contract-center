@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\ModelTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Contract extends Base
@@ -271,6 +272,34 @@ class Contract extends Base
     {
         if (!$data) return $query;
         return $query->where('yifang', $data);
+    }
+
+    /**
+     * 公司ID
+     * @param Builder $query
+     * @param int $data
+     * @return Builder
+     */
+    public function scopeOfCompanyId(Builder $query, $data = 0)
+    {
+        if (!$data) return $query;
+        return $query->where(function ($query) use ($data) {
+            $query->where('companyid_first', $data)
+                ->orWhere('companyid_second', $data)
+                ->orWhere('companyid_three', $data);
+        });
+    }
+
+    /**
+     * 合同名称
+     * @param Builder $query
+     * @param string $data
+     * @return Builder
+     */
+    public function scopeOfName(Builder $query, $data = '')
+    {
+        if (!$data) return $query;
+        return $query->where('name', 'like', '%'.$data.'%');
     }
 
     /**

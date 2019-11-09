@@ -30,6 +30,9 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
 
         Route::post('user/freeze/{user}', 'UserController@freeze')->name('user.freeze');
         Route::resource('user', 'UserController');
+        Route::put('company/sign-free/{company}', 'CompanyController@signFreeUpdate')
+            ->where('company', '\d+')
+            ->name('company.signFreeUpdate');
         Route::resource('company', 'CompanyController');
         Route::resource('contract', 'ContractController');
         Route::resource('contract-category', 'ContractCategoryController');

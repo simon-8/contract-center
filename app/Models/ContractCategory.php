@@ -8,6 +8,7 @@
 namespace App\Models;
 
 use App\Traits\ModelTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 
 class ContractCategory extends Base
@@ -18,7 +19,9 @@ class ContractCategory extends Base
 
     protected $fillable = [
         'name',
+        'pid',
         'players',
+        'company_id',
         'introduce',
     ];
 
@@ -55,5 +58,17 @@ class ContractCategory extends Base
             return self::getCats();
         });
         return $cats[$catid];
+    }
+
+    /**
+     * 公司
+     * @param Builder $query
+     * @param int $data
+     * @return Builder
+     */
+    public function scopeOfCompanyId(Builder $query, $data = '')
+    {
+        if ($data === '') return $query;
+        return $query->where('company_id', $data);
     }
 }

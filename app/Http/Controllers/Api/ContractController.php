@@ -111,15 +111,21 @@ class ContractController extends BaseController
         }
 
         $data = $request::all();
+        // 如果未传入company_id 则限制为本人合同
+        if (empty($data['company_id'])) {
+            $data['userid'] = $this->user->id;
+        }
         $lists = $contract->ofStatus($data['status'] ?? '')
             //->ofUserid($this->user->id)
-            ->ofMine($this->user->id)
+            ->ofMine($data['userid'] ?? 0)
             ->ofCatid($data['catid'] ?? '')
             ->ofMycatid($data['mycatid'] ?? 0)
             //->ofLawyerid($da ta['lawyerid'] ?? 0)
             ->ofJiafang($data['jiafang'] ?? '')
             ->ofYifang($data['yifang'] ?? '')
             ->ofJujianren($data['jujianren'] ?? '')
+            ->ofCompanyId($data['company_id'] ?? 0)
+            ->ofName($data['keyword'] ?? '')
             ->orderBy('id', 'DESC')
             ->paginate(10);
         return ContractResource::collection($lists);
@@ -382,7 +388,7 @@ class ContractController extends BaseController
     {
         // 根据用户类型获取企业ID
         $userType = $contract->getUserTypeByUserid($this->user->id);
-        $companyid = $contract['companyid_'. $userType];
+        $companyid = $contract['companyid_' . $userType];
 
         if (!$companyid) {
             return responseException('该合同无法使用企业签名');

@@ -14,6 +14,7 @@ use App\Models\Order;
 use App\Models\OrderRefund;
 use App\Models\User;
 use EasyWeChat\Factory;
+use Illuminate\Support\Facades\DB;
 use function EasyWeChat\Kernel\Support\generate_sign;
 
 class OrderController extends BaseController
@@ -62,6 +63,7 @@ class OrderController extends BaseController
         if (!$orderData) {
             return responseException('订单创建失败, 请稍候重试');
         }
+
         return $this->$channel($orderData, $gateway);
     }
 
@@ -101,6 +103,49 @@ class OrderController extends BaseController
         $channel = $orderData->channel;
         $gateway = $orderData->gateway;
         return $this->$channel($orderData, $gateway);
+    }
+
+    /**
+     * 企业免费次数扣费
+     * @param Order $order
+     * @param string $gateway
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function free(Order $order, $gateway = '')
+    {
+        $contract = $order->contract;
+        $userType = $contract->getUserTypeByUserid($this->user->id);
+        $method = 'company'.ucfirst($userType);
+        $companyData = $contract->$method;
+
+        if (!$companyData) {
+            return responseException('公司数据未找到');
+        }
+        if (!$companyData->sign_free) {
+            return responseException('公司免费签约次数已用完');
+        }
+        DB::beginTransaction();
+        try {
+            $companyData->decrement('sign_free');
+
+            $order->status = Order::STATUS_ALREADY_PAY;
+            $order->torderid = '';
+            $order->payed_at = now()->toDateTimeString();
+            $order->save();
+
+            // 更新关联状态
+            $order->contract->update([
+                'status' => Contract::STATUS_PAYED
+            ]);
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            info(__METHOD__, [$exception->getMessage()]);
+            return responseException('操作失败');
+        }
+        return responseMessage(__('api.success'));
     }
 
     /**

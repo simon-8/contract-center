@@ -36,12 +36,14 @@ class Company extends Base
         'address',
         'seal_img',
         'sign_data',
+        'sign_free',
         'service_id',
         'status',
     ];
 
     protected $appends = [
         'status_text',
+        'reg_type_text',
     ];
 
     /**
@@ -51,6 +53,15 @@ class Company extends Base
     public function getStatusTextAttribute($value)
     {
         return $this->getStatusText($value);
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function getRegTypeTextAttribute($value)
+    {
+        return $this->getRegTypeText($value);
     }
 
     /**

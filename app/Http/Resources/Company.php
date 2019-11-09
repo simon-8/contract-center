@@ -20,6 +20,10 @@ class Company extends JsonResource
         unset($data['sign_data']);
         $data['seal_img'] = imgurl($data['seal_img'], 'uploads');
         unset($data['created_at'], $data['updated_at']);
+        if (!empty($data['user'])) {
+            $data['truename'] = $data['user']['truename'];
+            unset($data['user']);
+        }
         return $data;
     }
 }

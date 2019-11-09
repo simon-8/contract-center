@@ -25,6 +25,7 @@ class CreateUserCompanyTable extends Migration
             $table->string('address')->default('')->comment('注册地址');
             $table->string('seal_img')->default('')->comment('印章图片地址');
             $table->text('sign_data')->nullable()->comment('签名图片base64数据');
+            $table->unsignedInteger('sign_free')->default(0)->comment('免费签名次数');
             $table->string('service_id')->default('')->comment('服务ID');
             $table->unsignedTinyInteger('status')->default(0)->comment('状态');
             $table->timestamps();

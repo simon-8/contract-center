@@ -28,6 +28,11 @@ class ContractCategoryController extends BaseController
         return view('admin.contract_category.index', compact('lists', 'players'));
     }
 
+    /**
+     * @param ContractTplSection $contractTplSection
+     * @param ContractCategory $contractCategory
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show(ContractTplSection $contractTplSection, ContractCategory $contractCategory)
     {
         $data = [];

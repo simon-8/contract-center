@@ -10,10 +10,26 @@ namespace App\Http\Controllers\Api;
 use App\Models\Company;
 use App\Models\CompanyStaff;
 use App\Http\Resources\CompanyStaff as CompanyStaffResource;
+use App\Services\SmsService;
 
 
 class CompanyStaffController extends BaseController
 {
+    /**
+     * 状态
+     * @param CompanyStaff $companyStaff
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getStatus(CompanyStaff $companyStaff)
+    {
+        $statusArr = [
+            CompanyStaff::STATUS_APPLY   => '待处理',
+            CompanyStaff::STATUS_SUCCESS => '使用中',
+            CompanyStaff::STATUS_CANCEL  => '已取消',
+        ];
+        return responseMessage('', $statusArr);
+    }
+
     /**
      * 职员列表
      * @param \Request $request
@@ -27,6 +43,7 @@ class CompanyStaffController extends BaseController
         }
 
         $lists = CompanyStaff::whereCompanyId($data['company_id'] ?? 0)
+            ->ofStatus($data['status'] ?? '')
             ->with('user:id,truename,mobile')
             ->orderBy('id', 'DESC')
             ->paginate(10);
@@ -36,13 +53,22 @@ class CompanyStaffController extends BaseController
     /**
      * 申请加入
      * @param \Request $request
+     * @param SmsService $smsService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function apply(\Request $request)
+    public function apply(\Request $request, SmsService $smsService)
     {
         $data = $request::all();
         if (empty($data['company_id'])) {
             return responseException('缺少必要参数: company_id');
+        }
+        if (empty($data['captcha'])) {
+            return responseException('缺少必要参数: captcha');
+        }
+        try {
+            $smsService->verifyCode($this->user->mobile, $data['captcha']);
+        } catch (\Exception $e) {
+            return responseException($e->getMessage());
         }
         $staff = CompanyStaff::updateOrCreate([
             'userid' => $this->user->id,
@@ -140,11 +166,28 @@ class CompanyStaffController extends BaseController
         return responseMessage(__('api.success'));
     }
 
-    //
-    //public function edit()
-    //{
-    //
-    //}
+    /**
+     * 用户取消
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userCancel(\Request $request)
+    {
+        $data = $request::all();
+        if (empty($data['company_id'])) {
+            return responseException('缺少必要参数: company_id');
+        }
+        $companyData = Company::find($data['company_id']);
+        if (!$companyData) {
+            return responseException('公司不存在');
+        }
+        CompanyStaff::whereUserid($this->user->id)
+            ->whereCompanyId($data['company_id'])
+            ->update([
+                'status' => CompanyStaff::STATUS_CANCEL,
+            ]);
+        return responseMessage(__('api.success'));
+    }
 
     public function destroy(\Request $request)
     {

@@ -49,13 +49,15 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::apiResource('single-page', 'SinglePageController');
 
     Route::prefix('company/staff')->group(function() {
+        Route::get('', 'CompanyStaffController@index');
         Route::post('apply', 'CompanyStaffController@apply');
         Route::post('cancel', 'CompanyStaffController@cancel');
+        Route::post('user-cancel', 'CompanyStaffController@userCancel');
         Route::post('confirm', 'CompanyStaffController@confirm');
         Route::post('refuse', 'CompanyStaffController@refuse');
-
+        Route::get('status', 'CompanyStaffController@getStatus');
     });
-    Route::apiResource('company/staff', 'CompanyStaffController');
+    //Route::apiResource('company/staff', 'CompanyStaffController');
 
     Route::prefix('order')->group(function () {
         Route::middleware('auth:api')->group(function () {
@@ -113,10 +115,12 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::get('cancel', 'UserRealNameController@cancel');
         });
         Route::prefix('company')->group(function() {
-            Route::get('', 'CompanyController@my');
+            //Route::get('', 'CompanyController@index');
             Route::post('', 'CompanyController@store');
             Route::put('', 'CompanyController@update');
             Route::delete('', 'CompanyController@destroy');
+            Route::get('my', 'CompanyController@my');
+            Route::get('my-join', 'CompanyController@myJoin');
             Route::get('search', 'CompanyController@search');
             Route::post('topay/{id}', 'CompanyController@toPay');
             Route::post('pay-amount-verify/{id}', 'CompanyController@payAmountVerify');

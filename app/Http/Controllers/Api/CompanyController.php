@@ -8,6 +8,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\CompanyRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\CompanyStaff;
+use App\Models\Contract;
 use App\Models\EsignBank;
 use App\Models\EsignBankArea;
 use App\Models\EsignUser;
@@ -46,6 +48,24 @@ class CompanyController extends BaseController
     //    return responseMessage('', new CompanyResource($company));
     //}
 
+    public function index(\Request $request)
+    {
+        //$userid = $request->
+        return responseException('接口未开发');
+    }
+
+    /**
+     * 我加入的
+     * @param \Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function myJoin(\Request $request)
+    {
+        $companys = User::find($this->user->id)->joinCompany()->with('user')
+            ->paginate();
+        return CompanyResource::collection($companys);
+    }
+
     /**
      * 我的
      * @param Company $company
@@ -57,6 +77,12 @@ class CompanyController extends BaseController
         if (!$companyData) {
             return responseMessage('');
         }
+        $companyData->staff_count = $companyData->staff()
+            ->where('status', CompanyStaff::STATUS_SUCCESS)
+            ->count();
+        $companyData->contract_count = Contract::ofCompanyId($companyData->id)
+            ->ofStatus(Contract::STATUS_SIGN)
+            ->count();
         return responseMessage('', new CompanyResource($companyData));
     }
 

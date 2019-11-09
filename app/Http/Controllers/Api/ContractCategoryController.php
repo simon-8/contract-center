@@ -13,12 +13,20 @@ use App\Models\ContractTplSection;
 
 class ContractCategoryController extends BaseController
 {
+    /**
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(\Request $request)
     {
-        $data = ContractCategory::with(['tplSection' => function($query) {
-            $query->orderByDesc('listorder');
-        }])->get();
+        $data = $request::only(['company_id']);
+        $lists = ContractCategory::ofCompanyId($data['company_id'] ?? 0)
+        ->with([
+            'tplSection' => function($query) {
+                $query->orderByDesc('listorder');
+            }
+        ])->get();
 
-        return responseMessage('', $data);
+        return responseMessage('', $lists);
     }
 }
