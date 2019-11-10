@@ -157,6 +157,7 @@ class MiniProgramController extends Controller
         ];
         UserRedis::update($redisInsertData);
 
+        $userData->loadMissing('company');
         return responseMessage('', $userData);
     }
 

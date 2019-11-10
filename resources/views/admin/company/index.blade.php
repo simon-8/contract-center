@@ -82,7 +82,7 @@
                         @foreach($lists as $v)
                             <tr>
                                 <td>{{ $v->id }}</td>
-                                <td>{{ $v->name }}</td>
+                                <td class="name">{{ $v->name }}</td>
                                 <td>{{ $v->organ_code ?: '/' }}</td>
                                 <td>{{ $v->reg_type_text ?: '/' }}</td>
                                 <td>{{ $v->legal_name ?: '-' }}</td>
@@ -96,7 +96,8 @@
 {{--                                <td>{{ $v->created_at }}</td>--}}
                                 <td>{{ $v->updated_at }}</td>
                                 <td>
-                                    <a class="btn btn-sm btn-secondary sign-free-update" data-company='@json($v)'  data-href="{{ route('admin.company.signFreeUpdate', ['id' => $v->id]) }}">免签次数</a>
+                                    <a class="btn btn-sm btn-primary sign-free-update" data-company='@json($v)'  data-href="{{ route('admin.company.signFreeUpdate', ['id' => $v->id]) }}">免签次数</a>
+                                    <a class="btn btn-sm btn-primary category" data-page="category" data-href="{{ route('admin.contract-category.index', ['company_id' => $v->id]) }}">分类</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -168,6 +169,14 @@
         $(signFreeModal).find('form').attr('action', href);
         $(signFreeModal).find('[name=sign_free]').val(json.sign_free);
         $(signFreeModal).modal('show');
+    });
+
+    $('.category').click(function () {
+        let href = $(this).data('href'),
+            page = $(this).data('page'),
+            name = $(this).text();
+        name = $(this).closest('tr').find('.name').text() + name;
+        openFrame($(this), href, page, name);
     });
 </script>
 @endsection

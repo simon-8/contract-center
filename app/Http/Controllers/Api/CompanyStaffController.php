@@ -65,6 +65,7 @@ class CompanyStaffController extends BaseController
         if (empty($data['captcha'])) {
             return responseException('缺少必要参数: captcha');
         }
+
         try {
             $smsService->verifyCode($this->user->mobile, $data['captcha']);
         } catch (\Exception $e) {

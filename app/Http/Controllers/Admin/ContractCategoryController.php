@@ -16,16 +16,40 @@ class ContractCategoryController extends BaseController
 {
     /**
      * 合同类型
+     * @param \Request $request
      * @param ContractCategory $contractCategory
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(ContractCategory $contractCategory)
+    public function index(\Request $request, ContractCategory $contractCategory)
     {
-        $lists = $contractCategory->with(['tplSection' => function($query) {
-            $query->orderByDesc('listorder');
-        }])->paginate();
+        $data = $request::only(['company_id']);
+        $lists = $contractCategory->ofCompanyId($data['company_id'] ?? 0)
+            ->with(['tplSection' => function($query) {
+                $query->orderByDesc('listorder');
+            }]);
         $players = Contract::getPlayers();
-        return view('admin.contract_category.index', compact('lists', 'players'));
+
+        if (empty($data['company_id'])) {
+            $lists = $lists->paginate();
+            $template = 'admin.contract_category.index';
+        } else {
+            $tmp = $lists->get()->toArray();
+            $lists = [];
+            foreach ($tmp as $k => $v) {
+                if (!$v['pid']) {
+                    $lists[$v['id']] = $v;
+                }
+            }
+
+            foreach ($tmp as $k => $v) {
+                if ($v['pid']) {
+                    $lists[$v['pid']]['child'][$v['id']] = $v;
+                }
+            }
+            $lists = collect($lists);
+            $template = 'admin.contract_category.company';
+        }
+        return view($template, compact('lists', 'players', 'data'));
     }
 
     /**
@@ -62,7 +86,9 @@ class ContractCategoryController extends BaseController
         if (!$contractCategory->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.contract-category.index')->with('message' , __('web.success'));
+        return redirect()->route('admin.contract-category.index', [
+            'company_id' => $data['company_id'] ?? 0
+        ])->with('message' , __('web.success'));
     }
 
     /**
@@ -80,7 +106,9 @@ class ContractCategoryController extends BaseController
         if (!$contractCategory->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
-        return redirect()->route('admin.contract-category.index')->with('message' , __('web.success'));
+        return redirect()->route('admin.contract-category.index', [
+            'company_id' => $data['company_id'] ?? 0
+        ])->with('message' , __('web.success'));
     }
 
     /**
@@ -94,6 +122,8 @@ class ContractCategoryController extends BaseController
         if (!$contractCategory->delete()) {
             return back()->withErrors('删除失败')->withInput();
         }
-        return redirect()->route('admin.contract-category.index')->with('message' , __('web.success'));
+        return redirect()->route('admin.contract-category.index', [
+            'company_id' => $contractCategory->company_id
+        ])->with('message' , __('web.success'));
     }
 }

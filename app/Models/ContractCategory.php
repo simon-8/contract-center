@@ -40,11 +40,16 @@ class ContractCategory extends Base
 
     /**
      * 获取所有分类
-     * @return ContractCategory[]|\Illuminate\Database\Eloquent\Collection
+     * @param int $companyid
+     * @return \Illuminate\Support\Collection
      */
-    public static function getCats()
+    public static function getCats($companyid = 0)
     {
-        return self::select(['id', 'name'])->get()->pluck('name', 'id');
+        if ($companyid) {
+            return self::select(['id', 'name'])->where('company_id', $companyid)->get()->pluck('name', 'id');
+        } else {
+            return self::select(['id', 'name'])->where('company_id', 0)->get()->pluck('name', 'id');
+        }
     }
 
     /**
@@ -70,5 +75,17 @@ class ContractCategory extends Base
     {
         if ($data === '') return $query;
         return $query->where('company_id', $data);
+    }
+
+    /**
+     * @param int $companyid
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getParents($companyid = 0)
+    {
+        return self::select(['id', 'name'])
+            ->where('pid', 0)
+            ->where('company_id', $companyid)
+            ->get();
     }
 }

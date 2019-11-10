@@ -73,6 +73,19 @@ class Contract extends Base
     const SIGN_TYPE_PERSON = 0;
     const SIGN_TYPE_COMPANY = 1;
 
+    protected $appends = [
+        'player_text',
+    ];
+
+    /**
+     * @param $value
+     * @return mixed|string
+     */
+    public function getPlayerTextAttribute($value)
+    {
+        return $this->getPlayersText($value);
+    }
+
     /**
      * 关联内容
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

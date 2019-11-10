@@ -42,21 +42,13 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         ->middleware('auth:api')
         ->except('getStatus', 'getStatusCount', 'show');
 
+    Route::get('contract-category/company', 'ContractCategoryController@company');
     Route::apiResource('contract-category', 'ContractCategoryController');
     Route::apiResource('contract-tpl', 'ContractTplController');
     //Route::apiResource('contract-template', 'ContractTemplateController');
     Route::apiResource('contract-file', 'ContractFileController');
     Route::apiResource('single-page', 'SinglePageController');
 
-    Route::prefix('company/staff')->group(function() {
-        Route::get('', 'CompanyStaffController@index');
-        Route::post('apply', 'CompanyStaffController@apply');
-        Route::post('cancel', 'CompanyStaffController@cancel');
-        Route::post('user-cancel', 'CompanyStaffController@userCancel');
-        Route::post('confirm', 'CompanyStaffController@confirm');
-        Route::post('refuse', 'CompanyStaffController@refuse');
-        Route::get('status', 'CompanyStaffController@getStatus');
-    });
     //Route::apiResource('company/staff', 'CompanyStaffController');
 
     Route::prefix('order')->group(function () {
@@ -130,6 +122,16 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
 
             Route::post('send-code', 'UserController@sendCode');
             //Route::post('bind-mobile', 'UserController@bindMobile');
+        });
+
+        Route::prefix('company/staff')->group(function() {
+            Route::get('', 'CompanyStaffController@index');
+            Route::post('apply', 'CompanyStaffController@apply');
+            Route::post('cancel', 'CompanyStaffController@cancel');
+            Route::post('user-cancel', 'CompanyStaffController@userCancel');
+            Route::post('confirm', 'CompanyStaffController@confirm');
+            Route::post('refuse', 'CompanyStaffController@refuse');
+            Route::get('status', 'CompanyStaffController@getStatus');
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });

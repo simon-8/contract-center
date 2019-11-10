@@ -67,15 +67,16 @@ class SmsService
     /**
      * 发送验证码
      * @param $mobile
+     * @param string $op
      * @throws \Exception
      */
-    public function sendVerifyCode($mobile)
+    public function sendVerifyCode($mobile, $op = '绑定手机')
     {
         if (!$this->validateSendable($mobile)) {
             throw new \Exception('距离上一次发送时间不足一分钟');
         }
         SMS::requestSmsCode($mobile, [
-            'op' => '绑定手机'
+            'op' => $op,
         ]);
 
         // 设置一分钟缓存

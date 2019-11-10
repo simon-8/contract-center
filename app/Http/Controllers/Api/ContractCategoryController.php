@@ -29,4 +29,37 @@ class ContractCategoryController extends BaseController
 
         return responseMessage('', $lists);
     }
+
+    /**
+     * 公司分类
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function company(\Request $request)
+    {
+        $data = $request::only(['company_id']);
+        if (empty($data['company_id'])) {
+            return responseException('参数缺失: company_id');
+        }
+        $lists = ContractCategory::ofCompanyId($data['company_id'] ?? 0)
+            ->with(['tplSection' => function($query) {
+                $query->orderByDesc('listorder');
+            }]);
+        $tmp = $lists->get()->toArray();
+        $lists = [];
+        foreach ($tmp as $k => $v) {
+            if (!$v['pid']) {
+                $lists[$v['id']] = $v;
+            }
+        }
+
+        foreach ($tmp as $k => $v) {
+            if ($v['pid']) {
+                $lists[$v['pid']]['child'][] = $v;
+            }
+        }
+        sort($lists);
+        $lists = collect($lists);
+        return responseMessage('', $lists);
+    }
 }

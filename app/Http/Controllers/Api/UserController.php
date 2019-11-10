@@ -28,6 +28,7 @@ class UserController extends BaseController
      */
     public function info()
     {
+        $this->user->loadMissing('company');
         return responseMessage('', $this->user);
     }
 

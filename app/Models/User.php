@@ -110,7 +110,8 @@ class User extends Authenticatable
      */
     public function joinCompany()
     {
-        return $this->belongsToMany('App\Models\Company', 'company_staff', 'userid', 'company_id');
+        return $this->belongsToMany('App\Models\Company', 'company_staff', 'userid', 'company_id')
+            ->wherePivot('status', CompanyStaff::STATUS_SUCCESS);
     }
 
     /**

@@ -10,6 +10,11 @@ class ContractTplSection extends Base
 {
     use ModelTrait;
 
+    // 参与者类型 (双方合同  三方合同)
+    const PLAYERS_NORMAL = 0;
+    const PLAYERS_TWO = 2;
+    const PLAYERS_THREE = 3;
+
     protected $table = 'contract_tpl_section';
 
     protected $fillable = [
@@ -23,6 +28,19 @@ class ContractTplSection extends Base
         'created_at',
         'updated_at'
     ];
+
+    protected $appends = [
+        'player_text',
+    ];
+
+    /**
+     * @param $value
+     * @return mixed|string
+     */
+    public function getPlayerTextAttribute($value)
+    {
+        return $this->getPlayersText($value);
+    }
 
     /**
      * 合同分类
@@ -64,5 +82,30 @@ class ContractTplSection extends Base
     {
         if (empty($data)) return $query;
         return $query->where('players', $data);
+    }
+
+    /**
+     * 参与者类型
+     * @return array
+     */
+    public static function getPlayers()
+    {
+        $arr = [
+            //self::PLAYERS_NORMAL => '单方',
+            self::PLAYERS_TWO => '双方',
+            self::PLAYERS_THREE => '三方'
+        ];
+        return $arr;
+    }
+
+    /**
+     * 参与者类型
+     * @param null $type
+     * @return mixed|string
+     */
+    public function getPlayersText($type = null)
+    {
+        if ($type === null) $type = $this->players;
+        return self::getPlayers()[$type] ?? 'not fund';
     }
 }

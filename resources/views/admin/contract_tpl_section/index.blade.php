@@ -28,7 +28,7 @@
                                     <td>{{ $v['id'] }}</td>
                                     <td align="left">{{ $v['name'] }}</td>
                                     <td>{{ $v->contractCategory->name }}</td>
-                                    <td>{{ App\Models\Contract::getPlayersText($v['catid']) }}</td>
+                                    <td>{{ $v->player_text }}</td>
 {{--                                    <td></td>--}}
                                     <td>
                                         <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit1({{ $v['id'] }}, '{{ editURL('admin.contract-tpl-section.update', $v['id']) }}')">编辑</button>
@@ -85,17 +85,21 @@
                             {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
                         </div>
                         <div class="modal-body">
+                            @if (empty($data['catid']))
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">模板分类</label>
                                 <div class="col-sm-10">
                                     <select name="catid" class="form-control">
                                         @foreach(\App\Models\ContractCategory::getCats() as $catid => $catname)
-                                            <option value="{{ $catid }}">{{ $catname }}</option>
+                                            <option value="{{ $catid }}" @if(!empty($data['catid']) && $data['catid'] == $catid) selected @endif>{{ $catname }}</option>
                                         @endforeach
                                     </select>
                                     <span class="help-block m-b-none">选择所属分类</span>
                                 </div>
                             </div>
+                            @else
+                                <input type="hidden" name="catid" value="{{$data['catid']}}">
+                            @endif
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">参与人类型</label>
                                 <div class="col-sm-10">
@@ -152,17 +156,21 @@
                             {{--<small class="font-bold text-danger">删了可就没有了我跟你讲，不要搞事情。</small>--}}
                         </div>
                         <div class="modal-body">
+                            @if (empty($data['catid']))
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">模板分类</label>
                                 <div class="col-sm-10">
                                     <select name="catid" class="form-control">
                                         @foreach(\App\Models\ContractCategory::getCats() as $catid => $catname)
-                                            <option value="{{ $catid }}">{{ $catname }}</option>
+                                            <option value="{{ $catid }}" @if(!empty($data['catid']) && $data['catid'] == $catid) selected @endif>{{ $catname }}</option>
                                         @endforeach
                                     </select>
                                     <span class="help-block m-b-none">选择所属分类</span>
                                 </div>
                             </div>
+                            @else
+                                <input type="hidden" name="catid" value="{{$data['catid']}}">
+                            @endif
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">参与人类型</label>
                                 <div class="col-sm-10">
