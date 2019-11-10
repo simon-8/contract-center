@@ -114,6 +114,7 @@ class ContractController extends BaseController
         // 如果未传入company_id 则限制为本人合同
         if (empty($data['company_id'])) {
             $data['userid'] = $this->user->id;
+            $data['staff_id'] = 0;
         }
         $lists = $contract->ofStatus($data['status'] ?? '')
             //->ofUserid($this->user->id)
@@ -125,6 +126,7 @@ class ContractController extends BaseController
             ->ofYifang($data['yifang'] ?? '')
             ->ofJujianren($data['jujianren'] ?? '')
             ->ofCompanyId($data['company_id'] ?? 0)
+            ->ofStaffId($data['staff_id'] ?? 0)
             ->ofName($data['keyword'] ?? '')
             ->orderBy('id', 'DESC')
             ->paginate(10);

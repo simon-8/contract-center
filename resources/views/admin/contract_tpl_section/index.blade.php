@@ -31,6 +31,9 @@
                                     <td>{{ $v->player_text }}</td>
 {{--                                    <td></td>--}}
                                     <td>
+                                        <button data-href="{{ route('admin.contract-tpl.index', ['section_id' => $v->id, 'players' => $v->players]) }}"
+                                            class="btn btn-sm btn-secondary action-tpl">模板管理
+                                        </button>
                                         <button class="btn btn-sm btn-info" id="edit_{{ $v['id'] }}" data='@json($v)' onclick="Edit1({{ $v['id'] }}, '{{ editURL('admin.contract-tpl-section.update', $v['id']) }}')">编辑</button>
                                         <button class="btn btn-sm btn-danger" onclick="Delete('{{ editURL('admin.contract-tpl-section.destroy', $v['id']) }}')">删除</button>
                                     </td>
@@ -68,6 +71,15 @@
                 $(updateModal).find('form').attr('action', url);
                 $(updateModal).modal('show');
             }
+
+            $('.action-tpl').click(function () {
+                layer.open({
+                    type: 2,
+                    title: '合同模板管理',
+                    content: $(this).data('href'),
+                    area: ['80%', '80%']
+                });
+            });
         </script>
 
         {{--delete--}}

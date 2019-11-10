@@ -304,6 +304,22 @@ class Contract extends Base
     }
 
     /**
+     * 职员ID
+     * @param Builder $query
+     * @param int $data
+     * @return Builder
+     */
+    public function scopeOfStaffId(Builder $query, $data = 0)
+    {
+        if (!$data) return $query;
+        return $query->where(function ($query) use ($data) {
+            $query->where('userid_first', $data)
+                ->orWhere('userid_second', $data)
+                ->orWhere('userid_three', $data);
+        });
+    }
+
+    /**
      * 合同名称
      * @param Builder $query
      * @param string $data
