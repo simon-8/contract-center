@@ -18,6 +18,7 @@ class CreateContractCategoryTable extends Migration
             $table->string('name')->default('')->comment('分类名称');
             $table->unsignedInteger('pid')->default(0)->comment('父类ID');
             $table->unsignedTinyInteger('players')->default(0)->comment('参与人类型');
+            $table->string('user_type')->default('')->comment('用户类型');
             $table->unsignedInteger('company_id')->default(0)->comment('公司ID');
             $table->string('introduce')->default('')->comment('简介');
             $table->timestamps();

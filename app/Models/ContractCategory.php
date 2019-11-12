@@ -15,12 +15,18 @@ class ContractCategory extends Base
 {
     use ModelTrait;
 
+    // 用户类型 first甲 second乙 three居间
+    const USER_TYPE_FIRST = 'first';
+    const USER_TYPE_SECOND = 'second';
+    const USER_TYPE_THREE = 'three';
+
     protected $table = 'contract_category';
 
     protected $fillable = [
         'name',
         'pid',
         'players',
+        'user_type',
         'company_id',
         'introduce',
     ];

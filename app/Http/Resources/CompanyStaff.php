@@ -18,7 +18,7 @@ class CompanyStaff extends JsonResource
         $data['truename'] = $data['user']['truename'];
         $data['mobile'] = $data['user']['mobile'];
 
-        unset($data['user'], $data['created_at'], $data['updated_at']);
+        unset($data['user'], $data['updated_at']);
         return $data;
     }
 }

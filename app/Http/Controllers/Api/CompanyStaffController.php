@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Api;
 
+use App\Events\CompanyEvent;
 use App\Models\Company;
 use App\Models\CompanyStaff;
 use App\Http\Resources\CompanyStaff as CompanyStaffResource;
@@ -77,6 +78,10 @@ class CompanyStaffController extends BaseController
         ], [
             'status' => CompanyStaff::STATUS_APPLY
         ]);
+
+        // 公司相关事件
+        event(new CompanyEvent($staff));
+
         return responseMessage(__('api.success'));
     }
 
@@ -101,11 +106,16 @@ class CompanyStaffController extends BaseController
         if ($companyData['userid'] != $this->user->id) {
             return responseException(__('api.no_auth'));
         }
-        CompanyStaff::whereUserid($data['userid'])
-            ->whereCompanyId($data['company_id'])
-            ->update([
-                'status' => CompanyStaff::STATUS_SUCCESS,
-            ]);
+        $staff = CompanyStaff::whereUserid($data['userid'])
+                ->whereCompanyId($data['company_id'])
+                ->first();
+        $staff->update([
+            'status' => CompanyStaff::STATUS_SUCCESS,
+        ]);
+
+        // 公司相关事件
+        event(new CompanyEvent($staff));
+
         return responseMessage(__('api.success'));
     }
 
@@ -130,11 +140,17 @@ class CompanyStaffController extends BaseController
         if ($companyData['userid'] != $this->user->id) {
             return responseException(__('api.no_auth'));
         }
-        CompanyStaff::whereUserid($data['userid'])
+
+        $staff = CompanyStaff::whereUserid($data['userid'])
             ->whereCompanyId($data['company_id'])
-            ->update([
-                'status' => CompanyStaff::STATUS_REFUSE,
-            ]);
+            ->first();
+        $staff->update([
+            'status' => CompanyStaff::STATUS_REFUSE,
+        ]);
+
+        // 公司相关事件
+        event(new CompanyEvent($staff));
+
         return responseMessage(__('api.success'));
     }
 
@@ -159,11 +175,17 @@ class CompanyStaffController extends BaseController
         if ($companyData['userid'] != $this->user->id) {
             return responseException(__('api.no_auth'));
         }
-        CompanyStaff::whereUserid($data['userid'])
+
+        $staff = CompanyStaff::whereUserid($data['userid'])
             ->whereCompanyId($data['company_id'])
-            ->update([
-                'status' => CompanyStaff::STATUS_CANCEL,
-            ]);
+            ->first();
+        $staff->update([
+            'status' => CompanyStaff::STATUS_CANCEL,
+        ]);
+
+        // 公司相关事件
+        event(new CompanyEvent($staff));
+
         return responseMessage(__('api.success'));
     }
 
@@ -182,11 +204,17 @@ class CompanyStaffController extends BaseController
         if (!$companyData) {
             return responseException('公司不存在');
         }
-        CompanyStaff::whereUserid($this->user->id)
+
+        $staff = CompanyStaff::whereUserid($this->user->id)
             ->whereCompanyId($data['company_id'])
-            ->update([
-                'status' => CompanyStaff::STATUS_CANCEL,
-            ]);
+            ->first();
+        $staff->update([
+            'status' => CompanyStaff::STATUS_CANCEL,
+        ]);
+
+        // 公司相关事件
+        event(new CompanyEvent($staff));
+
         return responseMessage(__('api.success'));
     }
 

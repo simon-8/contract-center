@@ -22,15 +22,18 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\DBQueryListener::class
         ],
         // 用户确认
-        'App\Events\UserConfirm' => [
+        'App\Events\UserConfirm'                         => [
             'App\Listeners\UserConfirmListener'
         ],
         // 用户签名
-        'App\Events\UserSign' => [
+        'App\Events\UserSign'                            => [
             //'App\Listeners\UserSignListener',
             'App\Listeners\UserSignNotifyListener',
-
         ],
+        // 公司职员申请加入
+        'App\Events\CompanyEvent'                        => [
+            'App\Listeners\CompanyEventListener',
+        ]
     ];
 
     /**
