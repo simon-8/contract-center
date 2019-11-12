@@ -24,7 +24,7 @@ class ContractTplController extends BaseController
         $data = $request::only(['section_id', 'catid', 'players']);
         $lists = ContractTpl::ofSectionID($data['section_id'] ?? '')
             ->ofCatid($data['catid'] ?? '')
-            ->ofPlayers($data['player'] ?? '')
+            ->ofPlayers($data['players'] ?? '')
             ->get();
 
         return responseMessage('', $lists);
