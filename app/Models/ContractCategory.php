@@ -78,6 +78,18 @@ class ContractCategory extends Base
     }
 
     /**
+     * 关键词
+     * @param Builder $query
+     * @param string $data
+     * @return Builder
+     */
+    public function scopeOfKeyword(Builder $query, $data = '')
+    {
+        if (!$data) return $query;
+        return $query->where('name', 'like', '%'.$data.'%');
+    }
+
+    /**
      * @param int $companyid
      * @return \Illuminate\Support\Collection
      */

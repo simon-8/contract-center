@@ -37,11 +37,12 @@ class ContractCategoryController extends BaseController
      */
     public function company(\Request $request)
     {
-        $data = $request::only(['company_id']);
+        $data = $request::only(['company_id', 'keyword']);
         if (empty($data['company_id'])) {
             return responseException('参数缺失: company_id');
         }
         $lists = ContractCategory::ofCompanyId($data['company_id'] ?? 0)
+            ->ofKeyword($data['keyword'] ?? '')
             ->with(['tplSection' => function($query) {
                 $query->orderByDesc('listorder');
             }]);
