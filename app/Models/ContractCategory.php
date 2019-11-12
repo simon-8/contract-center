@@ -59,11 +59,11 @@ class ContractCategory extends Base
      */
     public static function getCatName($catid = null)
     {
-        $cats = Cache::remember(__CLASS__.'.cats', now()->addHour(), function() {
-            return self::getCats();
-        });
-        return $cats[$catid];
-    }
+        //$cats = Cache::remember(__CLASS__.'.cats', now()->addHour(), function() {
+        //    return self::getCats();
+        //});
+        return self::find($catid)->name;
+     }
 
     /**
      * 公司
