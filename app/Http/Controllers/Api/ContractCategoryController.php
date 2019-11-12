@@ -31,6 +31,21 @@ class ContractCategoryController extends BaseController
     }
 
     /**
+     * 详情
+     * @param ContractCategory $contractCategory
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(ContractCategory $contractCategory)
+    {
+        $contractCategory->loadMissing([
+            'tplSection' => function($query) {
+                $query->orderByDesc('listorder');
+            }
+        ]);
+        return responseMessage('', $contractCategory);
+    }
+
+    /**
      * 公司分类
      * @param \Request $request
      * @return \Illuminate\Http\JsonResponse
