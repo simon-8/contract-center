@@ -45,7 +45,7 @@ class CompanyEventListener implements ShouldQueue
                 $smsService->sendTemplateSms($user->mobile, $company->name, 15574);
             } elseif ($companyStaff->status == CompanyStaff::STATUS_SUCCESS) {
                 // 通知用户 申请已通过
-                $smsService->sendTemplateSms($user->mobile, $company->name, 15575);
+                $smsService->sendTemplateSms($user->mobile, $company->name, 15577);
             } elseif ($companyStaff->status == CompanyStaff::STATUS_CANCEL) {
                 // 通知用户 用户已取消
                 $smsService->sendTemplateSms($user->mobile, $company->name, 15576);
