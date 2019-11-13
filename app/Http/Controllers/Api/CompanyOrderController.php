@@ -28,10 +28,11 @@ class CompanyOrderController extends Controller
         logger(__METHOD__, $request::all());
         logger(__METHOD__, [file_get_contents('php://input')]);
 
-        //$notifyData = $request::input('esign_return');
-        $notifyStr = file_get_contents('php://input');
-        parse_str($notifyStr, $notifyData);
-        $notifyData = json_decode($notifyData['esign_return'], true);
+        $notifyData = $request::input('esign_return');
+        $notifyData = json_decode($notifyData, true);
+        //$notifyStr = file_get_contents('php://input');
+        //parse_str($notifyStr, $notifyData);
+        //$notifyData = json_decode($notifyData['esign_return'], true);
 
         logger(__METHOD__, $notifyData ?: []);
 
