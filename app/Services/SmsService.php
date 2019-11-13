@@ -15,6 +15,10 @@ class SmsService
     //public $app = null;
 
     const TEMPLATE_USER_SIGNED = '云证合同';
+    const TEMPLATE_COMPANY_STAFF_APPLY = '用户申请加入公司';
+    const TEMPLATE_COMPANY_STAFF_SUCCESS = '加入公司申请通过';
+    const TEMPLATE_COMPANY_STAFF_REFUSE = '加入公司被拒绝';
+    const TEMPLATE_COMPANY_STAFF_CANCEL = '加入公司申请取消';
 
     public function __construct()
     {

@@ -33,23 +33,27 @@ class CompanyEventListener implements ShouldQueue
         $smsService = new SmsService();
         $companyStaff = $event->companyStaff;
         $company = $companyStaff->company;
-        $admin = $company->user;
         $user = $companyStaff->user;
 
         try {
+            $template = '';
             if ($companyStaff->status == CompanyStaff::STATUS_APPLY) {
                 // 通知管理员 用户提交申请
-                $smsService->sendTemplateSms($admin->mobile, $company->name, 15573);
+                $template = SmsService::TEMPLATE_COMPANY_STAFF_APPLY;
+
             } elseif ($companyStaff->status == CompanyStaff::STATUS_REFUSE) {
                 // 通知用户 申请被拒绝
-                $smsService->sendTemplateSms($user->mobile, $company->name, 15574);
+                $template = SmsService::TEMPLATE_COMPANY_STAFF_REFUSE;
+
             } elseif ($companyStaff->status == CompanyStaff::STATUS_SUCCESS) {
                 // 通知用户 申请已通过
-                $smsService->sendTemplateSms($user->mobile, $company->name, 15577);
+                $template = SmsService::TEMPLATE_COMPANY_STAFF_SUCCESS;
+
             } elseif ($companyStaff->status == CompanyStaff::STATUS_CANCEL) {
                 // 通知用户 用户已取消
-                $smsService->sendTemplateSms($user->mobile, $company->name, 15576);
+                $template = SmsService::TEMPLATE_COMPANY_STAFF_CANCEL;
             }
+            $smsService->sendTemplateSms($user->mobile, ['company' => $company->name,], $template);
         } catch (\Exception $exception) {
             logger(__METHOD__, [$exception->getCode(), $exception->getMessage()]);
         }

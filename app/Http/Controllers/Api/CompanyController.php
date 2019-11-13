@@ -318,6 +318,7 @@ class CompanyController extends BaseController
             $data['service_id'] = $company->service_id;
             $response = $realNameService->organPayAmountCheck($data);
             $company->status = Company::STATUS_SUCCESS;
+            $company->save();
         } catch (\Exception $e) {
             return responseException($e->getMessage());
         }
