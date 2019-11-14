@@ -113,6 +113,11 @@ class CompanyController extends BaseController
             }
         }
 
+        // 个人实名检查
+        if (!$this->user->vtruename) {
+            return responseException('请先完成个人实名认证');
+        }
+
         DB::beginTransaction();
         try {
             // 验证短信验证码
