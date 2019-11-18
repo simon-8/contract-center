@@ -37,10 +37,12 @@ class CompanyEventListener implements ShouldQueue
 
         try {
             $template = '';
+            $mobile = $user->mobile;
             if ($companyStaff->status == CompanyStaff::STATUS_APPLY) {
                 // 通知管理员 用户提交申请
                 $template = SmsService::TEMPLATE_COMPANY_STAFF_APPLY;
-
+                // 使用管理员手机号码
+                $mobile = $company->user->mobile;
             } elseif ($companyStaff->status == CompanyStaff::STATUS_REFUSE) {
                 // 通知用户 申请被拒绝
                 $template = SmsService::TEMPLATE_COMPANY_STAFF_REFUSE;
@@ -53,7 +55,7 @@ class CompanyEventListener implements ShouldQueue
                 // 通知用户 用户已取消
                 $template = SmsService::TEMPLATE_COMPANY_STAFF_CANCEL;
             }
-            $smsService->sendTemplateSms($user->mobile, ['company' => $company->name,], $template);
+            $smsService->sendTemplateSms($mobile, ['company' => $company->name,], $template, false);
         } catch (\Exception $exception) {
             logger(__METHOD__, [$exception->getCode(), $exception->getMessage()]);
         }
