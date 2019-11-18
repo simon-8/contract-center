@@ -13,6 +13,7 @@
                             <td width="50">父分类ID</td>
                             <td width="150" align="left">分类名称</td>
                             <td>参与类型</td>
+                            <td>我的身份</td>
                             <td>说明</td>
                             <td width="180">操作</td>
                         </tr>
@@ -23,6 +24,7 @@
                                     <td>{{ $v['pid'] }}</td>
                                     <td align="left">{{ $v['name'] }}</td>
                                     <td>{{ $v['players'] }}</td>
+                                    <td> - </td>
                                     <td>{{ $v['company_id'] }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-success" onclick="AddChild({{ $v['id'] }})">添加子分类</button>
@@ -37,6 +39,7 @@
                                             <td>{{ $vv['pid'] }}</td>
                                             <td align="left" class="name">&nbsp;&nbsp;┗ {{ $vv['name'] }}</td>
                                             <td>{{ $vv['players'] }}</td>
+                                            <td>{{ $vv['user_type_text'] }}</td>
                                             <td>{{ $vv['company_id'] }}</td>
                                             <td>
 {{--                                                <button class="btn btn-xs btn-warning add-section" data-id="{{$v->id}}" data-players="{{$v->players}}">添加模块</button>--}}
@@ -167,6 +170,18 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">我的身份</label>
+                                <div class="col-sm-10">
+                                    <select name="user_type" class="form-control">
+                                        <option value="">选择合同默认身份</option>
+                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_FIRST }}">甲方</option>
+                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_SECOND }}">乙方</option>
+                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_THREE }}">丙方</option>
+                                    </select>
+                                    <span class="help-block m-b-none">选择后该类型合同将使用此身份</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">类型简介</label>
                                 <div class="col-sm-10">
                                     <textarea name="introduce" class="form-control" rows="8" width="90%">{{ old('introduce') }}</textarea>
@@ -231,6 +246,18 @@
                                         @endforeach
                                     </select>
                                     <span class="help-block m-b-none">选择参与人类型</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">我的身份</label>
+                                <div class="col-sm-10">
+                                    <select name="user_type" class="form-control">
+                                        <option value="">选择合同默认身份</option>
+                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_FIRST }}">甲方</option>
+                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_SECOND }}">乙方</option>
+                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_THREE }}">丙方</option>
+                                    </select>
+                                    <span class="help-block m-b-none">选择后该类型合同将使用此身份</span>
                                 </div>
                             </div>
                             <div class="form-group">

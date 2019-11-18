@@ -36,6 +36,26 @@ class ContractCategory extends Base
         'updated_at'
     ];
 
+    protected $appends = [
+          'user_type_text',
+    ];
+
+    /**
+     * @param $value
+     * @return mixed|string
+     */
+    public function getUserTypeTextAttribute($value)
+    {
+        if ($this->user_type === self::USER_TYPE_FIRST) {
+            return '甲方';
+        } else if ($this->user_type === self::USER_TYPE_SECOND) {
+            return '乙方';
+        } else if ($this->user_type === self::USER_TYPE_THREE) {
+            return '居间人';
+        }
+        return '';
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
