@@ -23,7 +23,7 @@
                                     <td>{{ $v['id'] }}</td>
                                     <td>{{ $v['pid'] }}</td>
                                     <td align="left">{{ $v['name'] }}</td>
-                                    <td>{{ $v['players'] }}</td>
+                                    <td>{{ $v['player_text'] }}</td>
                                     <td> - </td>
                                     <td>{{ $v['company_id'] }}</td>
                                     <td>
@@ -38,7 +38,7 @@
                                             <td>{{ $vv['id'] }}</td>
                                             <td>{{ $vv['pid'] }}</td>
                                             <td align="left" class="name">&nbsp;&nbsp;┗ {{ $vv['name'] }}</td>
-                                            <td>{{ $vv['players'] }}</td>
+                                            <td>{{ $vv['player_text'] }}</td>
                                             <td>{{ $vv['user_type_text'] }}</td>
                                             <td>{{ $vv['company_id'] }}</td>
                                             <td>
@@ -176,7 +176,7 @@
                                         <option value="">选择合同默认身份</option>
                                         <option value="{{ App\Models\ContractCategory::USER_TYPE_FIRST }}">甲方</option>
                                         <option value="{{ App\Models\ContractCategory::USER_TYPE_SECOND }}">乙方</option>
-                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_THREE }}">丙方</option>
+                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_THREE }}">居间人</option>
                                     </select>
                                     <span class="help-block m-b-none">选择后该类型合同将使用此身份</span>
                                 </div>
@@ -255,7 +255,7 @@
                                         <option value="">选择合同默认身份</option>
                                         <option value="{{ App\Models\ContractCategory::USER_TYPE_FIRST }}">甲方</option>
                                         <option value="{{ App\Models\ContractCategory::USER_TYPE_SECOND }}">乙方</option>
-                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_THREE }}">丙方</option>
+                                        <option value="{{ App\Models\ContractCategory::USER_TYPE_THREE }}">居间人</option>
                                     </select>
                                     <span class="help-block m-b-none">选择后该类型合同将使用此身份</span>
                                 </div>

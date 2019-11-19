@@ -20,6 +20,10 @@ class ContractCategory extends Base
     const USER_TYPE_SECOND = 'second';
     const USER_TYPE_THREE = 'three';
 
+    const PLAYERS_NORMAL = 0;
+    const PLAYERS_TWO = 2;
+    const PLAYERS_THREE = 3;
+
     protected $table = 'contract_category';
 
     protected $fillable = [
@@ -37,7 +41,8 @@ class ContractCategory extends Base
     ];
 
     protected $appends = [
-          'user_type_text',
+        'player_text',
+        'user_type_text',
     ];
 
     /**
@@ -57,11 +62,46 @@ class ContractCategory extends Base
     }
 
     /**
+     * 合同参与人类型
+     * @param $value
+     * @return mixed|string
+     */
+    public function getPlayerTextAttribute($value)
+    {
+        return $this->getPlayersText($this->players);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function tplSection()
     {
         return $this->hasMany('App\Models\ContractTplSection', 'catid', 'id');
+    }
+
+    /**
+     * 参与者类型
+     * @return array
+     */
+    public static function getPlayers()
+    {
+        $arr = [
+            //self::PLAYERS_NORMAL => '单方',
+            self::PLAYERS_TWO => '双方',
+            self::PLAYERS_THREE => '三方'
+        ];
+        return $arr;
+    }
+
+    /**
+     * 参与者类型
+     * @param null $type
+     * @return mixed|string
+     */
+    public function getPlayersText($type = null)
+    {
+        if ($type === null) $type = $this->players;
+        return self::getPlayers()[$type] ?? 'not fund';
     }
 
     /**
