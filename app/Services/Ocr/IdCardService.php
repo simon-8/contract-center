@@ -100,7 +100,7 @@ class IdCardService
             //printf("Http error code: %d\n", $httpCode);
             //printf("Error msg in body: %s\n", $rbody);
             //printf("header: %s\n", $rheader);
-            throw new \Exception($rbody);
+            throw new \Exception('HTTP ERROR: '. $rbody);
         }
 
         if ($this->isOldFormat) {

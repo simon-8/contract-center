@@ -62,10 +62,11 @@
         {
             var json = $('#edit_' + id).attr('data');
             json = JSON.parse(json);
+            var imgPreview = $('#edit_' + id).closest('tr').find('.imgview').attr('data-url');
             $.each(json , function(k , v){
                 if (k === 'thumb') {
                     $(updateModal).find('[name=' + k + ']').val(v);
-                    $(updateModal).find('#pthumb').attr('src', v);
+                    $(updateModal).find('#pthumb').attr('src', imgPreview);
                 } else {
                     $(updateModal).find('[name=' + k + ']').val(v);
                 }
