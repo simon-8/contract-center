@@ -140,7 +140,7 @@ class MiniProgramController extends Controller
             $userData->save();
         }
 
-        $authService->removeToken($userData, $data['client_id']);
+        //$authService->removeToken($userData, $data['client_id']);
         $data['username'] = $userData->id;
         $data['password'] = md5($openid);
         try {
