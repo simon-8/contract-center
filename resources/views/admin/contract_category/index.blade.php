@@ -44,13 +44,15 @@
                                     class="table table-bordered table-striped table-hover text-nowrap bg-white text-center no-margins">
                                     <tr>
                                         {{--                                    <td width="50">参与人类型</td>--}}
-                                        <td style="width: 70%;">模块名称</td>
+                                        <td style="width: 60%;">模块名称</td>
+                                        <td style="width: 10%;">隐藏名称</td>
                                         <td style="width: 30%;">操作</td>
                                     </tr>
                                     @if($v->tplSection->count())
                                         @foreach ($v->tplSection as $k => $section)
                                             <tr>
                                                 <td>{{ $section->name }}</td>
+                                                <td>{{ $section->is_hide ? '是' : '否' }}</td>
                                                 <td>
                                                     <button
                                                         data-href="{{ route('admin.contract-tpl.index', ['section_id' => $section->id, 'players' => $section->players]) }}"
@@ -117,7 +119,11 @@
             let url = $(this).attr('data-href');
             json = JSON.parse(json);
             $.each(json, function (k, v) {
-                $(updateSectionModal).find('[name=' + k + ']').val(v);
+                if (k === 'is_hide') {
+                    $(updateSectionModal).find('[name=' + k + ']').bootstrapSwitch('state', v ? true : false);
+                } else {
+                    $(updateSectionModal).find('[name=' + k + ']').val(v);
+                }
             });
             $(updateSectionModal).find('form').attr('action', url);
             $(updateSectionModal).modal('show');
@@ -292,6 +298,13 @@
                             <span class="help-block m-b-none">越大越靠前</span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">隐藏名称</label>
+                        <div class="col-sm-10">
+                            <input type="checkbox" name="is_hide" value="1" class="switch" data-on-text="是" data-off-text="否"/>
+                            <span class="help-block m-b-none">隐藏名称后, 打印时将隐藏</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -332,6 +345,13 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="listorder" value="" placeholder="0">
                             <span class="help-block m-b-none">越大越靠前</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">隐藏名称</label>
+                        <div class="col-sm-10">
+                            <input type="checkbox" name="is_hide" value="1" class="switch" data-on-text="是" data-off-text="否"/>
+                            <span class="help-block m-b-none">隐藏名称后, 打印时将隐藏</span>
                         </div>
                     </div>
                 </div>

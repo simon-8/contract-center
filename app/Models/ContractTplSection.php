@@ -21,6 +21,7 @@ class ContractTplSection extends Base
         'catid',
         'players',
         'name',
+        'is_hide',
         'listorder',
     ];
 

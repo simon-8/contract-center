@@ -18,6 +18,7 @@ class CreateContractTplSectionTable extends Migration
             $table->unsignedInteger('catid')->default(0)->comment('所属分类');
             $table->unsignedInteger('players')->default(0)->comment('几方合同 两方 三方');
             $table->string('name')->default('')->comment('模板段名称');
+            $table->unsignedTinyInteger('is_hide')->default(0)->comment('是否隐藏名称');
             $table->unsignedInteger('listorder')->default(0)->comment('排序');
             $table->timestamps();
         });

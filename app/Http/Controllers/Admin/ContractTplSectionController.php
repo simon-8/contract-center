@@ -71,6 +71,7 @@ class ContractTplSectionController extends Controller
         $data = $request->all();
         $request->validateUpdate($data);
 
+        $data['is_hide'] = $data['is_hide'] ?? 0;
         if (!$contractTplSection->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
         }
