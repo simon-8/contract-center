@@ -37,6 +37,9 @@ class Company extends Base
         'seal_img',
         'sign_data',
         'sign_free',
+        'staff_count',
+        'contract_signed_count',
+        'contract_success_count',
         'service_id',
         'status',
     ];
