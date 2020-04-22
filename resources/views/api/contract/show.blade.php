@@ -10,6 +10,7 @@
         * {
             padding: 0;
             margin: 0;
+            font-size: 16px;
         }
         .clearfix {
             clear: both;
@@ -39,7 +40,7 @@
             padding: 5px 0;
         }
         .container .main .head .title {
-            font-size: 22px;
+            font-size: 30px;
         }
         .container .main .head div {
             padding: 5px 0;
@@ -107,7 +108,9 @@
             @foreach ($sections as $k => $section)
                 <div class="section">
 {{--                    <h4>{{ $k+1 }}. {{ $section['name'] }}</h4>--}}
+                    @if (empty($section['is_hide']))
                     <h4>{{ $section['name'] }}</h4>
+                    @endif
                     @foreach ($section['contract_tpl'] as $tpl)
                         <p>
                             @foreach ($tpl['formdata'] as $formKey => $formItem)

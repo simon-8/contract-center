@@ -403,4 +403,54 @@ class ContractController extends BaseController
         unset($companyData['legal_idno']);
         return responseMessage('', new CompanyResource($companyData));
     }
+
+    /**
+     * 我的数量
+     * @param \Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function myCount(\Request $request)
+    {
+        $companyId = $request::input('company_id');
+        $userId = $this->user->id;
+
+        // 签章数量(单方面签章)
+        $data['contract_signed_count'] = Contract::where(function ($query) use ($userId, $companyId) {
+            $query->where(function ($query) use ($userId, $companyId) {
+                $query->where('signed_first', 1)
+                    ->where('userid_first', $userId)
+                    ->where('companyid_first', $companyId);
+            })->orWhere(function ($query) use ($userId, $companyId) {
+                $query->where('signed_second', 1)
+                    ->where('userid_second', $userId)
+                    ->where('companyid_second', $companyId);
+            })->orWhere(function ($query) use ($userId, $companyId) {
+                $query->where('signed_three', 1)
+                    ->where('userid_three', $userId)
+                    ->where('companyid_three', $companyId);
+            });
+        })
+        ->where('status', '<', Contract::STATUS_SIGN)
+        ->count();
+
+        // 成功数量(双方签章)
+        $data['contract_success_count'] = Contract::where(function ($query) use ($userId, $companyId) {
+            $query->where(function ($query) use ($userId, $companyId) {
+                $query->where('signed_first', 1)
+                    ->where('userid_first', $userId)
+                    ->where('companyid_first', $companyId);
+            })->orWhere(function ($query) use ($userId, $companyId) {
+                $query->where('signed_second', 1)
+                    ->where('userid_second', $userId)
+                    ->where('companyid_second', $companyId);
+            })->orWhere(function ($query) use ($userId, $companyId) {
+                $query->where('signed_three', 1)
+                    ->where('userid_three', $userId)
+                    ->where('companyid_three', $companyId);
+            });
+        })
+        ->where('status', Contract::STATUS_SIGN)
+        ->count();
+        return responseMessage('', $data);
+    }
 }

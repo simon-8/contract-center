@@ -32,10 +32,11 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::prefix('contract')->group(function () {
         Route::get('status', 'ContractController@getStatus');
         Route::get('status-count', 'ContractController@getStatusCount');
-        Route::get('{contract}', 'ContractController@show');
+        Route::get('{contract}', 'ContractController@show')->where('contract', '\d+');
         Route::post('confirm/{contract}', 'ContractController@confirm');
         //Route::post('sign', 'ContractController@sign');
         Route::get('sign-company-info/{contract}', 'ContractController@signCompanyInfo');
+        Route::get('my-count', 'ContractController@myCount');
     });
 
     Route::apiResource('contract', 'ContractController')

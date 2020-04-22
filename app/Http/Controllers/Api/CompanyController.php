@@ -61,7 +61,12 @@ class CompanyController extends BaseController
      */
     public function myJoin(\Request $request)
     {
-        $companys = User::find($this->user->id)->joinCompany()->with('user')
+        $companys = User::find($this->user->id)
+            ->joinCompany()
+            ->when($request::input('name'), function($query, $name) {
+                $query->where('name', 'like', '%'. $name .'%');
+            })
+            ->with('user')
             ->paginate();
         return CompanyResource::collection($companys);
     }

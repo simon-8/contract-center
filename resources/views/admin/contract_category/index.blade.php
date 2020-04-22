@@ -302,7 +302,7 @@
                         <label class="col-sm-2 control-label">隐藏名称</label>
                         <div class="col-sm-10">
                             <input type="checkbox" name="is_hide" value="1" class="switch" data-on-text="是" data-off-text="否"/>
-                            <span class="help-block m-b-none">隐藏名称后, 打印时将隐藏</span>
+                            <span class="help-block m-b-none">添加/编辑合同、合同中隐藏名称, 适用于一些固定陈述.</span>
                         </div>
                     </div>
                 </div>
@@ -351,7 +351,7 @@
                         <label class="col-sm-2 control-label">隐藏名称</label>
                         <div class="col-sm-10">
                             <input type="checkbox" name="is_hide" value="1" class="switch" data-on-text="是" data-off-text="否"/>
-                            <span class="help-block m-b-none">隐藏名称后, 打印时将隐藏</span>
+                            <span class="help-block m-b-none">添加/编辑合同、合同中隐藏名称, 适用于一些固定陈述.</span>
                         </div>
                     </div>
                 </div>
