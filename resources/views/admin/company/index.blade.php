@@ -70,6 +70,8 @@
                         <td style="width: 100px;">法人身份证</td>
                         <td style="width: 60px;">联系手机</td>
                         <td style="width: 60px;">注册地址</td>
+                        <td style="width: 60px;">管理员昵称</td>
+                        <td style="width: 60px;">管理员姓名</td>
                         <td style="width: 60px;">免费签名</td>
                         <td style="width: 60px;">状态</td>
 {{--                        <td style="width: 100px;">创建时间</td>--}}
@@ -89,6 +91,8 @@
                                 <td>{{ $v->legal_idno ?: '-' }}</td>
                                 <td>{{ $v->mobile ?: '-' }}</td>
                                 <td>{{ $v->address ?: '-' }}</td>
+                                <td>{{ $v->user->nickname ?: '-' }}</td>
+                                <td>{{ $v->user->truename ?: '-' }}</td>
                                 <td>{{ $v->sign_free ?: '-' }}</td>
                                 <td>
                                     <span class="label label-success">{{ $v->status_text  }}</span>

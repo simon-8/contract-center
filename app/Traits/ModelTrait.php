@@ -35,7 +35,7 @@ trait ModelTrait
      */
     public function scopeOfStatus(Builder $query, $data = '')
     {
-        if ($data === '') return $query;
+        if (!is_numeric($data)) return $query;
         if (is_array($data)) {
             return $query->whereIn('status', $data);
         } else {
@@ -51,7 +51,7 @@ trait ModelTrait
      */
     public function scopeOfCatid(Builder $query, $data = '')
     {
-        if ($data === '') return $query;
+        if (!is_numeric($data)) return $query;
         if (is_array($data)) {
             return $query->whereIn('catid', $data);
         } else {

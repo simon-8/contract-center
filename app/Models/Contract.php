@@ -320,6 +320,41 @@ class Contract extends Base
     }
 
     /**
+     * 公司职员专用 只显示在当前公司该职员签约的合同
+     * @param Builder $query
+     * @param null $companyId
+     * @param null $staffId
+     * @return Builder
+     */
+    public function scopeOfCompanyStaff(Builder $query, $companyId = null, $staffId = null)
+    {
+        if (!is_numeric($companyId) && !is_numeric($staffId)) return $query;
+        if ($companyId && $staffId) {
+            return $query->where(function(Builder $query) use ($companyId, $staffId) {
+                $query->where('companyid_first', $companyId)->where('userid_first', $staffId);
+            })->orWhere(function(Builder $query) use ($companyId, $staffId) {
+                $query->where('companyid_second', $companyId)->where('userid_second', $staffId);
+            })->orWhere(function(Builder $query) use ($companyId, $staffId) {
+                $query->where('companyid_three', $companyId)->where('userid_three', $staffId);
+            });
+        }
+        if ($companyId) {
+            return $query->where(function (Builder $query) use ($companyId) {
+                $query->where('companyid_first', $companyId)
+                    ->orWhere('companyid_second', $companyId)
+                    ->orWhere('companyid_three', $companyId);
+            });
+        }
+        if ($staffId) {
+            return $query->where(function (Builder $query) use ($staffId) {
+                $query->where('userid_first', $staffId)
+                    ->orWhere('userid_second', $staffId)
+                    ->orWhere('userid_three', $staffId);
+            });
+        }
+    }
+
+    /**
      * 合同名称
      * @param Builder $query
      * @param string $data

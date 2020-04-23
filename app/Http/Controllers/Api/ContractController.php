@@ -25,6 +25,8 @@ use App\Models\ContractTplSection;
 use App\Models\Company;
 use App\Services\ContractService;
 use \DB;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class ContractController extends BaseController
 {
@@ -104,30 +106,30 @@ class ContractController extends BaseController
      * @param Contract $contract
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(\Request $request, Contract $contract)
+    public function index(Request $request, Contract $contract)
     {
         if ($this->user === null) {
             return responseMessage('');
         }
 
-        $data = $request::all();
         // 如果未传入company_id 则限制为本人合同
-        if (empty($data['company_id'])) {
-            $data['userid'] = $this->user->id;
-            $data['staff_id'] = 0;
+        if (empty($request->company_id)) {
+            $request->userid = $this->user->id;
+            $request->staff_id = 0;
         }
-        $lists = $contract->ofStatus($data['status'] ?? '')
+        $lists = $contract->ofStatus($request->status)
             //->ofUserid($this->user->id)
-            ->ofMine($data['userid'] ?? 0)
-            ->ofCatid($data['catid'] ?? '')
-            ->ofMycatid($data['mycatid'] ?? 0)
-            //->ofLawyerid($da ta['lawyerid'] ?? 0)
-            ->ofJiafang($data['jiafang'] ?? '')
-            ->ofYifang($data['yifang'] ?? '')
-            ->ofJujianren($data['jujianren'] ?? '')
-            ->ofCompanyId($data['company_id'] ?? 0)
-            ->ofStaffId($data['staff_id'] ?? 0)
-            ->ofName($data['keyword'] ?? '')
+            ->ofMine($request->userid)
+            ->ofCatid($request->catid)
+            ->ofMycatid($request->mycatid)
+            //->ofLawyerid($da ta['lawyerid)
+            ->ofJiafang($request->jiafang)
+            ->ofYifang($request->yifang)
+            ->ofJujianren($request->jujianren)
+            ->ofCompanyStaff($request->company_id, $request->staff_id)
+            //->ofCompanyId($request->company_id)
+            //->ofStaffId($request->staff_id)
+            ->ofName($request->keyword)
             ->orderBy('id', 'DESC')
             ->paginate(10);
         return ContractResource::collection($lists);
@@ -412,22 +414,23 @@ class ContractController extends BaseController
     public function myCount(\Request $request)
     {
         $companyId = $request::input('company_id');
-        $userId = $this->user->id;
+        $userId = $request::input('staff_id');
+        //$userId = $userId ?: $this->user->id;
 
         // 签章数量(单方面签章)
         $data['contract_signed_count'] = Contract::where(function ($query) use ($userId, $companyId) {
-            $query->where(function ($query) use ($userId, $companyId) {
+            $query->where(function (Builder $query) use ($userId, $companyId) {
                 $query->where('signed_first', 1)
-                    ->where('userid_first', $userId)
                     ->where('companyid_first', $companyId);
-            })->orWhere(function ($query) use ($userId, $companyId) {
+                if ($userId) $query->where('userid_first', $userId);
+            })->orWhere(function (Builder $query) use ($userId, $companyId) {
                 $query->where('signed_second', 1)
-                    ->where('userid_second', $userId)
                     ->where('companyid_second', $companyId);
-            })->orWhere(function ($query) use ($userId, $companyId) {
+                if ($userId) $query->where('userid_second', $userId);
+            })->orWhere(function (Builder $query) use ($userId, $companyId) {
                 $query->where('signed_three', 1)
-                    ->where('userid_three', $userId)
                     ->where('companyid_three', $companyId);
+                if ($userId) $query->where('userid_three', $userId);
             });
         })
         ->where('status', '<', Contract::STATUS_SIGN)
@@ -435,18 +438,18 @@ class ContractController extends BaseController
 
         // 成功数量(双方签章)
         $data['contract_success_count'] = Contract::where(function ($query) use ($userId, $companyId) {
-            $query->where(function ($query) use ($userId, $companyId) {
+            $query->where(function (Builder $query) use ($userId, $companyId) {
                 $query->where('signed_first', 1)
-                    ->where('userid_first', $userId)
                     ->where('companyid_first', $companyId);
-            })->orWhere(function ($query) use ($userId, $companyId) {
+                if ($userId) $query->where('userid_first', $userId);
+            })->orWhere(function (Builder $query) use ($userId, $companyId) {
                 $query->where('signed_second', 1)
-                    ->where('userid_second', $userId)
                     ->where('companyid_second', $companyId);
-            })->orWhere(function ($query) use ($userId, $companyId) {
+                if ($userId) $query->where('userid_second', $userId);
+            })->orWhere(function (Builder $query) use ($userId, $companyId) {
                 $query->where('signed_three', 1)
-                    ->where('userid_three', $userId)
                     ->where('companyid_three', $companyId);
+                if ($userId) $query->where('userid_three', $userId);
             });
         })
         ->where('status', Contract::STATUS_SIGN)

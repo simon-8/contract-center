@@ -43,7 +43,7 @@ class CompanyController extends Controller
         //        $query->$func($data['keyword']);
         //    });
         //}
-        $lists = Company::orderByDesc('id')->paginate();
+        $lists = Company::with('user')->orderByDesc('id')->paginate();
         $lists->appends($data);
         return view('admin.company.index', compact('lists', 'data'));
     }
