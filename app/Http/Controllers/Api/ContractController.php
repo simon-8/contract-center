@@ -301,7 +301,6 @@ class ContractController extends BaseController
                         }
                     }
                 }
-                logger(__METHOD__, $changeFills);
                 // 记录本次修改内容
                 ContractChangeLog::updateOrCreate([
                     'contract_id' => $contract->id,
