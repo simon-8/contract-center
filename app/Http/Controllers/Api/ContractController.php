@@ -21,6 +21,7 @@ use App\Http\Resources\Contract AS ContractResource;
 use App\Http\Resources\Company as CompanyResource;
 use App\Models\Contract;
 use App\Models\ContractCategory;
+use App\Models\ContractChangeLog;
 use App\Models\ContractTplSection;
 use App\Models\Company;
 use App\Services\ContractService;
@@ -138,7 +139,7 @@ class ContractController extends BaseController
     /**
      * 详情
      * @param Contract $contract
-     * @return ContractResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Contract $contract)
     {
@@ -155,7 +156,7 @@ class ContractController extends BaseController
             }
         }
 
-        $contract->loadMissing('content');
+        $contract->loadMissing('content', 'changelog');
         return responseMessage('', new ContractResource($contract));
     }
 
@@ -279,10 +280,41 @@ class ContractController extends BaseController
 
             $contractData = $contract->update($updateData);
 
-            $contract->content->update([
-                'tpl' => $sections,
-                'fill' => $data['fillsData']
-            ]);
+            $contract->content->tpl = $sections;
+            $contract->content->fill = $data['fillsData'];
+
+            // 填空内容有修改
+            if ($contract->content->isDirty('fill')) {
+                $changeFills = [];
+                $originFillsData = json_decode($contract->content->getOriginal('fill'), true);
+                foreach ($data['fillsData'] as $sectionId => $tpls) {
+                    foreach ($tpls as $tplId => $tpl) {
+                        foreach ($tpl as $key => $val) {
+                            if (empty($originFillsData[$sectionId][$tplId][$key])) {
+                                $changeFills[$tplId][$key] = 1;
+                                continue;
+                            }
+                            if ($val != $originFillsData[$sectionId][$tplId][$key]) {
+                                $changeFills[$tplId][$key] = 1;
+                                continue;
+                            }
+                        }
+                    }
+                }
+                logger(__METHOD__, $changeFills);
+                // 记录本次修改内容
+                ContractChangeLog::updateOrCreate([
+                    'contract_id' => $contract->id,
+                ], [
+                    'user_id' => $this->user->id,
+                    'content' => $changeFills,
+                ]);
+            }
+            $contract->content->update();
+            //$contract->content->update([
+            //    'tpl' => $sections,
+            //    'fill' => $data['fillsData']
+            //]);
 
             DB::commit();
         } catch (\Exception $exception) {

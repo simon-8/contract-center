@@ -204,6 +204,15 @@ class Contract extends Base
     }
 
     /**
+     * 关联修改记录
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function changelog()
+    {
+        return $this->hasOne('App\Models\ContractChangeLog')->withDefault();
+    }
+
+    /**
      * 对方用户ID
      * @param $query
      * @param int $data
