@@ -200,7 +200,7 @@ class Contract extends Base
      */
     public function category()
     {
-        return $this->belongsTo('App\Models\ContractCategory', 'catid', 'id');
+        return $this->belongsTo('App\Models\ContractCategory', 'catid', 'id')->withDefault();
     }
 
     /**
