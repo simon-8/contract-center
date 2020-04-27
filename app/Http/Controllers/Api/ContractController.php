@@ -160,10 +160,14 @@ class ContractController extends BaseController
         $contract->loadMissing('content', 'changelog');
 
         // 加载当前用户选择的公司
-        $userType = $contract->getUserTypeByUserid($this->user->id);
-        $companyType = "company_". $userType;
-        $companyId = "companyid_". $userType;
-        $contract[$companyType] = Company::find($contract->$companyId)->only('id', 'userid' ,'name' ,'sign_free');
+        if ($this->user) {
+            $userType = $contract->getUserTypeByUserid($this->user->id);
+            if ($contract["companyid_". $userType]) {
+                $companyType = "company_". $userType;
+                $companyId = "companyid_". $userType;
+                $contract[$companyType] = Company::find($contract->$companyId)->only('id', 'userid' ,'name' ,'sign_free');
+            }
+        }
 
         return responseMessage('', new ContractResource($contract));
     }

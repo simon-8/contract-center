@@ -21,10 +21,6 @@ class EventServiceProvider extends ServiceProvider
         \Illuminate\Database\Events\QueryExecuted::class => [
             \App\Listeners\DBQueryListener::class
         ],
-        // 合同修改
-        'App\Events\ContractUpdated' => [
-            'App\Listeners\ContractUpdatedListener'
-        ],
         // 用户确认
         'App\Events\UserConfirm' => [
             'App\Listeners\UserConfirmListener'

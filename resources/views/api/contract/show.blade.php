@@ -10,7 +10,8 @@
         * {
             padding: 0;
             margin: 0;
-            font-size: 16px;
+            font-size: 20px;
+            font-family: "simsun"
         }
         .clearfix {
             clear: both;
@@ -36,6 +37,9 @@
         .container .main .section {
             padding: 5px 0;
         }
+        .container .main .section .section-name {
+            /*font-size: 21px;*/
+        }
         .container .main .section p {
             padding: 5px 0;
         }
@@ -52,7 +56,7 @@
             margin: 15px 0 0 0;
         }
         .fill-value {
-            text-decoration: underline;
+            border-bottom: 1px solid #000;
         }
         .footer {
             margin: 100px 0 0 0;
@@ -109,7 +113,7 @@
                 <div class="section">
 {{--                    <h4>{{ $k+1 }}. {{ $section['name'] }}</h4>--}}
                     @if (empty($section['is_hide']))
-                    <h4>{{ $section['name'] }}</h4>
+                    <b class="section-name">{{ $section['name'] }}</b>
                     @endif
                     @foreach ($section['contract_tpl'] as $tpl)
                         <p>
