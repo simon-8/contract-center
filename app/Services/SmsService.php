@@ -16,10 +16,15 @@ class SmsService
     //public $app = null;
 
     const TEMPLATE_USER_SIGNED = '云证合同';
-    const TEMPLATE_COMPANY_STAFF_APPLY = '用户申请加入公司';
-    const TEMPLATE_COMPANY_STAFF_SUCCESS = '加入公司申请通过';
-    const TEMPLATE_COMPANY_STAFF_REFUSE = '加入公司被拒绝';
-    const TEMPLATE_COMPANY_STAFF_CANCEL = '加入公司申请取消';
+
+    // 给职员发的
+    const TPL_COMPANY_STAFF_BE_CANCEL = '主动取消公司授权';// 被取消
+    const TPL_COMPANY_STAFF_APPLY_STATUS = '加入公司申请状态';// 已通过 已拒绝
+    const TPL_COMPANY_STAFF_USER_CANCEL = '取消授权申请状态';// 取消成功, 取消失败
+
+    // 管理员
+    const TPL_COMPANY_STAFF_USER_APPLY = '用户申请加入公司'; // 申请加入
+    //const TPL_COMPANY_STAFF_USER_APPLY_CANCEL = '公司授权申请取消';
 
     public function __construct()
     {

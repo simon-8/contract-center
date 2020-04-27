@@ -184,7 +184,7 @@ class CompanyStaffController extends BaseController
         ]);
 
         // 公司相关事件
-        event(new CompanyEvent($staff));
+        event(new CompanyEvent($staff, true));
 
         return responseMessage(__('api.success'));
     }

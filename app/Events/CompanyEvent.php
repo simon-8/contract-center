@@ -18,9 +18,12 @@ class CompanyEvent
 
     public $companyStaff;
 
-    public function __construct(CompanyStaff $companyStaff)
+    public $isAdmin;
+
+    public function __construct(CompanyStaff $companyStaff, $isAdmin = false)
     {
         $this->companyStaff = $companyStaff;
+        $this->isAdmin = $isAdmin;
     }
 
     /**
