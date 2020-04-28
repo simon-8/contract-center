@@ -423,11 +423,11 @@ class ContractController extends BaseController
 
         $contract->loadMissing('content');
 
-        // 加载当前用户选择的公司
-        $companyType = "company_". $userType;
-        $companyId = "companyid_". $userType;
-        $contract[$companyType] = Company::find($contract->$companyId)->only('id', 'userid' ,'name' ,'sign_free');
-
+        // 返回当前用户选择的公司
+        if ($companyData) {
+            $companyType = "company_". $userType;
+            $contract[$companyType] = $companyData->only('id', 'userid' ,'name' ,'sign_free');
+        }
         return responseMessage('', new ContractResource($contract));
     }
 
