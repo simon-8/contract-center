@@ -19,6 +19,7 @@
                             <td>模板分类</td>
                             <td>参与人类型</td>
 {{--                            <td>图标</td>--}}
+                            <td>隐藏名称</td>
                             <td width="180">操作</td>
                         </tr>
                         @if($lists->count())
@@ -29,7 +30,7 @@
                                     <td align="left">{{ $v['name'] }}</td>
                                     <td>{{ $v->contractCategory->name }}</td>
                                     <td>{{ $v->player_text }}</td>
-{{--                                    <td></td>--}}
+                                    <td>{{ $v->is_hide ? '是' : '否' }}</td>
                                     <td>
                                         <button data-href="{{ route('admin.contract-tpl.index', ['section_id' => $v->id, 'players' => $v->players]) }}"
                                             class="btn btn-sm btn-secondary action-tpl">模板管理
@@ -59,10 +60,8 @@
                 var json = $('#edit_' + id).attr('data');
                 json = JSON.parse(json);
                 $.each(json , function(k , v){
-                    if (k === 'catid') {
-                        $(updateModal).find('[name=' + k + ']').val(v);
-                    } else if (k === 'players') {
-                        $(updateModal).find('[name=' + k + ']').val(v);
+                    if (k === 'is_hide') {
+                        $(updateModal).find('[name=' + k + ']').bootstrapSwitch('state', !!v);
                     } else {
                         $(updateModal).find('[name=' + k + ']').val(v);
                     }
@@ -144,6 +143,13 @@
                                     <span class="help-block m-b-none">越大越靠前</span>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">隐藏名称</label>
+                                <div class="col-sm-10">
+                                    <input type="checkbox" name="is_hide" value="1" class="switch" data-on-text="是" data-off-text="否"/>
+                                    <span class="help-block m-b-none">添加/编辑合同、合同中隐藏名称, 适用于一些固定陈述.</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -215,6 +221,13 @@
                                     <span class="help-block m-b-none">越大越靠前</span>
                                 </div>
                             </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">隐藏名称</label>
+                                    <div class="col-sm-10">
+                                        <input type="checkbox" name="is_hide" value="1" class="switch" data-on-text="是" data-off-text="否"/>
+                                        <span class="help-block m-b-none">添加/编辑合同、合同中隐藏名称, 适用于一些固定陈述.</span>
+                                    </div>
+                                </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>

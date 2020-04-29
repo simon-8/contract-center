@@ -101,7 +101,7 @@
                                 <td>{{ $v->updated_at }}</td>
                                 <td>
                                     <a class="btn btn-sm btn-primary sign-free-update" data-company='@json($v)'  data-href="{{ route('admin.company.signFreeUpdate', ['id' => $v->id]) }}">免签次数</a>
-                                    <a class="btn btn-sm btn-primary category" data-page="category" data-href="{{ route('admin.contract-category.index', ['company_id' => $v->id]) }}">分类</a>
+                                    <a class="btn btn-sm btn-primary category" data-page="category" data-href="{{ route('admin.contract-category.index', ['company_id' => $v->id]) }}">合同模板</a>
                                 </td>
                             </tr>
                         @endforeach
