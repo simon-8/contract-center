@@ -21,27 +21,37 @@
 
 <div id="view" class="hidden"></div>
 
-<script src="{{ skinPath() }}js/plugins/photoClip/iscroll-zoom.js"></script>
-<script src="{{ skinPath() }}js/plugins/photoClip/hammer.js"></script>
+<script src="{{ skinPath() }}js/plugins/photoClip/hammer.min.js"></script>
+<script src="{{ skinPath() }}js/plugins/photoClip/iscroll-zoom-min.js"></script>
 <script src="{{ skinPath() }}js/plugins/photoClip/lrz.all.bundle.js"></script>
-<script src="{{ skinPath() }}js/plugins/photoClip/jquery.photoClip.js"></script>
+<script src="{{ skinPath() }}js/plugins/photoClip/PhotoClip.js"></script>
+
 <script>
-    $("#clipArea").photoClip({
+    var pc = new PhotoClip('#clipArea', {
         size: [{{ $w }}, {{ $h }}],
         outputSize: [{{ $w }}, {{ $h }}],
-        file: "#upload_file",
-        view: "#view",
-        ok: "#clipBtn",
+        //adaptive: ['60%', '80%'],
+        file: '#upload_file',
+        view: '#view',
+        ok: '#clipBtn',
+        //img: 'img/mm.jpg',
+        outputQuality: 1,
+        lrzOption: {
+            quality: 1
+        },
         loadStart: function() {
-            //console.log("照片读取中");
+            console.log('开始读取照片');
         },
         loadComplete: function() {
-            //console.log("照片读取完成");
+            console.log('照片读取完成');
         },
-        clipFinish: function(dataURL) {
+        done: function(dataURL) {
+            console.log(dataURL);
             {{ $c }}(dataURL,'{{ $i }}');
             layer.closeAll();
-            //console.log(dataURL);
+        },
+        fail: function(msg) {
+            alert(msg);
         }
     });
 </script>
