@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Api;
 
+use App\Caches\SettingCache;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\Contract as ContractResource;
 use App\Models\Contract;
@@ -56,7 +57,7 @@ class OrderController extends BaseController
             ]);
         }
         $data['userid'] = $this->user->id;
-        $data['amount'] = config('admin.contractPrice');
+        $data['amount'] = SettingCache::get('contractPrice');
         $data['openid'] = $this->getOpenid();
         $data['orderid'] = Order::createOrderNo($channel);
         $orderData = $order->create($data);

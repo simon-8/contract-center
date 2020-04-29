@@ -27,6 +27,8 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
         Route::resource('manager', 'ManagerController');
         Route::resource('role', 'RoleController');
         Route::resource('role-access', 'RoleAccessController');
+        Route::get('setting', 'SettingController@index')->name('setting.index');
+        Route::post('setting', 'SettingController@update')->name('setting.update');
 
         Route::post('user/freeze/{user}', 'UserController@freeze')->name('user.freeze');
         Route::resource('user', 'UserController');

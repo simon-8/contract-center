@@ -9,8 +9,8 @@
 return array(
 //==================请在这里配置您的接入信息===================
     /*项目初始化请求地址*/
-    'open_api_url' => 'http://121.40.164.61:8080/tgmonitor/rest/app!getAPIInfo2',//模拟环境
-    //'open_api_url' => "http://itsm.tsign.cn/tgmonitor/rest/app!getAPIInfo2", //正式环境
+    //'open_api_url' => 'http://121.40.164.61:8080/tgmonitor/rest/app!getAPIInfo2',//模拟环境
+    'open_api_url' => "http://openapi.tsign.cn:8080/tgmonitor/rest/app!getAPIInfo2", //正式环境
 
     /*接入平台项目ID,必填；*/
     'project_id' => config('esign.appid'),

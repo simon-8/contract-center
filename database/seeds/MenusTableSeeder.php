@@ -270,6 +270,28 @@ class MenusTableSeeder extends Seeder
                 'listorder' => 0,
                 'items' => 0,
             ),
+            23 => 
+            array (
+                'id' => 35,
+                'pid' => 0,
+                'name' => '公司管理',
+                'route' => 'admin.company.*',
+                'link' => '',
+                'icon' => 'fa fa-users',
+                'listorder' => 0,
+                'items' => 1,
+            ),
+            24 => 
+            array (
+                'id' => 36,
+                'pid' => 35,
+                'name' => '公司列表',
+                'route' => 'admin.company.index',
+                'link' => '',
+                'icon' => '',
+                'listorder' => 0,
+                'items' => 0,
+            ),
         ));
         
         

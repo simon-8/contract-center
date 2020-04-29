@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
 
 use App\Models\AdPlace;
@@ -28,6 +29,7 @@ class ModelObserverProvider extends ServiceProvider
         Role::observe(\App\Observers\RoleObserver::class);
         Contract::observe(\App\Observers\ContractObserver::class);
         ContractFile::observe(\App\Observers\ContractFileObserver::class);
+        Setting::observe(\App\Observers\SettingObserver::class);
         //ContractTplFill::observe(\App\Observers\ContractTplFillObserver::class);
         //SinglePage::observe(\App\Observers\SinglePageObserver::class);
     }

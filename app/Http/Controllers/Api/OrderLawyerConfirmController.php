@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Api;
 
+use App\Caches\SettingCache;
 use App\Http\Requests\OrderLawyerConfirmRequest as OrderRequest;
 use App\Http\Resources\OrderLawyerConfirm as OrderLawyerConfirmResource;
 use App\Models\Contract;
@@ -46,7 +47,7 @@ class OrderLawyerConfirmController extends BaseController
         if ($orderData) {
             return responseMessage('', new OrderLawyerConfirmResource($orderData));
         }
-        return responseMessage('', ['amount' => config('admin.contractLawyerConfirmPrice')]);
+        return responseMessage('', ['amount' => SettingCache::get('contractLawyerConfirmPrice')]);
     }
 
     /**
@@ -62,7 +63,7 @@ class OrderLawyerConfirmController extends BaseController
         if ($orderData) {
             return responseMessage('', new OrderLawyerConfirmResource($orderData));
         }
-        return responseMessage('', ['amount' => config('admin.contractLawyerConfirmPrice')]);
+        return responseMessage('', ['amount' => SettingCache::get('contractLawyerConfirmPrice')]);
     }
 
     /**
@@ -117,7 +118,7 @@ class OrderLawyerConfirmController extends BaseController
 
         $data['address'] = $address->only(['id', 'linkman', 'mobile', 'province', 'city', 'area', 'address']);
         $data['userid'] = $this->user->id;
-        $data['amount'] = config('admin.contractLawyerConfirmPrice');
+        $data['amount'] = SettingCache::get('contractLawyerConfirmPrice');
         $data['openid'] = $this->getOpenid();
         $data['orderid'] = Order::createOrderNo($channel);
 

@@ -107,6 +107,9 @@ return [
     'admin.operation.*' => '运营信息',
     'admin.operation.order' => '订单管理',
     'admin.order-lawyer-confirm.index' => '律师见证',
+
+    'admin.setting.index' => '基本设置',
+    'admin.setting.update' => '基本设置更新',
     //'admin.express-fee.edit' => '模板模块编辑',
     //'admin.contract-tpl-fill.*' => '填空模板管理',
     //'admin.contract-tpl-fill.index' => ' 填空模板列表',
