@@ -65,7 +65,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
     Route::prefix('order-lawyer-confirm')->group(function() {
         Route::any('notify/{channel}', 'OrderLawyerConfirmController@notify')->name('orderLawyerConfirm.notify');
         Route::any('refund/{channel}', 'OrderLawyerConfirmController@refund')->name('orderLawyerConfirm.refund');
-        Route::get('show-by-user', 'OrderLawyerConfirmController@showByUser');
+        Route::get('show-by-user', 'OrderLawyerConfirmController@showByUser')->middleware('auth:api');
     });
     Route::resource('order-lawyer-confirm', 'OrderLawyerConfirmController')
         ->middleware('auth:api')

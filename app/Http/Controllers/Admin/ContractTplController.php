@@ -51,6 +51,7 @@ class ContractTplController extends Controller
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
         $data['players'] = $section['players'];
+        $data['content'] = str_replace(['<br />', '<br/>', '<br>'], "\n", $data['content']);
         $data['formdata'] = $this->makeFormData($data['content']);
         if (!$contractTpl->create($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
@@ -85,6 +86,7 @@ class ContractTplController extends Controller
         $section = ContractTplSection::find($data['section_id']);
         $data['catid'] = $section['catid'];
         $data['players'] = $section['players'];
+        $data['content'] = str_replace(['<br />', '<br/>', '<br>'], "\n", $data['content']);
         $data['formdata'] = $this->makeFormData($data['content']);
         if (!$contractTpl->update($data)) {
             return back()->withErrors(__('web.failed'))->withInput();
