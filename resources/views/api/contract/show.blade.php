@@ -35,13 +35,14 @@
             padding: 5px 0;
         }
         .container .main .section {
-            padding: 5px 0;
+            padding: 6px 0;
         }
         .container .main .section .section-name {
             /*font-size: 21px;*/
         }
         .container .main .section p {
-            padding: 5px 0;
+            /*padding: 5px 0;*/
+            line-height: 30px;
         }
         .container .main .head .title {
             font-size: 30px;
