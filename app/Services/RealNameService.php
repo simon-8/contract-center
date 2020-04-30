@@ -51,9 +51,9 @@ class RealNameService
      */
     protected function getServerUrl()
     {
-        if (is_debug_env() && env('APP_ENV') === 'local') {
-            return self::API_DOMAIN_HTTPS_TEST;
-        }
+        //if (is_debug_env() && env('APP_ENV') === 'local') {
+        //    return self::API_DOMAIN_HTTPS_TEST;
+        //}
         return self::API_DOMAIN_HTTPS;
     }
 
