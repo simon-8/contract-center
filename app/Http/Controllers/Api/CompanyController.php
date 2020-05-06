@@ -63,6 +63,7 @@ class CompanyController extends BaseController
     {
         $companys = User::find($this->user->id)
             ->joinCompany()
+            ->where('status', Company::STATUS_SUCCESS)
             ->when($request::input('name'), function($query, $name) {
                 $query->where('name', 'like', '%'. $name .'%');
             })
@@ -78,7 +79,7 @@ class CompanyController extends BaseController
      */
     public function my(Company $company)
     {
-        $companyData = $company::ofUserid($this->user->id)->first();
+        $companyData = $company::ofUserid($this->user->id)->whereStatus(Company::STATUS_SUCCESS)->first();
         if (!$companyData) {
             return responseMessage('');
         }
@@ -214,7 +215,7 @@ class CompanyController extends BaseController
             return responseMessage();
         }
         $lists = Company::ofName($data['name'] ?? '')
-            ->ofStatus(Company::STATUS_SUCCESS)
+            ->whereStatus(Company::STATUS_SUCCESS)
             ->orderByDesc('id')
             ->get();
         foreach ($lists as $k => $v) {
