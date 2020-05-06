@@ -109,10 +109,10 @@ class ContractTplController extends Controller
         $content = str_replace('</p>', "\n", $content);
 
         if (strpos($content, ContractTpl::FILL_STRING) !== false) {
-            $arr = explode(ContractTpl::FILL_STRING, strip_tags($content));
+            $arr = explode(ContractTpl::FILL_STRING, strip_tags($content, '<span>'));
             $newArr = [];
             array_map(function($item) use(&$newArr) {
-                $newArr[] = $item;
+                $newArr[] = strip_tags($item);
                 $newArr[] = [
                     'type' => 'input',
                 ];

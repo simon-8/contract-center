@@ -255,7 +255,7 @@ function contractTemplateEditor($content = '' , $name = 'content', $extends = ''
             return btn;
         }/*index 指定添加到工具栏上的那个位置，默认时追加到最后,editorId 指定这个UI是那个编辑器实例上的，默认是页面上所有的编辑器都会添加这个按钮*/);
         </script>";
-        $str .= "<script type='text/javascript'> var ue = UE.getEditor('{$name}',{elementPathEnabled:false,contextMenu:[],enableAutoSave: false,retainOnlyLabelPasted: true, pasteplain: true,saveInterval:500000,toolbars: [
+        $str .= "<script type='text/javascript'> var ue = UE.getEditor('{$name}',{elementPathEnabled:false,contextMenu:[],enableAutoSave: false,retainOnlyLabelPasted: true, pasteplain: true,saveInterval:500000, retainOnlyLabelPasted: true, autoTransWordToList: true, toolbars: [
     ['fullscreen', 'source', 'removeformat']], fontfamily: {
     label: '',
     name: 'songti',

@@ -82,12 +82,12 @@ class CompanyController extends BaseController
         if (!$companyData) {
             return responseMessage('');
         }
-        $companyData->staff_count = $companyData->staff()
-            ->where('status', CompanyStaff::STATUS_SUCCESS)
-            ->count();
-        $companyData->contract_count = Contract::ofCompanyId($companyData->id)
-            ->ofStatus(Contract::STATUS_SIGN)
-            ->count();
+        //$companyData->staff_count = $companyData->staff()
+        //    ->where('status', CompanyStaff::STATUS_SUCCESS)
+        //    ->count();
+        //$companyData->contract_count = Contract::ofCompanyId($companyData->id)
+        //    ->ofStatus(Contract::STATUS_SIGN)
+        //    ->count();
         return responseMessage('', new CompanyResource($companyData));
     }
 
