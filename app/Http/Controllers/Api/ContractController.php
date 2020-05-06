@@ -198,28 +198,49 @@ class ContractController extends BaseController
         ->get()
         ->toArray();
 
+        $createData = [
+            'userid' => $this->user->id,
+            'catid' => $data['catid'],
+            'players' => $data['players'],
+            'jiafang' => '',
+            'yifang' =>  '',
+            'jujianren' =>  '',
+            //"userid_{$userType}" => $this->user->id,
+            'status' => $contract::STATUS_APPLY
+        ];
+        // 公司合同分类, 指定身份类型
+        $category = ContractCategory::find($data['catid']);
+        if ($category->company_id && $category->user_type) {
+            $createData["userid_{$category->user_type}"] = $this->user->id;
+            $createData["companyid_{$category->user_type}"] = $category->company_id;
+
+            switch ($category->user_type) {
+                case Contract::USER_TYPE_FIRST:
+                    $createData['jiafang'] = $category->company->name;
+                    break;
+                case Contract::USER_TYPE_SECOND:
+                    $createData['yifang'] = $category->company->name;
+                    break;
+                case Contract::USER_TYPE_THREE:
+                    $createData['jujianren'] = $category->company->name;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         DB::beginTransaction();
         try {
-            $contractData = $contract->create([
-                'userid' => $this->user->id,
-                'catid' => $data['catid'],
-                'players' => $data['players'],
-                'jiafang' => '',
-                'yifang' =>  '',
-                'jujianren' =>  '',
-                //"userid_{$userType}" => $this->user->id,
-                'status' => $contract::STATUS_APPLY
-            ]);
+            $contractData = $contract->create($createData);
 
             $contractData->content()->create([
                 'id' => $contractData->id,
                 'tpl' => $sections,
                 'fill' => $data['fillsData']
             ]);
-            // todo 放入模型created事件 处理
-            $catname = ContractCategory::getCatName($data['catid']);
+
             $contractData->name = __('contract.name', [
-                'catname' => $catname,
+                'catname' => $category->name,
                 'id' => $contractData->id,
             ]);
             $contractData->save();
@@ -261,34 +282,56 @@ class ContractController extends BaseController
             ->get()
             ->toArray();
 
+        // 重置数据 等待重新确认
+        $updateData = [
+            'jiafang' => '',
+            'yifang' => '',
+            'jujianren' => '',
+            // 用户ID
+            'userid_first' => 0,
+            'userid_second' => 0,
+            'userid_three' => 0,
+            // 公司ID
+            'companyid_first' => 0,
+            'companyid_second' => 0,
+            'companyid_three' => 0,
+            // 确认状态
+            'confirm_first' => 0,
+            'confirm_second' => 0,
+            'confirm_three' => 0,
+            // 签名状态
+            'signed_first' => 0,
+            'signed_second' => 0,
+            'signed_three' => 0,
+            // 签名类型
+            'signed_type_first' => 0,
+            'signed_type_second' => 0,
+            'signed_type_three' => 0,
+        ];
+
+        // 公司合同分类, 不允许重置指定身份类型
+        $category = ContractCategory::find($data['catid']);
+        if ($category->company_id && $category->user_type) {
+            unset($updateData["userid_{$category->user_type}"]);
+            unset($updateData["companyid_{$category->user_type}"]);
+
+            switch ($category->user_type) {
+                case Contract::USER_TYPE_FIRST:
+                    unset($updateData['jiafang']);
+                    break;
+                case Contract::USER_TYPE_SECOND:
+                    unset($updateData['yifang']);
+                    break;
+                case Contract::USER_TYPE_THREE:
+                    unset($updateData['jujianren']);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         DB::beginTransaction();
         try {
-            // 重置数据 等待重新确认
-            $updateData = [
-                'jiafang' => '',
-                'yifang' => '',
-                'jujianren' => '',
-                // 用户ID
-                'userid_first' => 0,
-                'userid_second' => 0,
-                'userid_three' => 0,
-                // 公司ID
-                'companyid_first' => 0,
-                'companyid_second' => 0,
-                'companyid_three' => 0,
-                // 确认状态
-                'confirm_first' => 0,
-                'confirm_second' => 0,
-                'confirm_three' => 0,
-                // 签名状态
-                'signed_first' => 0,
-                'signed_second' => 0,
-                'signed_three' => 0,
-                // 签名类型
-                'signed_type_first' => 0,
-                'signed_type_second' => 0,
-                'signed_type_three' => 0,
-            ];
 
             $contractData = $contract->update($updateData);
 

@@ -80,6 +80,15 @@ class ContractCategory extends Base
     }
 
     /**
+     * 关联 公司
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company', 'company_id', 'id');
+    }
+
+    /**
      * 参与者类型
      * @return array
      */
