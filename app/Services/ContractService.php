@@ -67,7 +67,7 @@ class ContractService
      */
     private function getOutPutPath()
     {
-        return $this->contractService->makeStorePath($this->contract->id, true);
+        return $this->makeStorePath($this->contract->id, true);
     }
 
     /**

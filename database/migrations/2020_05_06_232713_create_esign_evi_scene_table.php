@@ -18,6 +18,7 @@ class CreateEsignEviSceneTable extends Migration
             $table->string('name')->default('')->comment('场景名称');
             $table->string('id')->default('')->comment('场景ID');
             $table->string('business_id')->default('')->comment('行业ID');
+            $table->unsignedInteger('catid')->default(0)->comment('关联分类ID');
         });
     }
 

@@ -89,6 +89,15 @@ class ContractCategory extends Base
     }
 
     /**
+     * 关联 数据存证 场景
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function eviScene()
+    {
+        return $this->hasOne('App\Models\EsignEviScene', 'catid', 'id');
+    }
+
+    /**
      * 参与者类型
      * @return array
      */

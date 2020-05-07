@@ -8,419 +8,307 @@
 
 namespace App\Services;
 
+use App\Models\Company;
+use App\Models\Contract;
+use App\Models\ContractCategory;
+use App\Models\EsignEviBusiness;
+use App\Models\EsignEviLink;
+use App\Models\EsignEviPoint;
+use App\Models\EsignEviScene;
+use App\Models\EsignEviSeg;
+use App\Models\EsignSignLog;
+use Illuminate\Support\Facades\Storage;
+use Simon\Esign\SceneEvi;
+
 class EsignSceneEviService
 {
-    const API_HOST_DEV = 'https://smlcunzheng.tsign.cn:9443';
-    const API_HOST = 'https://evislb.tsign.cn:443';
+    protected $sceneEvi = null;
 
-    const VIEWPAGE_HOST_DEV = 'https://smlcunzheng.tsign.cn';
-    const VIEWPAGE_HOST = "https://eviweb.tsign.cn";
+    protected $contract = null;
 
+    public function __construct($debug = false)
+    {
+        $this->sceneEvi = new SceneEvi($this->getConfig(), $debug);
+    }
 
-    const API_BUS_ADD = '/evi-service/evidence/v1/sp/temp/bus/add';
-    const API_SCENE_ADD = '/evi-service/evidence/v1/sp/temp/scene/add';
-    const API_SEG_ADD = '/evi-service/evidence/v1/sp/temp/seg/add';
-    const API_SEGPROP_ADD = '/evi-service/evidence/v1/sp/temp/seg-prop/add';
-    const API_VOUCHER = '/evi-service/evidence/v1/sp/scene/voucher';
-    const API_ORIGINAL_STANDARD = '/evi-service/evidence/v1/sp/segment/original-std/url';
-    const API_ORIGINAL_ADVANCED = '/evi-service/evidence/v1/sp/segment/original-adv/url';
-    const API_ORIGINAL_DIGEST = 'evi-service/evidence/v1/sp/segment/abstract/url';
-    const API_VOUCHER_APPEND = '/evi-service/evidence/v1/sp/scene/append';
-    const API_RELATE = '/evi-service/evidence/v1/sp/scene/relate';
-    const URL_VIEWPAGE = '/evi-web/static/certificate-info.html';
-
-    protected $_config = [];
-
+    /**
+     * @return array
+     */
     protected function getConfig()
     {
-        $this->_config = [
+        return [
             'project_id'     => config('esign.appid'),
             'project_secret' => config('esign.appSecret'),
             'sign_algorithm' => 'HMACSHA256',
         ];
     }
 
-    public function __construct()
-    {
-        $this->getConfig();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getServerUrl()
-    {
-        //if (is_debug_env() && env('APP_ENV') === 'local') {
-        //    return self::API_DOMAIN_HTTPS_TEST;
-        //}
-        //return self::API_HOST_DEV;
-        return self::API_HOST;
-    }
-
-    /**
-     * @param $api
-     * @param $data
-     * @return mixed
-     * @throws \Exception
-     */
-    protected function notifyToServer($api, $data)
-    {
-        \Log::debug('ServerRequest ==> ' . $api);
-        \Log::debug('ServerRequest ==> ' . (is_array($data) ? var_export($data, true) : $data));
-        $response = $this->requestPost($this->getServerUrl() . $api, $data);
-
-        \Log::debug('ServerResponse ==> ' . $response);
-        $response = json_decode($response, true);
-        if ($response['errCode']) {
-            throw new \Exception($response['msg']);
-        }
-        return $response;
-    }
-
-    protected function makeRequesHeader($sign)
-    {
-        return [
-            'X-timevale-mode: package',
-            'X-timevale-project-id:' . $this->_config['project_id'],
-            'X-timevale-signature-algorithm:' . strtolower($this->_config['sign_algorithm']),
-            'X-timevale-signature:' . $sign,
-            'Content-Type:application/json;charset=UTF-8',
-        ];
-    }
-
-    /**
-     * 生成签名结果
-     * @param string $query 要签名的参数
-     * @return string 签名结果字符串
-     */
-    private function makeRequestSign($query)
-    {
-        switch (strtoupper(trim($this->_config['sign_algorithm']))) {
-            case 'HMACSHA256' :
-                $mySign = $this->hmacSHA256Sign($query, $this->_config['project_secret']);
-                break;
-            case 'RSA' :
-                $mySign = $this->rsaSign($query, $this->_config['rsa_private_key']);
-                break;
-            default :
-                $mySign = '';
-        }
-        return $mySign;
-    }
-
-    /**
-     * 签名字符串
-     * @param string $str 需要签名的字符串
-     * @param string $key 私钥
-     * @return string       签名结果
-     */
-    private function hmacSHA256Sign($str, $key)
-    {
-        return hash_hmac('sha256', $str, $key);
-    }
-
-    /**
-     * 验证签名
-     * @param string $str 需要签名的字符串
-     * @param string $sign 签名结果
-     * @param string $key 私钥
-     * @return bool
-     */
-    private function hmacSHA256Verify($str, $sign, $key)
-    {
-        $mySign = $this->hmacSHA256Sign($str, $key);
-        return ($mySign === $sign);
-    }
-
-    /**
-     * RSA签名
-     * @param string $str 待签名数据
-     * @param string $priKey 接入平台私钥文件路径
-     * @return string 签名结果
-     */
-    private function rsaSign($str, $priKey)
-    {
-        //$priKey = file_get_contents($privateKeyPath);
-        //$res = openssl_get_privatekey($priKey);
-        $res = openssl_pkey_get_private($priKey);
-        openssl_sign($str, $sign, $res);
-        openssl_free_key($res);
-        return bin2hex($sign);
-    }
-
-    /**
-     * RSA验签
-     * @param string $str 待签名数据
-     * @param string $sign 要校对的的签名结果
-     * @param string $pubKey e签宝的公钥文件路径
-     * @return bool 验证结果
-     */
-    private function rsaVerify($str, $sign, $pubKey)
-    {
-        //$pubKey = file_get_contents($publicKeyPath);
-        //$res = openssl_get_publickey($pubKey);
-        $res = openssl_pkey_get_public($pubKey);
-        $result = openssl_verify($str, pack("H*", $sign), $res);
-        openssl_free_key($res);
-        return (1 == $result);
-    }
-
-    /**
-     * 获取文件的Content-MD5
-     * 原理：1.先计算MD5加密的二进制数组（128位）。
-     * 2.再对这个二进制进行base64编码（而不是对32位字符串编码）。
-     * @param $filePath
-     * @return string
-     */
-    protected function getContentBase64Md5($filePath)
-    {
-        //获取文件MD5的128位二进制数组
-        $md5file = md5_file($filePath, true);
-        //计算文件的Content-MD5
-        $contentBase64Md5 = base64_encode($md5file);
-        return $contentBase64Md5;
-    }
-
-    /**
-     * 发送POST请求
-     * @param $api
-     * @param $data
-     * @return mixed
-     * @throws \Exception
-     */
-    protected function requestPost($api, $data)
-    {
-        //if (!empty($data) && is_array($data)) {
-        //    $data = http_build_query($data);
-        //}
-        $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        $ch = curl_init($api);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $sign = $this->makeRequestSign($data);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->makeRequesHeader($sign));
-        $response = curl_exec($ch);
-        $error = curl_error($ch);
-        curl_close($ch);
-        if (empty($error)) {
-            return $response;
-        }
-        throw new \Exception($error);
-    }
-
-    /**
-     * GET请求
-     * @param $api
-     * @param $data
-     * @return bool|string
-     * @throws \Exception
-     */
-    protected function requestGet($api, $data)
-    {
-        if (!empty($data) && is_array($data)) {
-            $data = http_build_query($data);
-        }
-        $ch = curl_init($api . '?' . $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        //curl_setopt($ch, CURLOPT_POST, TRUE);
-        //curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $response = curl_exec($ch);
-        $error = curl_error($ch);
-        curl_close($ch);
-        if (empty($error)) {
-            return $response;
-        }
-        throw new \Exception($error);
-    }
-
-    protected function sendHttpPUT($url, $contentBase64Md5, $fileContent)
-    {
-        $header = [
-            'Content-Type:application/octet-stream',
-            'Content-Md5:' . $contentBase64Md5
-        ];
-
-        $status = '';
-        $curl_handle = curl_init();
-        curl_setopt($curl_handle, CURLOPT_URL, $url);
-        curl_setopt($curl_handle, CURLOPT_FILETIME, true);
-        curl_setopt($curl_handle, CURLOPT_FRESH_CONNECT, false);
-        curl_setopt($curl_handle, CURLOPT_HEADER, true); // 输出HTTP头 true
-        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl_handle, CURLOPT_TIMEOUT, 5184000);
-        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 120);
-        curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST, false);
-
-        curl_setopt($curl_handle, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, 'PUT');
-
-        curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $fileContent);
-        $result = curl_exec($curl_handle);
-        $status = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
-
-        if ($result === false) {
-            $status = curl_errno($curl_handle);
-            $result = 'put file to oss - curl error :' . curl_error($curl_handle);
-        }
-        curl_close($curl_handle);
-        return $status;
-    }
-
     /**
      * 定义行业类型
      * @param string $business
-     * @return mixed
+     * @return bool
      * @throws \Exception
      */
     public function createBusiness($business = '法律服务')
     {
-        $param = [
-            'name' => [
-                $business
-            ],
-        ];
-        $response = $this->notifyToServer(self::API_BUS_ADD, $param);
-        return $response['result'];
+        $lists = $this->sceneEvi->createBusiness($business);
+
+        // 添加到数据表
+        foreach ($lists as $k => $v) {
+            EsignEviBusiness::updateOrCreate([
+                'name' => $v,
+            ], [
+                'id' => $k,
+            ]);
+        }
+        return true;
     }
 
     /**
-     * 场景
+     * 业务凭证名称 (场景)
+     * 与本系统分类关联, 一对一
      * @param $businessId
      * @param string $sceneName
-     * @return mixed
+     * @return bool
      * @throws \Exception
      */
-    public function createScene($businessId, $sceneName = '')
+    public function createScene(ContractCategory $category, $businessId)
     {
-        $param = [
-            'businessTempletId' => $businessId,
-            'name'              => [
-                $sceneName
-            ],
-        ];
-        $response = $this->notifyToServer(self::API_SCENE_ADD, $param);
-        return $response['result'];
+        // 使用分类名做场景名称, 分类名可能重复, 已有场景的话直接关联
+        $existsScene = EsignEviScene::where('business_id', $businessId)->whereName($category->name)->first();
+        if ($existsScene) {
+            EsignEviScene::updateOrCreate([
+                'name' => $category->name,
+                'business_id' => $businessId,
+            ], [
+                'id' => $existsScene->id,
+                'catid' => $category->id,
+            ]);
+            return true;
+        }
+        $lists = $this->sceneEvi->createScene($businessId, $category->name);
+
+        // 添加到数据表
+        foreach ($lists as $k => $v) {
+            EsignEviScene::updateOrCreate([
+                'name' => $v,
+                'business_id' => $businessId,
+            ], [
+                'id' => $k,
+                'catid' => $category->id,
+            ]);
+        }
+        return true;
     }
+
 
     /**
      * 创建证据点(名称)
      * @param $sceneId
      * @param string $segName
-     * @return mixed
+     * @return bool
      * @throws \Exception
      */
     public function createSeg($sceneId, $segName = "合同签署人信息")
     {
-        $param = [
-            'sceneTempletId' => $sceneId,
-            'name'           => [
-                $segName,
-            ],
-        ];
-        $response = $this->notifyToServer(self::API_SEG_ADD, $param);
-        return $response['result'];
+        // 目前一个场景只有一个证据点名称
+        if (EsignEviSeg::where(['name' => $segName, 'scene_id' => $sceneId,])->exists()) {
+            return true;
+        }
+        $lists = $this->sceneEvi->createSeg($sceneId, $segName);
+
+        // 添加到数据表
+        foreach ($lists as $k => $v) {
+            EsignEviSeg::updateOrCreate([
+                'name' => $v,
+                'scene_id' => $sceneId,
+            ], [
+                'id' => $k,
+            ]);
+        }
+        return true;
     }
 
     /**
-     * 创建证据点字段
+     * 创建证据点字段属性
      * @param $segId
-     * @return mixed
+     * @return bool
      * @throws \Exception
      */
     public function createSegProp($segId)
     {
-        $param = [
-            'segmentTempletId' => $segId,
-            'properties'       => [
-                [
-                    "displayName" => "甲方名称",
-                    "paramName"   => "jiafang",
-                ],
-                [
-                    "displayName" => "乙方名称",
-                    "paramName"   => "yifang",
-                ],
-                [
-                    "displayName" => "居间人名称",
-                    "paramName"   => "jujianren",
-                ],
+        $properties = [
+            [
+                "displayName" => "甲方名称",
+                "paramName"   => "jiafang",
+            ],
+            [
+                "displayName" => "乙方名称",
+                "paramName"   => "yifang",
+            ],
+            [
+                "displayName" => "居间人名称",
+                "paramName"   => "jujianren",
+            ],
 
-                [
-                    "displayName" => "甲方手机",
-                    "paramName"   => "jiafangMobile",
-                ],
-                [
-                    "displayName" => "乙方手机",
-                    "paramName"   => "yifangMobile",
-                ],
-                [
-                    "displayName" => "居间人手机",
-                    "paramName"   => "jujianrenMobile",
-                ],
-            ]
+            [
+                "displayName" => "甲方手机",
+                "paramName"   => "jiafangMobile",
+            ],
+            [
+                "displayName" => "乙方手机",
+                "paramName"   => "yifangMobile",
+            ],
+            [
+                "displayName" => "居间人手机",
+                "paramName"   => "jujianrenMobile",
+            ],
         ];
-        $response = $this->notifyToServer(self::API_SEGPROP_ADD, $param);
-        return $response['result'];
+        return $this->sceneEvi->createSegProp($segId, $properties);
     }
 
+    /**
+     * 为合同创建证据链 一对一
+     * @param Contract $contract
+     * @return EsignEviLink|\Illuminate\Database\Eloquent\Model
+     * @throws \Exception
+     */
+    public function createLink(Contract $contract)
+    {
+        $sceneName = $contract->category->eviScene->name;
+        $sceneId = $contract->category->eviScene->id;
+
+        $evid = $this->sceneEvi->createLink($sceneName, $sceneId);
+        // 存库
+        return EsignEviLink::create([
+            'contract_id' => $contract->id,
+            'scene_id' => $sceneId,
+            'scene_name' => $sceneName,
+            'scene_evid' => $evid,
+        ]);
+    }
 
     /**
-     * 创建证据链
-     * @param $sceneName
-     * @param $sceneId
-     * @param array $linkIds
+     * 为合同创建一个原文基础版证据点
+     * @param Contract $contract
+     * @param EsignEviLink $esignEviLink
+     * @return bool
+     * @throws \Exception
+     */
+    public function createPointBasic(Contract $contract, EsignEviLink $esignEviLink)
+    {
+        $segmentData = [
+              'jiafang' => $contract->jiafang,
+              'yifang' => $contract->yifang,
+              'jujianren' => $contract->jujianren,
+        ];
+        $segmentData['jiafangMobile'] = $contract->companyid_first ? $contract->companyFirst->mobile : $contract->userFirst->mobile;
+        $segmentData['yifangMobile'] = $contract->companyid_second ? $contract->companySecond->mobile : $contract->userSecond->mobile;
+        $segmentData['jujianrenMobile'] = $contract->companyid_three ? $contract->companyThree->mobile : $contract->userThree->mobile;
+
+        $segId = $contract->category->eviScene->eviSeg->id;
+        $filePath = Storage::disk('uploads')->path($contract->path_pdf);
+        $response = $this->sceneEvi->createPointBasic($segId, $filePath, $segmentData);
+
+        //
+        return $esignEviLink->update([
+            'point_evid' => $response['evid'],
+            'point_url' => $response['url'],
+        ]);
+        //EsignEviPoint::create([
+        //    'contract_id' => $contract->id,
+        //    'evid' => $response['evid'],
+        //    'url' => $response['url'],
+        //]);
+        //return $response;
+    }
+
+    /**
+     * 添加证据点到证据链
+     * @param Contract $contract
+     * @return bool
+     * @throws \Exception
+     */
+    public function addPointToLink(Contract $contract)
+    {
+        $link = EsignEviLink::where('contract_id', $contract->id)->first();
+        $point = EsignEviPoint::where('contract_id', $contract->id)->first();
+        $serviceIds = EsignSignLog::where('contract_id', $contract->id)->pluck('serviceid')->all();
+
+        return $this->sceneEvi->addPointToLink($link->id, $point->id, $serviceIds);
+    }
+
+    /**
+     * 关联证据链和用户
+     * @param string $linkId
+     * @param array $users
+     * @return bool
+     * @throws \Exception
+     */
+    public function addLinkToUser(Contract $contract)
+    {
+        $link = EsignEviLink::where('contract_id', $contract->id)->first();
+        $userFirst = ['name' => $contract->jiafang];
+        if ($contract->companyid_first) {
+            $userFirst['type'] = $this->getCompanyType($contract->companyFirst->reg_type);
+            $userFirst['number'] = $contract->companyFirst->organ_code;
+        } else {
+            $userFirst['type'] = 'ID_CARD';
+            $userFirst['number'] = $contract->userFirst->idcard;
+        }
+
+        $userSecond = ['name' => $contract->yifang];
+        if ($contract->companyid_second) {
+            $userSecond['type'] = $this->getCompanyType($contract->companySecond->reg_type);
+            $userSecond['number'] = $contract->companySecond->organ_code;
+        } else {
+            $userSecond['type'] = 'ID_CARD';
+            $userSecond['number'] = $contract->userSecond->idcard;
+        }
+
+        $userThree = ['name' => $contract->jujianren];
+        if ($contract->companyid_three) {
+            $userThree['type'] = $this->getCompanyType($contract->companyThree->reg_type);
+            $userThree['number'] = $contract->companyThree->organ_code;
+        } else {
+            $userThree['type'] = 'ID_CARD';
+            $userThree['number'] = $contract->userThree->idcard;
+        }
+
+        $users = [
+            $userFirst,
+            $userSecond,
+            $userThree,
+        ];
+        return $this->sceneEvi->addLinkToUser($link->id, $users);
+    }
+
+    /**
+     * 获取 company type
+     * 默认 CODE_ORG (组织机构代码)
+     * @param $regType
      * @return string
-     * @throws \Exception
      */
-    public function createLink($sceneName, $sceneId, $linkIds = []): string
+    private function getCompanyType($regType)
     {
-        $param = [
-            'sceneName'       => $sceneName,
-            'sceneTemplateId' => $sceneId,
-            'linkIds'         => $linkIds,
-        ];
-        $response = $this->notifyToServer(self::API_VOUCHER, $param);
-        return $response['evid'];
-    }
-
-    /**
-     * 创建一个原文基础版证据点
-     * @param string $segId 证据点名称ID
-     * @param string $filePath 文件地址
-     * @param array $segmentData 证据点参数
-     * @return mixed evid && url
-     * @throws \Exception
-     */
-    public function createPointBasic(string $segId, string $filePath, $segmentData = [])
-    {
-        $fileName = basename($filePath);
-        $fileSize = filesize($filePath);
-        $contentBase64Md5 = $this->getContentBase64Md5($filePath);
-
-        //设置创建证据点参数
-        $param = [
-            "segmentTempletId" => $segId,
-            "segmentData"      => json_encode($segmentData),
-            "content"          => [
-                "contentDescription" => $fileName,
-                "contentLength"      => $fileSize,
-                "contentBase64Md5"   => $contentBase64Md5
-            ]
-        ];
-        $response = $this->notifyToServer(self::API_ORIGINAL_STANDARD, $param);
-        return $response;
+        switch ($regType) {
+            //case Company::REG_TYPE_NORMAL:
+            //    $type = 'CODE_ORG';
+            //    break;
+            case Company::REG_TYPE_MERGE:
+                $type = 'CODE_USC';
+                break;
+            case Company::REG_TYPE_REGCODE:
+                $type = 'CODE_REG';
+                break;
+            //case Company::REG_TYPE_OTHER:
+            //    $type = '';
+            //    break;
+            default:
+                $type = 'CODE_ORG';
+                break;
+        }
+        return $type;
     }
 
     /**
@@ -432,70 +320,8 @@ class EsignSceneEviService
      */
     public function uploadFile(string $fileUploadUrl, string $filePath)
     {
-        $fileContent = file_get_contents($filePath);
-        $contentBase64Md5 = $this->getContentBase64Md5($filePath);
-        $status = $this->sendHttpPUT($fileUploadUrl, $contentBase64Md5, $fileContent);
-        if ($status != 200) {
-            throw new \Exception('待保全文档上传失败');
-        }
+        $this->sceneEvi->uploadFile($fileUploadUrl, $filePath);
         return true;
-    }
-
-    /**
-     * 添加证据点到证据链
-     * @param string $linkId
-     * @param string $pointId
-     * @param array $serviceIds
-     * @return bool
-     * @throws \Exception
-     */
-    public function addPointToLink(string $linkId, string $pointId, $serviceIds = [])
-    {
-        $param = [
-            'evid'    => $linkId,
-            'linkIds' => [
-                [
-                    "type"  => "0",
-                    "value" => $linkId,
-                ],
-            ]
-        ];
-        foreach ($serviceIds as $serviceId) {
-            $param['linkIds'][] = [
-                'type'  => '1',
-                'value' => $serviceId,
-            ];
-        }
-        $response = $this->notifyToServer(self::API_VOUCHER_APPEND, $param);
-        return $response['success'] ? true : false;
-    }
-
-    /**
-     * 关联证据链和用户
-     * @param string $linkId
-     * @param array $users
-     * @return bool
-     * @throws \Exception
-     */
-    public function addLinkToUser(string $linkId, array $users)
-    {
-        $param = [
-            'evid'         => $linkId,
-            'certificates' => [
-                [
-                    "type"   => "ID_CARD",
-                    "number" => "540101198709260015",
-                    "name"   => "赵明丽"
-                ],
-                [
-                    "type"   => "CODE_USC",
-                    "number" => "913301087458306077",
-                    "name"   => "杭州天谷信息科技有限公司"
-                ]
-            ],
-        ];
-        $response = $this->notifyToServer(self::API_RELATE, $param);
-        return $response['success'] ? true : false;
     }
 
     /**
@@ -506,23 +332,7 @@ class EsignSceneEviService
      */
     public function getViewUrl($linkId, int $expiredAt = 0)
     {
-
-        // 过期时间为毫秒级时间戳
-        if ($expiredAt) {
-            $timestampString = $expiredAt . '000';// 当前系统的时间戳
-        } else {
-            $timestampString = time() . '000';// 当前系统的时间戳
-        }
-
-        /*
-         * $reverse
-         * false表示timestamp字段为链接的生效时间，在生效30分钟后该链接失效
-         * */
-        $param = "id=" . $linkId . "&projectId=" . $this->_config['project_id'] . "&timestamp=" . $timestampString .
-            "&reverse=" . (!$expiredAt) . "&type=" . "ID_CARD" . "&number=" . "540101198709260015";
-
-        $signture = $this->makeRequestSign($param);
-        $viewUrl = self::VIEWPAGE_HOST . self::URL_VIEWPAGE . "?" . $param . "&signature=" . $signture;
+        $viewUrl = $this->getViewUrl($linkId, $expiredAt);
         return $viewUrl;
     }
 }

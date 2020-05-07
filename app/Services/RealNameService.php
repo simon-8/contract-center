@@ -86,11 +86,11 @@ class RealNameService
     {
         $param = [];
         $param['name'] = $data['name'] ?? '';
-        if (Company::REG_TYPE_NORMAL) {
+        if ($data['reg_type'] == Company::REG_TYPE_NORMAL) {
             $param['codeORG'] = $data['organ_code'] ?? '';
-        } else if (Company::REG_TYPE_MERGE) {
+        } else if ($data['reg_type'] == Company::REG_TYPE_MERGE) {
             $param['codeUSC'] = $data['organ_code'] ?? '';
-        } else if (Company::REG_TYPE_REGCODE) {
+        } else if ($data['reg_type'] == Company::REG_TYPE_REGCODE) {
             $param['codeREG'] = $data['organ_code'] ?? '';
         } else {
             $param['codeORG'] = $data['organ_code'] ?? '';
