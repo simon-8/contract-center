@@ -63,10 +63,10 @@ class CompanyController extends BaseController
     {
         $companys = User::find($this->user->id)
             ->joinCompany()
-            ->where('status', Company::STATUS_SUCCESS)
             ->when($request::input('name'), function($query, $name) {
                 $query->where('name', 'like', '%'. $name .'%');
             })
+            ->where('company.status', Company::STATUS_SUCCESS)
             ->with('user')
             ->paginate();
         return CompanyResource::collection($companys);
