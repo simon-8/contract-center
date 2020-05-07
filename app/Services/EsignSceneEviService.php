@@ -13,10 +13,9 @@ use App\Models\Contract;
 use App\Models\ContractCategory;
 use App\Models\EsignEviBusiness;
 use App\Models\EsignEviLink;
-use App\Models\EsignEviPoint;
 use App\Models\EsignEviScene;
-use App\Models\EsignEviSeg;
 use App\Models\EsignSignLog;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Simon\Esign\SceneEvi;
 
@@ -26,7 +25,7 @@ class EsignSceneEviService
 
     protected $contract = null;
 
-    public function __construct($debug = false)
+    public function __construct($debug = true)
     {
         $this->sceneEvi = new SceneEvi($this->getConfig(), $debug);
     }
@@ -64,68 +63,60 @@ class EsignSceneEviService
         return true;
     }
 
+
     /**
      * 业务凭证名称 (场景)
      * 与本系统分类关联, 一对一
+     * @param ContractCategory $category
      * @param $businessId
-     * @param string $sceneName
-     * @return bool
+     * @return EsignEviScene|\Illuminate\Database\Eloquent\Model
      * @throws \Exception
      */
     public function createScene(ContractCategory $category, $businessId)
     {
         // 使用分类名做场景名称, 分类名可能重复, 已有场景的话直接关联
-        $existsScene = EsignEviScene::where('business_id', $businessId)->whereName($category->name)->first();
+        $existsScene = EsignEviScene::whereBusinessId($businessId)->whereName($category->name)->first();
         if ($existsScene) {
-            EsignEviScene::updateOrCreate([
+            return EsignEviScene::updateOrCreate([
                 'name' => $category->name,
                 'business_id' => $businessId,
+                'catid' => $category->id,
             ], [
                 'id' => $existsScene->id,
-                'catid' => $category->id,
+                'seg_id' => $existsScene->seg_id,
+                'seg_has_attr' => $existsScene->seg_has_attr,
             ]);
-            return true;
         }
         $lists = $this->sceneEvi->createScene($businessId, $category->name);
 
-        // 添加到数据表
-        foreach ($lists as $k => $v) {
-            EsignEviScene::updateOrCreate([
-                'name' => $v,
-                'business_id' => $businessId,
-            ], [
-                'id' => $k,
-                'catid' => $category->id,
-            ]);
-        }
-        return true;
+        // 只会有一条数据
+        $firstKey = array_keys($lists)[0];
+        $firstVal = array_values($lists)[0];
+        return EsignEviScene::create([
+            'name' => $firstVal,
+            'business_id' => $businessId,
+            'id' => $firstKey,
+            'catid' => $category->id,
+        ]);
     }
-
 
     /**
      * 创建证据点(名称)
-     * @param $sceneId
+     * @param EsignEviScene $esignEviScene
      * @param string $segName
      * @return bool
      * @throws \Exception
      */
-    public function createSeg($sceneId, $segName = "合同签署人信息")
+    public function createSeg(EsignEviScene $esignEviScene, $segName = "合同签署人信息")
     {
         // 目前一个场景只有一个证据点名称
-        if (EsignEviSeg::where(['name' => $segName, 'scene_id' => $sceneId,])->exists()) {
-            return true;
-        }
-        $lists = $this->sceneEvi->createSeg($sceneId, $segName);
+        if ($esignEviScene->seg_id) return true;
+
+        $lists = $this->sceneEvi->createSeg($esignEviScene->id, $segName);
 
         // 添加到数据表
-        foreach ($lists as $k => $v) {
-            EsignEviSeg::updateOrCreate([
-                'name' => $v,
-                'scene_id' => $sceneId,
-            ], [
-                'id' => $k,
-            ]);
-        }
+        $esignEviScene->seg_id = array_keys($lists)[0];
+        $esignEviScene->save();
         return true;
     }
 
@@ -175,8 +166,10 @@ class EsignSceneEviService
      */
     public function createLink(Contract $contract)
     {
+        // 合同所属分类关联的情景ID和名称
         $sceneName = $contract->category->eviScene->name;
         $sceneId = $contract->category->eviScene->id;
+        $segId = $contract->category->eviScene->seg_id;
 
         $evid = $this->sceneEvi->createLink($sceneName, $sceneId);
         // 存库
@@ -185,6 +178,7 @@ class EsignSceneEviService
             'scene_id' => $sceneId,
             'scene_name' => $sceneName,
             'scene_evid' => $evid,
+            'seg_id' => $segId,
         ]);
     }
 
@@ -206,55 +200,51 @@ class EsignSceneEviService
         $segmentData['yifangMobile'] = $contract->companyid_second ? $contract->companySecond->mobile : $contract->userSecond->mobile;
         $segmentData['jujianrenMobile'] = $contract->companyid_three ? $contract->companyThree->mobile : $contract->userThree->mobile;
 
-        $segId = $contract->category->eviScene->eviSeg->id;
         $filePath = Storage::disk('uploads')->path($contract->path_pdf);
-        $response = $this->sceneEvi->createPointBasic($segId, $filePath, $segmentData);
+        $response = $this->sceneEvi->createPointBasic($esignEviLink->seg_id, $filePath, $segmentData);
 
-        //
         return $esignEviLink->update([
             'point_evid' => $response['evid'],
             'point_url' => $response['url'],
+            'status' => EsignEviLink::STATUS_POINT_CREATED
         ]);
-        //EsignEviPoint::create([
-        //    'contract_id' => $contract->id,
-        //    'evid' => $response['evid'],
-        //    'url' => $response['url'],
-        //]);
-        //return $response;
     }
 
     /**
      * 添加证据点到证据链
-     * @param Contract $contract
+     * @param EsignEviLink $esignEviLink
      * @return bool
      * @throws \Exception
      */
-    public function addPointToLink(Contract $contract)
+    public function addPointToLink(EsignEviLink $esignEviLink)
     {
-        $link = EsignEviLink::where('contract_id', $contract->id)->first();
-        $point = EsignEviPoint::where('contract_id', $contract->id)->first();
-        $serviceIds = EsignSignLog::where('contract_id', $contract->id)->pluck('serviceid')->all();
+        $serviceIds = EsignSignLog::where('contract_id', $esignEviLink->contract_id)->pluck('serviceid')->all();
 
-        return $this->sceneEvi->addPointToLink($link->id, $point->id, $serviceIds);
+        $result = $this->sceneEvi->addPointToLink($esignEviLink->scene_evid, $esignEviLink->point_evid, $serviceIds);
+        if (!$result) throw new \Exception('添加证据点到证据链失败');
+
+        return $esignEviLink->update([
+            'status' => EsignEviLink::STATUS_POINT_LINKED,
+        ]);
     }
 
     /**
      * 关联证据链和用户
-     * @param string $linkId
-     * @param array $users
+     * @param Contract $contract
+     * @param EsignEviLink $esignEviLink
      * @return bool
      * @throws \Exception
      */
-    public function addLinkToUser(Contract $contract)
+    public function addLinkToUser(Contract $contract, EsignEviLink $esignEviLink)
     {
-        $link = EsignEviLink::where('contract_id', $contract->id)->first();
+        $link = EsignEviLink::where('contract_id', $esignEviLink->contract_id)->first();
         $userFirst = ['name' => $contract->jiafang];
         if ($contract->companyid_first) {
             $userFirst['type'] = $this->getCompanyType($contract->companyFirst->reg_type);
             $userFirst['number'] = $contract->companyFirst->organ_code;
         } else {
             $userFirst['type'] = 'ID_CARD';
-            $userFirst['number'] = $contract->userFirst->idcard;
+            $userFirst['number'] = $contract->userFirst->realname->idcard;
         }
 
         $userSecond = ['name' => $contract->yifang];
@@ -263,7 +253,7 @@ class EsignSceneEviService
             $userSecond['number'] = $contract->companySecond->organ_code;
         } else {
             $userSecond['type'] = 'ID_CARD';
-            $userSecond['number'] = $contract->userSecond->idcard;
+            $userSecond['number'] = $contract->userSecond->realname->idcard;
         }
 
         $userThree = ['name' => $contract->jujianren];
@@ -272,7 +262,7 @@ class EsignSceneEviService
             $userThree['number'] = $contract->companyThree->organ_code;
         } else {
             $userThree['type'] = 'ID_CARD';
-            $userThree['number'] = $contract->userThree->idcard;
+            $userThree['number'] = $contract->userThree->realname->idcard;
         }
 
         $users = [
@@ -280,7 +270,12 @@ class EsignSceneEviService
             $userSecond,
             $userThree,
         ];
-        return $this->sceneEvi->addLinkToUser($link->id, $users);
+        $result = $this->sceneEvi->addLinkToUser($link->id, $users);
+        if (!$result) throw new \Exception('关联证据链和用户失败');
+
+        return $esignEviLink->update([
+            'status' => EsignEviLink::STATUS_USER_LINKED,
+        ]);
     }
 
     /**
@@ -313,15 +308,17 @@ class EsignSceneEviService
 
     /**
      * 上传代保全文档
-     * @param string $fileUploadUrl
+     * @param EsignEviLink $esignEviLink
      * @param string $filePath
      * @return bool
      * @throws \Exception
      */
-    public function uploadFile(string $fileUploadUrl, string $filePath)
+    public function uploadFile(EsignEviLink $esignEviLink, $filePath)
     {
-        $this->sceneEvi->uploadFile($fileUploadUrl, $filePath);
-        return true;
+        $this->sceneEvi->uploadFile($esignEviLink->point_url, $filePath);
+        return $esignEviLink->update([
+            'status' => EsignEviLink::STATUS_FILE_UPLOAD,
+        ]);
     }
 
     /**
@@ -334,5 +331,25 @@ class EsignSceneEviService
     {
         $viewUrl = $this->getViewUrl($linkId, $expiredAt);
         return $viewUrl;
+    }
+
+    public function categoryCreated(ContractCategory $category)
+    {
+        $eviBusiness = EsignEviBusiness::first();
+
+        try {
+            $scene = $this->createScene($category, $eviBusiness->id);
+            if (!$scene->seg_id) {
+                $this->createSeg($scene);
+            }
+            if (!$scene->seg_has_attr) {
+                $this->createSegProp($scene->seg_id);
+                $scene->seg_has_attr = 1;
+                $scene->save();
+            }
+            info(__METHOD__, ['数据存证字典创建完成']);
+        } catch (\Exception $exception) {
+            Log::error(__METHOD__, [$exception->getMessage()]);
+        }
     }
 }

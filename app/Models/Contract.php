@@ -137,7 +137,7 @@ class Contract extends Base
      */
     public function userThree()
     {
-        return $this->belongsTo('App\Models\User', 'userid_three', 'id');
+        return $this->belongsTo('App\Models\User', 'userid_three', 'id')->withDefault();
     }
 
     /**
@@ -164,7 +164,7 @@ class Contract extends Base
      */
     public function companyThree()
     {
-        return $this->belongsTo('App\Models\Company', 'companyid_three', 'id');
+        return $this->belongsTo('App\Models\Company', 'companyid_three', 'id')->withDefault();
     }
 
     /**

@@ -42,6 +42,11 @@ class User extends Authenticatable
         'vcompany',
     ];
 
+    // 属性默认值
+    protected $attributes = [
+        'mobile' => '',
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *

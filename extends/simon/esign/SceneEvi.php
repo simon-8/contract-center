@@ -70,7 +70,7 @@ class SceneEvi
      */
     protected function notifyToServer($api, $data)
     {
-        \Log::debug('ServerRequest ==> ' . $api);
+        \Log::debug('ServerRequest ==> ' . $this->getApiHost() . $api);
         \Log::debug('ServerRequest ==> ' . (is_array($data) ? var_export($data, true) : $data));
         $response = $this->requestPost($this->getApiHost() . $api, $data);
 
@@ -209,7 +209,7 @@ class SceneEvi
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        if (!empty($_SERVER['HTTP_USER_AGENT'])) curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_POST, TRUE);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -241,7 +241,7 @@ class SceneEvi
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        if (!empty($_SERVER['HTTP_USER_AGENT'])) curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         //curl_setopt($ch, CURLOPT_POST, TRUE);
         //curl_setopt($ch, CURLOPT_POSTFIELDS, $data);

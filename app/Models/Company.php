@@ -49,6 +49,11 @@ class Company extends Base
         'reg_type_text',
     ];
 
+    // 属性默认值
+    protected $attributes = [
+        'mobile' => '',
+    ];
+
     /**
      * @param $value
      * @return mixed|string

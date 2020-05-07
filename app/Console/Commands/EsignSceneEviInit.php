@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ContractCategory;
+use App\Services\EsignSceneEviService;
 use Illuminate\Console\Command;
 
 class EsignSceneEviInit extends Command
@@ -31,14 +33,18 @@ class EsignSceneEviInit extends Command
     }
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @param EsignSceneEviService $sceneEviService
+     * @throws \Exception
      */
-    public function handle()
+    public function handle(EsignSceneEviService $sceneEviService)
     {
         // 定义行业类型 法律服务
+        $sceneEviService->createBusiness();
 
-        // 定义业务凭证名称
+        // 为已有分类创建数据字典
+        $categorys = ContractCategory::all();
+        foreach ($categorys as $category) {
+            $sceneEviService->categoryCreated($category);
+        }
     }
 }
