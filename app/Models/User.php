@@ -125,7 +125,7 @@ class User extends Authenticatable
      */
     public function realname()
     {
-        return $this->hasOne('App\Models\UserRealName', 'userid', 'id');
+        return $this->hasOne('App\Models\UserRealName', 'userid', 'id')->withDefault();
     }
 
     /**

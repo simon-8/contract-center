@@ -179,6 +179,7 @@ class EsignSceneEviService
             'scene_name' => $sceneName,
             'scene_evid' => $evid,
             'seg_id' => $segId,
+            'point_url' => '',
         ]);
     }
 
@@ -237,7 +238,6 @@ class EsignSceneEviService
      */
     public function addLinkToUser(Contract $contract, EsignEviLink $esignEviLink)
     {
-        $link = EsignEviLink::where('contract_id', $esignEviLink->contract_id)->first();
         $userFirst = ['name' => $contract->jiafang];
         if ($contract->companyid_first) {
             $userFirst['type'] = $this->getCompanyType($contract->companyFirst->reg_type);
@@ -256,21 +256,25 @@ class EsignSceneEviService
             $userSecond['number'] = $contract->userSecond->realname->idcard;
         }
 
-        $userThree = ['name' => $contract->jujianren];
-        if ($contract->companyid_three) {
-            $userThree['type'] = $this->getCompanyType($contract->companyThree->reg_type);
-            $userThree['number'] = $contract->companyThree->organ_code;
-        } else {
-            $userThree['type'] = 'ID_CARD';
-            $userThree['number'] = $contract->userThree->realname->idcard;
+        $userThree = [];
+        if ($contract->jujianren) {
+            $userThree = ['name' => $contract->jujianren];
+            if ($contract->companyid_three) {
+                $userThree['type'] = $this->getCompanyType($contract->companyThree->reg_type);
+                $userThree['number'] = $contract->companyThree->organ_code;
+            } else {
+                $userThree['type'] = 'ID_CARD';
+                $userThree['number'] = $contract->userThree->realname->idcard;
+            }
         }
 
         $users = [
             $userFirst,
             $userSecond,
-            $userThree,
         ];
-        $result = $this->sceneEvi->addLinkToUser($link->id, $users);
+        if ($userThree) $users[] = $userThree;
+
+        $result = $this->sceneEvi->addLinkToUser($esignEviLink->scene_evid, $users);
         if (!$result) throw new \Exception('关联证据链和用户失败');
 
         return $esignEviLink->update([

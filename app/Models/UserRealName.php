@@ -29,4 +29,8 @@ class UserRealName extends Base
         'back_img',
         'sign_data',
     ];
+
+    protected $attributes = [
+        'id_card' => '',
+    ];
 }

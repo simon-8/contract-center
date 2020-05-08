@@ -116,7 +116,6 @@
                                     </span>&nbsp;
                                     <span class="label label-default">{{ $v->getPlayersText() }}</span>
                                 </td>
-                                </td>
                                 <td>{{ $v->name }}</td>
                                 <td>{{ $v->jiafang ?: '/' }}</td>
                                 <td>{{ $v->yifang ?: '/' }}</td>
