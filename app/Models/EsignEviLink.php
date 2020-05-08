@@ -16,7 +16,7 @@ class EsignEviLink extends Base
 
     protected $table = 'esign_evi_link';
 
-    public $timestamps = false;
+    //public $timestamps = false;
 
     //public $incrementing = false;
 

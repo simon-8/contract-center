@@ -24,6 +24,7 @@ class CreateEsignEviLinkTable extends Migration
             $table->text('point_url')->comment('证据点文档保全上传 URL');
             $table->string('point_evid')->default('')->comment('证据点存证编号');
             $table->unsignedTinyInteger('status')->default(0)->comment('证据链状态(自用)');
+            $table->timestamps();
         });
     }
 

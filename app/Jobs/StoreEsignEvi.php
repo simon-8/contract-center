@@ -59,6 +59,11 @@ class StoreEsignEvi implements ShouldQueue
                 $service->createPointBasic($this->contract, $eviLink);
             }
 
+            // 上传 URL 有效期为 1 个小时, 超过之后重新创建证据点
+            if (now()->diffInMinutes($eviLink->updated_at) > 60 && $eviLink->status === EsignEviLink::STATUS_POINT_CREATED) {
+                $service->createPointBasic($this->contract, $eviLink);
+            }
+
             if ($eviLink->status === EsignEviLink::STATUS_POINT_CREATED) {
                 $filePath = Storage::disk('uploads')->path($this->contract->path_pdf);
                 $service->uploadFile($eviLink, $filePath);
