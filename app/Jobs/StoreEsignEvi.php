@@ -42,6 +42,11 @@ class StoreEsignEvi implements ShouldQueue
 
     public function handle(EsignSceneEviService $service)
     {
+
+        if ($this->contract->status != Contract::STATUS_SIGN) {
+            info(__METHOD__, ['当前合同未完成签名']);
+            return true;
+        }
         /**
          * 1. 创建证据链
          * 2. 创建证据点 (原文基础版认证)
