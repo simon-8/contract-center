@@ -195,10 +195,13 @@ class EsignSceneEviService
               'jiafang' => $contract->jiafang,
               'yifang' => $contract->yifang,
               'jujianren' => $contract->jujianren,
+              'jujianrenMobile' => '',
         ];
         $segmentData['jiafangMobile'] = $contract->companyid_first ? $contract->companyFirst->mobile : $contract->userFirst->mobile;
         $segmentData['yifangMobile'] = $contract->companyid_second ? $contract->companySecond->mobile : $contract->userSecond->mobile;
-        $segmentData['jujianrenMobile'] = $contract->companyid_three ? $contract->companyThree->mobile : $contract->userThree->mobile;
+        if ($contract->jujianren) {
+            $segmentData['jujianrenMobile'] = $contract->companyid_three ? $contract->companyThree->mobile : $contract->userThree->mobile;
+        }
 
         $filePath = Storage::disk('uploads')->path($contract->path_pdf);
         $response = $this->sceneEvi->createPointBasic($esignEviLink->seg_id, $filePath, $segmentData);
