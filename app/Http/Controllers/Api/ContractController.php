@@ -151,8 +151,16 @@ class ContractController extends BaseController
         // 已确认 已签名 已支付
         if ($this->user) {
             if ($contract->status > Contract::STATUS_APPLY) {
-                if (!$contract->authCheck($this->user->id)) {
-                    return responseException('该合同已被他人领签');
+                // 当前合同是否是我创建的公司的
+                $company = $this->user->company;
+                if (!$company || !in_array($company->id, [
+                    $contract->companyid_first,
+                    $contract->companyid_second,
+                    $contract->companyid_three,
+                ])) {
+                    if (!$contract->authCheck($this->user->id)) {
+                        return responseException('该合同已被他人领签');
+                    }
                 }
             }
         }

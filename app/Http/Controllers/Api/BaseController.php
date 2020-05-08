@@ -10,6 +10,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 
+/**
+ *  @property User $user
+ *
+ * */
 class BaseController extends Controller
 {
     protected $user = null;// 当前登录用户
