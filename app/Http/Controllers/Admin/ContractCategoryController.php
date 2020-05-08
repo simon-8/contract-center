@@ -11,6 +11,8 @@ use App\Http\Requests\ContractCategoryRequest;
 use App\Models\Contract;
 use App\Models\ContractCategory;
 use App\Models\ContractTplSection;
+use App\Services\EsignSceneEviService;
+use Illuminate\Support\Facades\DB;
 
 class ContractCategoryController extends BaseController
 {
@@ -71,19 +73,29 @@ class ContractCategoryController extends BaseController
         return view('admin.contract_category.show', compact('contractCategory', 'data'));
     }
 
+
     /**
      * 添加
      * @param ContractCategoryRequest $request
      * @param ContractCategory $contractCategory
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Illuminate\Validation\ValidationException|\Exception
      */
     public function store(ContractCategoryRequest $request, ContractCategory $contractCategory)
     {
         $data = $request->all();
         $request->validateStore($data);
 
-        if (!$contractCategory->create($data)) {
+        DB::beginTransaction();
+        try {
+            $category = $contractCategory->create($data);
+            // 为当前分类创建关联情景 && 数据字典
+            $eviService = new EsignSceneEviService();
+            $eviService->categoryCreated($category);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
             return back()->withErrors(__('web.failed'))->withInput();
         }
         return redirect()->route('admin.contract-category.index', [
@@ -96,14 +108,27 @@ class ContractCategoryController extends BaseController
      * @param ContractCategoryRequest $request
      * @param ContractCategory $contractCategory
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Illuminate\Validation\ValidationException|\Exception
      */
     public function update(ContractCategoryRequest $request, ContractCategory $contractCategory)
     {
         $data = $request->all();
         $request->validateUpdate($data);
 
-        if (!$contractCategory->update($data)) {
+        DB::beginTransaction();
+        try {
+            $contractCategory->fill($data);
+            $isDirty = $contractCategory->isDirty('name');
+            $contractCategory->save();
+
+            // 名称变更 重新创建关联情景 && 数据字典
+            if ($isDirty) {
+                $eviService = new EsignSceneEviService();
+                $eviService->categoryCreated($contractCategory);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
             return back()->withErrors(__('web.failed'))->withInput();
         }
         return redirect()->route('admin.contract-category.index', [

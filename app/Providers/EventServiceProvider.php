@@ -27,7 +27,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         // 用户签名
         'App\Events\UserSign' => [
-            //'App\Listeners\UserSignListener',
+            'App\Listeners\UserSignListener',
             'App\Listeners\UserSignNotifyListener',
         ],
         // 公司职员申请加入
