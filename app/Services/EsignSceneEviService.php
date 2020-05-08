@@ -25,7 +25,7 @@ class EsignSceneEviService
 
     protected $contract = null;
 
-    public function __construct($debug = true)
+    public function __construct($debug = false)
     {
         $this->sceneEvi = new SceneEvi($this->getConfig(), $debug);
     }
@@ -134,21 +134,20 @@ class EsignSceneEviService
                 "paramName"   => "jiafang",
             ],
             [
-                "displayName" => "乙方名称",
-                "paramName"   => "yifang",
-            ],
-            [
-                "displayName" => "居间人名称",
-                "paramName"   => "jujianren",
-            ],
-
-            [
                 "displayName" => "甲方手机",
                 "paramName"   => "jiafangMobile",
             ],
             [
+                "displayName" => "乙方名称",
+                "paramName"   => "yifang",
+            ],
+            [
                 "displayName" => "乙方手机",
                 "paramName"   => "yifangMobile",
+            ],
+            [
+                "displayName" => "居间人名称",
+                "paramName"   => "jujianren",
             ],
             [
                 "displayName" => "居间人手机",

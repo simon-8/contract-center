@@ -30,4 +30,8 @@ class EsignEviLink extends Base
         'point_evid',
         'status',
     ];
+
+    protected $attributes = [
+        'status' => self::STATUS_INIT,
+    ];
 }

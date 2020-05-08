@@ -98,17 +98,17 @@
 
         <div class="sections">
             <div class="section" style="margin-bottom: 20px;">
-                <p>
-                    甲方:  <span class="fill-value">{{ $contract->jiafang }}</span>
-                </p>
-                <p>
-                    乙方:  <span class="fill-value">{{ $contract->yifang }}</span>
-                </p>
-                @if($contract->players == $contract::PLAYERS_THREE)
-                <p>
-                    居间人:  <span class="fill-value">{{ $contract->jujianren }}</span>
-                </p>
-                @endif
+{{--                <p>--}}
+{{--                    甲方:  <span class="fill-value">{{ $contract->jiafang }}</span>--}}
+{{--                </p>--}}
+{{--                <p>--}}
+{{--                    乙方:  <span class="fill-value">{{ $contract->yifang }}</span>--}}
+{{--                </p>--}}
+{{--                @if($contract->players == $contract::PLAYERS_THREE)--}}
+{{--                <p>--}}
+{{--                    居间人:  <span class="fill-value">{{ $contract->jujianren }}</span>--}}
+{{--                </p>--}}
+{{--                @endif--}}
             </div>
             @foreach ($sections as $k => $section)
                 <div class="section">
