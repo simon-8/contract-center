@@ -71,9 +71,13 @@
                                 <td>{{ $v['created_at'] }}</td>
                                 <td>{{ $v['updated_at'] }}</td>
                                 <td>
+                                    @if(empty($data['callback']))
                                     <button class="btn btn-sm {{ $v->is_block ? 'btn-primary' : 'btn-danger' }} freeze-user" onclick="freeze('{{ route('admin.user.freeze', ['id' => $v->id]) }}')">
                                         {{ $v->is_block ? '解冻' : '冻结' }}
                                     </button>
+                                    @else
+                                        <a class="btn btn-xs btn-success choose-user" data-json='@json($v)'>选择</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -166,5 +170,13 @@
         });
         return false;
     }
+
+    @if(!empty($data['callback']))
+    $('.choose-user').click(function () {
+        let data = $(this).attr('data-json');
+        parent.{{ $data['callback'] }}(JSON.parse(data));
+        return false;
+    });
+    @endif
 </script>
 @endsection

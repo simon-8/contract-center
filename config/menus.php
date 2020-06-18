@@ -110,6 +110,13 @@ return [
 
     'admin.setting.index' => '基本设置',
     'admin.setting.update' => '基本设置更新',
+
+    'admin.message.*' => '站内信管理',
+    'admin.message.index' => '站内信列表',
+    'admin.message.create' => '站内信添加',
+    'admin.message.edit' => '站内信编辑',
+    'admin.message.destroy' => '站内信删除',
+    'admin.message.show' => '站内信详情',
     //'admin.express-fee.edit' => '模板模块编辑',
     //'admin.contract-tpl-fill.*' => '填空模板管理',
     //'admin.contract-tpl-fill.index' => ' 填空模板列表',

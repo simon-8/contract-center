@@ -89,6 +89,7 @@ return [
     'url'                  => ':attribute 格式错误.',
     'captcha'              => ':attribute 不正确',
     'zh_mobile'            => ':attribute 格式不正确',
+    'cn_mobile'            => ':attribute 格式不正确',
     'confirm_mobile_not_change' => ':attribute 校验码不匹配',
 
     /*

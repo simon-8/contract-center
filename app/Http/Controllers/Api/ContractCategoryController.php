@@ -10,24 +10,27 @@ namespace App\Http\Controllers\Api;
 use App\Models\Contract;
 use App\Models\ContractCategory;
 use App\Models\ContractTplSection;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ContractCategoryController extends BaseController
 {
+
     /**
-     * @param \Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * 分类列表
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(\Request $request)
+    public function index(Request $request)
     {
-        $data = $request::only(['company_id']);
-        $lists = ContractCategory::ofCompanyId($data['company_id'] ?? 0)
+        $lists = ContractCategory::ofCompanyId($request->company_id ?? 0)
         ->with([
             'tplSection' => function($query) {
                 $query->orderByDesc('listorder');
             }
-        ])->get();
+        ])->paginate($request->pageSize);
 
-        return responseMessage('', $lists);
+        return JsonResource::collection($lists);
     }
 
     /**

@@ -94,6 +94,14 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::apiResource('sign', 'SignController');
 
             Route::get('test', 'UserController@test');
+
+            // 站内信
+            Route::prefix('message')->group(function() {
+                Route::get('', 'MessageController@index');
+                Route::get('{message}', 'MessageController@show');
+                Route::get('count/unread', 'MessageController@unreadCount');
+                Route::put('{message}/read', 'MessageController@updateRead');
+            });
         });
     });
     Route::middleware('auth:api')->group(function () {

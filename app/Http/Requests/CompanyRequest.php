@@ -42,7 +42,7 @@ class CompanyRequest extends BaseRequest
             'legal_name' => 'required',
             'address' => 'required',
             //'legal_idno' => 'required',
-            'mobile' => 'required|zh_mobile',
+            'mobile' => 'required|cn_mobile',
             'captcha' => 'required'
         ];
         $this->check($data, $rule);

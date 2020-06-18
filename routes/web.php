@@ -60,5 +60,6 @@ Route::prefix(config('admin.basePath'))->namespace('Admin')->name('admin.')->gro
             Route::get('/optimize', 'DatabaseController@getOptimize')->name('database.optimize');
         });
 
+        Route::resource('message', 'MessageController');
     });
 });

@@ -46,6 +46,7 @@ class Contract extends Base
         'status',
         'path_pdf',
         'confirm_at',
+        'expired_at',
     ];
 
     const STATUS_APPLY = 0;
@@ -76,6 +77,11 @@ class Contract extends Base
     protected $appends = [
         'player_text',
     ];
+
+    public function getExpiredAtAttribute($value)
+    {
+        return $value ?: '';
+    }
 
     /**
      * @param $value

@@ -107,6 +107,7 @@ class UserRealNameController extends BaseController
         $data = $request->all();
         $request->validateStore($data);
 
+        logger(__METHOD__, $data);
         // 使用userid作为文件名 更新时可直接覆盖
         if ($request->hasFile('face_img')) {
             $faceUrl = $request->file('face_img');
@@ -145,10 +146,10 @@ class UserRealNameController extends BaseController
 
             DB::commit();
         } catch (\Exception $e) {
+            logger(__METHOD__, [$e->getMessage()]);
             DB::rollBack();
             return responseException(__('api.failed'));
         }
-
         return responseMessage('', new UserRealNameResource($userRealNameData));
     }
 

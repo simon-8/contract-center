@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends BaseRequest
+class MessageRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,39 +29,45 @@ class UserRequest extends BaseRequest
     }
 
     /**
+     *
      * @return array
      */
-    protected function sendSmsRules()
+    protected function createRules()
     {
         return [
-            'mobile'  => 'required|cn_mobile',
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'to_userid' => 'required|numeric',
         ];
     }
 
     /**
      * @return array
      */
-    protected function verifyCodeRules()
+    protected function updateRules()
     {
         return [
-            'mobile' => 'required|cn_mobile',
-            'code' => 'required'
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'to_userid' => 'required|numeric',
         ];
     }
 
     /**
      * @param $data
+     * @return $this|bool|\Illuminate\Http\JsonResponse
      */
-    public function validateSendSms($data)
+    public function validateCreate($data)
     {
-        $this->check($data, $this->sendSmsRules());
+        return $this->check($data, $this->createRules());
     }
 
     /**
      * @param $data
+     * @return $this|bool|\Illuminate\Http\JsonResponse
      */
-    public function validateVerifyCode($data)
+    public function validateUpdate($data)
     {
-        $this->check($data, $this->verifyCodeRules());
+        return $this->check($data, $this->updateRules());
     }
 }

@@ -18,7 +18,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $description = 'auto install script';
+    protected $description = '后台安装, 将会执行数据表恢复、添加初始化数据、生成应用密钥等操作';
 
     /**
      * Create a new command instance.
@@ -35,61 +35,23 @@ class Install extends Command
      */
     public function handle()
     {
-        $dbhost = $this->ask('请输入数据库地址', 'localhost');
-        $dbname = $this->ask('请输入数据库名称', 'hotel-center');
-        $dbuser = $this->ask('请输入数据库用户名', 'homestead');
-        $dbpass = $this->ask('请输入数据库密码', false);
-        $dbpass = $dbpass ? $dbpass : 'secret';
-        $appKey = 'base64:'. base64_encode(random_bytes(32));
+        $this->line('************* 初始化数据库 *************');
+        $this->call('migrate', [
+            '--seed' => true
+        ]);
 
-        $envExample = \File::get(base_path('.env.example'));
-        $envExample = explode("\r\n", $envExample);
-        foreach ($envExample as $key => $env) {
-            $name = substr($env, 0, strpos($env, '='));
-            switch ($name) {
-                case 'APP_KEY':
-                    $envExample[$key] = $name .'='. $appKey;
-                    break;
-                case 'DB_HOST':
-                    $envExample[$key] = $name .'='. $dbhost;
-                    break;
-                case 'DB_DATABASE':
-                    $envExample[$key] = $name .'='. $dbname;
-                    break;
-                case 'DB_USERNAME':
-                    $envExample[$key] = $name .'='. $dbuser;
-                    break;
-                case 'DB_PASSWORD':
-                    $envExample[$key] = $name .'='. $dbpass;
-                    break;
-                default:
-                    //$envExample[$key] = $name .'='. $val;
-                    break;
-            }
-        }
-        $envExample = implode("\r\n", $envExample);
-        $saveResult = \File::put(base_path('.env'), $envExample);
-        if (!$saveResult) {
-            $this->error("配置生成失败");
-            return;
-        }
-        $this->info("配置生成成功");
+        $this->line('************* 生成应用密钥 *************');
+        $this->call('key:generate');
 
-        // todo 环境变量未更新, 无法执行数据库还原
-        //$this->call('migrate', [
-        //    '--seed' => true
-        //]);
-        //$this->info("数据库还原成功");
-        //$this->call('key:generate');
+        $this->line('************ Passport:keys ************');
+        $this->call('passport:keys', [
+            '--force' => true
+        ]);
 
-        $this->info('*************** 配置完成 ***************');
-        $this->info('*                                      *');
-        $this->info('*  最后一步, 执行下面命令进行数据还原  *');
-        $this->info('*      php artisan migrate --seed      *');
-        $this->info('*                                      *');
+        $this->info('************* 应用安装完成 *************');
         $this->info('************ 请尽快修改密码 ************');
         $this->line('后台链接：http://你的域名/pc');
-        $this->line('用户名：admin ');
-        $this->line('密码：123456 ');
+        $this->line('用户名：admin');
+        $this->line('密码：123456');
     }
 }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <title>管理后台</title>
+    <title>{{config('app.name')}} 管理后台</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <!--[if lt IE 8]>

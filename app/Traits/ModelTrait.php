@@ -105,4 +105,41 @@ trait ModelTrait
         $end = date('Y-m-d', strtotime($end) + 86400);
         return $query->where("updated_at", '>=', $start)->where('updated_at', '<', $end);
     }
+
+    /**
+     * @param Builder $query
+     * @param string $field
+     * @param string $data
+     * @return Builder
+     */
+    public function scopeOfField(Builder $query, $field = '', $data = '')
+    {
+        if (!$data) return $query;
+        return $query->where($field, $data);
+    }
+
+    /**
+     * @param Builder $query
+     * @param string $field
+     * @param string $data
+     * @return Builder
+     */
+    public function scopeOfFieldNumeric(Builder $query, $field = '', $data = '')
+    {
+        if (!is_numeric($data)) return $query;
+        return $query->where($field, $data);
+    }
+
+    /**
+     * @param Builder $query
+     * @param string $field
+     * @param string $data
+     * @return Builder
+     */
+    public function scopeOfFieldLike(Builder $query, $field = '', $data = '')
+    {
+        if (!$data) return $query;
+        return $query->where($field, 'like', "%{$data}%");
+    }
+
 }

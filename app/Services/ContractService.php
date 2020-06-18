@@ -9,9 +9,11 @@
 
 namespace App\Services;
 
+use App\Caches\SettingCache;
 use App\Events\UserSign;
 use App\Models\Contract;
 use App\Models\EsignSignLog;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use tech\constants\SignType;
@@ -234,5 +236,17 @@ class ContractService
             'serviceid' => $serviceid,
         ]);
         return $serviceid;
+    }
+
+    /**
+     * 获取过期时间
+     * @param null $signedAt
+     * @return string
+     */
+    public function getExpiredAt($signedAt = null)
+    {
+        $timeObj = $signedAt ? Carbon::createFromTimestamp(strtotime($signedAt)) : now();
+        $addYears = SettingCache::get('contractExpiredYear') ?: 2;
+        return $timeObj->addYears($addYears)->toDateTimeString();
     }
 }

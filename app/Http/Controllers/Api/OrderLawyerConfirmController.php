@@ -16,6 +16,7 @@ use App\Models\OrderLawyerConfirm as Order;
 use App\Models\OrderRefund;
 use App\Models\User;
 use App\Models\UserAddress;
+use App\Services\SmsService;
 use EasyWeChat\Factory;
 use function EasyWeChat\Kernel\Support\generate_sign;
 
@@ -267,6 +268,16 @@ class OrderLawyerConfirmController extends BaseController
             $order->payed_at = date('Y-m-d H:i:s');
             $order->save();
 
+            // 给管理员发送通知
+            try {
+                $smsService = new SmsService();
+                $smsService->sendTemplateSms(getSetting('adminMobile'), [
+                    'name' => '',
+                    'time' => now()->toDateTimeString(),
+                ], SmsService::TPL_ADMIN_LAWYER_APPLY);
+            } catch (\Exception $e) {
+                logger(__METHOD__, [$e->getMessage()]);
+            }
             // 更新关联状态
             //$order->contract->update([
             //    'status' => Contract::STATUS_LAWYER_CONFIRM

@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\OrderLawyerConfirm;
+use App\Services\SmsService;
 
 class OrderLawyerConfirmController extends BaseController
 {
@@ -56,6 +57,15 @@ class OrderLawyerConfirmController extends BaseController
         $data['status'] = OrderLawyerConfirm::STATUS_SUCCESS;
         if (!$orderLawyerConfirm->update($data)) {
             return back()->withInput()->withErrors(__('web.failed'));
+        }
+        // 给管理员发送短信
+        try {
+            $smsService = new SmsService();
+            $smsService->sendTemplateSms(getSetting('adminMobile'), [
+                'name' => $data['express_name'] . ' : ' . $data['express_no']
+            ], SmsService::TPL_USER_LAWYER_SEND);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$e->getMessage()]);
         }
         return redirect()->route('admin.order-lawyer-confirm.index')->with('message', __('web.success'));
     }

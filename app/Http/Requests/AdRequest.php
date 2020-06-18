@@ -26,7 +26,7 @@ class AdRequest extends BaseRequest
         return [
             'pid' => 'required',
             'thumb' => 'required',
-            'url' => 'nullable|url',
+            //'url' => 'nullable',
             'title' => 'required',
             'content' => 'nullable',
             'listorder' => 'nullable'

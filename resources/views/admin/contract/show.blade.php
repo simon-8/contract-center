@@ -86,7 +86,7 @@
                 {{ $contract->getCatText() }}
             </div>
             <div class="name text-right">
-                {{ __('contract.number', ['id' => $contract->id]) }}
+                {{ __('contract.number', ['year' => date('Y'), 'id' => $contract->id]) }}
             </div>
         </div>
 

@@ -7,5 +7,5 @@
  */
 return [
     'name'  => ':catname :id号',
-    'number' => '浙e（合）字第 :id号',
+    'number' => '[:year]易盟签H字第 :id号',
 ];

@@ -15,8 +15,8 @@ class CreateContractCategoryTable extends Migration
     {
         Schema::create('contract_category', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->default('')->comment('分类名称');
             $table->unsignedInteger('pid')->default(0)->comment('父类ID');
+            $table->string('name')->default('')->comment('分类名称');
             $table->unsignedTinyInteger('players')->default(0)->comment('参与人类型');
             $table->string('user_type')->default('')->comment('用户类型');
             $table->unsignedInteger('company_id')->default(0)->comment('公司ID');

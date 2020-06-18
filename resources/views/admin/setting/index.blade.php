@@ -37,6 +37,21 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">合同有效期(年)</label>
+                        <div class="col-sm-10">
+                            <input type="number" placeholder="合同有效期(年)" name="data[contractExpiredYear]" id="contractExpiredYear" class="form-control" value="{{ $setting['contractExpiredYear'] ?? 0 }}">
+                            <span class="help-block m-b-none"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">管理员手机</label>
+                        <div class="col-sm-10">
+                            <input type="number" placeholder="管理员手机号码" name="data[adminMobile]" id="adminMobile" class="form-control" value="{{ $setting['adminMobile'] ?? '' }}">
+                            <span class="help-block m-b-none"></span>
+                        </div>
+                    </div>
                     <button class="btn btn-white no-margins" type="submit">保存</button>
                 </form>
             </div>

@@ -6,6 +6,8 @@
  * Time: 16:52
  */
 
+use App\Caches\SettingCache;
+
 /**
  * 获取资源路径
  * @param string $module
@@ -507,4 +509,17 @@ function stringHide($string, $start = 0, $length = 0)
     }
 
     return substr_replace($string, str_repeat('*', $length), $start, $length);
+}
+
+if (!function_exists('getSetting')) {
+    /**
+     * 获取设置
+     * @param $key
+     * @param null $default
+     * @return mixed|null
+     */
+    function getSetting($key, $default = null)
+    {
+        return SettingCache::get($key) ?: $default;
+    }
 }

@@ -46,9 +46,9 @@ return [
             'enable'      => true,
             'default'     => 'mobile_required',
             'staticRules' => [
-                'mobile_required'     => 'required|zh_mobile',
-                'check_mobile_unique' => 'required|zh_mobile|unique:users,mobile',
-                'check_mobile_exists' => 'required|zh_mobile|exists:users',
+                'mobile_required'     => 'required|cn_mobile',
+                'check_mobile_unique' => 'required|cn_mobile|unique:users,mobile',
+                'check_mobile_exists' => 'required|cn_mobile|exists:users',
             ],
         ],
     ],

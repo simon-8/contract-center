@@ -14,6 +14,7 @@ use App\Events\UserSign;
 use App\Models\Company;
 use App\Services\ContractService;
 use App\Services\EsignService;
+use App\Services\SmsService;
 use Illuminate\Support\Facades\DB;
 
 class SignController extends BaseController
@@ -93,10 +94,12 @@ class SignController extends BaseController
         if ($contract->players == $contract::PLAYERS_TWO) {
             if ($contract->signed_first && $contract->signed_second) {
                 $contract->status = $contract::STATUS_SIGN;
+                $contract->expired_at = $contractService->getExpiredAt();
             }
         } else if ($contract->players == $contract::PLAYERS_THREE) {
             if ($contract->signed_first && $contract->signed_second && $contract->signed_three) {
                 $contract->status = $contract::STATUS_SIGN;
+                $contract->expired_at = $contractService->getExpiredAt();
             }
         }
 
@@ -205,10 +208,12 @@ class SignController extends BaseController
         if ($contract->players == $contract::PLAYERS_TWO) {
             if ($contract->signed_first && $contract->signed_second) {
                 $contract->status = $contract::STATUS_SIGN;
+                $contract->expired_at = $contractService->getExpiredAt();
             }
         } else if ($contract->players == $contract::PLAYERS_THREE) {
             if ($contract->signed_first && $contract->signed_second && $contract->signed_three) {
                 $contract->status = $contract::STATUS_SIGN;
+                $contract->expired_at = $contractService->getExpiredAt();
             }
         }
 
@@ -253,6 +258,11 @@ class SignController extends BaseController
         }
         try {
             $esignService->sendSignCodeToMobile($this->user->esignUser->accountid, $mobile);
+
+            $smsService = new SmsService();
+            $smsService->sendTemplateSms($mobile, [
+                'name' => ''
+            ], SmsService::TPL_USER_SIGNING);
         } catch (\Exception $e) {
             logger(__METHOD__, [$e->getMessage()]);
             return responseException($e->getMessage());

@@ -128,7 +128,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">外链</label>
                             <div class="col-sm-10">
-                                <input type="url" class="form-control" name="url" value="{{ old('url') }}" placeholder="外链">
+                                <input type="text" class="form-control" name="url" value="{{ old('url') }}" placeholder="外链">
                                 <span class="help-block m-b-none"></span>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">外链</label>
                             <div class="col-sm-10">
-                                <input type="url" class="form-control" name="url" value="" placeholder="外链">
+                                <input type="text" class="form-control" name="url" value="" placeholder="外链">
                                 <span class="help-block m-b-none"></span>
                             </div>
                         </div>
