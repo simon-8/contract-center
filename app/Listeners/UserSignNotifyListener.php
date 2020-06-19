@@ -39,44 +39,10 @@ class UserSignNotifyListener implements ShouldQueue
 
         $contract = $event->contract;
         $user = $event->user;
-        $targetUsers = [];
-        $sourceUserName = '';
 
-        if ($contract->userid_first == $user->id) {
-            $sourceUserName = $contract->jiafang;
-            $targetUsers = [
-                $contract->userSecond,
-                $contract->userThree,
-            ];
-
-        } else if ($contract->userid_second == $user->id) {
-            $sourceUserName = $contract->yifang;
-            $targetUsers = [
-                $contract->userFirst,
-                $contract->userThree,
-            ];
-
-        } else if ($contract->userid_three == $user->id) {
-            $sourceUserName = $contract->jujianren;
-            $targetUsers = [
-                $contract->userFirst,
-                $contract->userSecond,
-            ];
-        }
-        $smsData = [
-            'title' => $contract->name,
-            'name' => $sourceUserName
-        ];
-        foreach ($targetUsers as $targetUser) {
-            if (!$targetUser) {
-                continue;
-            }
-            if (!$targetUser->mobile) {
-                logger(__METHOD__, ["合同ID: {$contract->id} 用户未绑定手机! 用户ID: {$targetUser->id}"]);
-                return ;
-            }
-            $this->smsService->sendTemplateSms($targetUser->mobile, $smsData, $this->smsService::TEMPLATE_USER_SIGNED);
-        }
+        // 发送已确认短信
+        $smsService = new SmsService();
+        $smsService->contractSigned($contract, $user);
     }
 
     /**

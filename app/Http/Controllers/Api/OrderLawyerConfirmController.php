@@ -269,15 +269,8 @@ class OrderLawyerConfirmController extends BaseController
             $order->save();
 
             // 给管理员发送通知
-            try {
-                $smsService = new SmsService();
-                $smsService->sendTemplateSms(getSetting('adminMobile'), [
-                    'name' => '',
-                    'time' => now()->toDateTimeString(),
-                ], SmsService::TPL_ADMIN_LAWYER_APPLY);
-            } catch (\Exception $e) {
-                logger(__METHOD__, [$e->getMessage()]);
-            }
+            $smsService = new SmsService();
+            $smsService->contractLawyerApply($order->user);
             // 更新关联状态
             //$order->contract->update([
             //    'status' => Contract::STATUS_LAWYER_CONFIRM

@@ -10,6 +10,7 @@ use App\Events\UserSign;
 use App\Jobs\StoreEsignEvi;
 
 use App\Models\Contract;
+use App\Services\SmsService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -45,7 +46,13 @@ class UserSignListener
         \Log::info(__METHOD__);
 
         // 签名完成的合同, 进行数据存证;
-        if ($event->contract->status === Contract::STATUS_SIGN) StoreEsignEvi::dispatch($event->contract);
+        if ($event->contract->status === Contract::STATUS_SIGN) {
+            StoreEsignEvi::dispatch($event->contract);
+
+            // 发送合同保存短信
+            $smsService = new SmsService();
+            $smsService->contractSave($event->contract);
+        }
     }
 
     /**

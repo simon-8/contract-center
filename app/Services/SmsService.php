@@ -6,6 +6,10 @@
  */
 namespace App\Services;
 
+use App\Models\Company;
+use App\Models\CompanyStaff;
+use App\Models\Contract;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use LeanCloud\Client;
@@ -13,10 +17,6 @@ use LeanCloud\SMS;
 
 class SmsService
 {
-    //public $app = null;
-
-    const TEMPLATE_USER_SIGNED = '云证合同';
-
     // 给职员发的
     const TPL_COMPANY_STAFF_BE_CANCEL = '主动取消公司授权';// 被取消
     const TPL_COMPANY_STAFF_APPLY_STATUS = '加入公司申请状态';// 已通过 已拒绝
@@ -25,6 +25,12 @@ class SmsService
     // 管理员
     const TPL_COMPANY_STAFF_USER_APPLY = '用户申请加入公司'; // 申请加入
     //const TPL_COMPANY_STAFF_USER_APPLY_CANCEL = '公司授权申请取消';
+
+    const TPL_CONTRACT_SIGNING = '签约过程通知';
+    const TPL_CONTRACT_SIGNED = '云证合同';
+    const TPL_CONTRACT_SAVE = '合同保存通知';
+    const TPL_CONTRACT_LAWYER_APPLY = '申请见证通知';
+    const TPL_CONTRACT_EXPRESS = '快递寄出通知';
 
     public function __construct()
     {
@@ -139,5 +145,162 @@ class SmsService
             'created_at' => now()->toDateTimeString(),
             'updated_at' => now()->toDateTimeString(),
         ]);
+    }
+
+    /**
+     * 被公司取消授权 (给指定用户)
+     * @param CompanyStaff $companyStaff
+     */
+    public function companyStaffBeCancel(CompanyStaff $companyStaff)
+    {
+        try {
+            $this->sendTemplateSms($companyStaff->user->mobile, [
+                'company' => $companyStaff->company->name,
+            ], self::TPL_COMPANY_STAFF_BE_CANCEL);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$companyStaff->company, $companyStaff->user, $e->getMessage()]);
+        }
+    }
+
+    /**
+     * 加入公司申请状态 (给指定用户)
+     * @param CompanyStaff $companyStaff
+     */
+    public function companyStaffApplyStatus(CompanyStaff $companyStaff)
+    {
+        try {
+            $this->sendTemplateSms($companyStaff->user->mobile, [
+                'company' => $companyStaff->company->name,
+                'status' => $companyStaff->getStatusText(),
+            ], self::TPL_COMPANY_STAFF_APPLY_STATUS);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$companyStaff->company, $companyStaff->user, $e->getMessage()]);
+        }
+    }
+
+    /**
+     * 取消授权申请状态 (给指定用户)
+     * @param CompanyStaff $companyStaff
+     */
+    public function companyStaffUserCancel(CompanyStaff $companyStaff)
+    {
+        try {
+            $this->sendTemplateSms($companyStaff->user->mobile, [
+                'company' => $companyStaff->company->name,
+                'status' => $companyStaff->getStatusText(),
+            ], self::TPL_COMPANY_STAFF_USER_CANCEL);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$companyStaff->company, $companyStaff->user, $e->getMessage()]);
+        }
+    }
+
+    /**
+     * 用户申请加入公司 (给管理员)
+     * @param CompanyStaff $companyStaff
+     */
+    public function companyStaffUserApply(CompanyStaff $companyStaff)
+    {
+        try {
+            $this->sendTemplateSms($companyStaff->company->user->mobile, [
+                'company' => $companyStaff->company->name,
+            ], self::TPL_COMPANY_STAFF_USER_APPLY);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$companyStaff->company, $companyStaff->user, $e->getMessage()]);
+        }
+    }
+
+    /**
+     * 合同已签字 (给其他人)
+     * @param Contract $contract
+     * @param User $user
+     */
+    public function contractSigned(Contract $contract, User $user)
+    {
+        $targetUsers = [];
+        if ($contract->userFirst && $contract->userFirst->id != $user->id) $targetUsers[$contract->jiafang] = $contract->userFirst;
+        if ($contract->userSecond && $contract->userSecond->id != $user->id) $targetUsers[$contract->yifang] = $contract->userSecond;
+        if ($contract->userThree && $contract->userThree->id != $user->id) $targetUsers[$contract->jujianren] = $contract->userThree;
+
+        foreach ($targetUsers as $name => $targetUser) {
+            try {
+                $this->sendTemplateSms($targetUser->mobile, [
+                    'title' => $contract->name,
+                    'name' => $name,
+                ], self::TPL_CONTRACT_SIGNED);
+            } catch (\Exception $e) {
+                logger(__METHOD__, [$targetUser, $name, $e->getMessage()]);
+            }
+        }
+    }
+
+    /**
+     * 合同签约中 (给用户)
+     * @param User $user
+     */
+    public function contractSigning(User $user)
+    {
+        try {
+            $this->sendTemplateSms($user->mobile, [
+                'name' => '',
+            ], self::TPL_CONTRACT_SIGNING);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$user, $e->getMessage()]);
+        }
+    }
+
+    /**
+     * 合同保存通知 (给所有人)
+     * @param Contract $contract
+     */
+    public function contractSave(Contract $contract)
+    {
+        $targetUsers = [];
+        if ($contract->userFirst) $targetUsers[$contract->jiafang] = $contract->userFirst;
+        if ($contract->userSecond) $targetUsers[$contract->yifang] = $contract->userSecond;
+        if ($contract->userThree) $targetUsers[$contract->jujianren] = $contract->userThree;
+        foreach ($targetUsers as $targetUser) {
+            try {
+                $this->sendTemplateSms($targetUser->mobile, [
+                    'number' => $contract->number_text,
+                    'name' => $contract->name,
+                    'address' => __('contract.appname'),
+                    'time' => $contract->expired_at,
+                ], self::TPL_CONTRACT_SAVE);
+            } catch (\Exception $e) {
+                logger(__METHOD__, [$targetUser, $contract, $e->getMessage()]);
+            }
+        }
+    }
+
+    /**
+     * 合同寄出 (给用户)
+     * @param User $user
+     * @param $data
+     */
+    public function contractExpress(User $user, $data)
+    {
+        try {
+            $this->sendTemplateSms($user->mobile, [
+                'name' => $data,
+            ], self::TPL_CONTRACT_EXPRESS);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$user, $e->getMessage()]);
+        }
+    }
+
+    /**
+     * 申请见证通知 (给管理员)
+     * @param User $user
+     */
+    public function contractLawyerApply(User $user)
+    {
+        try {
+            $this->sendTemplateSms(getSetting('adminMobile'), [
+                'name' => $user->truename,
+                'time' => now()->toDateTimeString(),
+            ], self::TPL_CONTRACT_LAWYER_APPLY);
+        } catch (\Exception $e) {
+            logger(__METHOD__, [$user, $e->getMessage()]);
+        }
     }
 }

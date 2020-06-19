@@ -259,10 +259,9 @@ class SignController extends BaseController
         try {
             $esignService->sendSignCodeToMobile($this->user->esignUser->accountid, $mobile);
 
+            // 给用户发送提示短信
             $smsService = new SmsService();
-            $smsService->sendTemplateSms($mobile, [
-                'name' => ''
-            ], SmsService::TPL_USER_SIGNING);
+            $smsService->contractSigning($this->user);
         } catch (\Exception $e) {
             logger(__METHOD__, [$e->getMessage()]);
             return responseException($e->getMessage());

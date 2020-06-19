@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\ModelTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -76,6 +77,7 @@ class Contract extends Base
 
     protected $appends = [
         'player_text',
+        'number_text',
     ];
 
     public function getExpiredAtAttribute($value)
@@ -90,6 +92,20 @@ class Contract extends Base
     public function getPlayerTextAttribute($value)
     {
         return $this->getPlayersText($value);
+    }
+
+    /**
+     * 合同编号文字
+     * @param $value
+     * @return array|string|null
+     */
+    public function getNumberTextAttribute($value)
+    {
+        $year = now()->year;
+        if ($this->status == self::STATUS_SIGN) {
+            $year = Carbon::createFromTimestamp(strtotime($this->updated_at))->year;
+        }
+        return __('contract.number', ['year' => $year, 'id' => $this->id]);
     }
 
     /**

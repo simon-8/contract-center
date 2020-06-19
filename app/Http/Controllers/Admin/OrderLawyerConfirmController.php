@@ -58,15 +58,11 @@ class OrderLawyerConfirmController extends BaseController
         if (!$orderLawyerConfirm->update($data)) {
             return back()->withInput()->withErrors(__('web.failed'));
         }
-        // 给管理员发送短信
-        try {
-            $smsService = new SmsService();
-            $smsService->sendTemplateSms(getSetting('adminMobile'), [
-                'name' => $data['express_name'] . ' : ' . $data['express_no']
-            ], SmsService::TPL_USER_LAWYER_SEND);
-        } catch (\Exception $e) {
-            logger(__METHOD__, [$e->getMessage()]);
-        }
+
+        // 通知用户已发货
+        $smsService = new SmsService();
+        $smsService->contractExpress($orderLawyerConfirm->user, $data['express_name'] . ' : ' . $data['express_no']);
+
         return redirect()->route('admin.order-lawyer-confirm.index')->with('message', __('web.success'));
     }
 }
