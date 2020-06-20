@@ -55,7 +55,7 @@ function calcHeight($width, $newWidth, $height)
  * @param string $dir
  * @return mixed|string
  */
-function upload_base64_thumb($thumb, $disk = 'uploads')
+function upload_base64_thumb($thumb, $disk = 'oss')
 {
     if (strpos($thumb, 'data:image') === false) return $thumb;
 
@@ -67,6 +67,9 @@ function upload_base64_thumb($thumb, $disk = 'uploads')
     if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $thumb, $result)) {
         $thumbData = base64_decode(str_replace($result[1], '', $thumb));
         Storage::disk($disk)->put($filename, $thumbData);
+        if ($disk === 'oss') {
+            $filename = Storage::disk($disk)->getUrl($filename);
+        }
         $thumb = $filename;
     } else {
         $thumb = '';

@@ -5,7 +5,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2019-07-04 00:03:28.
+    * Generated on 2020-06-20 11:48:26.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -174,7 +174,7 @@ namespace PHPSTORM_META {
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Laravel\Horizon\RedisQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -365,7 +365,7 @@ namespace PHPSTORM_META {
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Laravel\Horizon\RedisQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -556,7 +556,7 @@ namespace PHPSTORM_META {
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Laravel\Horizon\RedisQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -747,7 +747,7 @@ namespace PHPSTORM_META {
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Laravel\Horizon\RedisQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -938,7 +938,7 @@ namespace PHPSTORM_META {
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Laravel\Horizon\RedisQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -1129,7 +1129,7 @@ namespace PHPSTORM_META {
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Laravel\Horizon\RedisQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -1320,7 +1320,7 @@ namespace PHPSTORM_META {
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'qrcode' => \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Laravel\Horizon\RedisQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
