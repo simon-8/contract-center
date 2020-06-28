@@ -260,7 +260,9 @@ class ContractController extends BaseController
             return responseException($exception->getMessage());
         }
 
-        return responseMessage();
+        return responseMessage([
+            'id' => $contractData->id,
+        ]);
     }
 
     /**
