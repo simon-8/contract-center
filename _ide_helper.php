@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.17 on 2020-06-21 11:17:32.
+ * Generated for Laravel 5.8.17 on 2020-08-19 21:15:34.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -16286,6 +16286,122 @@ namespace Overtrue\LaravelPinyin\Facades {
  
 }
 
+namespace Overtrue\LaravelSocialite { 
+
+    /**
+     * Class Socialite.
+     *
+     */ 
+    class Socialite {
+        
+        /**
+         * Set config instance.
+         *
+         * @param \Overtrue\Socialite\Config $config
+         * @return \Overtrue\Socialite\SocialiteManager 
+         * @static 
+         */ 
+        public static function config($config)
+        {
+                        /** @var \Overtrue\Socialite\SocialiteManager $instance */
+                        return $instance->config($config);
+        }
+        
+        /**
+         * Get a driver instance.
+         *
+         * @param string $driver
+         * @return \Overtrue\Socialite\ProviderInterface 
+         * @static 
+         */ 
+        public static function driver($driver)
+        {
+                        /** @var \Overtrue\Socialite\SocialiteManager $instance */
+                        return $instance->driver($driver);
+        }
+        
+        /**
+         * 
+         *
+         * @param \Symfony\Component\HttpFoundation\Request $request
+         * @return \Overtrue\Socialite\SocialiteManager 
+         * @static 
+         */ 
+        public static function setRequest($request)
+        {
+                        /** @var \Overtrue\Socialite\SocialiteManager $instance */
+                        return $instance->setRequest($request);
+        }
+        
+        /**
+         * 
+         *
+         * @return \Symfony\Component\HttpFoundation\Request 
+         * @static 
+         */ 
+        public static function getRequest()
+        {
+                        /** @var \Overtrue\Socialite\SocialiteManager $instance */
+                        return $instance->getRequest();
+        }
+        
+        /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \Overtrue\Socialite\SocialiteManager 
+         * @static 
+         */ 
+        public static function extend($driver, $callback)
+        {
+                        /** @var \Overtrue\Socialite\SocialiteManager $instance */
+                        return $instance->extend($driver, $callback);
+        }
+        
+        /**
+         * Get all of the created "drivers".
+         *
+         * @return \Overtrue\Socialite\ProviderInterface[] 
+         * @static 
+         */ 
+        public static function getDrivers()
+        {
+                        /** @var \Overtrue\Socialite\SocialiteManager $instance */
+                        return $instance->getDrivers();
+        }
+        
+        /**
+         * Build an OAuth 2 provider instance.
+         *
+         * @param string $provider
+         * @param array $config
+         * @return \Overtrue\Socialite\ProviderInterface 
+         * @static 
+         */ 
+        public static function buildProvider($provider, $config)
+        {
+                        /** @var \Overtrue\Socialite\SocialiteManager $instance */
+                        return $instance->buildProvider($provider, $config);
+        }
+        
+        /**
+         * Format the server configuration.
+         *
+         * @param array $config
+         * @return array 
+         * @static 
+         */ 
+        public static function formatConfig($config)
+        {
+                        /** @var \Overtrue\Socialite\SocialiteManager $instance */
+                        return $instance->formatConfig($config);
+        }
+         
+    }
+ 
+}
+
 namespace Overtrue\LaravelWeChat { 
 
     /**
@@ -19952,6 +20068,8 @@ namespace  {
     class Captcha extends \Mews\Captcha\Facades\Captcha {}
 
     class Pinyin extends \Overtrue\LaravelPinyin\Facades\Pinyin {}
+
+    class Socialite extends \Overtrue\LaravelSocialite\Socialite {}
 
     class EasyWeChat extends \Overtrue\LaravelWeChat\Facade {}
 
