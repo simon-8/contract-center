@@ -114,6 +114,15 @@ return [
              'key_path'   => env('WECHAT_PAYMENT_KEY_PATH', ''),      // XXX: 绝对路径！！！！
              //'notify_url' => config('app.url').'/api/order/refund/wechat',// 默认支付结果通知地址
          ],
+         'app' => [
+             'sandbox' => false,
+             'app_id'  => 'wxadea5160bd54e0c9',
+             'mch_id'  => env('WECHAT_PAYMENT_MCH_ID', ''),
+             'key'     => env('WECHAT_PAYMENT_KEY', ''),
+             'cert_path'  => env('WECHAT_PAYMENT_CERT_PATH', ''),    // XXX: 绝对路径！！！！
+             'key_path'   => env('WECHAT_PAYMENT_KEY_PATH', ''),      // XXX: 绝对路径！！！！
+             //'notify_url' => config('app.url').'/api/order/refund/wechat',// 默认支付结果通知地址
+         ],
          // ...
      ],
 

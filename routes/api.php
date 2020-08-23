@@ -58,8 +58,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('repay/{orderid}', 'OrderController@reStore');
             Route::post('cancel/{orderid}', 'OrderController@cancel');
         });
-        Route::any('notify/{channel}', 'OrderController@notify')->name('order.notify');
-        Route::any('refund/{channel}', 'OrderController@refund')->name('order.refund');
+        Route::any('notify/{channel}/{gateway?}', 'OrderController@notify')->name('order.notify');
+        Route::any('refund/{channel}/{gateway?}', 'OrderController@refund')->name('order.refund');
     });
 
     Route::prefix('order-lawyer-confirm')->group(function() {
@@ -102,6 +102,11 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
                 Route::get('count/unread', 'MessageController@unreadCount');
                 Route::put('{message}/read', 'MessageController@updateRead');
             });
+        });
+
+        // 登录
+        Route::prefix('login')->group(function() {
+            Route::post('wechat', 'LoginController@wechat');
         });
     });
     Route::middleware('auth:api')->group(function () {

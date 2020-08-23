@@ -16,6 +16,7 @@ class User extends Authenticatable
 
     const CLIENT_ID_MINI_PROGRAM = 2;// 微信小程序
     const CLIENT_ID_WECHAT = 3;// 微信公众号
+    const CLIENT_ID_WECHAT_APP = 4;// 微信APP
 
     /**
      * The attributes that are mass assignable.
@@ -145,7 +146,7 @@ class User extends Authenticatable
      */
     public function miniGameOpenid()
     {
-        $userOauth = $this->oauth()->where('channel', 'miniprogram')->first();
+        $userOauth = $this->oauth()->where('channel', UserOauth::CHANNEL_WECHAT_MINI)->first();
         return $userOauth ? $userOauth->openid : null;
     }
 
@@ -155,10 +156,19 @@ class User extends Authenticatable
      */
     public function wechatOpenid()
     {
-        $userOauth = $this->oauth()->where('channel', 'wechat')->first();
+        $userOauth = $this->oauth()->where('channel', UserOauth::CHANNEL_WECHAT_OFFICIAL)->first();
         return $userOauth ? $userOauth->openid : null;
     }
 
+    /**
+     * 微信APP openid
+     * @return \Illuminate\Database\Eloquent\HigherOrderBuilderProxy|mixed|null
+     */
+    public function wechatAppOpenid()
+    {
+        $userOauth = $this->oauth()->where('channel', UserOauth::CHANNEL_WECHAT)->first();
+        return $userOauth ? $userOauth->openid : null;
+    }
 
     /**
      * @param $query

@@ -43,5 +43,10 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
-
+    // 微信
+    'wechat' => [
+        'client_id' => env('WECHAT_CLIENT_ID'),
+        'client_secret' => env('WECHAT_CLIENT_SECRET'),
+        'redirect' => ''
+    ],
 ];

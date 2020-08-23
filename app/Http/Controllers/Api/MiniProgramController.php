@@ -18,8 +18,6 @@ use App\Http\Resources\User AS UserResource;
 
 class MiniProgramController extends Controller
 {
-    const CHANNEL = 'miniprogram';
-
     protected $app;
 
     public function __construct(\Request $request)
@@ -87,13 +85,13 @@ class MiniProgramController extends Controller
         }
 
         // 记录openid信息
-        $oauthData = $userOauth->where('openid', $openid)->where('channel', self::CHANNEL)->first();
+        $oauthData = $userOauth->where('openid', $openid)->where('channel', UserOauth::CHANNEL_WECHAT_MINI)->first();
         if (!$oauthData) {
             $insertData = [
                 'userid' => 0,
                 'openid' => $openid,
                 'unionid'=> $unionid,
-                'channel'=> self::CHANNEL,
+                'channel'=> UserOauth::CHANNEL_WECHAT_MINI,
                 'client_id'=> $data['client_id']
             ];
             $oauthData = $userOauth->create($insertData);
@@ -102,7 +100,11 @@ class MiniProgramController extends Controller
         if (!$oauthData->userid && $unionid) {
             $relationOauth = $userOauth
                 ->where('unionid', $unionid)
-                ->whereIn('channel', [self::CHANNEL, WechatController::CHANNEL])
+                ->whereIn('channel', [
+                    UserOauth::CHANNEL_WECHAT,
+                    UserOauth::CHANNEL_WECHAT_MINI,
+                    UserOauth::CHANNEL_WECHAT_OFFICIAL,
+                ])
                 ->where('userid', '<>', 0)
                 ->first();
             if ($relationOauth) {
@@ -111,6 +113,7 @@ class MiniProgramController extends Controller
             }
         }
 
+        // todo 如果有unionid, 这里密码需要使用uniond生成, 否则其他微信登录密码会不对
         if (!$oauthData->userid) {
             $data['password'] = md5($openid);
 
@@ -124,7 +127,11 @@ class MiniProgramController extends Controller
             // 更新同unionid无userid的用户
             if ($unionid) {
                 $userOauth->where('unionid', $unionid)
-                    ->whereIn('channel', [self::CHANNEL, WechatController::CHANNEL])
+                    ->whereIn('channel', [
+                        UserOauth::CHANNEL_WECHAT,
+                        UserOauth::CHANNEL_WECHAT_MINI,
+                        UserOauth::CHANNEL_WECHAT_OFFICIAL,
+                    ])
                     ->where('userid', 0)->update(['userid' => $userData->id]);
             }
 
@@ -176,7 +183,7 @@ class MiniProgramController extends Controller
         if (!$userData) {
             return responseException(__('api.no_result'));
         }
-        $oauthData = $userOauth->where('channel', self::CHANNEL)->where('userid', $userData->id)->first();
+        $oauthData = $userOauth->where('channel', UserOauth::CHANNEL_WECHAT_MINI)->where('userid', $userData->id)->first();
         //$authService->removeToken($user, $userOauth->client_id);
 
         $client = \Laravel\Passport\Client::findOrFail($oauthData->client_id);

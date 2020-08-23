@@ -79,6 +79,8 @@ class OrderController extends BaseController
             $openid = $this->user->miniGameOpenid();
         } else if ($this->client_id === User::CLIENT_ID_WECHAT) {
             $openid = $this->user->wechatOpenid();
+        } else if ($this->client_id === User::CLIENT_ID_WECHAT_APP) {
+            $openid = $this->user->wechatAppOpenid();
         }
         return $openid;
     }
@@ -158,11 +160,12 @@ class OrderController extends BaseController
      */
     public function wechat(Order $order, $gateway = '')
     {
+        $configName = $gateway === 'app' ? 'app' : 'default';
         $config = [
             //'sandbox' => true,
-            'app_id' => config('wechat.payment.default.app_id'),
-            'mch_id' => config('wechat.payment.default.mch_id'),
-            'key'    => config('wechat.payment.default.key'),
+            'app_id' => config('wechat.payment.'.$configName.'.app_id'),
+            'mch_id' => config('wechat.payment.'.$configName.'.mch_id'),
+            'key'    => config('wechat.payment.'.$configName.'.key'),
         ];
 
         $app = Factory::payment($config);
@@ -171,7 +174,7 @@ class OrderController extends BaseController
             'out_trade_no' => $order->orderid,
             'total_fee' => $order->amount * 100,
             'spbill_create_ip' => \Request::ip(),
-            'notify_url' => route('api.order.notify', ['channel' => __FUNCTION__]),
+            'notify_url' => route('api.order.notify', ['channel' => __FUNCTION__, 'gateway' => strtolower($gateway),]),
             'trade_type' => $gateway ?: 'JSAPI',
             'openid' => $order->openid,
         ];
@@ -198,32 +201,36 @@ class OrderController extends BaseController
     /**
      * 转发通知
      * @param $channel
+     * @param string $gateway
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \EasyWeChat\Kernel\Exceptions\Exception
      */
-    public function notify($channel)
+    public function notify($channel, $gateway = '')
     {
         if ($channel === 'wechat') {
-            return $this->notifyWechat();
+            return $this->notifyWechat($gateway);
         }
     }
 
     /**
      * 微信回调通知
+     * @param string $gateway
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \EasyWeChat\Kernel\Exceptions\Exception
      */
-    protected function notifyWechat()
+    protected function notifyWechat($gateway = '')
     {
+        $configName = $gateway === 'app' ? 'app' : 'default';
         $config = [
-            'app_id' => config('wechat.payment.default.app_id'),
-            'mch_id' => config('wechat.payment.default.mch_id'),
-            'key'    => config('wechat.payment.default.key'),
+            //'sandbox' => true,
+            'app_id' => config('wechat.payment.'.$configName.'.app_id'),
+            'mch_id' => config('wechat.payment.'.$configName.'.mch_id'),
+            'key'    => config('wechat.payment.'.$configName.'.key'),
         ];
         \Log::debug('notify => '. file_get_contents('php://input'));
 
         $app = Factory::payment($config);
-        $response = $app->handlePaidNotify(function($message, $fail){
+        $response = $app->handlePaidNotify(function($message, $fail) use($gateway) {
             logger('notifyWechat data ==> ', $message);
 
             if ($message['return_code'] !== 'SUCCESS') {
@@ -243,7 +250,7 @@ class OrderController extends BaseController
                 \Log::info('notifyWechat result ==> 订单已付款或已取消');
                 return true;
             }
-            if (!$this->wechatQuery($order->orderid)) {
+            if (!$this->wechatQuery($order->orderid, $gateway)) {
                 \Log::info('notifyWechat result ==> 订单状态校验失败');
                 return $fail('订单状态校验失败');
             }
@@ -272,15 +279,18 @@ class OrderController extends BaseController
     /**
      * 微信订单查询 (根据商户订单号)
      * @param $out_trade_no
+     * @param string $gateway
      * @return bool
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
-    protected function wechatQuery($out_trade_no)
+    protected function wechatQuery($out_trade_no, $gateway = '')
     {
+        $configName = $gateway === 'app' ? 'app' : 'default';
         $config = [
-            'app_id' => config('wechat.payment.default.app_id'),
-            'mch_id' => config('wechat.payment.default.mch_id'),
-            'key'    => config('wechat.payment.default.key'),
+            //'sandbox' => true,
+            'app_id' => config('wechat.payment.'.$configName.'.app_id'),
+            'mch_id' => config('wechat.payment.'.$configName.'.mch_id'),
+            'key'    => config('wechat.payment.'.$configName.'.key'),
         ];
 
         $app = Factory::payment($config);
