@@ -88,6 +88,9 @@ class LoginController extends BaseController
         } else {
             $userData = $userOauth->user;
         }
+        logger(__METHOD__, [$userData]);
+        logger(__METHOD__, [$userOauth]);
+        if (!$userData) return responseException(__('auth.create_user_failed'));
 
         // 更新同unionid无userid的用户
         UserOauth::whereUnionid($unionid)

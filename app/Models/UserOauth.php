@@ -35,6 +35,6 @@ class UserOauth extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\UserOauth', 'userid', 'id');
+        return $this->belongsTo('App\Models\User', 'userid', 'id');
     }
 }
