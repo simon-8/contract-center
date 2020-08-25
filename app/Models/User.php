@@ -15,8 +15,8 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
 
     const CLIENT_ID_MINI_PROGRAM = 2;// 微信小程序
-    const CLIENT_ID_WECHAT = 3;// 微信公众号
-    const CLIENT_ID_WECHAT_APP = 4;// 微信APP
+    const CLIENT_ID_WECHAT_APP = 3;// 微信APP
+    const CLIENT_ID_WECHAT = 4;// 微信公众号
 
     /**
      * The attributes that are mass assignable.

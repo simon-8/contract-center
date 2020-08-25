@@ -160,7 +160,7 @@ class OrderController extends BaseController
      */
     public function wechat(Order $order, $gateway = '')
     {
-        $configName = $gateway === 'app' ? 'app' : 'default';
+        $configName = $gateway === 'APP' ? 'app' : 'default';
         $config = [
             //'sandbox' => true,
             'app_id' => config('wechat.payment.'.$configName.'.app_id'),
@@ -220,7 +220,7 @@ class OrderController extends BaseController
      */
     protected function notifyWechat($gateway = '')
     {
-        $configName = $gateway === 'app' ? 'app' : 'default';
+        $configName = $gateway === 'APP' ? 'app' : 'default';
         $config = [
             //'sandbox' => true,
             'app_id' => config('wechat.payment.'.$configName.'.app_id'),
@@ -285,7 +285,7 @@ class OrderController extends BaseController
      */
     protected function wechatQuery($out_trade_no, $gateway = '')
     {
-        $configName = $gateway === 'app' ? 'app' : 'default';
+        $configName = $gateway === 'APP' ? 'app' : 'default';
         $config = [
             //'sandbox' => true,
             'app_id' => config('wechat.payment.'.$configName.'.app_id'),
