@@ -12,6 +12,7 @@ use App\Models\UserOauth;
 use App\Redis\UserRedis;
 use App\Services\AuthService;
 use EasyWeChat\Factory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 //use Illuminate\Support\Facades\Crypt;
 use App\Http\Resources\User AS UserResource;
@@ -77,6 +78,7 @@ class MiniProgramController extends Controller
             $encryptedData = $request::input('encryptedData', '');
             if ($iv && $encryptedData) {
                 $decryptedData = $this->app->encryptor->decryptData($sessionKey, $iv, $encryptedData);
+                info($decryptedData);
                 $unionid = $decryptedData['unionId'];
                 if (!$unionid) {
                     return responseException(__('api.mini_program_no_join_open_platform'));
@@ -96,6 +98,8 @@ class MiniProgramController extends Controller
             ];
             $oauthData = $userOauth->create($insertData);
         }
+        if (!$oauthData->unionid) $oauthData->unionid = $unionid;
+
         // 根据同unionid已关联微信账号userid进行绑定
         if (!$oauthData->userid && $unionid) {
             $relationOauth = $userOauth
@@ -146,10 +150,18 @@ class MiniProgramController extends Controller
             $userData->last_login_time = $data['last_login_time'];
             $userData->save();
         }
+        if ($oauthData->isDirty()) $oauthData->save();
 
         //$authService->removeToken($userData, $data['client_id']);
         $data['username'] = $userData->id;
         $data['password'] = md5($openid);
+
+        // 使用用户数据中的client_id作为登录客户端
+        $data['client_id'] = $userData->client_id;
+        $data['client_secret'] = Cache::remember('client'.$userData['client_id'], now()->addDay(), function() use ($userData) {
+            return \Laravel\Passport\Client::find($userData['client_id'])->getOriginal('secret');
+        });
+
         try {
             //$token = $userData->createToken('')->accessToken;
             $userData->token = $authService->passwordToToken($data);

@@ -118,8 +118,8 @@ class LoginController extends BaseController
     {
         if (empty($data['password'])) throw new \Exception('参数缺失: password');
 
-        $clientSecret = Cache::remember('client'.$data['client_id'], now()->addDay(), function() use ($data) {
-            return \Laravel\Passport\Client::find($data['client_id'])->getOriginal('secret');
+        $clientSecret = Cache::remember('client'.$user['client_id'], now()->addDay(), function() use ($user) {
+            return \Laravel\Passport\Client::find($user['client_id'])->getOriginal('secret');
         });
 
         $data['username'] = $user->id;
