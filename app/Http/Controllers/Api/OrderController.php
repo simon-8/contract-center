@@ -185,16 +185,29 @@ class OrderController extends BaseController
             return responseException($response['return_msg']);
         }
         // 二次签名
-        $params = [
-            'appId'     => $config['app_id'],
-            'timeStamp' => (string) time(),
-            'nonceStr'  => $response['nonce_str'],
-            'package'   => 'prepay_id=' . $response['prepay_id'],
-            'signType'  => 'MD5',
-        ];
+        if ($gateway === 'APP') {
 
-        $params['paySign'] = generate_sign($params, $config['key']);
+            $params = [
+                'appid' => $config['app_id'],
+                'noncestr'  => $response['nonce_str'],
+                'package'   => 'Sign=WXPay',
+                'partnerid' => $config['mch_id'],
+                'prepayid' => $response['prepay_id'],
+                'timestamp' => (string) time(),
+            ];
+            $params['sign'] = generate_sign($params, $config['key']);
 
+        } else {
+
+            $params = [
+                'appId'     => $config['app_id'],
+                'timeStamp' => (string) time(),
+                'nonceStr'  => $response['nonce_str'],
+                'package'   => 'prepay_id=' . $response['prepay_id'],
+                'signType'  => 'MD5',
+            ];
+            $params['paySign'] = generate_sign($params, $config['key']);
+        }
         return responseMessage('', $params);
     }
 
