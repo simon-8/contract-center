@@ -104,35 +104,8 @@ class LoginController extends BaseController
             ]);
 
         // 使用unionid做为密码
-        return $this->loginWithOauth($userData, array_merge($data, ['password' => md5($unionid)]));
-    }
-
-    /**
-     * 使用 oauth 登录
-     * @param User $user
-     * @param array $data
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
-    protected function loginWithOauth(User $user, array $data)
-    {
-        if (empty($data['password'])) throw new \Exception('参数缺失: password');
-
-        $clientSecret = Cache::remember('client'.$user['client_id'], now()->addDay(), function() use ($user) {
-            return \Laravel\Passport\Client::find($user['client_id'])->getOriginal('secret');
-        });
-
-        $data['username'] = $user->id;
-        $data['client_id'] = $user->client_id;
-        $data['client_secret'] = $clientSecret;
-        try {
-            //(new AuthService())->removeToken($userData, $data['client_id']);
-            $user->token = (new AuthService())->passwordToToken($data);
-        } catch (\Exception $e) {
-            return responseException($e->getMessage());
-        }
-
-        $user->loadMissing('company');
+        $authService = new AuthService();
+        $user = $authService->loginWithOauth($userData, array_merge($data, ['password' => md5($unionid)]));
         return responseMessage('', $user);
     }
 }

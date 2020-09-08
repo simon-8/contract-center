@@ -69,23 +69,6 @@ class OrderController extends BaseController
     }
 
     /**
-     * 获取用户openid
-     * @return string
-     */
-    public function getOpenid()
-    {
-        $openid = '';
-        if ($this->client_id === User::CLIENT_ID_MINI_PROGRAM) {
-            $openid = $this->user->miniGameOpenid();
-        } else if ($this->client_id === User::CLIENT_ID_WECHAT) {
-            $openid = $this->user->wechatOpenid();
-        } else if ($this->client_id === User::CLIENT_ID_WECHAT_APP) {
-            $openid = $this->user->wechatAppOpenid();
-        }
-        return $openid;
-    }
-
-    /**
      * 重新付款
      * @param Order $order
      * @param $orderid

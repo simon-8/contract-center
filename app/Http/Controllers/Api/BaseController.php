@@ -39,6 +39,8 @@ class BaseController extends Controller
             $openid = $this->user->miniGameOpenid();
         } else if ($this->client_id === User::CLIENT_ID_WECHAT) {
             $openid = $this->user->wechatOpenid();
+        } else if ($this->client_id === User::CLIENT_ID_WECHAT_APP) {
+            $openid = $this->user->wechatAppOpenid();
         }
         return $openid;
     }

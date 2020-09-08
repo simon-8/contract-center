@@ -215,4 +215,31 @@ class AuthService
     {
         $user->tokens()->where('client_id', $clientId)->delete();
     }
+
+    /**
+     * 使用 oauth 登录
+     * @param User $user
+     * @param array $data
+     * @return User|\Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function loginWithOauth(User $user, array $data)
+    {
+        if (empty($data['password'])) throw new \Exception('参数缺失: password');
+
+        $clientSecret = getClientSecret($user['client_id']);
+
+        $data['username'] = $user->id;
+        $data['client_id'] = $user->client_id;
+        $data['client_secret'] = $clientSecret;
+        try {
+            //(new AuthService())->removeToken($userData, $data['client_id']);
+            $user->token = (new AuthService())->passwordToToken($data);
+        } catch (\Exception $e) {
+            return responseException($e->getMessage());
+        }
+
+        $user->loadMissing('company');
+        return $user;
+    }
 }

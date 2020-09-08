@@ -7,6 +7,7 @@
  */
 
 use App\Caches\SettingCache;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * 获取资源路径
@@ -524,5 +525,34 @@ if (!function_exists('getSetting')) {
     function getSetting($key, $default = null)
     {
         return SettingCache::get($key) ?: $default;
+    }
+}
+
+if (!function_exists('getClientSecret')) {
+    /**
+     * 获取指定客户端 secret
+     * @param $clientId
+     * @return mixed
+     */
+    function getClientSecret($clientId) {
+        return Cache::remember('client'. $clientId, now()->addDay(), function() use ($clientId) {
+            return \Laravel\Passport\Client::find($clientId)->getOriginal('secret');
+        });
+    }
+}
+
+/**
+ * 调用其他控制器
+ */
+if (!function_exists('call_controller_method')) {
+
+    function call_controller_method($action = '')
+    {
+        list($class, $method) = explode('@', $action);
+
+        return (new \Illuminate\Routing\ControllerDispatcher(app()))->dispatch(
+            \Request::route(), app()->make($class), $method
+        );
+
     }
 }

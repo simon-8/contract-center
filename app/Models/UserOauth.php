@@ -37,4 +37,21 @@ class UserOauth extends Model
     {
         return $this->belongsTo('App\Models\User', 'userid', 'id');
     }
+
+    /**
+     * 获取微信登录用户ID
+     * @param string $unionid
+     * @return int|mixed
+     */
+    public static function getUseridByWechat(string $unionid)
+    {
+        return self::where('userid', '>', 0)
+            ->where('unionid', $unionid)
+            ->whereIn('channel', [
+                self::CHANNEL_WECHAT,
+                self::CHANNEL_WECHAT_MINI,
+                self::CHANNEL_WECHAT_OFFICIAL
+            ])
+            ->value('userid') ?: 0;
+    }
 }
