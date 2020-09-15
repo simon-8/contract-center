@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 use tech\constants\UserType;
@@ -477,4 +478,99 @@ class EsignService
     //    $imageBase64 = end($ret);
     //    return $imageBase64;
     //}
+
+    protected function v2RequestHeader()
+    {
+        return [
+            'X-Tsign-Open-App-Id' => config('esign.appid'),
+            'X-Tsign-Open-Token' => $this->v2GetToken(),
+            'Content-Type' => 'application/json',
+        ];
+    }
+
+    protected function v2RequestGet($api, $data)
+    {
+        if (!empty($data) && is_array($data)) {
+            $data = http_build_query($data);
+        }
+        $api = 'https://smlopenapi.esign.cn'. $api;
+        $ch = curl_init($api . '?' . $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        if (!empty($_SERVER['HTTP_USER_AGENT'])) curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        //curl_setopt($ch, CURLOPT_POST, TRUE);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->v2RequestHeader());
+        $response = curl_exec($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
+        if (empty($error)) {
+            return $response;
+        }
+        throw new \Exception($error);
+    }
+
+    protected function v2RequestPost($api, $data)
+    {
+        //if (!empty($data) && is_array($data)) {
+        //    $data = http_build_query($data);
+        //}
+        $api = 'https://smlopenapi.esign.cn'. $api;
+        $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $ch = curl_init($api);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->v2RequestHeader());
+        $response = curl_exec($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
+        if (empty($error)) {
+            return $response;
+        }
+        throw new \Exception($error);
+    }
+
+    protected function v2GetToken()
+    {
+        $token = Cache::get('esign:v2:token');
+        if ($token) return $token;
+
+        $url = '/v1/oauth2/access_token';
+        $response = $this->v2RequestGet($url, [
+            'appId' => config('esign.appid'),
+            'secret' => config('esign.appSecret'),
+            'grantType' => 'client_credentials',
+        ]);
+        $response = json_decode($response, true);
+        if ($response['code']) throw new \Exception($response['message']);
+        $token = $response['data']['token'];
+        $expireMs = $response['data']['expiresIn'];// 毫秒
+        Cache::put('esign:v2:token', $token, Carbon::createFromTimestampMs($expireMs));
+        return $token;
+    }
+
+    public function getFaceUrl($accountId)
+    {
+        $url = '/v2/identity/auth/web/{$accountId}/indivIdentityUrl';
+        $response = $this->v2RequestPost($url, [
+            'accountId' => $accountId,
+            'authType' => 'PSN_FACEAUTH_BYURL',
+            'availableAuthTypes' => 'PSN_FACEAUTH_BYURL',
+            //'receiveUrlMobileNo',
+            //'contextInfo',
+            //'authType',
+        ]);
+        $response = json_decode($response, true);
+        if ($response['code']) throw new \Exception($response['message']);
+        return $response['data']['shortLink'];
+    }
 }
