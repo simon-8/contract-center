@@ -152,6 +152,7 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
 
     Route::post('company-order/notify/{pid}', 'CompanyOrderController@notify')->name('companyOrder.notify');
 
+    Route::get('test1', 'IndexController@test');
     //Route::get('test', function() {
     //    (new \App\Services\RealNameService())->teleComAuth([
     //        'mobile' => 17788561708,
