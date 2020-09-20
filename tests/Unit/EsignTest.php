@@ -10,18 +10,37 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EsignTest extends TestCase
 {
-    public function testIndex()
+    public $afterApplicationCreatedCallbacks = [];
+
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+    }
+
+    public function testGetToken()
     {
         $service = new EsignFaceService();
-        $url = $service->getFaceUrl('A61B017D62AD4D0AB76AB29C85D3D2A8');
-        info(__METHOD__);
-        //info($url);
-        //$this->assert
-        //$url = '/api/banner/1';
-        //$response = $this->get($url);
-        //$response->assertOk();
-        //$data = json_decode($response->getContent(), true);
-        //$data = $data['data'];
-        //$this->assertArrayHasKey('id', array_shift($data));
+        $token = $service->getToken();
+        $this->assertIsString($token);
     }
+
+    public function testUserCreate()
+    {
+        $service = new EsignFaceService();
+        $accountId = $service->userCreate(10000);
+        $this->assertIsString($accountId);
+    }
+
+    public function testUserDel()
+    {
+        $service = new EsignFaceService();
+    }
+    //
+    //public function testFaceUrl()
+    //{
+    //    $service = new EsignFaceService();
+    //    $response = $service->getFaceUrl('8dddcbbc54914fb1b28423f627a6f07a');
+    //    info(__METHOD__, [$response]);
+    //    $this->assertIsString($response);
+    //}
 }

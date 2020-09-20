@@ -119,6 +119,10 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::delete('', 'UserRealNameController@destroy');
             Route::post('confirm', 'UserRealNameController@confirm');
             Route::get('cancel', 'UserRealNameController@cancel');
+
+            Route::get('face-url/person', 'UserRealNameController@faceUrlPerson');
+            //Route::get('face-url/company', 'UserRealNameController@faceUrlCompany');
+            Route::post('');
         });
         Route::prefix('company')->group(function() {
             //Route::get('', 'CompanyController@index');

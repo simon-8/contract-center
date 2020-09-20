@@ -22,11 +22,13 @@ use App\Models\UserRealName;
 
 use App\Http\Resources\UserRealName as UserRealNameResource;
 use App\Services\ContractService;
+use App\Services\EsignFaceService;
 use App\Services\EsignService;
 use App\Services\Ocr\IdCardService;
 use App\Services\RealNameService;
 use \DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use tech\constants\PersonTemplateType;
@@ -325,4 +327,40 @@ class UserRealNameController extends BaseController
         $this->clearCache();
         return responseMessage(__('api.success'));
     }
+
+    /**
+     * 获取个人实名认证 人脸识别地址
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function faceUrlPerson(Request $request)
+    {
+        $service = new EsignFaceService();
+        if (!$this->user->esignUser) {
+            $accountId = $service->userCreate($this->user->id);
+            EsignUser::create([
+               'userid' => $this->user->id,
+               'accountid' => $accountId,
+               'type' => EsignUser::TYPE_PERSON,
+            ]);
+        }
+        $shortUrl = $service->getFaceUrl($this->user->esignUser->accountid);
+        return responseMessage(__('api.success'), [
+            'url' => $shortUrl,
+        ]);
+    }
+
+    //public function faceUrlCompany(Request $request)
+    //{
+    //    $service = new EsignFaceService();
+    //    if (!$this->user->esignUser) {
+    //        $accountId = $service->userCreate($this->user->id);
+    //        EsignUser::create([
+    //            'userid' => $this->user->id,
+    //            'accountid' => $accountId,
+    //            'type' => EsignUser::TYPE_PERSON,
+    //        ]);
+    //    }
+    //}
 }
