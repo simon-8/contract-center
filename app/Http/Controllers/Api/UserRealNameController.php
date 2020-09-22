@@ -345,10 +345,16 @@ class UserRealNameController extends BaseController
                'type' => EsignUser::TYPE_PERSON,
             ]);
         }
-        $urlData = $service->getFaceUrl($this->user->esignUser->accountid);
+        $esignUser = EsignUser::where('userid', $this->user->id)->first();
+        $urlData = $service->getFaceUrl($esignUser->accountid);
         return responseMessage(__('api.success'), $urlData);
     }
 
+    public function faceVarify()
+    {
+    //    1443705839239039013
+
+    }
     //public function faceUrlCompany(Request $request)
     //{
     //    $service = new EsignFaceService();

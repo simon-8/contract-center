@@ -31,9 +31,9 @@ class EsignFaceService
     {
         // 单元测试时使用沙盒
         // if (app()->runningUnitTests()) {
-            self::$apiDomain = 'https://smlopenapi.esign.cn';
+        //    self::$apiDomain = 'https://smlopenapi.esign.cn';
         // } else {
-        //     self::$apiDomain = 'https://openapi.esign.cn';
+             self::$apiDomain = 'https://openapi.esign.cn';
         // }
     }
 
