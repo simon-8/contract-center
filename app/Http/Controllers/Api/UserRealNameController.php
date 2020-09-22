@@ -345,10 +345,8 @@ class UserRealNameController extends BaseController
                'type' => EsignUser::TYPE_PERSON,
             ]);
         }
-        $shortUrl = $service->getFaceUrl($this->user->esignUser->accountid);
-        return responseMessage(__('api.success'), [
-            'url' => $shortUrl,
-        ]);
+        $urlData = $service->getFaceUrl($this->user->esignUser->accountid);
+        return responseMessage(__('api.success'), $urlData);
     }
 
     //public function faceUrlCompany(Request $request)

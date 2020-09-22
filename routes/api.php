@@ -122,7 +122,6 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
 
             Route::get('face-url/person', 'UserRealNameController@faceUrlPerson');
             //Route::get('face-url/company', 'UserRealNameController@faceUrlCompany');
-            Route::post('');
         });
         Route::prefix('company')->group(function() {
             //Route::get('', 'CompanyController@index');

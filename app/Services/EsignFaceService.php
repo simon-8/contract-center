@@ -30,11 +30,11 @@ class EsignFaceService
     public function __construct()
     {
         // 单元测试时使用沙盒
-        if (app()->runningUnitTests()) {
+        // if (app()->runningUnitTests()) {
             self::$apiDomain = 'https://smlopenapi.esign.cn';
-        } else {
-            self::$apiDomain = 'https://openapi.esign.cn';
-        }
+        // } else {
+        //     self::$apiDomain = 'https://openapi.esign.cn';
+        // }
     }
 
     protected function requestHeader()
@@ -110,6 +110,7 @@ class EsignFaceService
         curl_exec($ch);
         $response = ob_get_contents();
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        ob_end_flush();
         curl_close($ch);
         //dd($return_content, $return_code);
         info(__METHOD__, [$response, $responseCode]);
@@ -215,7 +216,7 @@ class EsignFaceService
 
         $response = $this->post(str_replace('{accountId}', $accountId, self::API_USER_INDENT_FACE), $params);
         if ($response['code']) throw new \Exception($response['message']);
-        return $response['data']['shortLink'];
+        return $response['data'];
     }
 
     /**
