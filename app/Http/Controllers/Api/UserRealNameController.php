@@ -350,10 +350,19 @@ class UserRealNameController extends BaseController
         return responseMessage(__('api.success'), $urlData);
     }
 
-    public function faceVarify()
+    public function verifyIdentityResult(Request $request)
     {
     //    1443705839239039013
+        $service = new EsignFaceService();
+        $data = $service->identityDetail($request->flowId);
+        if (strtolower($data['status']) !== 'success') {
+            return responseException($data['failReason']);
+        }
+        $userRealName = UserRealName::firstOrCreate(['userid' => $this->user->id], [
 
+        ]);
+        $accountId = $data['indivInfo']['accountId'];
+        $esignUser = EsignUser::where('userid', $this->user->id)->first();
     }
     //public function faceUrlCompany(Request $request)
     //{

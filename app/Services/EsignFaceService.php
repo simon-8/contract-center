@@ -307,13 +307,12 @@ class EsignFaceService
     /**
      * 查询认证详情
      * @param $flowId
-     * @return bool
+     * @return bool|mixed
      * @throws \Exception
      */
     public function identityDetail($flowId)
     {
         $response = $this->get(str_replace('{flowId}', $flowId, self::API_IDENTITY_DETAIL));
-        dd($response);
         if ($response['code']) throw new \Exception($response['message']);
         return $response['data'];
         if ($response['data']['objectType'] === 'INDIVIDUAL') {
