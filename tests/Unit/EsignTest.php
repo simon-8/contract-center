@@ -23,18 +23,32 @@ class EsignTest extends TestCase
         $token = $service->getToken();
         $this->assertIsString($token);
     }
+    //
+    // public function testUserCreate()
+    // {
+    //     $service = new EsignFaceService();
+    //     $accountId = $service->userCreate(10000);
+    //     $this->assertIsString($accountId);
+    // }
+    //
+    // public function testUserDel()
+    // {
+    //     $service = new EsignFaceService();
+    // }
 
-    public function testUserCreate()
+    public function testUserDetail()
     {
         $service = new EsignFaceService();
-        $accountId = $service->userCreate(10000);
-        $this->assertIsString($accountId);
+        $response = $service->userDetail('125c74a5091d4f4c88c8f1607bb7fa02');
+        dd($response);
     }
 
-    public function testUserDel()
-    {
-        $service = new EsignFaceService();
-    }
+    // public function testIdentifyDetail()
+    // {
+    //     $service = new EsignFaceService();
+    //     $response = $service->identityDetail('1443705839239039013');
+    //     dd($response);
+    // }
     //
     //public function testFaceUrl()
     //{

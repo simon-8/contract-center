@@ -19,22 +19,23 @@ class EsignFaceService
     const API_USER_CREATE = '/v1/accounts/createByThirdPartyUserId';
     const API_USER_DEL = '/v1/accounts/{accountId}';
     const API_USER_INDENT_FACE = '/v2/identity/auth/web/{accountId}/indivIdentityUrl';
+    const API_USER_DETAIL = '/v1/accounts/{accountId}';
 
     // 公司
     const API_COMPANY_CREATE = '/v1/organizations/createByThirdPartyUserId';
     const API_COMPANY_DEL = '/v1/organizations/{orgId}';
 
-    // 查询认真
+    // 查询认证
     const API_IDENTITY_DETAIL = '/v2/identity/auth/api/common/{flowId}/detail';
 
     public function __construct()
     {
         // 单元测试时使用沙盒
-        // if (app()->runningUnitTests()) {
-        //    self::$apiDomain = 'https://smlopenapi.esign.cn';
-        // } else {
+        if (config('esign.debug')) {
+           self::$apiDomain = 'https://smlopenapi.esign.cn';
+        } else {
              self::$apiDomain = 'https://openapi.esign.cn';
-        // }
+        }
     }
 
     protected function requestHeader()
@@ -54,10 +55,12 @@ class EsignFaceService
      * @return bool|string
      * @throws \Exception
      */
-    protected function requestGet($api, $data, $header = [])
+    protected function requestGet($api, $data = [], $header = [])
     {
         if (!empty($data) && is_array($data)) {
             $data = http_build_query($data);
+        } else {
+            $data = '';
         }
         $ch = curl_init($api . '?' . $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -66,7 +69,14 @@ class EsignFaceService
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
         if (!empty($_SERVER['HTTP_USER_AGENT'])) curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        if ($header) curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+
+        if ($header !== false) {
+            $header[] = 'X-Tsign-Open-App-Id:'. config('esign.appid');
+            $header[] = 'Content-Type:application/json';
+            if ($token = Cache::get('esign:v2:token')) $header[] = "X-Tsign-Open-Token:{$token}";
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        }
+        info($header);
         $response = curl_exec($ch);
         $error = curl_error($ch);
         curl_close($ch);
@@ -118,17 +128,11 @@ class EsignFaceService
         throw new \Exception($responseCode);
     }
 
-    /**
-     * @param $api
-     * @param $data
-     * @return mixed
-     * @throws \Exception
-     */
-    protected function get($api, $data = [])
+    protected function get($api, $data = [], $header = [])
     {
         $url = self::$apiDomain . $api;
         info('EsignGetRequest ==> ' . (is_array($data) ? var_export($data, true) : $data));
-        $response = $this->requestGet($url, $data);
+        $response = $this->requestGet($url, $data, $header);
         info('EsignGetResponse ==> ' . $response);
         return json_decode($response, true);
     }
@@ -178,7 +182,7 @@ class EsignFaceService
             'secret' => config('esign.appSecret'),
             'grantType' => 'client_credentials',
         ];
-        $response = $this->get(self::API_AUTH_TOKEN, $params);
+        $response = $this->get(self::API_AUTH_TOKEN, $params, false);
         if ($response['code']) throw new \Exception($response['message']);
 
         $token = $response['data']['token'];
@@ -239,14 +243,28 @@ class EsignFaceService
 
     /**
      * 删除用户
+     * @param $accountId
      * @return bool
      * @throws \Exception
      */
-    public function userDel()
+    public function userDel($accountId)
     {
-        $response = $this->delete(str_replace('{accountId}', '', self::API_USER_DEL), []);
+        $response = $this->delete(str_replace('{accountId}', $accountId, self::API_USER_DEL), []);
         if ($response['code']) throw new \Exception($response['message']);
         return true;
+    }
+
+    /**
+     * 用户详情
+     * @param $accountId
+     * @return mixed
+     * @throws \Exception
+     */
+    public function userDetail($accountId)
+    {
+        $response = $this->get(str_replace('{accountId}', $accountId, self::API_USER_DETAIL));
+        if ($response['code']) throw new \Exception($response['message']);
+        return $response['data'];
     }
 
     /**
@@ -295,8 +313,9 @@ class EsignFaceService
     public function identityDetail($flowId)
     {
         $response = $this->get(str_replace('{flowId}', $flowId, self::API_IDENTITY_DETAIL));
+        dd($response);
         if ($response['code']) throw new \Exception($response['message']);
-
+        return $response['data'];
         if ($response['data']['objectType'] === 'INDIVIDUAL') {
             /*
              * ['indivInfo']['name']
