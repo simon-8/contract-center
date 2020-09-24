@@ -153,7 +153,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
         });
         //Route::apiResource('user-real-name', 'UserRealNameController');
     });
-
+    Route::post('user-real-name/notify/identity', 'UserRealNameController@identityNotify')->name('userRealName.identityNotify');
+    Route::get('user-real-name/redirect/identity', 'UserRealNameController@identityRedirect')->name('userRealName.identityRedirect');
     Route::post('company-order/notify/{pid}', 'CompanyOrderController@notify')->name('companyOrder.notify');
 
     Route::get('test1', 'IndexController@test');

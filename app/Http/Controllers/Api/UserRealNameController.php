@@ -347,6 +347,9 @@ class UserRealNameController extends BaseController
         }
         $esignUser = EsignUser::where('userid', $this->user->id)->first();
         try {
+            //$contextInfo = [
+            //    'notifyUrl' => route('api.userRealName.identityNotify'),
+            //];
             $urlData = $service->getFaceUrl($esignUser->accountid);
         } catch (\Exception $e) {
             return responseException($e->getMessage());
@@ -366,7 +369,10 @@ class UserRealNameController extends BaseController
         $this->validateWith([
             'flowId' => 'required',
         ]);
-
+        // 异步已通知过, 已认证
+        if ($this->user->vtruename) {
+            return responseMessage(__('api.success'));
+        }
         $service = new EsignFaceService();
         $data = $service->identityDetail($request->flowId);
         if (strtolower($data['status']) !== 'success') {
@@ -381,6 +387,48 @@ class UserRealNameController extends BaseController
         $this->user->vtruename = 1;
         $this->user->save();
         return responseMessage(__('api.success'));
+    }
+
+    /**
+     * E签宝异步通知 传递flowId, 需根据flowId查询认证结果
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function identityNotify(Request $request)
+    {
+        if (!$request->success) {
+            return responseException(__('api.failed'));
+        }
+        $service = new EsignFaceService();
+        $data = $service->identityDetail($request->flowId);
+        if (strtolower($data['status']) !== 'success') {
+            return responseException($data['failReason']);
+        }
+        $esignUser = EsignUser::where('accountid', $request->accountId)->with('user')->first();
+        if (!$esignUser) {
+            return responseException(__('auth.no_register'));
+        }
+        $user = $esignUser->user;
+        $userRealName = UserRealName::firstOrCreate([
+            'userid' => $user->id
+        ], [
+            'truename' => $data['indivInfo']['name'],
+            'idcard' => $data['indivInfo']['certNo'],
+        ]);
+        $user->vtruename = 1;
+        $user->save();
+        return responseMessage(__('api.success'));
+    }
+
+    /**
+     * 认证后的跳转地址
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function identityReturn(Request $request)
+    {
+
+        return view('api.user-real-name.identity-return');
     }
 
     public function test()
