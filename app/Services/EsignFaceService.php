@@ -95,6 +95,7 @@ class EsignFaceService
     protected function requestPost($api, $data, $method = '')
     {
         $ch = curl_init($api);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -116,11 +117,11 @@ class EsignFaceService
                 default:
             }
         }
-        ob_start();
-        curl_exec($ch);
-        $response = ob_get_contents();
+        // ob_start();
+        $response = curl_exec($ch);
+        // $response = ob_get_contents();
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        ob_end_flush();
+        // ob_end_flush();
         curl_close($ch);
         //dd($return_content, $return_code);
         info(__METHOD__, [$response, $responseCode]);

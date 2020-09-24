@@ -120,7 +120,8 @@ Route::prefix('/')->namespace('Api')->name('api.')->group(function () {
             Route::post('confirm', 'UserRealNameController@confirm');
             Route::get('cancel', 'UserRealNameController@cancel');
 
-            Route::get('face-url/person', 'UserRealNameController@faceUrlPerson');
+            Route::get('identity-url', 'UserRealNameController@identityUrl');
+            Route::get('identity-verify', 'UserRealNameController@identityVerfiy');
             //Route::get('face-url/company', 'UserRealNameController@faceUrlCompany');
         });
         Route::prefix('company')->group(function() {

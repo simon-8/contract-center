@@ -21,8 +21,10 @@ class BaseController extends Controller
 
     public function __construct(\Request $request)
     {
-        $user = $request::user('api');
-        if ($user) $this->user = $user;
+        if ($request::hasHeader('Authorization')) {
+            $user = $request::user('api');
+            if ($user) $this->user = $user;
+        }
         if ($request::hasHeader('client-id')) {
             $this->client_id = intval($request::header('client-id'));
         }

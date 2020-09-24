@@ -334,7 +334,7 @@ class UserRealNameController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function faceUrlPerson(Request $request)
+    public function identityUrl(Request $request)
     {
         $service = new EsignFaceService();
         if (!$this->user->esignUser) {
@@ -346,34 +346,45 @@ class UserRealNameController extends BaseController
             ]);
         }
         $esignUser = EsignUser::where('userid', $this->user->id)->first();
-        $urlData = $service->getFaceUrl($esignUser->accountid);
+        try {
+            $urlData = $service->getFaceUrl($esignUser->accountid);
+        } catch (\Exception $e) {
+            return responseException($e->getMessage());
+        }
+
         return responseMessage(__('api.success'), $urlData);
     }
 
-    public function verifyIdentityResult(Request $request)
+    /**
+     * 实名结果查询
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function identityVerfiy(Request $request)
     {
-    //    1443705839239039013
+        $this->validateWith([
+            'flowId' => 'required',
+        ]);
+
         $service = new EsignFaceService();
         $data = $service->identityDetail($request->flowId);
         if (strtolower($data['status']) !== 'success') {
             return responseException($data['failReason']);
         }
-        $userRealName = UserRealName::firstOrCreate(['userid' => $this->user->id], [
-
+        $userRealName = UserRealName::firstOrCreate([
+            'userid' => $this->user->id
+        ], [
+            'truename' => $data['indivInfo']['name'],
+            'idcard' => $data['indivInfo']['certNo'],
         ]);
-        $accountId = $data['indivInfo']['accountId'];
-        $esignUser = EsignUser::where('userid', $this->user->id)->first();
+        $this->user->vtruename = 1;
+        $this->user->save();
+        return responseMessage(__('api.success'));
     }
-    //public function faceUrlCompany(Request $request)
-    //{
-    //    $service = new EsignFaceService();
-    //    if (!$this->user->esignUser) {
-    //        $accountId = $service->userCreate($this->user->id);
-    //        EsignUser::create([
-    //            'userid' => $this->user->id,
-    //            'accountid' => $accountId,
-    //            'type' => EsignUser::TYPE_PERSON,
-    //        ]);
-    //    }
-    //}
+
+    public function test()
+    {
+        return responseMessage(__('api.success'));
+    }
 }
