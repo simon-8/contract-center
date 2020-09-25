@@ -347,10 +347,13 @@ class UserRealNameController extends BaseController
         }
         $esignUser = EsignUser::where('userid', $this->user->id)->first();
         try {
-            //$contextInfo = [
-            //    'notifyUrl' => route('api.userRealName.identityNotify'),
-            //];
-            $urlData = $service->getFaceUrl($esignUser->accountid);
+            $contextInfo = [
+                'notifyUrl' => route('api.userRealName.identityNotify'),
+                // 'origin' => 'APP',
+                // 'redirectUrl' => route('api.userRealName.identityRedirect') .'?esignAppScheme='.$request->packageName,
+                // 'showResultPage' => true,
+            ];
+            $urlData = $service->getFaceUrl($esignUser->accountid, $contextInfo);
         } catch (\Exception $e) {
             return responseException($e->getMessage());
         }
@@ -425,10 +428,10 @@ class UserRealNameController extends BaseController
      * 认证后的跳转地址
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function identityReturn(Request $request)
+    public function identityRedirect(Request $request)
     {
 
-        return view('api.user-real-name.identity-return');
+        return view('api.user-real-name.identity-redirect');
     }
 
     public function test()

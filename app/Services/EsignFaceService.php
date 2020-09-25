@@ -211,9 +211,9 @@ class EsignFaceService
             //    //'redirectUrl' => 'esignAppScheme=weixin://dl/moments'
             //],
             //'indivInfo' => [
-            //    'certNo' => '340811199012035318',
+            //    'certNo' => '身份证号码',
             //    'certType' => 'INDIVIDUAL_CH_IDCARD',
-            //    'name' => '刘文静',
+            //    'name' => '刘师傅',
             //]
         ];
         if ($contextInfo) $params['contextInfo'] = $contextInfo;
