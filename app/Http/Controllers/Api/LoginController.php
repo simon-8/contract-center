@@ -59,16 +59,8 @@ class LoginController extends BaseController
 
         // 如果没有关联用户时, 先试着根据unionid查找
         if (!$userOauth->userid) {
-            // 同一个unionid且有用户ID的关联数据
-            $relationOauth = UserOauth::whereUnionid($unionid)
-                ->where('userid', '>', 0)
-                ->whereIn('channel', [
-                    UserOauth::CHANNEL_WECHAT_MINI,
-                    UserOauth::CHANNEL_WECHAT_OFFICIAL,
-                ])
-                ->first();
-            if ($relationOauth) {
-                $userOauth->userid = $relationOauth->userid;
+            if ($userid = UserOauth::getUseridByWechat($unionid)) {
+                $userOauth->userid = $userid;
                 $userOauth->save();
             }
         }
@@ -83,6 +75,9 @@ class LoginController extends BaseController
                 'avatar' => $user->getOriginal()['headimgurl'],
             ]));
             if (!$userData) return responseException(__('auth.create_user_failed'), []);
+            $userData->password = md5($userData->id);
+            $userData->save();
+
             $userOauth->userid = $userData->id;
             $userOauth->save();
         } else {
@@ -93,19 +88,11 @@ class LoginController extends BaseController
         if (!$userData) return responseException(__('auth.create_user_failed'));
 
         // 更新同unionid无userid的用户
-        UserOauth::whereUnionid($unionid)
-            ->whereIn('channel', [
-                UserOauth::CHANNEL_WECHAT_MINI,
-                UserOauth::CHANNEL_WECHAT_OFFICIAL,
-            ])
-            ->where('userid', 0)
-            ->update([
-                'userid' => $userData->id,
-            ]);
+        if ($unionid) UserOauth::updateUseridByUnionid($unionid, $userData->id, UserOauth::getWechatChannels());
 
-        // 使用unionid做为密码
+        // 使用id做为密码
         $authService = new AuthService();
-        $user = $authService->loginWithOauth($userData, array_merge($data, ['password' => md5($unionid)]));
+        $user = $authService->loginWithOauth($userData, array_merge($data, ['password' => md5($userData->id)]));
         return responseMessage('', $user);
     }
 }

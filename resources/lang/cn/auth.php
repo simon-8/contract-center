@@ -23,4 +23,5 @@ return [
     'user_mobile_not_bind' => '该用户未绑定手机',
     'mobile_already_use' => '该手机号码已经被绑定',
     'create_user_failed' => '创建用户失败, 请稍候再试',
+    'get_userinfo_exception' => '登录失败, 请联系管理员',
 ];

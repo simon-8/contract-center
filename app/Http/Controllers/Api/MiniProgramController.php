@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Message;
 use App\Models\User;
 use App\Models\UserOauth;
 use App\Redis\UserRedis;
@@ -47,13 +48,10 @@ class MiniProgramController extends Controller
         $data['last_login_time'] = date('Y-m-d H:i:s');
 
         \Log::info(var_export($data, true));
-        if (empty($code)) {
-            return responseException('code is missing');
-        }
+        if (empty($code)) return responseException('code is missing');
+
         //Validate client
-        if (!verifyPassportClient($data['client_id'], $data['client_secret'])) {
-            return responseException(__('auth.client_secret_failed'));
-        }
+        if (!verifyPassportClient($data['client_id'], $data['client_secret'])) return responseException(__('auth.client_secret_failed'));
 
         $response = $this->app->auth->session($code);
         if (!$response) {
@@ -79,7 +77,6 @@ class MiniProgramController extends Controller
             $encryptedData = $request::input('encryptedData', '');
             if ($iv && $encryptedData) {
                 $decryptedData = $this->app->encryptor->decryptData($sessionKey, $iv, $encryptedData);
-                info($decryptedData);
                 $unionid = $decryptedData['unionId'];
                 if (!$unionid) {
                     return responseException(__('api.mini_program_no_join_open_platform'));
@@ -87,66 +84,78 @@ class MiniProgramController extends Controller
             }
         }
 
-        // 记录openid信息
-        $oauthData = UserOauth::firstOrCreate([
-            'channel' => UserOauth::CHANNEL_WECHAT_MINI,
-            'openid' => $openid,
-        ], [
-            'userid' => 0,
-            'unionid'=> $unionid,
-            'client_id'=> $data['client_id']
-        ]);
+        // 设置原子锁, 默认2秒
+        $lock = Cache::lock('login_'.$openid, 2);
 
-        // 老用户, 当时没有unionid, 新用户都有unionid
-        $oldUser = false;
-        if (!$oauthData->unionid) {
-            $oldUser = true;
-            $oauthData->unionid = $unionid;
-        }
+        if ($lock->get()) {
 
-        // 根据同unionid已关联微信账号userid进行绑定
-        if (!$oauthData->userid && $unionid) {
-            if ($userid = UserOauth::getUseridByWechat($unionid)) {
-                $oauthData->userid = $userid;
+            $oauthData = UserOauth::firstOrCreate([
+                'channel' => UserOauth::CHANNEL_WECHAT_MINI,
+                'unionid' => $unionid,
+            ], [
+                'openid' => $openid,
+                'client_id'=> $data['client_id'],
+                'userid' => 0,
+            ]);
+
+            // 迁移用户可能openid不同, 直接更新掉
+            if ($oauthData->openid != $openid) {
+                $oauthData->openid = $openid;
+                $oauthData->save();
             }
-        }
-
-        if (!$oauthData->userid) {
-            $data['password'] = md5($unionid);
-
-            $userData = $user->create($data);
-            if (!$userData) return responseException(__('auth.create_user_failed'), []);
-
-            $oauthData->userid = $userData->id;
-
-            // 更新同unionid无userid的用户
-            if ($unionid) {
-                $userOauth->where('unionid', $unionid)
-                    ->whereIn('channel', [
-                        UserOauth::CHANNEL_WECHAT,
-                        UserOauth::CHANNEL_WECHAT_MINI,
-                        UserOauth::CHANNEL_WECHAT_OFFICIAL,
-                    ])
-                    ->where('userid', 0)->update(['userid' => $userData->id]);
+            // 新用户无userid
+            if (!$oauthData->userid) {
+                if ($userid = UserOauth::getUseridByWechat($unionid)) {
+                    $oauthData->userid = $userid;
+                    $oauthData->save();
+                }
             }
 
-        } else {
-            $userData = $oauthData->user;
-            // 有userid但无user数据 异常数据
-            if (!$userData) {
-                return responseException(__('auth.get_userinfo_exception'), []);
-            }
-            $userData->avatar = $data['avatar'];
-            $userData->nickname = $data['nickname'];
-            $userData->last_login_time = $data['last_login_time'];
-            // todo 老用户更新密码
-            if ($oldUser) $userData->password = md5($unionid);
-        }
-        if ($oauthData->isDirty()) $oauthData->save();
-        if ($userData->isDirty()) $userData->save();
+            // 未找到相同unionid用户
+            if (!$oauthData->userid) {
+                $data['password'] = md5($openid);
 
-        // 登录
-        $userData = $authService->loginWithOauth($userData, ['password' => md5($unionid)]);
+                $userData = $user->create($data);
+                if (!$userData) return responseException(__('auth.create_user_failed'), []);
+
+                $userData->password = md5($userData->id);
+                $userData->save();
+
+                $oauthData->userid = $userData->id;
+                $oauthData->save();
+
+                // 更新同unionid无userid的用户
+                if ($unionid) UserOauth::updateUseridByUnionid($unionid, $userData->id, UserOauth::getWechatChannels());
+
+                // 新用户发送站内信
+                Message::create([
+                    'title' => __('contract.message.register.title'),
+                    'content' => __('contract.message.register.content', ['id' => (10000 + $userData->id)]),
+                    'to_userid' => $userData->id,
+                ]);
+            } else {
+                $userData = $user->find($oauthData->userid);
+                // 有userid但无user数据 异常数据
+                if (!$userData) {
+                    return responseException(__('auth.get_userinfo_exception'), []);
+                }
+                $userData->avatar = $data['avatar'];
+                $userData->nickname = $data['nickname'];
+                $userData->last_login_time = $data['last_login_time'];
+                $userData->save();
+            }
+            // 释放锁
+            $lock->release();
+        }
+        //$authService->removeToken($userData, $data['client_id']);
+        $data['username'] = $userData->id;
+        $data['password'] = md5($userData->id);
+        try {
+            //$token = $userData->createToken('')->accessToken;
+            $userData->token = $authService->passwordToToken($data);
+        } catch (\Exception $e) {
+            return responseException($e->getMessage());
+        }
 
         // 保存session_key到redis
         $redisInsertData = [
@@ -155,6 +164,7 @@ class MiniProgramController extends Controller
         ];
         UserRedis::update($redisInsertData);
 
+        $userData->loadMissing('company');
         return responseMessage('', $userData);
     }
 

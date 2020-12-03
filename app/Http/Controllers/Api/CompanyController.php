@@ -289,6 +289,7 @@ class CompanyController extends BaseController
             'bank',
             'province',
             'city',
+            'prcptcd', // 大额行号
         ]);
         $request->validateToPay($data);
 

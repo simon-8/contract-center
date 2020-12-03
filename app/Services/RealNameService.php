@@ -122,7 +122,7 @@ class RealNameService
         $param['notify'] = route('api.companyOrder.notify', ['pid' => $pid]);
         $param['city'] = $data['city'];
         $param['serviceId'] = $data['service_id'];
-        //$param['serviceId'] = $data['service_id'];
+        $param['prcptcd'] = $data['prcptcd'] ?? '';// 大额行号修改为必填
         $response = $this->notifyToServer(self::API_ORGAN_TO_PAY, $param);
         if ($response['errCode']) {
             throw new \Exception('尝试对公打款失败:'. $response['msg']);

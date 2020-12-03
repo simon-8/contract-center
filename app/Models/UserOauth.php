@@ -25,6 +25,7 @@ class UserOauth extends Model
         'channel',
         'client_id',
     ];
+
     //public $incrementing = false;
 
     //protected $primaryKey = 'userid';
@@ -39,6 +40,19 @@ class UserOauth extends Model
     }
 
     /**
+     * 获取微信渠道
+     * @return string[]
+     */
+    public static function getWechatChannels()
+    {
+        return [
+            self::CHANNEL_WECHAT,
+            self::CHANNEL_WECHAT_MINI,
+            self::CHANNEL_WECHAT_OFFICIAL,
+        ];
+    }
+
+    /**
      * 获取微信登录用户ID
      * @param string $unionid
      * @return int|mixed
@@ -47,11 +61,21 @@ class UserOauth extends Model
     {
         return self::where('userid', '>', 0)
             ->where('unionid', $unionid)
-            ->whereIn('channel', [
-                self::CHANNEL_WECHAT,
-                self::CHANNEL_WECHAT_MINI,
-                self::CHANNEL_WECHAT_OFFICIAL
-            ])
+            ->whereIn('channel', self::getWechatChannels())
             ->value('userid') ?: 0;
+    }
+
+    /**
+     * 根据unionid更新userid
+     * @param string $unionid
+     * @param $userid
+     * @param array $channels
+     */
+    public static function updateUseridByUnionid(string $unionid, $userid, array $channels)
+    {
+        self::whereIn('channel', $channels)
+            ->where('unionid', $unionid)
+            ->where('userid', 0)
+            ->update(['userid' => $userid]);
     }
 }
